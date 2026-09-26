@@ -1,0 +1,151 @@
+{
+  "experiment_id": "e6a",
+  "condition_id": "D0",
+  "run_id": "e6a_D0_seed0",
+  "model_name": "D:\\0 Repositories\\Sink small paper\\transformation_inheritance\\results\\e6a\\D0\\seed0",
+  "model_revision": null,
+  "architecture": "GPTNeoForCausalLM",
+  "arch_key": "neo",
+  "parameter_count": 19702528,
+  "num_layers": 8,
+  "num_heads": 16,
+  "hidden_size": 256,
+  "training_seed": 0,
+  "data_seed": 0,
+  "evaluation_seed": 42,
+  "tokenizer_name": "roneneldan/TinyStories-33M",
+  "tokenizer_revision": null,
+  "vocab_assertions": {
+    "vocab_size": true,
+    "len_tokenizer": true,
+    "bos": true,
+    "eos": true,
+    "heads": true
+  },
+  "vocab_observed": {
+    "tokenizer_vocab_size": 50257,
+    "len_tokenizer": 50257,
+    "teacher_vocab_size": 50257,
+    "public_vocab_size": 50257,
+    "student_vocab_size": 50257,
+    "tokenizer_bos": 50256,
+    "tokenizer_eos": 50256,
+    "teacher_bos": 50256,
+    "teacher_eos": 50256,
+    "teacher_heads": 16,
+    "student_heads": 16,
+    "teacher_attention_layers": [
+      "global",
+      "local",
+      "global",
+      "local"
+    ],
+    "student_attention_layers": [
+      "global",
+      "local",
+      "global",
+      "local",
+      "global",
+      "local",
+      "global",
+      "local"
+    ],
+    "teacher_window_size": 256,
+    "student_window_size": 256
+  },
+  "dtype": "bfloat16",
+  "device": "cuda",
+  "engine": "train",
+  "attn_implementation": "eager",
+  "dataset_name": "roneneldan/TinyStories",
+  "dataset_revision": null,
+  "teacher": "roneneldan/TinyStories-33M",
+  "teacher_revision": null,
+  "public_reference": "roneneldan/TinyStories-8M",
+  "student_config_from": "roneneldan/TinyStories-8M",
+  "config_path": "transformation_inheritance\\configs\\e6a_ce.yaml",
+  "corpus_id": "tinystories_train",
+  "manifest_sha256": "5253852405e6f0d2ceeb0098e7f94ef857cc38f94e30640418202c9e19e7882d",
+  "block_manifest_sha256": "8501493e8d5b9a5e655847a52112dfb70b43b1b183dc1e3db2594a0d1870f142",
+  "block_manifest_path": "block_manifest.parquet",
+  "initial_state_sha256": "a6c83ead57a1920e3965bf6d84b863969f8ab81ca8556ddf2f78e58def321dd3",
+  "checkpoint_step": null,
+  "checkpoint_sha256": null,
+  "layer_band": [
+    2,
+    8
+  ],
+  "layer_band_depth_interval": [
+    0.2857142857142857,
+    1.0
+  ],
+  "layer_band_version": "depth_band_v1",
+  "teacher_layer_band": [
+    1,
+    4
+  ],
+  "teacher_layer_band_depth_interval": [
+    0.3333333333333333,
+    1.0
+  ],
+  "intervention_registry_version": null,
+  "available_interventions": null,
+  "patch_registry_version": null,
+  "loss_weights": {
+    "ce": 1.0,
+    "kd": 0.0,
+    "attn": 0.0
+  },
+  "temperature": 2.0,
+  "layer_map": {
+    "0": 1,
+    "1": 3,
+    "2": 5,
+    "3": 7
+  },
+  "optim": {
+    "lr": 0.0005,
+    "betas": [
+      0.9,
+      0.95
+    ],
+    "eps": 1e-08,
+    "weight_decay": 0.1,
+    "warmup_steps": 500,
+    "schedule": "cosine",
+    "min_lr_ratio": 0.1,
+    "grad_clip": 1.0,
+    "per_device_batch_size": 16,
+    "grad_accum": 4,
+    "max_steps": 10000,
+    "precision": "bfloat16"
+  },
+  "checkpoints": [
+    0,
+    100,
+    250,
+    500,
+    1000,
+    2000,
+    5000,
+    10000
+  ],
+  "max_steps": 2000,
+  "smoke": false,
+  "git_sha": "cb25435927b9cfa3a39d76ea157a91ee02673fd6",
+  "git_dirty": true,
+  "frozen_baseline_tag": "frozen-e1-e5",
+  "created_utc": "2026-07-30T08:02:06+00:00",
+  "provenance_version": "provenance_v1",
+  "versions": {
+    "python": "3.12.4",
+    "torch": "2.10.0+cu128",
+    "transformers": "5.3.0",
+    "nnsight": "0.7.0",
+    "peft": "0.20.0",
+    "numpy": "2.4.3",
+    "scipy": "1.17.1",
+    "pandas": "3.0.1",
+    "datasets": "4.8.4"
+  }
+}

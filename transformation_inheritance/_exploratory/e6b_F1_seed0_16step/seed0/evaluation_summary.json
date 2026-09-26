@@ -1,0 +1,32 @@
+{
+  "run_id": "e6b_F1_seed0",
+  "run_dir": "transformation_inheritance\\results\\e6b\\F1\\seed0",
+  "metrics_csv": "transformation_inheritance\\results\\e6b\\F1\\seed0\\checkpoint_metrics.csv",
+  "n_written": 3,
+  "n_skipped": 0,
+  "n_failed": 0,
+  "n_checkpoints": 1,
+  "teacher": null,
+  "teacher_note": "no teacher recorded in run_config.json and none passed; teacher-similarity columns are empty for this run",
+  "base": "distilbert/distilgpt2",
+  "base_note": "",
+  "wallclock_s": 426.5540108680725,
+  "public_reference": null,
+  "evaluator_version": "evaluate_transformation_v2",
+  "git_sha": "03b84ae2bb5fae61c668ac82cd685d796ed2d532",
+  "git_dirty": true,
+  "frozen_baseline_tag": "frozen-e1-e5",
+  "created_utc": "2026-07-29T18:29:40+00:00",
+  "provenance_version": "provenance_v1",
+  "versions": {
+    "python": "3.12.4",
+    "torch": "2.10.0+cu128",
+    "transformers": "5.3.0",
+    "nnsight": "0.7.0",
+    "peft": "0.20.0",
+    "numpy": "2.4.3",
+    "scipy": "1.17.1",
+    "pandas": "3.0.1",
+    "datasets": "4.8.4"
+  }
+}

@@ -1,0 +1,37 @@
+__pycache__/
+*.pyc
+**/checkpoints/
+*.safetensors
+*.pt
+*.pth
+*.ckpt
+results/
+.venv/
+.hf_cache/
+/results_e1_e2_nnsight/
+/cross_scale_and_architecture/results/
+/cross_scale_and_architecture/logs/
+/MechanisticAccountofSinks-venv/
+/results_e3/
+/results_gpt2-medium_e4/
+/results_gpt2_e4/
+# staging for hand-delivered design files; the files themselves are relocated into the tree
+/files (*)/
+/files (*).zip
+# Real E1-E5 artefacts (2.5 GB). Deliberately untracked, not merely unpushed: five files
+# exceed GitHub's hard 100 MB limit, so this cannot be committed without Git LFS. The two
+# bridge gates in NEXT_STEPS.md §2.1/§2.2 read it when present and skip when it is absent,
+# which is why a fresh clone sees them skip rather than fail.
+/nn_results/
+# Captured stdout/stderr from long training runs. Useful while a run is in flight (a
+# buffered pipeline shows nothing until it exits, which makes a live run look dead);
+# the artefacts that matter are under results/ with provenance attached.
+/_run_logs/
+# Packed training corpora (block_corpus_cache). Multi-GB int32 arrays that are pure
+# derived data: every entry is reproducible from its key and its digest is re-verified on
+# every read, so nothing is lost by deleting the directory — only the ~17-30 minutes of
+# packing it saves. Never commit it; `manifest_sha256` is what proves two runs saw the
+# same tokens, and it lives in the artefacts, not here.
+/.corpus_cache/
+# Scratch output from the throughput benchmark harness.
+/_bench_scratch/

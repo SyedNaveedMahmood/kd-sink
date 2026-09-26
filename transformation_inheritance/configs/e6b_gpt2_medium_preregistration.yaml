@@ -1,0 +1,113 @@
+# E6B GPT-2 Medium scale-extension registration.
+#
+# This is a new prospective registration for experiment_id `e6b_gpt2_medium`; it does
+# not amend `e6_preregistration.yaml` or reinterpret the completed DistilGPT-2 seed-0
+# result. GPT-2 Medium was selected after that result as a same-architecture scale test.
+# Every E6B criterion, threshold, direction, seed rule, and factorial definition below is
+# copied unchanged from e6_prereg_v4. The model and experiment id are the only scientific
+# changes. Commit this file before the first GPT-2 Medium training run so provenance can
+# establish that no GPT-2 Medium result existed when these rules were fixed.
+
+version: e6b_gpt2_medium_prereg_v1
+registered: "2026-08-02"
+experiment_id: e6b_gpt2_medium
+experiment_family: e6b
+status: prospective_scale_extension
+source_preregistration: transformation_inheritance/configs/e6_preregistration.yaml
+source_preregistration_version: e6_prereg_v4
+source_preregistration_sha256: 195df3a7ea27c0c19550844422e1cdcdfbd1fc44c4e65645cd31347768f9934f
+
+model:
+  id: openai-community/gpt2-medium
+  revision: 6dcaa7a952f72f9298047fd5137cd6e4f05f41da
+  tokenizer: openai-community/gpt2-medium
+  tokenizer_revision: 6dcaa7a952f72f9298047fd5137cd6e4f05f41da
+  rationale: >
+    Same GPT-2 architecture and intervention registry as the original DistilGPT-2 arm,
+    but 355M parameters instead of 82M. This isolates a model-scale extension without
+    changing to a RoPE architecture or redefining the sink mechanism.
+
+selection_context: >
+  The model was selected after inspecting the original DistilGPT-2 seed-0 E6B result.
+  Accordingly this arm is a prospective within-model test but a post-result model-choice
+  extension relative to the original E6B registration. It must be reported that way.
+
+conditions:
+  F1: {adaptation: lora, label_quality: clean}
+  F2: {adaptation: full, label_quality: clean}
+  F3: {adaptation: lora, label_quality: corrupt, corruption_rate: 0.20}
+  F4: {adaptation: full, label_quality: corrupt, corruption_rate: 0.20}
+
+analysis:
+  max_failure_rate: 0.02
+  matched_loss_max_gap_nats: 0.05
+
+# This registration is E6B-only. Empty E6A sections keep the shared aggregator honest:
+# its E6A go/no-go output is not a result for this arm; read `e6b_go_no_go.json`.
+contrasts: []
+go_no_go: []
+
+e6b_go_no_go:
+  combine: all
+  criteria:
+    - id: e6b_1
+      decided: "2026-07-30"
+      decision_id: D4
+      text: "clean LoRA and full fine-tuning reach comparable task accuracy"
+      metric: task_accuracy
+      condition_a: F1
+      condition_b: F2
+      threshold: 0.02
+      direction: less_equal
+      absolute_difference: true
+      source: "e6_prereg_v4 / design section 18 E6B bullet 1, copied unchanged"
+      decision_taken: >
+        Reuse the original fixed 0.02 SST-2 accuracy band without modification after the
+        DistilGPT-2 result. This prevents the scale extension from moving the success bar.
+
+    - id: e6b_2
+      decided: "2026-07-30"
+      decision_id: D4
+      text: "their fingerprint or topology drift differs consistently"
+      metric: fingerprint_drift_from_base
+      condition_a: F2
+      condition_b: F1
+      direction: greater_equal
+      seed_consistency: all
+      threshold_rule:
+        kind: null_seed_spread
+        metric: fingerprint_drift_from_base
+        null_condition: F1
+        statistic: std
+        anchor: 0.0
+        anchor_side: above
+        k: 2.0
+      source: "e6_prereg_v4 / design section 18 E6B bullet 2, copied unchanged"
+      decision_taken: >
+        Reuse framing B with k=2, the F1 across-seed standard deviation, and consistency
+        in every seed. The rule refuses to resolve until F1 seeds 0, 1, and 2 exist.
+
+    - id: e6b_3
+      text: >
+        corrupted training separates from clean training before or independently of final
+        accuracy
+      metric: drift_onset_step
+      evaluation: early_warning
+      min_seeds: 2
+      require_both_adaptation_methods: true
+      source: >
+        e6_prereg_v4 / design section 18 E6B bullet 3, copied unchanged: sink drift must
+        separate corrupted from clean before ordinary task accuracy in at least 2 of 3
+        seeds and in both LoRA and full fine-tuning.
+
+e6b:
+  drift_columns: [fingerprint_drift_from_base, topology_drift_from_base,
+                  carrier_drift_from_base]
+  onset_threshold_k: 2.0
+  factorial:
+    row_factor: adaptation
+    column_factor: label_quality
+    conditions: {F1: [lora, clean], F2: [full, clean],
+                 F3: [lora, corrupt], F4: [full, corrupt]}
+
+amendments: []

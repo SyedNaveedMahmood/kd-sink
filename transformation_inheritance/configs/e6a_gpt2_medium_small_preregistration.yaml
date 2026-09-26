@@ -1,0 +1,305 @@
+# Prospective registration: canonical GPT-2-medium -> GPT-2-small E6A extension.
+#
+# Registered 2026-08-02 before any directory named `e6a_gpt2_medium_small` existed under
+# transformation_inheritance/results. This is a new arm, not an amendment to completed
+# TinyStories or GPT-2 -> DistilGPT-2 results. Thresholds and training hyperparameters are
+# inherited unchanged. The scientific change is the model pair and the explicitly defined
+# unequal-head attention alignment below.
+
+version: e6a_gpt2_medium_small_prereg_v1
+registered: "2026-08-02"
+status: prospective_model_scale_extension
+experiment_id: e6a_gpt2_medium_small
+experiment_family: e6a
+source_preregistration: transformation_inheritance/configs/e6a_gpt2_preregistration.yaml
+source_preregistration_version: e6a_gpt2_prereg_v1
+source_preregistration_sha256: f6684e0b6d9a316f9f6e2e07ce1abe5bde9d347266191f168392d4485a8fd441
+
+models:
+  teacher:
+    id: openai-community/gpt2-medium
+    revision: 6dcaa7a952f72f9298047fd5137cd6e4f05f41da
+    geometry: {num_layers: 24, num_heads: 16, hidden_size: 1024, head_dim: 64}
+  student:
+    config_from: openai-community/gpt2
+    revision: 607a30d783dfa663caf39e06633721c8d4cfcd7e
+    initialization: random_from_config
+    geometry: {num_layers: 12, num_heads: 12, hidden_size: 768, head_dim: 64}
+  public_reference:
+    id: openai-community/gpt2
+    revision: 607a30d783dfa663caf39e06633721c8d4cfcd7e
+    condition: PG2S
+  tokenizer:
+    id: openai-community/gpt2
+    revision: 607a30d783dfa663caf39e06633721c8d4cfcd7e
+  interpretation: >
+    The random student and public GPT-2 checkpoint have identical canonical architecture.
+    The public checkpoint is a convergent/reference trajectory, never an initializer. It
+    shares model family and likely training-domain ancestry with the teacher, so it is not
+    presented as a strong statistical-independence control.
+
+head_alignment:
+  name: AMAD-style JSD extension
+  method_id: amad_jsd
+  citation: "Zhao et al., AAAI 2024, doi:10.1609/aaai.v38i7.28583"
+  literature_scope: >
+    The head alignment follows Zhao et al. (AAAI 2024), "No Head Left Behind": flattened
+    teacher and student attention maps are L2-normalized, compared by cosine similarity,
+    and soft-aligned. The divergence below is deliberately neither AMAD Variant 1's
+    normalized MSE nor the paper's L1-normalized KL variants, so the method must be
+    described as AMAD-style JSD, never as exact AMAD.
+  per_mapped_layer:
+    valid_cells: intersection of the teacher and student attention masks
+    similarity: cosine over flattened common-valid attention cells
+    weights: softmax over the 12 student heads separately for each of 16 teacher heads
+    softmax_temperature: 1.0
+    direction: teacher_to_student
+    mixture: >
+      Convex weighted sum of the raw student attention tensors emitted to E6A; no added
+      renormalization, preserving the original training-time dropout semantics
+    alignment_weights_gradient: attached
+    divergence: Jensen-Shannon divergence between each teacher map and aligned student map
+  reduction: >
+    Sum JSD contributions over key positions; mean over batch, all 16 teacher heads, valid
+    query rows, and the 12 mapped layer pairs. Invalid cells are excluded and never
+    renormalized. This preserves E6A's sum-over-keys/mean-over-query JSD-form reduction
+    (and its usual bound when rows are normalized) while replacing only the impossible
+    16-to-12 index correspondence.
+  layer_map: {1: 0, 3: 1, 5: 2, 7: 3, 9: 4, 11: 5,
+              13: 6, 15: 7, 17: 8, 19: 9, 21: 10, 23: 11}
+
+corpora:
+  in_domain: openwebtext_validation_sink_300
+  cross_domain: e1_100x40
+  training_dataset: Skylion007/openwebtext
+  train_documents: 400000
+  validation_documents: 8000
+  block_size: 128
+
+conditions:
+  G0: "L_CE only; aligned L_ATTN is logged under no_grad with weight 0"
+  G1: "0.50*L_CE + 0.50*L_KD, T=2.0; aligned L_ATTN logged with weight 0"
+  G2-aligned: "0.45*L_CE + 0.45*L_KD + 0.10*L_ATTN_AMAD-JSD, T=2.0"
+  PG2S: "pinned public openai-community/gpt2 reference; seed -1, step -1"
+
+pilot_gate:
+  corpus_id: openwebtext_validation_sink_300
+  sink_threshold: 0.15
+  mechanistic_delta_threshold: 0.10
+  parity_examples: 5
+  teacher_sink_fraction: 0.50
+  source: >
+    Copied unchanged from e6a_gpt2_prereg_v1. Both the absolute 0.15 criterion and the
+    teacher-relative 50% criterion must be reported and met; neither is tuned to this arm.
+
+contrasts:
+  - id: e6a_medium_small_c1
+    text: "G2-aligned - G0 in teacher fingerprint cosine at equal step"
+    metric: fingerprint_cosine_to_teacher
+    condition_a: G2-aligned
+    condition_b: G0
+    selection: equal_step
+    corpus_id: openwebtext_validation_sink_300
+    family: e6a_primary
+
+  - id: e6a_medium_small_c2
+    text: "G1 - G0 in functional similarity at matched validation CE"
+    metric: functional_cosine_to_teacher
+    condition_a: G1
+    condition_b: G0
+    selection: matched_loss
+    corpus_id: openwebtext_validation_sink_300
+    family: e6a_primary
+
+  - id: e6a_medium_small_c3
+    text: "G2-aligned - G1 in topological distance"
+    metric: topology_wasserstein_to_teacher
+    condition_a: G2-aligned
+    condition_b: G1
+    selection: equal_step
+    corpus_id: openwebtext_validation_sink_300
+    family: e6a_primary
+
+  - id: e6a_medium_small_c4a
+    text: "public GPT-2-small vs G1 at matched validation CE"
+    metric: fingerprint_cosine_to_teacher
+    condition_a: PG2S
+    condition_b: G1
+    selection: matched_loss
+    matched_loss_reference: G1
+    corpus_id: openwebtext_validation_sink_300
+    family: e6a_primary
+
+  - id: e6a_medium_small_c4b
+    text: "public GPT-2-small vs G2-aligned at matched validation CE"
+    metric: fingerprint_cosine_to_teacher
+    condition_a: PG2S
+    condition_b: G2-aligned
+    selection: matched_loss
+    matched_loss_reference: G2-aligned
+    corpus_id: openwebtext_validation_sink_300
+    family: e6a_primary
+
+  - id: e6a_medium_small_c5
+    kind: corpus_pair
+    text: "in-domain versus cross-domain inheritance"
+    metric: fingerprint_cosine_to_teacher
+    conditions: [G0, G1, G2-aligned]
+    corpus_a: openwebtext_validation_sink_300
+    corpus_b: e1_100x40
+    selection: equal_step
+    family: e6a_primary
+
+primary_topology_metric:
+  chosen: topology_wasserstein_to_teacher
+  decided: "2026-08-02"
+  decision_id: inherited_D1
+  rationale: >
+    Copied from the existing registration: the claim concerns where in normalized depth
+    the anchor sits, for which Wasserstein distance is more diagnostic than rank alone.
+
+# Design section 18 says continue when at least one criterion is observed across all seeds.
+go_no_go:
+  - id: e6a_medium_small_1
+    text: "G2-aligned improves teacher fingerprint similarity over G0 by at least 0.15"
+    metric: fingerprint_cosine_to_teacher
+    condition_a: G2-aligned
+    condition_b: G0
+    selection: equal_step
+    corpus_id: openwebtext_validation_sink_300
+    threshold: 0.15
+    direction: greater_equal
+    seed_consistency: all
+    family: e6a_go_no_go
+
+  - id: e6a_medium_small_2
+    text: >
+      G1 and G2-aligned have matched validation CE but differ in mechanistic inheritance
+      by at least 0.10
+    metric: fingerprint_cosine_to_teacher
+    condition_a: G2-aligned
+    condition_b: G1
+    selection: matched_loss
+    corpus_id: openwebtext_validation_sink_300
+    threshold: 0.10
+    direction: greater_equal
+    absolute_difference: true
+    seed_consistency: all
+    family: e6a_go_no_go
+
+  - id: e6a_medium_small_3
+    decided: "2026-08-02"
+    decision_id: inherited_D2
+    text: "functional inheritance remains high while mechanistic inheritance is low"
+    compound:
+      all_of:
+        - metric: functional_cosine_to_teacher
+          condition_a: G1
+          selection: equal_step
+          corpus_id: openwebtext_validation_sink_300
+          direction: greater_equal
+          threshold_rule: {kind: null_seed_spread, metric: functional_cosine_to_teacher,
+                           null_condition: G0, statistic: range, anchor: 1.0,
+                           anchor_side: below, k: 2.0}
+        - metric: fingerprint_cosine_to_teacher
+          condition_a: G1
+          selection: equal_step
+          corpus_id: openwebtext_validation_sink_300
+          direction: less_equal
+          threshold_rule: {kind: null_seed_spread, metric: fingerprint_cosine_to_teacher,
+                           null_condition: G0, statistic: range, anchor: 1.0,
+                           anchor_side: below, k: 2.0}
+    seed_consistency: all
+    family: e6a_go_no_go
+    decision_taken: "Copied unchanged from e6a_gpt2_prereg_v1; requires all G0 seeds."
+
+  - id: e6a_medium_small_4
+    decided: "2026-08-02"
+    decision_id: inherited_D3
+    text: >
+      public GPT-2-small and G2-aligned reach similar function through measurably
+      different fingerprints
+    compound:
+      all_of:
+        - metric: functional_cosine_to_teacher
+          condition_a: PG2S
+          condition_b: G2-aligned
+          selection: matched_loss
+          matched_loss_reference: G2-aligned
+          corpus_id: openwebtext_validation_sink_300
+          direction: less_equal
+          absolute_difference: true
+          threshold_rule: {kind: null_seed_spread, metric: functional_cosine_to_teacher,
+                           null_condition: G0, statistic: range, anchor: 0.0,
+                           anchor_side: above, k: 2.0}
+        - metric: fingerprint_cosine_to_teacher
+          condition_a: PG2S
+          condition_b: G2-aligned
+          selection: matched_loss
+          matched_loss_reference: G2-aligned
+          corpus_id: openwebtext_validation_sink_300
+          direction: greater_equal
+          absolute_difference: true
+          threshold_rule: {kind: null_seed_spread, metric: fingerprint_cosine_to_teacher,
+                           null_condition: G0, statistic: range, anchor: 0.0,
+                           anchor_side: above, k: 2.0}
+    seed_consistency: all
+    family: e6a_go_no_go
+    decision_taken: >
+      Copied unchanged from e6a_gpt2_prereg_v1. Interpret with the shared-family/public-
+      reference limitation recorded in models.public_reference.
+
+carrier_metric_limitation: >
+  carrier_jaccard_to_teacher is unavailable for the 16-head teacher versus 12-head student.
+  The evaluator must emit null plus a warning, never truncate or invent a head mapping.
+  Permutation-invariant fingerprint and topology metrics remain the confirmatory measures.
+
+analysis:
+  matched_loss_max_gap_nats: 0.05
+  max_failure_rate: 0.02
+  bootstrap_n: 10000
+  bootstrap_alpha: 0.05
+  bh_alpha: 0.05
+
+e6b_go_no_go: {combine: all, criteria: []}
+e6b: {drift_columns: [], onset_threshold_k: 2.0}
+
+stop_conditions:
+  - id: e6a_medium_small_stop_1
+    text: "differences are limited to baseline sink strength"
+    source: "source registration / design section 18, stop bullet 1"
+  - id: e6a_medium_small_stop_2
+    text: "effects vanish under matched-loss or matched-length controls"
+    source: "source registration / design section 18, stop bullet 2"
+  - id: e6a_medium_small_stop_3
+    text: "only one model size produces the effect"
+    source: "source registration / design section 18, stop bullet 3"
+  - id: e6a_medium_small_stop_5
+    text: "parity cannot be established for the patched quantities"
+    source: "source registration / design section 18, stop bullet 5"
+  - id: e6a_medium_small_stop_6
+    text: >
+      the pinned GPT-2-medium teacher does not clear the unchanged 0.15 sink threshold on
+      openwebtext_validation_sink_300
+    source: >
+      Prospectively inherited from e6a_gpt2_stop_6. Check the teacher before student
+      training; if this fires, report it and do not move the threshold.
+
+stop_conditions_note: >
+  A clean negative result remains reportable if it establishes independent sink
+  reconstruction rather than causal transfer.
+
+amendments:
+  - date: "2026-08-02"
+    kind: prospective_registration
+    decision_id: MS1
+    text: >
+      User selected canonical GPT-2-medium -> GPT-2-small as the primary scale arm and an
+      AMAD-style JSD extension for 16-to-12 heads. No arm result existed. G0/G1 weights,
+      data, optimizer, checkpoints, seeds, gates, and analysis thresholds remain unchanged.
+  - date: "2026-08-02"
+    kind: method_definition
+    decision_id: MS2
+    text: >
+      Fixed cosine soft alignment, temperature 1.0, attached weights, teacher-to-student
+      direction, convex raw-map mixture, and original E6A JSD reduction before training.

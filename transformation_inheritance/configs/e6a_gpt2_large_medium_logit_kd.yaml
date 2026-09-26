@@ -1,0 +1,58 @@
+# E6A GPT-2 large->medium / G1: logit distillation.
+# Identical to e6a_gpt2_large_medium_ce.yaml except condition and loss weights.
+experiment_id: e6a_gpt2_large_medium
+condition: G1
+teacher: gpt2-large
+teacher_revision: 32b71b12589c2f8d625668d2335a01cac3249519
+student_config_from: gpt2-medium
+student_config_revision: 6dcaa7a952f72f9298047fd5137cd6e4f05f41da
+student_init: random
+public_reference: gpt2-medium
+public_reference_revision: 6dcaa7a952f72f9298047fd5137cd6e4f05f41da
+tokenizer: gpt2
+tokenizer_revision: 607a30d783dfa663caf39e06633721c8d4cfcd7e
+
+loss:
+  ce_weight: 0.50
+  kd_weight: 0.50
+  attn_weight: 0.0
+  temperature: 2.0
+  attention_head_alignment: mean
+  layer_map: {1: 0, 2: 1, 4: 2, 5: 3, 7: 4, 8: 5, 10: 6, 11: 7,
+              13: 8, 14: 9, 16: 10, 17: 11, 19: 12, 20: 13, 22: 14, 23: 15,
+              25: 16, 26: 17, 28: 18, 29: 19, 31: 20, 32: 21, 34: 22, 35: 23}
+
+data:
+  dataset: Skylion007/openwebtext
+  corpus_id: openwebtext_train
+  train_split: train
+  eval_split: validation
+  block_size: 128
+  eos_between: true
+  train_documents: 400000
+  validation_documents: 8000
+
+optim:
+  lr: 5.0e-4
+  betas: [0.9, 0.95]
+  eps: 1.0e-8
+  weight_decay: 0.1
+  warmup_steps: 500
+  schedule: cosine
+  min_lr_ratio: 0.10
+  grad_clip: 1.0
+  per_device_batch_size: 16
+  grad_accum: 4
+  max_steps: 10000
+  precision: bfloat16
+
+checkpoints: [0, 100, 250, 500, 1000, 2000, 5000, 10000]
+seeds: [0, 1, 2]
+
+eval:
+  sink_corpus: {split: validation, n_blocks: 300, purpose: sink}
+  ppl_corpus: {split: validation, n_blocks: 2000, purpose: ppl}
+  ce_corpus_trajectory: {n_blocks: 300}
+  ce_corpus_endpoints: {n_blocks: 2000}
+  cross_domain: frozen_e1
+  band_frac: [0.25, 0.90]

@@ -1,0 +1,55 @@
+# Equal-head bridge / G2-legacy. Exact original index-to-index E6A attention objective.
+experiment_id: e6a_gpt2_alignment_bridge
+experiment_family: e6a
+preregistration: transformation_inheritance/configs/e6a_gpt2_alignment_bridge_preregistration.yaml
+condition: G2-legacy
+teacher: openai-community/gpt2
+teacher_revision: 607a30d783dfa663caf39e06633721c8d4cfcd7e
+student_config_from: distilbert/distilgpt2
+student_config_revision: 2290a62682d06624634c1f46a6ad5be0f47f38aa
+student_init: random
+public_reference: distilbert/distilgpt2
+public_reference_revision: 2290a62682d06624634c1f46a6ad5be0f47f38aa
+tokenizer: openai-community/gpt2
+tokenizer_revision: 607a30d783dfa663caf39e06633721c8d4cfcd7e
+model_contract:
+  teacher: {num_layers: 12, num_heads: 12, hidden_size: 768}
+  student: {num_layers: 6, num_heads: 12, hidden_size: 768}
+  public_reference: {num_layers: 6, num_heads: 12, hidden_size: 768}
+loss:
+  ce_weight: 0.45
+  kd_weight: 0.45
+  attn_weight: 0.10
+  temperature: 2.0
+  layer_map: {1: 0, 3: 1, 5: 2, 7: 3, 9: 4, 11: 5}
+  head_alignment: {method: index}
+data:
+  dataset: Skylion007/openwebtext
+  train_split: train
+  eval_split: validation
+  block_size: 128
+  eos_between: true
+  train_documents: 400000
+  validation_documents: 8000
+optim:
+  lr: 5.0e-4
+  betas: [0.9, 0.95]
+  eps: 1.0e-8
+  weight_decay: 0.1
+  warmup_steps: 500
+  schedule: cosine
+  min_lr_ratio: 0.10
+  grad_clip: 1.0
+  per_device_batch_size: 16
+  grad_accum: 4
+  max_steps: 10000
+  precision: bfloat16
+checkpoints: [0, 100, 250, 500, 1000, 2000, 5000, 10000]
+seeds: [0, 1, 2]
+eval:
+  sink_corpus: {split: validation, n_blocks: 300, purpose: sink}
+  ppl_corpus: {split: validation, n_blocks: 2000, purpose: ppl}
+  ce_corpus_trajectory: {n_blocks: 300}
+  ce_corpus_endpoints: {n_blocks: 2000}
+  cross_domain: frozen_e1
+  band_frac: [0.25, 0.90]

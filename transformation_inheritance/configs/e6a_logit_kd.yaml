@@ -1,0 +1,60 @@
+# E6A / D1 — 0.50*L_CE + 0.50*L_KD, T=2.0 (logit KD, no attention term)
+#
+# 03_MODULE_SPEC_e6_transformation.md §3. The three e6a_*.yaml files are identical except
+# for the three loss weights; diff them in review to confirm that.
+#
+# Hyperparameters below are pre-registered (§1.6). They are not to be "improved" — a
+# tuned learning rate would make the D0/D1/D2 contrast uninterpretable, since the
+# conditions are paired by seed and data order.
+experiment_id: e6a
+condition: D1
+teacher: roneneldan/TinyStories-33M
+teacher_revision: null
+student_config_from: roneneldan/TinyStories-8M
+student_init: random          # NEVER from_pretrained; the public 8M is a reference only
+public_reference: roneneldan/TinyStories-8M
+tokenizer: roneneldan/TinyStories-33M
+
+loss:
+  ce_weight: 0.5
+  kd_weight: 0.5
+  attn_weight: 0.0
+  temperature: 2.0
+  # Teacher layer -> student layer (design §8.3). The teacher has 4 layers, the student 8.
+  layer_map: {0: 1, 1: 3, 2: 5, 3: 7}
+
+data:
+  dataset: roneneldan/TinyStories
+  train_split: train
+  eval_split: validation
+  block_size: 128
+  eos_between: true
+
+optim:
+  lr: 5.0e-4
+  betas: [0.9, 0.95]
+  eps: 1.0e-8
+  weight_decay: 0.1
+  warmup_steps: 500
+  schedule: cosine
+  min_lr_ratio: 0.10
+  grad_clip: 1.0
+  per_device_batch_size: 16
+  grad_accum: 4
+  max_steps: 10000
+  precision: bfloat16          # bf16 on CUDA, fp32 on CPU
+
+# Step 0 is saved BEFORE the first optimiser update (§1.6).
+checkpoints: [0, 100, 250, 500, 1000, 2000, 5000, 10000]
+seeds: [0, 1, 2]
+
+eval:
+  sink_corpus: {split: validation, n_blocks: 300, purpose: sink}
+  ppl_corpus:  {split: validation, n_blocks: 2000, purpose: ppl}
+  ce_corpus_trajectory: {n_blocks: 300}       # design-delta D3
+  ce_corpus_endpoints:  {n_blocks: 2000}
+  cross_domain: frozen_e1
+  # Normalised-depth band, NOT the legacy compute_band: compute_band(4, "scaled") returns
+  # a single layer for the 4-layer teacher versus four for the 8-layer student
+  # (CLAUDE.md trap 1).
+  band_frac: [0.25, 0.90]

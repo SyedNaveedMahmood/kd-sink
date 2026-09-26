@@ -1,0 +1,53 @@
+# e7_qwen05_base.yaml — Qwen2.5-0.5B base, the Phase 1 model (WP9/WP11).
+#
+# Shape is `04_MODULE_SPEC_e7_crosslingual.md` §7 verbatim. Nothing here is a threshold or
+# a criterion — those live only in `e7_preregistration.yaml`. What lives here is the
+# *instrument*: which model, which precision, which sites, which layers.
+#
+# `dtype` is a first-class field because `04` §7 warns that a 0.5B fp32 result and a 1.5B
+# bf16 result are not comparable in absolute intervention percentage; only the *direction*
+# of the parallel-vs-control contrast replicates across them. Every output row records it.
+
+experiment_id: e7
+model: Qwen/Qwen2.5-0.5B
+model_revision: null
+tokenizer: Qwen/Qwen2.5-0.5B
+tag: qwen05_base
+variant: base                 # base | instruct — the §6.1 contrast 5 factor
+dtype: float32
+attn_implementation: eager
+engine: nnsight
+band_frac: [0.25, 0.90]
+
+flores:
+  manifest: results/manifests/flores_devtest.json
+  langs: [eng_Latn, ben_Beng, zho_Hans, arb_Arab, deu_Latn, hin_Deva, swh_Latn, tur_Latn]
+
+xnli:
+  manifest: results/manifests/xnli_test.json
+  langs: [en, zh, ar, de, hi, sw, tr]
+  dev_n: 200
+  test_n: 400
+
+extraction:
+  objects: [R0, K0_prerope, K0_postrope, V0, Qmean, Rlast, Rmean, Rmid, Kmid_prerope, Vmid]
+  layers: all
+  batch_size: 1
+
+patching:
+  # `04` §7 lists a bare `K0`/`Kmid`; on Qwen those are refused by design (RoPE is applied
+  # inside the attention module, so "the key" is two different tensors — CLAUDE.md trap 4).
+  # The RoPE variant is named explicitly and never mixed in aggregation.
+  objects: [K0_prerope, V0, R0, Kmid_prerope, Vmid, Rmid]
+  screen_layers: [5, 11, 17, 22]        # `04` §5.3, the 24-layer schedule
+  window: 5
+  norm_conditions: [direct, rescaled, random, identity]
+  source_conditions: [parallel_en, same_label_en, different_label_en, random_en]
+  batch_size: 1
+  # `04` §5.5 Phase 1 smoke study: 50 examples × the screening layers × {K0, V0} ×
+  # 4 source × 4 norm conditions, before anything larger.
+  smoke:
+    n_examples: 50
+    objects: [K0_prerope, V0]
+
+seed: 42

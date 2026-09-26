@@ -1,0 +1,43 @@
+# E6B GPT-2 Medium / F3 - LoRA fine-tuning on 20%-corrupted SST-2.
+# Prospective scale extension of e6b_f3.yaml. Apart from experiment/model identity and
+# the pinned revisions, the executable settings are intentionally unchanged.
+experiment_id: e6b_gpt2_medium
+experiment_family: e6b
+preregistration: transformation_inheritance/configs/e6b_gpt2_medium_preregistration.yaml
+condition: F3
+adaptation: lora
+base_model: openai-community/gpt2-medium
+base_revision: 6dcaa7a952f72f9298047fd5137cd6e4f05f41da
+tokenizer: openai-community/gpt2-medium
+tokenizer_revision: 6dcaa7a952f72f9298047fd5137cd6e4f05f41da
+corrupt_labels: true
+corruption_rate: 0.20
+
+data:
+  dataset: stanfordnlp/sst2
+  train_split: train
+  eval_split: validation
+  max_input_tokens: 64
+  labels: [" positive", " negative"]
+
+lora:
+  target_modules: ["c_attn", "c_proj"]
+  r: 8
+  alpha: 16
+  dropout: 0.05
+
+optim:
+  per_device_batch_size: 32
+  grad_accum: 1
+  lr: 2.0e-4
+  betas: [0.9, 0.999]
+  weight_decay: 0.01
+  warmup_ratio: 0.06
+  schedule: cosine
+  min_lr_ratio: 0.0
+  grad_clip: 1.0
+  epochs: 3
+  precision: bfloat16
+
+eval_every: 100
+seeds: [0, 1, 2]

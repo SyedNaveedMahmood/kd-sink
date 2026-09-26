@@ -1,0 +1,180 @@
+# Prospective equal-head bridge for the AMAD-style JSD extension.
+# Four freshly isolated conditions are run so the legacy/aligned method contrast cannot be
+# contaminated by old artifacts or later code changes. G2-legacy and G2-aligned differ only
+# in head alignment; G0/G1 retain their original training weights.
+
+version: e6a_gpt2_alignment_bridge_prereg_v1
+registered: "2026-08-02"
+status: prospective_method_bridge
+experiment_id: e6a_gpt2_alignment_bridge
+experiment_family: e6a
+source_preregistration: transformation_inheritance/configs/e6a_gpt2_preregistration.yaml
+source_preregistration_version: e6a_gpt2_prereg_v1
+source_preregistration_sha256: f6684e0b6d9a316f9f6e2e07ce1abe5bde9d347266191f168392d4485a8fd441
+
+models:
+  teacher: {id: openai-community/gpt2,
+            revision: 607a30d783dfa663caf39e06633721c8d4cfcd7e,
+            num_layers: 12, num_heads: 12, hidden_size: 768}
+  student: {config_from: distilbert/distilgpt2,
+            revision: 2290a62682d06624634c1f46a6ad5be0f47f38aa,
+            initialization: random_from_config,
+            num_layers: 6, num_heads: 12, hidden_size: 768}
+  public_reference: {id: distilbert/distilgpt2,
+                     revision: 2290a62682d06624634c1f46a6ad5be0f47f38aa,
+                     condition: PDG2}
+
+methods:
+  citation: "Zhao et al., AAAI 2024, doi:10.1609/aaai.v38i7.28583"
+  G2-legacy:
+    method_id: index
+    definition: "original one-to-one head-index JSD, unchanged"
+  G2-aligned:
+    method_id: amad_jsd
+    definition: >
+      AMAD-style cosine-soft alignment over all 12 student heads for each teacher head,
+      temperature 1.0, attached weights, convex raw-map mixture, followed by E6A JSD.
+  bridge_estimand: >
+    G2-aligned minus G2-legacy under identical teacher, random student architecture, seed,
+    data order, loss weights, optimizer, and checkpoints. This estimates the effect of the
+    alignment definition when unequal-head support is not needed.
+
+corpora:
+  in_domain: openwebtext_validation_sink_300
+  cross_domain: e1_100x40
+
+conditions:
+  G0: "L_CE only; original training control with legacy index-JSD diagnostic"
+  G1: "0.50*L_CE + 0.50*L_KD, T=2.0; original control with legacy index-JSD diagnostic"
+  G2-legacy: "0.45*L_CE + 0.45*L_KD + 0.10*legacy index JSD, T=2.0"
+  G2-aligned: "0.45*L_CE + 0.45*L_KD + 0.10*AMAD-style JSD, T=2.0"
+  PDG2: "pinned public distilgpt2 reference; seed -1, step -1"
+
+pilot_gate:
+  corpus_id: openwebtext_validation_sink_300
+  sink_threshold: 0.15
+  mechanistic_delta_threshold: 0.10
+  parity_examples: 5
+  teacher_sink_fraction: 0.50
+  attention_condition_for_gate: G2-aligned
+
+contrasts:
+  - id: e6a_bridge_method_c1
+    text: "G2-aligned - G2-legacy in teacher fingerprint cosine"
+    metric: fingerprint_cosine_to_teacher
+    condition_a: G2-aligned
+    condition_b: G2-legacy
+    selection: equal_step
+    corpus_id: openwebtext_validation_sink_300
+    family: alignment_bridge
+
+  - id: e6a_bridge_method_c2
+    text: "G2-aligned - G2-legacy in topological distance"
+    metric: topology_wasserstein_to_teacher
+    condition_a: G2-aligned
+    condition_b: G2-legacy
+    selection: equal_step
+    corpus_id: openwebtext_validation_sink_300
+    family: alignment_bridge
+
+  - id: e6a_bridge_aligned_vs_kd
+    text: "G2-aligned - G1 in teacher fingerprint cosine at matched CE"
+    metric: fingerprint_cosine_to_teacher
+    condition_a: G2-aligned
+    condition_b: G1
+    selection: matched_loss
+    corpus_id: openwebtext_validation_sink_300
+    family: e6a_primary
+
+  - id: e6a_bridge_legacy_vs_kd
+    text: "G2-legacy - G1 in teacher fingerprint cosine at matched CE"
+    metric: fingerprint_cosine_to_teacher
+    condition_a: G2-legacy
+    condition_b: G1
+    selection: matched_loss
+    corpus_id: openwebtext_validation_sink_300
+    family: e6a_primary
+
+  - id: e6a_bridge_corpus
+    kind: corpus_pair
+    text: "in-domain versus cross-domain bridge"
+    metric: fingerprint_cosine_to_teacher
+    conditions: [G0, G1, G2-legacy, G2-aligned]
+    corpus_a: openwebtext_validation_sink_300
+    corpus_b: e1_100x40
+    selection: equal_step
+    family: alignment_bridge
+
+primary_topology_metric:
+  chosen: topology_wasserstein_to_teacher
+  decided: "2026-08-02"
+  decision_id: inherited_D1
+  rationale: "Same normalized-depth rationale as the source registration."
+
+# The bridge's proceed criteria apply to G2-aligned. The direct aligned-minus-legacy
+# contrast is reported with uncertainty and no post-hoc success threshold.
+go_no_go:
+  - id: e6a_bridge_1
+    text: "G2-aligned improves teacher fingerprint similarity over G0 by at least 0.15"
+    metric: fingerprint_cosine_to_teacher
+    condition_a: G2-aligned
+    condition_b: G0
+    selection: equal_step
+    corpus_id: openwebtext_validation_sink_300
+    threshold: 0.15
+    direction: greater_equal
+    seed_consistency: all
+    family: e6a_go_no_go
+
+  - id: e6a_bridge_2
+    text: "G2-aligned and G1 differ mechanistically by at least 0.10 at matched CE"
+    metric: fingerprint_cosine_to_teacher
+    condition_a: G2-aligned
+    condition_b: G1
+    selection: matched_loss
+    corpus_id: openwebtext_validation_sink_300
+    threshold: 0.10
+    direction: greater_equal
+    absolute_difference: true
+    seed_consistency: all
+    family: e6a_go_no_go
+
+analysis:
+  matched_loss_max_gap_nats: 0.05
+  max_failure_rate: 0.02
+  bootstrap_n: 10000
+  bootstrap_alpha: 0.05
+  bh_alpha: 0.05
+
+e6b_go_no_go: {combine: all, criteria: []}
+e6b: {drift_columns: [], onset_threshold_k: 2.0}
+
+stop_conditions:
+  - id: e6a_bridge_stop_1
+    text: "differences are limited to baseline sink strength"
+    source: "source registration / design section 18, stop bullet 1"
+  - id: e6a_bridge_stop_2
+    text: "effects vanish under matched-loss or matched-length controls"
+    source: "source registration / design section 18, stop bullet 2"
+  - id: e6a_bridge_stop_3
+    text: "the method contrast is not stable across seeds"
+    source: "bridge-specific operationalization of the model-size consistency control"
+  - id: e6a_bridge_stop_5
+    text: "parity cannot be established for the patched quantities"
+    source: "source registration / design section 18, stop bullet 5"
+  - id: e6a_bridge_stop_6
+    text: >
+      the pinned GPT-2 teacher does not clear the unchanged 0.15 sink threshold on
+      openwebtext_validation_sink_300
+    source: >
+      Prospectively inherited from e6a_gpt2_stop_6. Check the teacher before student
+      training; if this fires, report it and do not move the threshold.
+
+amendments:
+  - date: "2026-08-02"
+    kind: prospective_registration
+    decision_id: BR1
+    text: >
+      Registered before any e6a_gpt2_alignment_bridge result. Fresh G0/G1/G2-legacy and
+      G2-aligned runs are isolated under one id; no completed e6a_gpt2 artifact is reused or
+      reinterpreted. No threshold is assigned to the method-difference estimand.

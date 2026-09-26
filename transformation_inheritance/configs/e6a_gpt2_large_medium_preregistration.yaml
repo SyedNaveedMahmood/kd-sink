@@ -1,0 +1,283 @@
+# E6A GPT-2 large -> randomly initialised GPT-2 medium.
+# Created before any result for this arm. It is a new experiment, not an amendment to
+# e6a_gpt2, and inherits that arm's thresholds and analysis rules unchanged.
+version: e6a_gpt2_large_medium_prereg_v1
+experiment_id: e6a_gpt2_large_medium
+
+corpora:
+  in_domain: openwebtext_validation_sink_300
+  cross_domain: e1_100x40
+
+conditions:
+  G0: "L_CE only (control)"
+  G1: "0.50*L_CE + 0.50*L_KD, T=2.0"
+  G2: "0.45*L_CE + 0.45*L_KD + 0.10*L_ATTN, T=2.0"
+  PGM: "gpt2-medium public checkpoint (seedless, checkpoint_step -1)"
+
+instrument:
+  teacher: gpt2-large
+  teacher_revision: 32b71b12589c2f8d625668d2335a01cac3249519
+  student_architecture: gpt2-medium
+  student_initialisation: random
+  public_reference: gpt2-medium
+  public_reference_revision: 6dcaa7a952f72f9298047fd5137cd6e4f05f41da
+  teacher_layers: 36
+  student_layers: 24
+  teacher_heads: 20
+  student_heads: 16
+  attention_head_alignment: mean
+  attention_head_alignment_definition: >
+    For every mapped layer, average each model's post-softmax attention maps over its own
+    heads, then compute the registered per-query Jensen-Shannon divergence between the two
+    resulting key distributions. No heads are truncated, grouped, or paired.
+  layer_map: {1: 0, 2: 1, 4: 2, 5: 3, 7: 4, 8: 5, 10: 6, 11: 7,
+              13: 8, 14: 9, 16: 10, 17: 11, 19: 12, 20: 13, 22: 14, 23: 15,
+              25: 16, 26: 17, 28: 18, 29: 19, 31: 20, 32: 21, 34: 22, 35: 23}
+  carrier_jaccard_to_teacher: unavailable
+  carrier_jaccard_reason: >
+    The frozen metric refuses unequal head counts rather than inventing a head
+    correspondence. It is reported as null with a warning and is not a registered contrast.
+
+pilot_gate:
+  corpus_id: openwebtext_validation_sink_300
+  sink_threshold: 0.15
+  mechanistic_delta_threshold: 0.10
+  parity_examples: 5
+  teacher_sink_fraction: 0.50
+  rule: all
+  note: >
+    Run seed 0 to step 2,000 first. Do not begin the full 10,000-step, three-seed phase
+    unless the gate writes proceed=true. The teacher preflight must be run before training;
+    if gpt2-large itself does not clear 0.15 in-domain, stop rather than tune the threshold.
+
+contrasts:
+  - id: e6a_glm_c1
+    text: "G2 - G0 in teacher-student fingerprint cosine at step 10,000"
+    metric: fingerprint_cosine_to_teacher
+    condition_a: G2
+    condition_b: G0
+    selection: equal_step
+    corpus_id: openwebtext_validation_sink_300
+    family: e6a_primary
+
+  - id: e6a_glm_c2
+    text: "G1 - G0 in functional similarity at matched validation CE"
+    metric: functional_cosine_to_teacher
+    condition_a: G1
+    condition_b: G0
+    selection: matched_loss
+    corpus_id: openwebtext_validation_sink_300
+    family: e6a_primary
+
+  - id: e6a_glm_c3
+    text: "G2 - G1 in topological similarity (Spearman form)"
+    metric: topology_spearman_to_teacher
+    condition_a: G2
+    condition_b: G1
+    selection: equal_step
+    corpus_id: openwebtext_validation_sink_300
+    family: e6a_primary
+
+  - id: e6a_glm_c3b
+    text: "G2 - G1 in topological distance (Wasserstein form; primary topology metric)"
+    metric: topology_wasserstein_to_teacher
+    condition_a: G2
+    condition_b: G1
+    selection: equal_step
+    corpus_id: openwebtext_validation_sink_300
+    family: e6a_primary
+
+  - id: e6a_glm_c4a
+    text: "public gpt2-medium vs G1 at matched validation CE"
+    metric: fingerprint_cosine_to_teacher
+    condition_a: PGM
+    condition_b: G1
+    selection: matched_loss
+    matched_loss_reference: G1
+    corpus_id: openwebtext_validation_sink_300
+    family: e6a_primary
+    recorded_limitation: >
+      The public model is one fixed checkpoint, so this is descriptive rather than a
+      paired-seed causal contrast.
+
+  - id: e6a_glm_c4b
+    text: "public gpt2-medium vs G2 at matched validation CE"
+    metric: fingerprint_cosine_to_teacher
+    condition_a: PGM
+    condition_b: G2
+    selection: matched_loss
+    matched_loss_reference: G2
+    corpus_id: openwebtext_validation_sink_300
+    family: e6a_primary
+    recorded_limitation: "see e6a_glm_c4a"
+
+  - id: e6a_glm_c5
+    kind: corpus_pair
+    text: "in-domain versus cross-domain inheritance"
+    metric: fingerprint_cosine_to_teacher
+    conditions: [G0, G1, G2]
+    corpus_a: openwebtext_validation_sink_300
+    corpus_b: e1_100x40
+    selection: equal_step
+    family: e6a_primary
+
+primary_topology_metric:
+  chosen: topology_wasserstein_to_teacher
+  decided: "2026-08-03"
+  rationale: >
+    Inherited unchanged. The claim concerns where in normalised depth the mechanism sits;
+    Wasserstein distance penalises a teacher-like profile shifted to the wrong depth.
+
+go_no_go:
+  - id: e6a_glm_1
+    text: "G2 improves teacher fingerprint similarity over G0 by at least 0.15"
+    metric: fingerprint_cosine_to_teacher
+    condition_a: G2
+    condition_b: G0
+    selection: equal_step
+    corpus_id: openwebtext_validation_sink_300
+    threshold: 0.15
+    direction: greater_equal
+    seed_consistency: all
+    family: e6a_go_no_go
+
+  - id: e6a_glm_2
+    text: "G1 and G2 are loss-matched but differ in fingerprint inheritance by at least 0.10"
+    metric: fingerprint_cosine_to_teacher
+    condition_a: G2
+    condition_b: G1
+    selection: matched_loss
+    corpus_id: openwebtext_validation_sink_300
+    threshold: 0.10
+    direction: greater_equal
+    absolute_difference: true
+    seed_consistency: all
+    family: e6a_go_no_go
+
+  - id: e6a_glm_3
+    text: "functional inheritance remains high while mechanistic inheritance is low"
+    compound:
+      all_of:
+        - metric: functional_cosine_to_teacher
+          condition_a: G1
+          selection: equal_step
+          corpus_id: openwebtext_validation_sink_300
+          direction: greater_equal
+          threshold_rule:
+            kind: null_seed_spread
+            metric: functional_cosine_to_teacher
+            null_condition: G0
+            statistic: range
+            anchor: 1.0
+            anchor_side: below
+            k: 2.0
+        - metric: fingerprint_cosine_to_teacher
+          condition_a: G1
+          selection: equal_step
+          corpus_id: openwebtext_validation_sink_300
+          direction: less_equal
+          threshold_rule:
+            kind: null_seed_spread
+            metric: fingerprint_cosine_to_teacher
+            null_condition: G0
+            statistic: range
+            anchor: 1.0
+            anchor_side: below
+            k: 2.0
+    seed_consistency: all
+    family: e6a_go_no_go
+
+  - id: e6a_glm_4
+    text: >
+      public gpt2-medium and G2 reach similar function through measurably different
+      fingerprints
+    compound:
+      all_of:
+        - metric: functional_cosine_to_teacher
+          condition_a: PGM
+          condition_b: G2
+          selection: matched_loss
+          matched_loss_reference: G2
+          corpus_id: openwebtext_validation_sink_300
+          direction: less_equal
+          absolute_difference: true
+          threshold_rule:
+            kind: null_seed_spread
+            metric: functional_cosine_to_teacher
+            null_condition: G0
+            statistic: range
+            anchor: 0.0
+            anchor_side: above
+            k: 2.0
+        - metric: fingerprint_cosine_to_teacher
+          condition_a: PGM
+          condition_b: G2
+          selection: matched_loss
+          matched_loss_reference: G2
+          corpus_id: openwebtext_validation_sink_300
+          direction: greater_equal
+          absolute_difference: true
+          threshold_rule:
+            kind: null_seed_spread
+            metric: fingerprint_cosine_to_teacher
+            null_condition: G0
+            statistic: range
+            anchor: 0.0
+            anchor_side: above
+            k: 2.0
+    seed_consistency: all
+    family: e6a_go_no_go
+
+e6b_go_no_go:
+  combine: all
+  criteria: []
+  note: "E6B is outside this experiment."
+
+e6b:
+  drift_columns: [fingerprint_drift_from_base, topology_drift_from_base,
+                  carrier_drift_from_base]
+  onset_threshold_k: 2.0
+
+stop_conditions:
+  - id: e6a_glm_stop_teacher
+    text: "gpt2-large does not clear sink 0.15 on openwebtext_validation_sink_300"
+  - id: e6a_glm_stop_parity
+    text: "manual and NNsight parity cannot be established on five examples"
+  - id: e6a_glm_stop_failure
+    text: "evaluation failure rate exceeds 2%"
+  - id: e6a_glm_downgrade_head_carriers
+    text: >
+      carrier_jaccard_to_teacher is unavailable because 20 teacher heads and 16 student
+      heads are deliberately not truncated or paired
+
+analysis:
+  matched_loss_max_gap_nats: 0.05
+  max_failure_rate: 0.02
+  bootstrap_n: 10000
+  bootstrap_alpha: 0.05
+  bh_alpha: 0.05
+
+amendments:
+  - date: "2026-08-03"
+    kind: transcription
+    text: >
+      v1 created before this arm produced results. E6A losses, data, seeds, step budget,
+      checkpoints, evaluation corpora, thresholds and analysis rules are inherited from
+      e6a_gpt2 unchanged. The isolated substitutions are teacher gpt2->gpt2-large,
+      random student/public reference distilgpt2->gpt2-medium, and the 36->24 layer map.
+  - date: "2026-08-03"
+    kind: decision
+    decision_id: GLM_HEAD_ALIGNMENT
+    text: >
+      Mean-over-heads alignment is fixed before the pilot because 20 and 16 heads cannot
+      be compared one-to-one. Averaging preserves a normalised key distribution and avoids
+      an arbitrary truncation, grouping, or learned adapter. Existing experiments retain
+      strict head alignment. Teacher-student carrier Jaccard remains unavailable rather
+      than being redefined after seeing results.
+  - date: "2026-08-03"
+    kind: feasibility
+    decision_id: GLM_BATCH
+    text: >
+      The original batch 16 x accumulation 4 is retained. A result-free real-model
+      optimizer microstep on the target RTX 3090 peaked at 13.8 GiB reserved, leaving ample
+      headroom on a 24 GiB card; no scientific hyperparameter was changed for memory.

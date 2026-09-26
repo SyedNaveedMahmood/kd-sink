@@ -1,0 +1,59 @@
+{
+  "run_id": "e6a_P8M_reference",
+  "run_dir": "transformation_inheritance\\results\\e6a\\P8M\\reference",
+  "condition": "P8M",
+  "public_reference": "roneneldan/TinyStories-8M",
+  "reference_revision": null,
+  "metrics_csv": "transformation_inheritance\\results\\e6a\\P8M\\reference\\checkpoint_metrics.csv",
+  "checkpoint_step": -1,
+  "seed": -1,
+  "n_written": 2,
+  "n_failed": 0,
+  "teacher": "roneneldan/TinyStories-33M",
+  "teacher_note": "",
+  "corpora": [
+    "e1_100x40",
+    "tinystories_validation_sink_24"
+  ],
+  "manifest_sha256": {
+    "tinystories_validation_sink_24": "f57e28340c334b9b2edd60af0f04dffc7bda7c5a06d60e770c0fecd9838cb9ba",
+    "e1_100x40": "86ad18994144d0b052a3333ac1d979a6680c71240fd9b8d8d11fd2c31fbfa47e"
+  },
+  "band": [
+    2,
+    8
+  ],
+  "interventions": [
+    "int_a",
+    "int_c",
+    "int_d",
+    "int_e",
+    "int_f",
+    "int_g",
+    "int_h",
+    "int_i",
+    "int_j"
+  ],
+  "intervention_registry_version": "nnsight-run_all-v1",
+  "dtype": "float32",
+  "engine": "nnsight",
+  "wallclock_s": 489.61660075187683,
+  "evaluator_version": "evaluate_transformation_v2",
+  "note": "08 §4 — a seedless reference condition: one measurement, no training seed, checkpoint_step = -1. Contrasts against it are labelled reference_vs_seeds and carry no uncertainty from this checkpoint.",
+  "git_sha": "56d3c59ec3170c929c2b0b4c4903c8d5a2b7ea17",
+  "git_dirty": true,
+  "frozen_baseline_tag": "frozen-e1-e5",
+  "created_utc": "2026-07-29T15:11:18+00:00",
+  "provenance_version": "provenance_v1",
+  "versions": {
+    "python": "3.12.4",
+    "torch": "2.10.0+cu128",
+    "transformers": "5.3.0",
+    "nnsight": "0.7.0",
+    "peft": "0.20.0",
+    "numpy": "2.4.3",
+    "scipy": "1.17.1",
+    "pandas": "3.0.1",
+    "datasets": "4.8.4"
+  }
+}

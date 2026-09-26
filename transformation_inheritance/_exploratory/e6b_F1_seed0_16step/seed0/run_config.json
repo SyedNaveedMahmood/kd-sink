@@ -1,0 +1,88 @@
+{
+  "experiment_id": "e6b",
+  "condition_id": "F1",
+  "run_id": "e6b_F1_seed0",
+  "training_seed": 0,
+  "adaptation": "lora",
+  "label_quality": "clean",
+  "base_model": "distilbert/distilgpt2",
+  "base_revision": null,
+  "teacher": null,
+  "teacher_revision": null,
+  "public_reference": null,
+  "tokenizer_name": "distilbert/distilgpt2",
+  "config_path": "transformation_inheritance/configs/e6b_f1.yaml",
+  "device": "cuda",
+  "dtype": "bfloat16",
+  "smoke": false,
+  "effective_batch": 32,
+  "per_device_batch_size": 32,
+  "grad_accum": 1,
+  "epochs": 1,
+  "steps_per_epoch": 16,
+  "max_steps": 16,
+  "n_train": 512,
+  "n_valid": 256,
+  "corrupt_labels": false,
+  "corruption_rate": null,
+  "n_corrupted": 0,
+  "label_report": {
+    "label_token_ids": {
+      " positive": [
+        3967
+      ],
+      " negative": [
+        4633
+      ]
+    },
+    "label_token_counts": {
+      " positive": 1,
+      " negative": 1
+    },
+    "multi_token": false,
+    "scoring": "single_token",
+    "note": "both labels are single-token; the full span is still scored, which reduces to the single-token case"
+  },
+  "lora": {
+    "target_modules": [
+      "c_attn",
+      "c_proj"
+    ],
+    "r": 8,
+    "alpha": 16,
+    "dropout": 0.05
+  },
+  "optim": {
+    "per_device_batch_size": 32,
+    "grad_accum": 1,
+    "lr": 0.0002,
+    "betas": [
+      0.9,
+      0.999
+    ],
+    "weight_decay": 0.01,
+    "warmup_ratio": 0.06,
+    "schedule": "cosine",
+    "min_lr_ratio": 0.0,
+    "grad_clip": 1.0,
+    "epochs": 3,
+    "precision": "bfloat16"
+  },
+  "trainer_version": "train_sentiment_adaptation_v1",
+  "git_sha": "03b84ae2bb5fae61c668ac82cd685d796ed2d532",
+  "git_dirty": true,
+  "frozen_baseline_tag": "frozen-e1-e5",
+  "created_utc": "2026-07-29T18:09:47+00:00",
+  "provenance_version": "provenance_v1",
+  "versions": {
+    "python": "3.12.4",
+    "torch": "2.10.0+cu128",
+    "transformers": "5.3.0",
+    "nnsight": "0.7.0",
+    "peft": "0.20.0",
+    "numpy": "2.4.3",
+    "scipy": "1.17.1",
+    "pandas": "3.0.1",
+    "datasets": "4.8.4"
+  }
+}

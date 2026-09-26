@@ -1,0 +1,148 @@
+{
+  "git_tag": "frozen-e1-e5",
+  "git_sha": "ca9bce070b3455f764414c6e09d857dfa09e9d0f",
+  "hash_convention": {
+    "line_endings": "lf",
+    "algorithm": "sha256",
+    "_note": "Hashes are taken over bytes with CRLF normalised to LF, so a checkout is verifiable on Windows (core.autocrlf=true) and on Linux alike. Superseded raw-CRLF hashes are kept under frozen_files_raw_crlf for audit; they are not checked. Trade-off: an EOL-only change to a frozen file is no longer detected -- git itself creates those, and no E1-E5 number depends on a line terminator. See tests/test_frozen_files.py.",
+    "regenerated_utc": "2026-07-29T22:19:37+00:00"
+  },
+  "frozen_files": {
+    "common/intervention_analysis.py": "1c839acf2ec0d2efccb734aab704832c3ae1eb97fbb59832ebd639cf688663c6",
+    "common/intervention_analysis_legacy.py": "3572b45db517abc411d79c39c50a9301f2e6ca245cf1338a2f287a82ae2d8591",
+    "common/residual_sink_analysis.py": "6f38577ba57c4d2f15f059d5bb87b258b17227c15c44efac87a8c770c7fbaf9a",
+    "common/residual_sink_analysis_legacy.py": "e28e86263cb8aadb0aa34228c7acf49b42c8ffe37858ad0f746d611b64a4aeec",
+    "common/experiments_single_input.py": "f2bcd1a55c5c91f479cfc5520916ef4d1f457f589ab89249660ceec16713246e",
+    "cross_scale_and_architecture/neo/intervention_analysis_neo.py": "1049ffe7b2a3aaad24ac3bc6cb6e73b148699b7fb58f428d718ebd976ccb9a83",
+    "cross_scale_and_architecture/opt/intervention_analysis_opt.py": "e3fd1b6be8feabfcb8fe12a5f86de8df832baa8881395a740d2aa721067d7cae",
+    "cross_scale_and_architecture/qwen/intervention_analysis_qwen.py": "da27e043eecd60d5a24c50975145074855d3b3c5175855530d3c00b627740d73",
+    "cross_scale_and_architecture/run_table1_multiseed.py": "ed7dae88c40f7008055b3fe06568ce923061f4d93e632584a52bcf006503d1ae",
+    "emergence_dynamics/emergence_dynamics_analysis.py": "aeac81187499a02f35c099a4615c62c40d3a6d696abbac34e0d2f069751a0c7f",
+    "evaluation_robustness/evaluation_robustness_analysis.py": "fdf4e3d51800f5a77bdee064b202189e899d97c5c4287fc2e2c714d64022160e",
+    "reproduce_paper/experiments_statistical.py": "e1fc6985864a18505cd1aeeb85d4c9b87d216bda4014d699f682156ad5599de9"
+  },
+  "frozen_files_raw_crlf": {
+    "_note": "The pre-normalisation hashes recorded at freeze time on a CRLF working tree. Retained for audit only; nothing checks them.",
+    "common/intervention_analysis.py": "5420c79dfe5b7293e2b03f01e82e02d0e4151e19b7c67f97c6b8ec766853f84f",
+    "common/intervention_analysis_legacy.py": "f5ac5750ab2d562df96a6c82604b452ba2f93ed247436bf0830c3740f4ef323f",
+    "common/residual_sink_analysis.py": "1a9c5a2014fd1b0b818e7f59290918f3b967d489eb9f78f3e513514fb322a7b4",
+    "common/residual_sink_analysis_legacy.py": "fbc80ee2fd00f2617aee196ff3f827d90b25493b3b898e49afd3b413323d94a8",
+    "common/experiments_single_input.py": "0d9ae519cd84a1b22d9faa992082e3e632fab8414f0f876e4963a695d566a0a1",
+    "cross_scale_and_architecture/neo/intervention_analysis_neo.py": "0db41d86333241a415ddee6691566369064523ae2d4c99b2efc7be3e3e57d36c",
+    "cross_scale_and_architecture/opt/intervention_analysis_opt.py": "16462acecec8cfb0ab1e59ad0f9b73cfaf647f19f9a0c8ab06c1a004a0c21f5e",
+    "cross_scale_and_architecture/qwen/intervention_analysis_qwen.py": "ca09dd59c56f0f7d73ae918f023afe3053131388859d252d9ca866e7510b12dd",
+    "cross_scale_and_architecture/run_table1_multiseed.py": "93b8999b3f8f6fa547e5e16b6e29c39640415c49f70ce3c6339d1337d494537d",
+    "emergence_dynamics/emergence_dynamics_analysis.py": "fd4d44a2fc489d2b71cd323401c85b0cec7b7b09f0ce44a3119256b6abddc51b",
+    "evaluation_robustness/evaluation_robustness_analysis.py": "cc307ba61e10f918316a0a41829814b6944f7ff014497da2a967f059002c436f",
+    "reproduce_paper/experiments_statistical.py": "c2d464ef3feaef121d1635845b0e9076480c4405656ec7598ed8faca48308a3d"
+  },
+  "reference_results": {
+    "gpt2_small_table1": {
+      "_note": "Pooled (dataset=all_datasets) rows of the frozen GPT-2 driver's bos_attention_stats_overall.csv, transcribed by script from the artefact named in _source -- never from the paper (CLAUDE.md rule 4).",
+      "_source": {
+        "path": "nn_results/e1_e2/legacy_results/results_gpt2_e1_e2/table1_multiseed/seed_000/dataset_analysis/bos_attention_stats_overall.csv",
+        "sha256": "031eff0bf8cfb4d61cd1dd106f00b572ebcc9a8e641c83f9ac79c77a8b7770b3",
+        "run_config_sha256": "012519298238b5f02319518fcec28300631e52f9cd21be09cda34ad13aa5c45b",
+        "model_name": "gpt2",
+        "dtype": "float32",
+        "seed": 0,
+        "layer_mode": "scaled",
+        "band": [
+          3,
+          11
+        ],
+        "massive_coords": [
+          138,
+          378,
+          447
+        ],
+        "sample_size": 100,
+        "cut_length": 40
+      },
+      "_capture_command": "python common/intervention_analysis.py --mode dataset --model gpt2",
+      "interventions": {
+        "int_a": {
+          "description": "Baseline",
+          "mean_bos_attention": 0.563683,
+          "stderr": 0.00217,
+          "n_examples": 300
+        },
+        "int_b": {
+          "description": "No Query Bias",
+          "mean_bos_attention": 0.249581,
+          "stderr": 0.001543,
+          "n_examples": 300
+        },
+        "int_c": {
+          "description": "Remove First PE",
+          "mean_bos_attention": 0.016227,
+          "stderr": 0.000587,
+          "n_examples": 300
+        },
+        "int_d": {
+          "description": "Swap EPE",
+          "mean_bos_attention": 0.035655,
+          "stderr": 0.000797,
+          "n_examples": 300
+        },
+        "int_e": {
+          "description": "Swap PE",
+          "mean_bos_attention": 0.557125,
+          "stderr": 0.002966,
+          "n_examples": 300
+        },
+        "int_f": {
+          "description": "Nullify BOS Token",
+          "mean_bos_attention": 0.561443,
+          "stderr": 0.002129,
+          "n_examples": 300
+        },
+        "int_g": {
+          "description": "No MLP",
+          "mean_bos_attention": 0.283627,
+          "stderr": 0.005025,
+          "n_examples": 300
+        },
+        "int_h": {
+          "description": "No PE",
+          "mean_bos_attention": 0.109659,
+          "stderr": 0.008018,
+          "n_examples": 300
+        },
+        "int_i": {
+          "description": "Zero Top-3 Wk",
+          "mean_bos_attention": 0.366774,
+          "stderr": 0.00185,
+          "n_examples": 300
+        },
+        "int_j": {
+          "description": "Zero Random Wk",
+          "mean_bos_attention": 0.563977,
+          "stderr": 0.002173,
+          "n_examples": 300
+        }
+      }
+    },
+    "tolerances": {
+      "metric_atol": 1e-05,
+      "metric_rtol": 0.0001
+    }
+  },
+  "environment": {
+    "_note": "Captured from the reproducing environment by _capture_command below. Do not fabricate.",
+    "_capture_command": "python -c \"from importlib.metadata import version as v; import platform; [print(f'{p}: '+v(p)) for p in ['torch','transformers','nnsight','numpy','scipy']]; print('python: '+platform.python_version())\"",
+    "_captured_on": "AbdullahPC",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "torch": "2.10.0+cu128",
+    "transformers": "5.3.0",
+    "nnsight": "0.7.0",
+    "numpy": "2.4.3",
+    "scipy": "1.17.1",
+    "pandas": "3.0.1",
+    "datasets": "4.8.4",
+    "peft": "0.20.0",
+    "python": "3.12.4",
+    "cuda": "12.8",
+    "gpu": "NVIDIA GeForce RTX 2060"
+  }
+}

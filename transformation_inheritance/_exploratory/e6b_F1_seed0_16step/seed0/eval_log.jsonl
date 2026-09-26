@@ -1,0 +1,4 @@
+{"task_accuracy": 0.6171875, "task_nll": 0.6541336673910896, "ece_10bin": 0.0387685995445511, "validation_ce": 0.6541336673910896, "n_eval": 256, "ece_bins": 10, "ece_binning": "equal_width", "step": 0, "epoch": 0}
+{"task_accuracy": 0.60546875, "task_nll": 0.6538578995430149, "ece_10bin": 0.07357470483658891, "validation_ce": 0.6538578995430149, "n_eval": 256, "ece_bins": 10, "ece_binning": "equal_width", "step": 8, "epoch": 0}
+{"task_accuracy": 0.609375, "task_nll": 0.6543514259493066, "ece_10bin": 0.08522419626637352, "validation_ce": 0.6543514259493066, "n_eval": 256, "ece_bins": 10, "ece_binning": "equal_width", "step": 16, "epoch": 0}
+{"task_accuracy": 0.609375, "task_nll": 0.6543514259493066, "ece_10bin": 0.08522419626637352, "validation_ce": 0.6543514259493066, "n_eval": 256, "ece_bins": 10, "ece_binning": "equal_width", "step": 16, "epoch": 0, "epoch_end": true}

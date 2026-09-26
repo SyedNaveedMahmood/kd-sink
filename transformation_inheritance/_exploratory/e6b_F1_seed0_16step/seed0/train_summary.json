@@ -1,0 +1,37 @@
+{
+  "run_id": "e6b_F1_seed0",
+  "run_dir": "D:\\0 Repositories\\Sink small paper\\transformation_inheritance\\results\\e6b\\F1\\seed0",
+  "condition": "F1",
+  "seed": 0,
+  "adaptation": "lora",
+  "steps": 16,
+  "epochs": 1,
+  "final": {
+    "task_accuracy": 0.609375,
+    "task_nll": 0.6543514259493066,
+    "ece_10bin": 0.08522419626637352,
+    "validation_ce": 0.6543514259493066,
+    "n_eval": 256,
+    "ece_bins": 10,
+    "ece_binning": "equal_width"
+  },
+  "wallclock_s": 32.611637592315674,
+  "n_corrupted": 0,
+  "trainer_version": "train_sentiment_adaptation_v1",
+  "git_sha": "03b84ae2bb5fae61c668ac82cd685d796ed2d532",
+  "git_dirty": true,
+  "frozen_baseline_tag": "frozen-e1-e5",
+  "created_utc": "2026-07-29T18:10:22+00:00",
+  "provenance_version": "provenance_v1",
+  "versions": {
+    "python": "3.12.4",
+    "torch": "2.10.0+cu128",
+    "transformers": "5.3.0",
+    "nnsight": "0.7.0",
+    "peft": "0.20.0",
+    "numpy": "2.4.3",
+    "scipy": "1.17.1",
+    "pandas": "3.0.1",
+    "datasets": "4.8.4"
+  }
+}

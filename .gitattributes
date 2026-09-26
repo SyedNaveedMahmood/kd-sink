@@ -1,0 +1,21 @@
+# Normalise line endings in the repository so a checkout is byte-identical on Windows,
+# Linux and macOS.
+#
+# Why this file exists: BASELINE_HASHES.json records a sha256 for each of the twelve frozen
+# E1-E5 files, and tests/test_frozen_files.py enforces them. Without a .gitattributes the
+# working-tree bytes depend on the local core.autocrlf setting -- CRLF on this Windows box,
+# LF on a Linux compute node -- so the same commit hashes differently on two machines and
+# the frozen-file gate fails on one of them for no reason. The test now hashes
+# EOL-canonical bytes as well, so the two mechanisms agree from both directions.
+#
+# eol=lf is chosen over eol=crlf because the compute machines are the ones that must not
+# fail, and because LF is what git stores in the object database either way.
+* text=auto eol=lf
+# Binary artefacts: never touch these.
+*.png binary
+*.pdf binary
+*.npy binary
+*.parquet filter=lfs diff=lfs merge=lfs -text
+*.zip binary
+*.safetensors filter=lfs diff=lfs merge=lfs -text
+*.bin binary

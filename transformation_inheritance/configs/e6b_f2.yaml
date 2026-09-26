@@ -1,0 +1,48 @@
+# E6B / F2 — full fine-tuning on clean SST-2
+#
+# 03_MODULE_SPEC_e6_transformation.md §4. The four e6b_*.yaml files differ ONLY in
+# `adaptation`, `corrupt_labels` and the optimiser block §4.4 pairs with each method;
+# diff them in review to confirm that.
+#
+# Hyperparameters below are pre-registered (design §9.5) and are not to be "improved".
+# A tuned learning rate would make the 2x2 uninterpretable, since the factorial's whole
+# content is (LoRA vs full) x (clean vs corrupt) at a FIXED optimisation budget.
+experiment_id: e6b
+condition: F2
+adaptation: full
+base_model: distilbert/distilgpt2
+base_revision: null
+tokenizer: distilbert/distilgpt2
+corrupt_labels: false
+
+data:
+  dataset: stanfordnlp/sst2
+  train_split: train
+  eval_split: validation
+  # Prompt template is "{sentence}", then a newline, then "Sentiment:" — the
+  # sentence sits at position 0 with NO instruction prefix. design §16.2: a
+  # constant prefix manufactures a shared first-token anchor and invalidates
+  # every sink measurement in E6B.
+  max_input_tokens: 64
+  labels: [" positive", " negative"]
+
+optim:
+  # design §16.2 fixes the EFFECTIVE batch at 32 for every condition; the trainer asserts
+  # per_device_batch_size * grad_accum == 32 at startup and refuses otherwise.
+  per_device_batch_size: 16
+  grad_accum: 2
+  lr: 5.0e-5
+  betas: [0.9, 0.999]
+  weight_decay: 0.01
+  warmup_ratio: 0.06
+  schedule: cosine
+  min_lr_ratio: 0.0
+  grad_clip: 1.0
+  epochs: 3
+  precision: bfloat16          # bf16 on CUDA; the trainer falls back to fp32 on CPU
+
+# Eval + checkpoint every 100 optimiser steps and at each epoch end (§4.4). Early
+# stopping is disabled deliberately: a condition that stopped early would have a
+# different optimisation budget from its factorial partner.
+eval_every: 100
+seeds: [0, 1, 2]

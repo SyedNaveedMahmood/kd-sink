@@ -1,0 +1,600 @@
+# e7_preregistration.yaml — the E7 contrasts, claim gate and go/no-go criteria (WP11).
+#
+# v4. Supersedes v3 by RESOLVING the three open decisions it carried — D5 (e7_c6's
+# language tiers), D6 (criterion_3_combine) and D7 (the interpretation matrix's two
+# thresholds) of `new_design_plans/DECISIONS_REQUIRED.md`. Each is recorded in
+# `amendments:` with its date and reasoning.
+#
+# NO E7 RESULTS EXISTED WHEN THESE WERE MADE: `crosslingual_semantics/results/` held no
+# manifest, no representation, no patching row and no retrieval table — not one Qwen
+# forward pass had been run. D5 in particular is the decision most easily corrupted by
+# seeing data (tiering languages on the outcome), and it was made before any per-language
+# quantity existed anywhere in the repository.
+#
+# v3 superseded v2, which was reviewed and found schema-incompatible with
+# `aggregate_crosslingual.py` in four ways:
+#   (1) `go_no_go` was written as a mapping; `build_go_no_go` iterates it as a list of
+#       dicts and a mapping raises AttributeError on a str. Back to a list.
+#   (2) `e7_3` used `contrasts: [..]`; `evaluate_criterion` reads `entry["contrast"]`,
+#       singular. Split into two criteria.
+#   (3) the interpretation matrix used symbolic values (`transfer_threshold`) and the
+#       operators ">=" / "<"; `_condition_holds` does `float(value)` and accepts only
+#       greater_equal|ge|less_equal|le|greater|gt|less|lt. Now numeric literals and word
+#       operators throughout.
+#   (4) rows 1/2/3 could match simultaneously. `build_interpretation_matrix` correctly
+#       refuses to pick a row when several match, so a non-exclusive matrix yields
+#       `matched_row: null` regardless of the result. Rows are now provably disjoint.
+#
+# TRANSCRIPTION SOURCE: FULL_EXPERIMENT_DESIGN_SINK_INHERITANCE.md §10.11, §10.12, §18.
+# `status: PENDING_DECISION_*` marks what the design leaves open. Decide and record in
+# `amendments:` BEFORE results exist (05 §6).
+
+version: e7_prereg_v4
+
+# ──────────────────────────────────────────────────────────────────────────────
+# Contrasts → patching_contrasts.csv       (design §10.11, "Primary E7 contrasts")
+# The six §10.11 contrasts, plus two support contrasts the §10.12 rows need as inputs.
+# ──────────────────────────────────────────────────────────────────────────────
+
+contrasts:
+  - id: e7_c1
+    text: "parallel English K0 patch versus unrelated same-label K0 patch"
+    kind: source_condition
+    metric: margin_delta
+    treatment_source: parallel_en
+    control_source: same_label_en
+    objects: [K0_prerope]
+    norm_condition: direct
+    family: e7_primary
+    source: "design §10.11 contrast 1, verbatim"
+
+  - id: e7_c2
+    text: "parallel English V0 patch versus unrelated same-label V0 patch"
+    kind: source_condition
+    metric: margin_delta
+    treatment_source: parallel_en
+    control_source: same_label_en
+    objects: [V0]
+    norm_condition: direct
+    family: e7_primary
+    source: "design §10.11 contrast 2, verbatim"
+
+  - id: e7_c3
+    text: "K0 versus V0 patch sensitivity"
+    kind: object_pair
+    metric: margin_delta
+    treatment_source: parallel_en
+    control_source: same_label_en
+    objects_a: [K0_prerope]
+    objects_b: [V0]
+    norm_condition: direct
+    family: e7_primary
+    source: "design §10.11 contrast 3, verbatim"
+
+  - id: e7_c4
+    text: "position-0 patch versus middle-token patch"
+    kind: object_pair
+    metric: margin_delta
+    treatment_source: parallel_en
+    control_source: same_label_en
+    objects_a: [K0_prerope, V0, R0]
+    objects_b: [Kmid_prerope, Vmid, Rmid]
+    norm_condition: direct
+    family: e7_primary
+    source: "design §10.11 contrast 4, verbatim"
+
+  - id: e7_c5
+    text: "base versus instruct model"
+    kind: model_pair
+    metric: margin_delta
+    treatment_source: parallel_en
+    control_source: same_label_en
+    objects: [K0_prerope, V0]
+    norm_condition: direct
+    group_a: base
+    group_b: instruct
+    family: e7_secondary
+    source: "design §10.11 contrast 5, verbatim"
+
+  - id: e7_c6
+    decided: "2026-07-30"
+    decision_id: D5
+    # ROUTE C: registered, deliberately NOT tiered, reported as exploratory.
+    # `languages_a` / `languages_b` stay empty ON PURPOSE. The aggregator's
+    # `language_group` branch refuses to compute a grouped contrast without both groups
+    # and emits a row with `status: pending` and the reason "names no groups to compare",
+    # which is the honest artefact: the contrast was registered, and it was not tiered.
+    # e7_c6 is read by no criterion and is not in claim_gate.contrasts, so this blocks
+    # nothing. Per-language effects are still reported — see `exploratory_reporting`.
+    exploratory: true
+    text: "high-resource versus lower-resource languages"
+    kind: language_group
+    metric: margin_delta
+    treatment_source: parallel_en
+    control_source: same_label_en
+    objects: [K0_prerope, V0]
+    norm_condition: direct
+    languages_a: []
+    languages_b: []
+    family: e7_secondary
+    source: >
+      design §10.11 contrast 6, verbatim: "High-resource versus lower-resource languages."
+      The design names the contrast and NEVER tiers en/zh/ar/de/hi/sw/tr.
+    decision_taken: >
+      D5, decided 2026-07-30 before any E7 run existed. ROUTE (C): the contrast is
+      registered and reported EXPLORATORY, with no tier split.
+      Route (A) was attempted first and is CLOSED. The Qwen2.5 technical report
+      (arXiv:2412.15115v2, design §23 ref 9) was read rather than assumed: §3.1
+      "Pre-training Data" describes the corpus only as "a larger multilingual corpus" with
+      filtering "across multiple languages", and gives no per-language token share, no
+      data-mixture table by language, and no named list of supported languages. §2
+      (Architecture & Tokenizer) names none either. There is therefore nothing in the
+      report to tier en/zh/ar/de/hi/sw/tr on.
+      Route (B) — an external taxonomy such as Joshi et al. 2020 — was rejected rather
+      than merely not chosen. It classifies NLP resource availability in general, not
+      Qwen2.5's training corpus, so it would invite exactly the question the contrast
+      exists to answer ("why is that the right split for THIS model?") while appearing to
+      have settled it. A weaker basis dressed as a citation is worse than no basis.
+      Route (C) costs one of the six §10.11 contrasts and answers that question by not
+      making the claim. The paper's data section must state that §10.11 contrast 6 could
+      not be pre-registered for want of a defensible tiering.
+      THE ORDER MATTERS: this was decided with zero per-language effects in existence.
+      Tiering after seeing them would be indistinguishable from tiering ON them, which is
+      why DECISIONS_REQUIRED calls this the easiest place in the project to corrupt.
+    exploratory_reporting: >
+      Per-language effects are still produced and reported — `patching_per_example.csv`
+      carries `target_language` on every row and the aggregator's per-language breakdown
+      is unaffected. What is withheld is only the GROUPED high-versus-low contrast and any
+      claim resting on it.
+    requires: "no code change; the aggregator's language_group branch refuses empty groups"
+
+  # ── support contrasts: inputs the §10.12 rows need, registered as first-class ──
+
+  - id: e7_c7
+    text: "parallel English R0 patch versus unrelated same-label R0 patch"
+    kind: source_condition
+    metric: margin_delta
+    treatment_source: parallel_en
+    control_source: same_label_en
+    objects: [R0]
+    norm_condition: direct
+    family: e7_secondary
+    source: >
+      not a §10.11 contrast. Registered because §10.12 rows 4, 5 and 6 all condition on
+      whether R0 carries an effect, and the six §10.11 contrasts never isolate R0.
+      Same shape as e7_c1/e7_c2, so it needs no new machinery.
+
+  - id: e7_c8k
+    kind: source_level
+    text: "unrelated same-label K0 patch effect against the unpatched baseline"
+    metric: margin_delta
+    source_condition: same_label_en
+    objects: [K0_prerope]
+    norm_condition: direct
+    family: e7_secondary
+    source: >
+      not a §10.11 contrast. §10.12 rows 1 and 3 turn on whether K0 "transfers safely" for
+      UNRELATED sentences — the unrelated source's own effect versus no patch, which is
+      not any parallel-vs-control difference. `margin_delta` is already
+      (patched - baseline), so this is the single-group mean of that column.
+    requires: "kind: source_level (08 §8) — a one-group mean, not a paired difference"
+
+  - id: e7_c8v
+    kind: source_level
+    text: "unrelated same-label V0 patch effect against the unpatched baseline"
+    metric: margin_delta
+    source_condition: same_label_en
+    objects: [V0]
+    norm_condition: direct
+    family: e7_secondary
+    source: "see e7_c8k; needed by §10.12 row 3"
+    requires: "kind: source_level (08 §8)"
+
+# ──────────────────────────────────────────────────────────────────────────────
+# Go/no-go → e7_go_no_go.json              (design §18, "Continue E7 ... when")
+#
+# MUST STAY A LIST — build_go_no_go iterates prereg["go_no_go"] as a list of dicts.
+# Design §18 lists five criteria as a conjunction. Today's decision rule is
+# `n_met and gate.met -> continue`, i.e. at-least-one. The conjunction is expressed by
+# `go_no_go_combine` below rather than by nesting the list inside a mapping.
+# ──────────────────────────────────────────────────────────────────────────────
+
+go_no_go_combine: all
+go_no_go_combine_requires: "08 §5 — honour `combine: all`; today's rule is at-least-one"
+go_no_go_combine_source: >
+  design §18's E7 list is a numbered conjunction ("Continue E7 ... when 1..5"), unlike
+  E6A's explicit "At least one of the following". The difference is in the source text and
+  is not a decision.
+
+go_no_go:
+  - id: e7_1
+    text: "position-0 K0 or V0 cross-language retrieval is at least twice chance"
+    input: retrieval
+    metric: top1_over_chance
+    objects: [K0_prerope, V0]
+    alignment: cosine
+    aggregate: max_over_layers
+    threshold: 2.0
+    direction: greater_equal
+    family: e7_go_no_go
+    source: >
+      design §18 E7 criterion 1, verbatim: "Position-0 K0 or V0 cross-language retrieval
+      is at least twice chance." v1 included R0 in this gate; §18 says "K0 or V0". R0
+      retrieval is still computed and reported by WP9, it is simply not part of the gate.
+
+  - id: e7_2
+    text: "it exceeds the matched middle-token control by at least 5 percentage points"
+    input: retrieval
+    metric: position0_minus_mid_top1_points
+    objects: [K0_prerope, V0]
+    alignment: cosine
+    aggregate: max_over_layers
+    threshold: 5.0
+    direction: greater_equal
+    family: e7_go_no_go
+    source: >
+      design §18 E7 criterion 2, verbatim. "It" refers to criterion 1's retrieval, so the
+      object set matches e7_1.
+
+  - id: e7_3k
+    text: >
+      parallel K0 patches outperform unrelated same-label K0 patches by at least 0.10
+      correct-label margin
+    input: patching
+    contrast: e7_c1
+    metric: absolute_difference
+    threshold: 0.10
+    direction: greater_equal
+    family: e7_go_no_go
+    source: >
+      design §18 E7 criterion 3, verbatim: "Parallel patches outperform unrelated
+      same-label patches by at least 0.10 correct-label margin." Split into e7_3k/e7_3v
+      because `evaluate_criterion` reads a single `contrast` id. §18 says "patches"
+      without naming an object; both K0 and V0 are the objects criterion 1 names, so both
+      are registered. See `criterion_3_combine`.
+
+  - id: e7_3v
+    text: >
+      parallel V0 patches outperform unrelated same-label V0 patches by at least 0.10
+      correct-label margin
+    input: patching
+    contrast: e7_c2
+    metric: absolute_difference
+    threshold: 0.10
+    direction: greater_equal
+    family: e7_go_no_go
+    source: "design §18 E7 criterion 3, second object; see e7_3k"
+
+  - id: e7_4
+    text: "the direction replicates in 0.5B and 1.5B models"
+    input: patching
+    evaluation: claim_gate_component
+    claim_gate_field: min_model_sizes
+    family: e7_go_no_go
+    source: >
+      design §18 E7 criterion 4, verbatim. This IS the model-size half of the claim gate
+      below; `satisfies_criteria` there prevents it being counted twice in `n_met`.
+    requires: "08 §9 — claim_gate_component criteria read their verdict from the gate"
+
+  - id: e7_5
+    text: "the result holds in at least five target languages"
+    input: patching
+    evaluation: claim_gate_component
+    claim_gate_field: min_languages
+    family: e7_go_no_go
+    source: "design §18 E7 criterion 5, verbatim; the language half of the claim gate"
+    requires: "08 §9"
+
+criterion_3_combine:
+  combine: any
+  decided: "2026-07-30"
+  decision_id: D6
+  applies_to: [e7_3k, e7_3v]
+  options: [any, all]
+  decision_taken: >
+    D6, decided 2026-07-30 before any E7 run existed. `any` — either object clearing the
+    0.10 bar satisfies design §18 criterion 3.
+    Three reasons, all readings of the source text rather than of data. First, criterion 3
+    names no patch object at all, so the registration had to split it into e7_3k/e7_3v and
+    the fold is ours to choose. Second, criterion 1 in the same list says "K0 OR V0"
+    explicitly; reading criterion 3 as a conjunction would make two adjacent criteria in
+    one list use opposite quantifiers with nothing in the text marking the change. Third,
+    §10.12 expects K0 and V0 to behave DIFFERENTLY — that expectation is the entire point
+    of contrast e7_c3 — so a rule requiring both to clear the same bar would contradict
+    the interpretation matrix sitting beside it.
+    `all` is the stricter gate and was rejected on the text, not on convenience: it would
+    make criterion 3 unsatisfiable in exactly the scenario §10.12 row 1 and row 3 describe
+    as scientifically interesting.
+  note: >
+    §18 criterion 3 says "parallel patches outperform unrelated same-label patches" and
+    names no object. Criterion 1 says "K0 OR V0", which is a disjunction; by parallel
+    reading `any` is the more faithful choice, and it is also the one consistent with
+    §10.12's expectation that K0 and V0 may behave differently — the whole point of
+    contrast e7_c3. `all` is the stricter gate. This is a reading of the source text
+    rather than a number, but it is still a decision. Recommended: `any`.
+
+# ──────────────────────────────────────────────────────────────────────────────
+# The claim gate                           (design §10.11 closing sentence)
+# ──────────────────────────────────────────────────────────────────────────────
+
+claim_gate:
+  id: e7_claim_gate
+  text: >
+    the main claim requires the same direction in at least two model sizes and at least
+    five of the seven XNLI languages
+  contrasts: [e7_c1, e7_c2]
+  min_model_sizes: 2
+  min_languages: 5
+  n_languages_total: 7
+  satisfies_criteria: [e7_4, e7_5]
+  source: "design §10.11 closing sentence, verbatim"
+
+# ──────────────────────────────────────────────────────────────────────────────
+# Interpretation matrix → interpretation_matrix.json      (design §10.12, six rows)
+#
+# All six rows transcribed verbatim. The CONDITIONS are an operationalisation: §10.12 is
+# prose ("transfers safely", "semantic-ID-sensitive") with no numeric boundary. Two
+# thresholds govern the whole matrix, and both are decisions.
+#
+# MUTUAL EXCLUSIVITY IS PROVEN, NOT ASSUMED. `build_interpretation_matrix` returns
+# `matched_row: null` whenever more than one row matches, so a non-exclusive matrix is
+# useless whatever the data says. The conditions below are pairwise disjoint; the proof is
+# in `exclusivity_proof` and `tests/test_e7_interpretation_exclusivity.py` (08 §10) checks
+# it exhaustively over the 2^6 truth assignments rather than trusting the argument.
+#
+# Written with literal numbers and word operators only — `_condition_holds` does
+# float(value) and accepts greater_equal|ge|less_equal|le|greater|gt|less|lt.
+# ──────────────────────────────────────────────────────────────────────────────
+
+interpretation_matrix:
+  decided: "2026-07-30"
+  decision_id: D7
+
+  # RESOLVED. These three literals are the ones the six rows below compare against, and
+  # `check_threshold_declaration` asserts the two agree as sets — the block alone is a
+  # DECLARATION and `_condition_holds` reads only the rows, so editing one without the
+  # other changes nothing silently (CLAUDE.md trap 13). Any future change must replace the
+  # value here AND in every row that uses it, then re-run
+  # tests/test_e7_interpretation_exclusivity.py, which sweeps all 64 truth assignments.
+  thresholds:
+    semantic_sensitivity: 0.10    # "semantic-ID-sensitive": parallel minus same-label
+    unrelated_transfer: 0.10      # "transfers safely" for an UNRELATED source
+    retrieval_high: 2.0           # "retrieval is high" — reuses §18 criterion 1's own bar
+  decision_taken: >
+    D7, decided 2026-07-30 before any E7 run existed. Both undecided thresholds FIXED at
+    0.10, on different grounds, and the difference is stated rather than blurred.
+    `retrieval_high: 2.0` was never a decision — it is design §18 criterion 1's own bar,
+    reused so that matrix row 5 cannot contradict the go/no-go gate.
+    `semantic_sensitivity: 0.10` is a READING, not an invention: §18 criterion 3 sets a
+    0.10 correct-label margin for the parallel-minus-control difference, and this is the
+    same quantity on the same scale, so setting them equal keeps the matrix and the gate
+    speaking about one number.
+    `unrelated_transfer: 0.10` is JUDGEMENT and must be reported as such. It is a
+    different quantity — an absolute patch effect, not a difference of two — and the
+    design supplies no anchor for it anywhere. Calibrating it against the `random` norm
+    condition was considered and rejected for this round: `aggregate_crosslingual.py` has
+    no `threshold_rule` support at all, `_condition_holds` reads a literal float from each
+    row, and the disjointness proof sweeps those literals — so a runtime-resolved
+    threshold would mean changing the matrix evaluator, `check_threshold_declaration` and
+    the exclusivity test's assumptions together, which is the largest and riskiest change
+    available for a field that blocks no verdict (`blocks_decision: false`; the matrix is
+    a separate `04` §6.3 artefact). Deferred rather than rushed; a future amendment may
+    calibrate it, and would have to carry the code change with it.
+    THE PAPER MUST SAY SO: `unrelated_transfer` is a judgement threshold with no design
+    anchor, and the interpretation-matrix row it selects should be read with that in mind.
+
+  rows:
+    - id: e7_i1
+      text: "K0 transfers safely, V0 is semantic-ID-sensitive"
+      interpretation: "Shared anchor geometry with language-sensitive payload."
+      source: "design §10.12 row 1, verbatim"
+      conditions:
+        k0_unrelated_effect: {op: greater_equal, value: 0.10}
+        k0_effect:           {op: less,          value: 0.10}
+        v0_effect:           {op: greater_equal, value: 0.10}
+
+    - id: e7_i2
+      text: "K0 and V0 both transfer only for parallel sentences"
+      interpretation: "Both anchor and payload encode semantics."
+      source: "design §10.12 row 2, verbatim"
+      conditions:
+        k0_effect:           {op: greater_equal, value: 0.10}
+        v0_effect:           {op: greater_equal, value: 0.10}
+        k0_unrelated_effect: {op: less,          value: 0.10}
+        v0_unrelated_effect: {op: less,          value: 0.10}
+
+    - id: e7_i3
+      text: "K0 transfers for unrelated sentences, V0 does not"
+      interpretation: "K0 is mainly structural, V0 carries content."
+      source: "design §10.12 row 3, verbatim"
+      conditions:
+        k0_unrelated_effect: {op: greater_equal, value: 0.10}
+        v0_unrelated_effect: {op: less,          value: 0.10}
+        v0_effect:           {op: less,          value: 0.10}
+
+    - id: e7_i4
+      text: "R0 patch works but K0/V0 patches do not"
+      interpretation: >
+        Semantic information is distributed in the residual and not isolated to one
+        attention object.
+      source: "design §10.12 row 4, verbatim"
+      conditions:
+        r0_effect:           {op: greater_equal, value: 0.10}
+        k0_effect:           {op: less,          value: 0.10}
+        v0_effect:           {op: less,          value: 0.10}
+        k0_unrelated_effect: {op: less,          value: 0.10}
+        v0_unrelated_effect: {op: less,          value: 0.10}
+
+    - id: e7_i5
+      text: "retrieval is high but patches have no causal effect"
+      interpretation: "Sink states are correlational readouts, not load-bearing semantic carriers."
+      source: "design §10.12 row 5, verbatim"
+      conditions:
+        retrieval_top1_over_chance: {op: greater_equal, value: 2.0}
+        k0_effect:           {op: less, value: 0.10}
+        v0_effect:           {op: less, value: 0.10}
+        r0_effect:           {op: less, value: 0.10}
+        k0_unrelated_effect: {op: less, value: 0.10}
+        v0_unrelated_effect: {op: less, value: 0.10}
+
+    - id: e7_i6
+      text: "no object transfers across language"
+      interpretation: "The anchor function is shared but its local representation is language-specific."
+      source: "design §10.12 row 6, verbatim"
+      conditions:
+        retrieval_top1_over_chance: {op: less, value: 2.0}
+        k0_effect:           {op: less, value: 0.10}
+        v0_effect:           {op: less, value: 0.10}
+        r0_effect:           {op: less, value: 0.10}
+        k0_unrelated_effect: {op: less, value: 0.10}
+        v0_unrelated_effect: {op: less, value: 0.10}
+
+  exclusivity_proof: >
+    Write K=k0_effect>=t, V=v0_effect>=t, R=r0_effect>=t, Ku=k0_unrelated_effect>=u,
+    Vu=v0_unrelated_effect>=u, RET=retrieval>=2.
+      i1 = Ku & !K & V        i2 = K & V & !Ku & !Vu     i3 = Ku & !Vu & !V
+      i4 = R & !K & !V & !Ku & !Vu                        i5 = RET & !K & !V & !R & !Ku & !Vu
+      i6 = !RET & !K & !V & !R & !Ku & !Vu
+    Pairwise: i1/i2 differ on Ku; i1/i3 on V; i2/i3 on Ku; i1,i3/i4,i5,i6 on Ku;
+    i2/i4,i5,i6 on K; i4/i5,i6 on R; i5/i6 on RET. Disjoint. NOT exhaustive — §10.12 has
+    no residual category and `04` §6.3 explicitly permits "matches none of them", which is
+    the honest outcome for e.g. K & !V & !Ku.
+    The three `!Ku & !Vu` clauses in i4/i5/i6 are the operationalisation of "K0/V0 patches
+    do not [work]" and "no object transfers": an object that moves the margin for an
+    unrelated source has transferred something, even if not semantics.
+
+  observed_keys:
+    - k0_effect                   # e7_c1 absolute_difference
+    - v0_effect                   # e7_c2
+    - r0_effect                   # e7_c7          NEW
+    - k0_unrelated_effect         # e7_c8k         NEW
+    - v0_unrelated_effect         # e7_c8v         NEW
+    - retrieval_top1_over_chance  # from retrieval_by_object.csv, max over K0/V0   NEW
+    - k0_minus_v0                 # e7_c3
+    - position0_minus_mid         # e7_c4
+    - n_languages_same_direction
+    - n_model_sizes_same_direction
+
+  requires: >
+    `observed_pattern()` emits six keys today and must gain four (08 §8, §11):
+    r0_effect from e7_c7; k0_unrelated_effect / v0_unrelated_effect from the new
+    `source_level` contrasts; retrieval_top1_over_chance, which needs the retrieval frame
+    threaded into build_interpretation_matrix — it is already passed to build_go_no_go but
+    not to the matrix. Without these four, rows 1, 3, 4, 5 and 6 evaluate to None and
+    matched_row is null whatever the data says.
+
+# ──────────────────────────────────────────────────────────────────────────────
+# Stop / downgrade conditions              (design §18)
+# ──────────────────────────────────────────────────────────────────────────────
+
+stop_conditions:
+  - id: e7_stop_1
+    text: "differences are limited to baseline sink strength"
+    source: "design §18, stop bullet 1"
+  - id: e7_stop_2
+    text: "effects vanish under matched-loss or matched-length controls"
+    source: "design §18, stop bullet 2 — for E7 this is the §10.3 length-matched subset"
+  - id: e7_stop_3
+    text: "only one model size or language produces the effect"
+    source: "design §18, stop bullet 3"
+  - id: e7_stop_4
+    text: "semantic retrieval is positive but causal patches are null"
+    source: "design §18, stop bullet 4 — equivalent to interpretation row e7_i5"
+  - id: e7_stop_5
+    text: "parity cannot be established for the patched quantities"
+    source: "design §18, stop bullet 5"
+
+analysis:
+  max_failure_rate: 0.02
+  bootstrap_n: 10000
+  bootstrap_alpha: 0.05
+  bh_alpha: 0.05
+  identity_tolerance: 1.0e-5
+  bootstrap_group_cols: [semantic_id, target_language]
+
+amendments:
+  - date: "2026-07-29"
+    kind: transcription
+    text: >
+      Design §10.11, §10.12 and §18 transcribed from
+      FULL_EXPERIMENT_DESIGN_SINK_INHERITANCE.md, absent from the repository when v1 was
+      written. Two corrections from the source text: §18 has five E7 criteria, not four,
+      and criteria 4-5 are the claim gate rather than additional to it; §18 criterion 1
+      covers "K0 or V0", so R0 is not in that gate. No results existed. (Date recorded
+      2026-07-30 from commit c65c2d0, which introduced the v3 files; the placeholder it
+      replaces was never filled.)
+  - date: "2026-07-29"
+    kind: correction
+    text: >
+      v2 -> v3: go_no_go returned to list form (a mapping raises in build_go_no_go);
+      criterion 3 split into e7_3k/e7_3v because evaluate_criterion reads a singular
+      `contrast`; interpretation matrix rewritten with literal numbers and word operators
+      (_condition_holds does float(value) and rejects ">="); rows made pairwise disjoint
+      (a non-exclusive matrix yields matched_row: null whatever the data says); v2's
+      unsupported Qwen2.5 tier proposal withdrawn. No results existed.
+
+  # ── v3 -> v4: the three open decisions, all made before any E7 run existed ─────
+  #
+  # PRE-REGISTRATION ORDER, stated so it can be checked: at the time these were decided
+  # `crosslingual_semantics/results/` did not exist. No FLORES or XNLI manifest had been
+  # built, no representation extracted, no patch run, no retrieval table computed. Not one
+  # Qwen forward pass had been made for E7.
+
+  - date: "2026-07-30"
+    kind: decision
+    decision_id: D5
+    text: >
+      e7_c6 := ROUTE (C), exploratory, not tiered. Route (A) was attempted and closed on
+      evidence: the Qwen2.5 technical report (arXiv:2412.15115v2) was read, and §3.1
+      "Pre-training Data" gives no per-language token share, no data-mixture table by
+      language and no named language list — it says only "a larger multilingual corpus"
+      and "across multiple languages". §2 names none either. Route (B), an external
+      taxonomy such as Joshi et al. 2020, was rejected on the grounds that it describes
+      NLP resource availability in general rather than Qwen2.5's corpus, so it would
+      appear to answer "why is this the right split for this model?" while not answering
+      it. Route (C) keeps the contrast registered, leaves `languages_a`/`languages_b`
+      empty so the aggregator emits a `pending` row rather than a computed one, and
+      reports per-language effects without a grouped claim. e7_c6 is read by no criterion
+      and is not in claim_gate.contrasts, so nothing is blocked. The paper's data section
+      must state that §10.11 contrast 6 could not be pre-registered for want of a
+      defensible tiering.
+
+  - date: "2026-07-30"
+    kind: decision
+    decision_id: D6
+    text: >
+      criterion_3_combine := `any`. §18 criterion 3 names no patch object, so the
+      registration splits it into e7_3k/e7_3v and the fold is a reading of the source
+      text. Chose `any` because criterion 1 in the same list says "K0 OR V0" explicitly —
+      reading criterion 3 as a conjunction would have two adjacent criteria use opposite
+      quantifiers with nothing in the text marking the change — and because §10.12 expects
+      K0 and V0 to behave differently, which is the point of contrast e7_c3; requiring
+      both to clear the same bar would contradict the matrix beside it. This was the only
+      E7 sentinel carrying `blocks_decision: true`, so resolving it is what lets
+      `e7_go_no_go.json` reach a verdict and `supported` stop being null.
+
+  - date: "2026-07-30"
+    kind: decision
+    decision_id: D7
+    text: >
+      interpretation_matrix.thresholds := semantic_sensitivity 0.10, unrelated_transfer
+      0.10, on different grounds. `semantic_sensitivity` is a reading: §18 criterion 3's
+      0.10 correct-label margin is the same parallel-minus-control quantity on the same
+      scale, so setting them equal keeps matrix and gate speaking about one number.
+      `unrelated_transfer` is JUDGEMENT with no design anchor and is recorded as such —
+      it is an absolute patch effect, not a difference of two. Calibrating it against the
+      `random` norm condition (DECISIONS_REQUIRED's recommendation) was considered and
+      deferred: aggregate_crosslingual.py has no threshold_rule support, `_condition_holds`
+      reads literal floats from the rows, and the 64-assignment disjointness proof sweeps
+      those literals, so a runtime-resolved threshold would require changing the matrix
+      evaluator, check_threshold_declaration and the exclusivity test together — the
+      riskiest change available, for a field that blocks no verdict. Both values were
+      already the placeholder 0.10, so no row literal changed and the declaration stays
+      set-consistent with the rows; the change here is that 0.10 is now a DECISION with a
+      reason rather than a placeholder awaiting one.
+  # - date: ""
+  #   kind: decision
+  #   text: >
+  #     e7_c6 tiers set to (_) citing (_); semantic_sensitivity = (_);
+  #     unrelated_transfer = (_) by (_); criterion_3_combine = (_).
+  #     No results had been inspected.

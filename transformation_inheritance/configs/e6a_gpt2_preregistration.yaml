@@ -1,0 +1,482 @@
+# e6a_gpt2_preregistration.yaml — the E6A-GPT2 arm's contrasts and go/no-go criteria.
+#
+# A SECOND ARM, not an amendment. `e6_preregistration.yaml` (e6_prereg_v4) is untouched and
+# still governs the TinyStories arm; nothing in it moves. This file governs `experiment_id:
+# e6a_gpt2` and is read only when the aggregator and the gate are pointed at that arm.
+#
+# WHY THE ARM EXISTS, in the numbers that caused it. Design §8.5 criterion 2 asks for a
+# baseline sink above 0.15 on the corpus the arm is scored on. Measured on
+# `tinystories_validation_sink_300`, the TinyStories-33M **teacher** has baseline_sink
+# 0.009309 — 0.86x the uniform-attention floor at 128 tokens (1.386/L = 0.010770), with ZERO
+# (layer, head) cells above 0.2. The bar is therefore 16.1x that teacher's own value, and it
+# misses the bar on the cross-domain corpus too (0.085975). No student can inherit what its
+# teacher does not have, at any step count and on any corpus, so criterion 2's failure on
+# that arm carried no information about inheritance (CLAUDE.md trap 26).
+#
+# `results/screening/screening_fingerprints.csv` establishes the alternative on real
+# weights, on the same `e1_100x40` corpus, all `status: ok`:
+#     gpt2        0.563006  (16.5x floor, 73% of cells > 0.2)
+#     distilgpt2  0.463267  (13.6x floor, 71% of cells > 0.2)
+# so gpt2 -> distilgpt2 is a distillation pair with a real sink at both ends.
+#
+# PRE-REGISTRATION ORDER, stated so it can be checked rather than trusted. At the time this
+# file was written (2026-08-01) NO gpt2-arm run existed: `transformation_inheritance/results/`
+# contained the TinyStories arm (e6a: D0 x3 seeds, D1, D2, P8M) and the screening artefacts,
+# and no `results/e6a_gpt2/` directory had ever been created. gpt2 had never been
+# fingerprinted on `openwebtext_validation_sink_300` — the corpus below did not exist as an
+# artefact — so no threshold here can have been fitted to a gpt2 result.
+#
+# TRANSCRIPTION SOURCE: FULL_EXPERIMENT_DESIGN_SINK_INHERITANCE.md §8.5, §8.7 and §18, via
+# `e6_prereg_v4`, which transcribed them. Every entry marked `source:` is that transcription
+# with three substitutions and nothing else: D0/D1/D2 -> G0/G1/G2, P8M -> PDG2 (the public
+# distilgpt2 reference), and the in-domain corpus id. Entries marked `decided:` are decisions
+# taken here and argued in `amendments:`.
+
+version: e6a_gpt2_prereg_v1
+experiment_id: e6a_gpt2
+
+# ──────────────────────────────────────────────────────────────────────────────
+# Corpus identifiers — verified against common/corpus_providers.py, not assumed.
+#   openwebtext_corpus -> f"openwebtext_{split}_{purpose}_{n_blocks}"
+#   frozen_e1_corpus   -> f"e1_{sample_size}x{cut_length}"
+# The cross-domain corpus is deliberately the SAME frozen E1 manifest the TinyStories arm
+# and the screening table use, so the two arms and E1-E5 remain directly comparable.
+# ──────────────────────────────────────────────────────────────────────────────
+
+corpora:
+  in_domain: openwebtext_validation_sink_300
+  cross_domain: e1_100x40
+  source: "common/corpus_providers.py — literals verified, not inferred from the spec pack"
+
+conditions:
+  G0: "L_CE only (the control)"
+  G1: "0.50*L_CE + 0.50*L_KD, T=2.0"
+  G2: "0.45*L_CE + 0.45*L_KD + 0.10*L_ATTN, T=2.0"
+  PDG2: "distilbert/distilgpt2, the public reference (seedless, checkpoint_step -1)"
+
+# ──────────────────────────────────────────────────────────────────────────────
+# Pilot gate                               (design §8.5, via 03 §2)
+# Read by check_pilot_gate.py. The first three are §8.5 verbatim; `teacher_sink_fraction`
+# is this arm's one new criterion and is argued in `amendments:`.
+# ──────────────────────────────────────────────────────────────────────────────
+
+pilot_gate:
+  corpus_id: openwebtext_validation_sink_300
+  sink_threshold: 0.15
+  sink_threshold_source: >
+    design §8.5 criterion 2, verbatim and UNCHANGED. Kept at the design's own number
+    precisely because this arm exists after that number failed elsewhere: lowering it now
+    would be indistinguishable from tuning a bar until a teacher clears it. It is also not
+    a hard bar in general — all six models in the screening table clear it by 2.5-3.8x on
+    `e1_100x40` — it was hard only for the TinyStories teacher.
+  mechanistic_delta_threshold: 0.10
+  mechanistic_delta_source: "design §8.5 criterion 3, verbatim"
+  parity_examples: 5
+  parity_examples_source: "design §8.5 criterion 4, verbatim ('on 5 examples')"
+  teacher_sink_fraction: 0.50
+  teacher_sink_fraction_decided: "2026-08-01"
+  teacher_sink_fraction_decision_id: G1
+  teacher_sink_fraction_source: >
+    NOT a transcription. New criterion `e6a_pilot_2b`, decided 2026-08-01 before any gpt2
+    run existed. See the `amendments:` entry for decision G1.
+
+# ──────────────────────────────────────────────────────────────────────────────
+# Contrasts → e6a_contrasts.csv            (design §8.7, "Primary E6A contrasts")
+# ──────────────────────────────────────────────────────────────────────────────
+
+contrasts:
+  - id: e6a_gpt2_c1
+    text: "G2 - G0 in teacher-student fingerprint cosine similarity at step 10,000"
+    metric: fingerprint_cosine_to_teacher
+    condition_a: G2
+    condition_b: G0
+    selection: equal_step
+    corpus_id: openwebtext_validation_sink_300
+    family: e6a_primary
+    source: >
+      design §8.7 contrast 1, verbatim: "`D2 - D0` in teacher-student fingerprint cosine
+      similarity at step 10,000", with D->G.
+
+  - id: e6a_gpt2_c2
+    text: "G1 - G0 in functional similarity at matched validation CE"
+    metric: functional_cosine_to_teacher
+    condition_a: G1
+    condition_b: G0
+    selection: matched_loss
+    corpus_id: openwebtext_validation_sink_300
+    family: e6a_primary
+    source: >
+      design §8.7 contrast 2, verbatim: "`D1 - D0` in functional similarity at matched
+      validation CE", with D->G. Metric is the ΔCE-vector cosine of design §6.5.
+
+  - id: e6a_gpt2_c3
+    text: "G2 - G1 in topological similarity (Spearman form)"
+    metric: topology_spearman_to_teacher
+    condition_a: G2
+    condition_b: G1
+    selection: equal_step
+    corpus_id: openwebtext_validation_sink_300
+    family: e6a_primary
+    source: >
+      design §8.7 contrast 3, verbatim: "`D2 - D1` in topological similarity", with D->G.
+      Both computable forms are registered so neither can be selected after the fact;
+      `primary_topology_metric` below names which the paper reports, following D1.
+
+  - id: e6a_gpt2_c3b
+    text: "G2 - G1 in topological distance (Wasserstein form)"
+    metric: topology_wasserstein_to_teacher
+    condition_a: G2
+    condition_b: G1
+    selection: equal_step
+    corpus_id: openwebtext_validation_sink_300
+    family: e6a_primary
+    source: "companion to e6a_gpt2_c3; registered in advance, see e6a_gpt2_c3"
+
+  - id: e6a_gpt2_c4a
+    text: "public distilgpt2 vs G1 at matched validation CE"
+    metric: fingerprint_cosine_to_teacher
+    condition_a: PDG2
+    condition_b: G1
+    selection: matched_loss
+    matched_loss_reference: G1
+    corpus_id: openwebtext_validation_sink_300
+    family: e6a_primary
+    source: >
+      design §8.7 contrast 4, verbatim: "Public independently trained 8M versus D1 and D2
+      at matched validation CE", with the public reference substituted. Split into c4a/c4b
+      because the aggregator's contrast unit is one condition pair.
+    recorded_limitation: >
+      distilgpt2 is NOT independently trained. It was initialised from alternating gpt2
+      layers and distilled from gpt2 with a DistilBERT-style objective, so it is a
+      *differently distilled* comparand rather than the independence control §8.1 describes
+      — a strictly weaker basis for §20's Narrative B (convergent reconstruction) than
+      TinyStories-8M was. It is registered anyway because it is the closest available model
+      of the student's exact size and family, and because "did the mechanism survive a
+      different distillation recipe" is itself a question worth the row. THE PAPER MUST SAY
+      THIS; it is not a footnote to be discovered by a reader.
+
+  - id: e6a_gpt2_c4b
+    text: "public distilgpt2 vs G2 at matched validation CE"
+    metric: fingerprint_cosine_to_teacher
+    condition_a: PDG2
+    condition_b: G2
+    selection: matched_loss
+    matched_loss_reference: G2
+    corpus_id: openwebtext_validation_sink_300
+    family: e6a_primary
+    source: "design §8.7 contrast 4 (second half); see e6a_gpt2_c4a"
+    recorded_limitation: "see e6a_gpt2_c4a"
+
+  - id: e6a_gpt2_c5
+    kind: corpus_pair
+    text: "in-domain versus cross-domain inheritance"
+    metric: fingerprint_cosine_to_teacher
+    conditions: [G0, G1, G2]
+    corpus_a: openwebtext_validation_sink_300
+    corpus_b: e1_100x40
+    selection: equal_step
+    family: e6a_primary
+    source: >
+      design §8.7 contrast 5, verbatim: "In-domain versus cross-domain inheritance", with
+      D->G. §16.1 lists this as the control for the confound that attention KD directly
+      optimises the measured maps.
+    arm_note: >
+      This contrast carries more weight here than it did on the TinyStories arm, where the
+      teacher's in-domain and cross-domain sinks differed by 2.9x AFTER removing the
+      sequence-length effect. Whether gpt2 shows the same in-domain collapse is the first
+      thing the pre-flight measurement answers.
+
+# ──────────────────────────────────────────────────────────────────────────────
+# Reporting decision, not a contrast. Inherited from D1 unchanged.
+# ──────────────────────────────────────────────────────────────────────────────
+
+primary_topology_metric:
+  chosen: topology_wasserstein_to_teacher
+  decided: "2026-08-01"
+  decision_id: D1
+  rationale: >
+    Inherited verbatim from `e6_prereg_v4`'s D1 so both arms report the same measure. The
+    argument is unchanged: §24's claim is about WHERE in depth the anchor sits, and Spearman
+    would score a teacher-like profile shifted to the wrong depth as highly similar.
+    Consequence, also unchanged: e6a_gpt2_c3b is a DISTANCE, so its sign is inverted
+    relative to c1/c2 and must be labelled as such in table 2 and the figures.
+
+# ──────────────────────────────────────────────────────────────────────────────
+# E6A-GPT2 go/no-go                        (design §18, "Continue E6A ... when")
+# §18: "At least one of the following is observed ACROSS ALL THREE SEEDS."
+# ──────────────────────────────────────────────────────────────────────────────
+
+go_no_go:
+  - id: e6a_gpt2_1
+    text: "G2 improves teacher fingerprint similarity over G0 by at least 0.15"
+    metric: fingerprint_cosine_to_teacher
+    condition_a: G2
+    condition_b: G0
+    selection: equal_step
+    corpus_id: openwebtext_validation_sink_300
+    threshold: 0.15
+    direction: greater_equal
+    seed_consistency: all
+    family: e6a_go_no_go
+    source: "design §18 criterion 1, verbatim, with D->G"
+
+  - id: e6a_gpt2_2
+    text: >
+      G1 and G2 have similar validation CE but differ in mechanistic inheritance by at
+      least 0.10
+    metric: fingerprint_cosine_to_teacher
+    condition_a: G2
+    condition_b: G1
+    selection: matched_loss
+    corpus_id: openwebtext_validation_sink_300
+    threshold: 0.10
+    direction: greater_equal
+    absolute_difference: true
+    seed_consistency: all
+    family: e6a_go_no_go
+    source: "design §18 criterion 2, verbatim, with D->G"
+    operationalisation: >
+      Unchanged from e6_prereg_v4's e6a_2: "similar validation CE" is the §6.4 matched-loss
+      selection (refused above a 0.05-nat realised gap) and "differ by" is |G2 - G1|. The
+      0.10 magnitude is the design's own and is not a decision. Note the TinyStories arm hit
+      the refusal at a 0.0507-nat gap once its attention term was corrected — with five
+      checkpoints the CE grid is coarse, and `no_data` here means "not loss-matched", not
+      "no effect".
+
+  - id: e6a_gpt2_3
+    decided: "2026-08-01"
+    decision_id: D2
+    text: "functional inheritance remains high while mechanistic inheritance is low"
+    compound:
+      all_of:
+        - metric: functional_cosine_to_teacher
+          condition_a: G1
+          selection: equal_step
+          corpus_id: openwebtext_validation_sink_300
+          direction: greater_equal
+          threshold_rule:
+            kind: null_seed_spread
+            metric: functional_cosine_to_teacher
+            null_condition: G0
+            statistic: range
+            anchor: 1.0
+            anchor_side: below
+            k: 2.0
+        - metric: fingerprint_cosine_to_teacher
+          condition_a: G1
+          selection: equal_step
+          corpus_id: openwebtext_validation_sink_300
+          direction: less_equal
+          threshold_rule:
+            kind: null_seed_spread
+            metric: fingerprint_cosine_to_teacher
+            null_condition: G0
+            statistic: range
+            anchor: 1.0
+            anchor_side: below
+            k: 2.0
+    seed_consistency: all
+    family: e6a_go_no_go
+    source: "design §18 criterion 3, verbatim, with D->G"
+    decision_taken: >
+      Framing (B) inherited verbatim from `e6_prereg_v4`'s D2, with the null condition
+      G0 in place of D0. Deliberately unchanged so the two arms are read the same way.
+      KNOWN PROPERTY, carried over and now OBSERVED on the TinyStories arm: with the anchor
+      at 1.0, this limb is unsatisfiable whenever the null's own distance from 1.0 greatly
+      exceeds its across-seed spread — there, D0 measured 0.967 against a threshold of
+      0.9935 derived from a spread of 0.0033, so the null failed the bar calibrated on it.
+      Left as registered rather than repaired, because repairing it here would be a
+      post-hoc change to a criterion that has already produced a result elsewhere. Expect
+      the same behaviour and report it.
+      COST, accepted: the calibration refuses on fewer than three seeds, so this criterion
+      stays unresolved until G0 has run at seeds 0, 1 and 2.
+
+  - id: e6a_gpt2_4
+    decided: "2026-08-01"
+    decision_id: D3
+    text: >
+      the public distilgpt2 and the distilled students reach similar function through
+      measurably different fingerprints
+    compound:
+      all_of:
+        - metric: functional_cosine_to_teacher
+          condition_a: PDG2
+          condition_b: G2
+          selection: matched_loss
+          matched_loss_reference: G2
+          corpus_id: openwebtext_validation_sink_300
+          direction: less_equal
+          absolute_difference: true
+          threshold_rule:
+            kind: null_seed_spread
+            metric: functional_cosine_to_teacher
+            null_condition: G0
+            statistic: range
+            anchor: 0.0
+            anchor_side: above
+            k: 2.0
+        - metric: fingerprint_cosine_to_teacher
+          condition_a: PDG2
+          condition_b: G2
+          selection: matched_loss
+          matched_loss_reference: G2
+          corpus_id: openwebtext_validation_sink_300
+          direction: greater_equal
+          absolute_difference: true
+          threshold_rule:
+            kind: null_seed_spread
+            metric: fingerprint_cosine_to_teacher
+            null_condition: G0
+            statistic: range
+            anchor: 0.0
+            anchor_side: above
+            k: 2.0
+    seed_consistency: all
+    family: e6a_go_no_go
+    source: "design §18 criterion 4, verbatim, with the public reference substituted"
+    decision_taken: >
+      Framing (B) inherited verbatim from `e6_prereg_v4`'s D3, null condition G0, both
+      limbs anchored at 0.0 with anchor_side above because both observe an absolute
+      difference. The sqrt(2) approximation recorded there — a one-condition spread used to
+      judge a difference between two independent runs — applies here unchanged.
+      READ THIS CRITERION WITH e6a_gpt2_c4a's `recorded_limitation`: distilgpt2 is not an
+      independence control, so a positive result supports "the mechanism differs across
+      distillation recipes", not §20's Narrative B in full.
+
+# ──────────────────────────────────────────────────────────────────────────────
+# E6B is not part of this arm.
+# ──────────────────────────────────────────────────────────────────────────────
+
+e6b_go_no_go:
+  combine: all
+  criteria: []
+  note: >
+    E6B (sentiment adaptation of distilgpt2) is registered in `e6_preregistration.yaml` and
+    is not duplicated here. An aggregation pointed at `--experiment e6a_gpt2` sees no e6b
+    rows and reports `incomplete` for them, which is correct: this arm makes no E6B claim.
+
+e6b:
+  drift_columns: [fingerprint_drift_from_base, topology_drift_from_base,
+                  carrier_drift_from_base]
+  onset_threshold_k: 2.0
+
+# ──────────────────────────────────────────────────────────────────────────────
+# Stop / downgrade conditions             (design §18, "Stop or downgrade ... when")
+# Reported as observations, not as a computed verdict.
+# ──────────────────────────────────────────────────────────────────────────────
+
+stop_conditions:
+  - id: e6a_gpt2_stop_1
+    text: "differences are limited to baseline sink strength"
+    source: "design §18, stop bullet 1"
+  - id: e6a_gpt2_stop_2
+    text: "effects vanish under matched-loss or matched-length controls"
+    source: "design §18, stop bullet 2"
+  - id: e6a_gpt2_stop_3
+    text: "only one model size or language produces the effect"
+    source: "design §18, stop bullet 3"
+  - id: e6a_gpt2_stop_5
+    text: "parity cannot be established for the patched quantities"
+    source: "design §18, stop bullet 5"
+  - id: e6a_gpt2_stop_6
+    text: >
+      the teacher itself does not clear the pilot gate's sink threshold on the corpus this
+      arm is scored on
+    source: >
+      NOT a design bullet. Added 2026-08-01 from the TinyStories arm's outcome: a teacher
+      below the bar makes every downstream inheritance criterion uninterpretable rather
+      than negative. This is a STOP condition, not a criterion — it is checked by the
+      pre-flight fingerprint of gpt2 before any student is trained, and if it fires the
+      answer is to report it, never to move the threshold.
+
+stop_conditions_note: >
+  design §18 closing sentence, verbatim: "A clean negative result may still support a
+  focused paper if it establishes that sink function is reconstructed independently and
+  semantic sink states do not transfer causally."
+
+analysis:
+  matched_loss_max_gap_nats: 0.05
+  max_failure_rate: 0.02
+  bootstrap_n: 10000
+  bootstrap_alpha: 0.05
+  bh_alpha: 0.05
+
+amendments:
+  - date: "2026-08-01"
+    kind: transcription
+    text: >
+      v1 created. Design §8.5, §8.7 and §18 carried over from `e6_prereg_v4`'s
+      transcription with three substitutions and no others: D0/D1/D2 -> G0/G1/G2,
+      P8M -> PDG2, and the in-domain corpus id
+      tinystories_validation_sink_300 -> openwebtext_validation_sink_300. Every threshold
+      the design states — 0.15, 0.10, 0.05 nats, 2% failure, k = 2 — is unchanged. D1, D2,
+      D3 are inherited verbatim so the two arms are read identically.
+      No gpt2-arm result existed: `results/e6a_gpt2/` did not exist, and gpt2 had never
+      been fingerprinted on the corpus named above.
+
+  - date: "2026-08-01"
+    kind: decision
+    decision_id: G1
+    text: >
+      pilot_gate.teacher_sink_fraction := 0.50, i.e. a NEW criterion `e6a_pilot_2b`: at
+      least one condition reaches 50% of the TEACHER'S OWN baseline sink on the scored
+      corpus, over trained checkpoints (step > 0), reported beside the unchanged 0.15.
+      WHY. Criterion 2 is absolute and says nothing about whether the teacher in front of it
+      has a sink at all. On the TinyStories arm 0.15 turned out to be 16.1x that teacher's
+      own in-domain value, so the criterion could only ever fail, and its failure was
+      uninformative about inheritance — the thing E6A exists to measure. This criterion is
+      the relative reading: did the student acquire a serious fraction of what the teacher
+      actually has.
+      WHY THIS IS NOT FITTING TO A RESULT. The teacher's sink is a property of the
+      instrument, not of the experiment: it is measurable before a single student weight is
+      updated, and the pilot's Step 0 measures it deliberately. A fraction fixed now cannot
+      have been chosen to make a student pass, because no student exists. The value it will
+      be multiplied by was also unmeasured at decision time — gpt2 had never been
+      fingerprinted on openwebtext_validation_sink_300.
+      WHY 0.50 AND NOT SOMETHING ELSE. It is the coarsest non-trivial fraction: "at least
+      half of what the teacher has". A finer number (0.4, 0.6) would imply a precision no
+      argument here supports, and 1.0 would demand the student match a 12-layer 124M teacher
+      from a 6-layer 82M random init in 2,000 steps. Recorded as judgement, with no external
+      anchor — the same honesty D7 required of E7's `unrelated_transfer`. THE PAPER MUST SAY
+      SO.
+      BOTH ARE REPORTED AND BOTH MUST BE MET. Criterion 2 keeps the design's absolute bar so
+      this arm is comparable with §8.5 as written; 2b adds the relative reading. Reporting
+      only 2b would look like the bar was lowered after it failed elsewhere.
+      SCOPE. `e6a_pilot_2b` is emitted for `experiment_id: e6a_gpt2` only. Adding it to the
+      TinyStories arm now would be an amendment to a pre-registration that has already
+      produced a verdict, which `05` §6 forbids.
+
+  - date: "2026-08-01"
+    kind: decision
+    decision_id: G2
+    text: >
+      Corpus := Skylion007/openwebtext, capped at a deterministic 60,000-document prefix for
+      training and a disjoint 4,000-document window for validation.
+      GPT-2's own WebText was never released; OpenWebText is its open reproduction and is
+      therefore the closest available in-distribution corpus for this teacher. WikiText-103
+      was considered and REJECTED on the record: the GPT-2 paper states WebText deliberately
+      excluded Wikipedia, so scoring the teacher there would reproduce exactly the
+      out-of-distribution confound this arm exists to avoid — the TinyStories teacher's sink
+      fell 2.9x going in-domain, after the sequence-length effect is removed.
+      The cap is a cost decision, not a scientific one: a 2,000-step pilot consumes 16.4M
+      tokens and 60,000 documents is ~60M, so the arm trains for under one epoch with no
+      repetition. The prefix is deterministic and the seeded shuffle happens after it, in
+      the packing loop, exactly as design §1.4 requires. Train and validation windows are
+      disjoint by construction, so a validation block can contain no training token.
+
+  - date: "2026-08-01"
+    kind: decision
+    decision_id: G3
+    text: >
+      Student := a RANDOMLY INITIALISED distilbert/distilgpt2 config (6 layers x 768, 12
+      heads, 82M); public reference := the real distilbert/distilgpt2; layer map :=
+      {1:0, 3:1, 5:2, 7:3, 9:4, 11:5}.
+      The student config is the smaller sibling of the teacher in the same family, which is
+      what design §8.1 asks for, and `student_init: random` is unchanged — the public
+      checkpoint is a reference and never initialises a student.
+      The layer map is the 12->6 analogue of §8.3's 4->8 map: evenly spaced and ending on
+      the last layer of each model. Note the widths match here (768/768) where the
+      TinyStories arm's did not (768 teacher / 256 student), and GPT-2 has no
+      local-attention layers, so every L_ATTN pair is `global_global` rather than `mixed`.
+      Both are instrument improvements that fall out of the model choice; neither was
+      selected for.
