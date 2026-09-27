@@ -3,6 +3,7 @@
   "stage_id": "05",
   "status": "complete_cpu_evaluation",
   "starting_commit": "8417c616bd2a7b5d8dfe51d65753a7b298a9bade",
+  "milestone_commit": "793c3575e6dd5f25380547899b29ec44f141b45c",
   "task_ids_completed": ["05.1", "05.2", "05.3", "05.4", "05.5"],
   "evidence": {
     "behavior": "CPU manual full-vocabulary references verify shifted CE/PPL from aggregate NLL, teacher-to-student KL at T=1, clean-to-intervened self-KL, absolute target log-probability change, flips and accuracies. Opposite signed CE effects cancel while absolute change and flips remain positive. Token chunking matches unchunked reductions.",
