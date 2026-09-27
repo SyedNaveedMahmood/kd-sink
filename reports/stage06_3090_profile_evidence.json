@@ -1,0 +1,236 @@
+{
+  "schema_version": 1,
+  "status": "measured_3090_engineering_production_shape",
+  "starting_commit": "aeb064f76ded84b7b1a7999371be6fd6ee7266f6",
+  "hardware": {
+    "name": "NVIDIA GeForce RTX 3090",
+    "uuid": "GPU-a21766e4-bb31-9b79-5e8f-e58021e9708e",
+    "total_bytes": 25769279488,
+    "reported_vram_mib": 24576,
+    "driver": "591.86",
+    "headroom_bytes": 2576927948,
+    "headroom_rule": "max(1.5 GiB, 10% physical VRAM); 10% governs"
+  },
+  "environment": {
+    "os": "Windows 11 WDDM",
+    "python": "3.12.3",
+    "torch": "2.10.0+cu128",
+    "torch_cuda": "12.8",
+    "cudnn": 91002,
+    "transformers": "5.3.0",
+    "dependency_install": "uv sync --locked"
+  },
+  "shape": {
+    "teacher": "GPT-2-large 36 layers / 20 heads / width 1280",
+    "student": "random GPT-2-medium 24 layers / 16 heads / width 1024",
+    "sequence_length": 128,
+    "effective_sequences": 64,
+    "input_tokens_per_update": 8192,
+    "shifted_targets_per_update": 8128,
+    "training_cycle": "one warmup plus two state-bearing optimizer updates, dense64-shaped evaluation, full checkpoint save",
+    "student_parameters_and_adam": "FP32",
+    "compute": "BF16 autocast with FP32 objective reductions",
+    "teacher_storage": "FP32",
+    "backend": "eager"
+  },
+  "artifacts": {
+    "teacher_revision": "32b71b12589c2f8d625668d2335a01cac3249519",
+    "teacher_safetensors_sha256": "5f47f3e12f91cd33b662ce7e433b6150ad5512b5884a2cee961b50e9c3bbebce",
+    "student_initialization_seed": 0,
+    "student_initialization_tensor_sha256": "1a27890c588f317a4ae5523430f8af53c591bca29c9a78d13bf182c9c145fc09",
+    "corpus_manifest_sha256": "6ed93e43c68d4190558cfc6393167f796e874435fe20b29a508b38223778dc56",
+    "panel_manifest_sha256": "1247629ed0a608889c25a92931333b683a0d3b743eca37ea2feb49b0deb1e902",
+    "input_scope": "deterministic synthetic token IDs for memory-shape evidence only; not approved production data or calibration input",
+    "external_root": "E:\\KD-SINK-stage06-3090"
+  },
+  "profiles": [
+    {
+      "condition": "C1",
+      "microbatch": 64,
+      "status": "complete_unsafe",
+      "peak_allocated_bytes": 39802609152,
+      "peak_reserved_bytes": 40542142464,
+      "free_bytes": 0,
+      "wall_seconds": 177.32261850000032,
+      "optimizer_allocated": true,
+      "evaluation_passed": true,
+      "save_passed": true
+    },
+    {
+      "condition": "C1",
+      "microbatch": 32,
+      "status": "complete_unsafe",
+      "peak_allocated_bytes": 25404420096,
+      "peak_reserved_bytes": 26235371520,
+      "free_bytes": 0,
+      "wall_seconds": 54.88103980000051,
+      "optimizer_allocated": true,
+      "evaluation_passed": true,
+      "save_passed": true
+    },
+    {
+      "condition": "C1",
+      "microbatch": 16,
+      "status": "complete_safe",
+      "peak_allocated_bytes": 17489440768,
+      "peak_reserved_bytes": 17865637888,
+      "free_bytes": 6499074048,
+      "wall_seconds": 54.531096499999876,
+      "optimizer_allocated": true,
+      "evaluation_passed": true,
+      "save_passed": true
+    },
+    {
+      "condition": "C2",
+      "microbatch": 64,
+      "status": "terminated_unsafe_wddm_paging",
+      "peak_allocated_bytes": null,
+      "peak_reserved_bytes": null,
+      "observed_used_mib": 24222,
+      "observed_free_mib": 105,
+      "completed_full_cycle": false
+    },
+    {
+      "condition": "C2",
+      "microbatch": 32,
+      "status": "terminated_unsafe_wddm_paging",
+      "peak_allocated_bytes": null,
+      "peak_reserved_bytes": null,
+      "observed_used_mib": 24252,
+      "observed_free_mib": 75,
+      "completed_full_cycle": false
+    },
+    {
+      "condition": "C2",
+      "microbatch": 16,
+      "status": "complete_unsafe",
+      "peak_allocated_bytes": 23904583680,
+      "peak_reserved_bytes": 24173871104,
+      "free_bytes": 175644672,
+      "wall_seconds": 57.35154519999924,
+      "optimizer_allocated": true,
+      "evaluation_passed": true,
+      "save_passed": true
+    },
+    {
+      "condition": "C2",
+      "microbatch": 8,
+      "status": "complete_safe",
+      "peak_allocated_bytes": 16785462784,
+      "peak_reserved_bytes": 17140023296,
+      "free_bytes": 7224688640,
+      "wall_seconds": 58.647964600000705,
+      "optimizer_allocated": true,
+      "evaluation_passed": true,
+      "save_passed": true
+    },
+    {
+      "condition": "C3",
+      "microbatch": 64,
+      "status": "terminated_unsafe_wddm_paging",
+      "peak_allocated_bytes": null,
+      "peak_reserved_bytes": null,
+      "observed_used_mib": 24246,
+      "observed_free_mib": 81,
+      "completed_full_cycle": false
+    },
+    {
+      "condition": "C3",
+      "microbatch": 32,
+      "status": "terminated_unsafe_wddm_paging",
+      "peak_allocated_bytes": null,
+      "peak_reserved_bytes": null,
+      "observed_used_mib": 24242,
+      "observed_free_mib": 85,
+      "completed_full_cycle": false
+    },
+    {
+      "condition": "C3",
+      "microbatch": 16,
+      "status": "complete_unsafe",
+      "peak_allocated_bytes": 21399461888,
+      "peak_reserved_bytes": 21816672256,
+      "free_bytes": 2524045312,
+      "wall_seconds": 56.4114955999994,
+      "optimizer_allocated": true,
+      "evaluation_passed": true,
+      "save_passed": true
+    },
+    {
+      "condition": "C3",
+      "microbatch": 8,
+      "status": "complete_safe",
+      "peak_allocated_bytes": 15546886144,
+      "peak_reserved_bytes": 15894315008,
+      "free_bytes": 8470396928,
+      "wall_seconds": 57.49271370000042,
+      "optimizer_allocated": true,
+      "evaluation_passed": true,
+      "save_passed": true
+    },
+    {
+      "condition": "C4",
+      "microbatch": 64,
+      "status": "terminated_unsafe_wddm_paging",
+      "peak_allocated_bytes": null,
+      "peak_reserved_bytes": null,
+      "observed_used_mib": 24233,
+      "observed_free_mib": 94,
+      "completed_full_cycle": false
+    },
+    {
+      "condition": "C4",
+      "microbatch": 32,
+      "status": "terminated_unsafe_wddm_paging",
+      "peak_allocated_bytes": null,
+      "peak_reserved_bytes": null,
+      "observed_used_mib": 24248,
+      "observed_free_mib": 79,
+      "completed_full_cycle": false
+    },
+    {
+      "condition": "C4",
+      "microbatch": 16,
+      "status": "complete_unsafe",
+      "peak_allocated_bytes": 30663444992,
+      "peak_reserved_bytes": 30809260032,
+      "free_bytes": 0,
+      "wall_seconds": 90.83937659999992,
+      "optimizer_allocated": true,
+      "evaluation_passed": true,
+      "save_passed": true
+    },
+    {
+      "condition": "C4",
+      "microbatch": 8,
+      "status": "complete_safe",
+      "peak_allocated_bytes": 20163869696,
+      "peak_reserved_bytes": 20476592128,
+      "free_bytes": 3794948096,
+      "wall_seconds": 61.90969149999728,
+      "optimizer_allocated": true,
+      "evaluation_passed": true,
+      "save_passed": true
+    }
+  ],
+  "safe_maxima": {
+    "C1": 16,
+    "C2": 8,
+    "C3": 8,
+    "C4": 8
+  },
+  "rtx3090_common": {
+    "microbatch": 8,
+    "accumulation": 8,
+    "effective_sequences": 64,
+    "input_tokens": 8192,
+    "shifted_targets": 8128
+  },
+  "caveats": [
+    "This establishes the largest safe RTX 3090 candidate by descending search, not the final two-device common schedule.",
+    "Candidates smaller than the first safe candidate were not run; therefore this is not the seven-divisor matrix required by build_batch_plan.",
+    "The prior RTX 4080 SUPER evidence used sequence length 8 and cannot establish the common schedule.",
+    "C3/C4 used raw engineering scale 1.0 because approved production inputs and calibration locks are absent; no calibration factor is claimed.",
+    "No production training was started."
+  ]
+}

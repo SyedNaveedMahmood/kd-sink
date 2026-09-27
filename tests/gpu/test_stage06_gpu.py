@@ -1,6 +1,7 @@
 """Bounded full-size S1 engineering checks on the explicitly selected GPU."""
 
 import contextlib
+import gc
 import hashlib
 import io
 import json
@@ -15,8 +16,9 @@ from sinklab.interventions import AttentionIntervention
 from sinklab.evaluate import RecordStore, evaluate_panel, precision_diagnostics
 from sinklab.models import GPT2Adapter, ModelShape
 from sinklab.train import make_objective_loss
-from sinklab.train import Trainer
-from sinklab.checkpoint import latest_full
+from sinklab.train import Trainer, _restore_rng, _rng_state, make_optimizer
+from sinklab.checkpoint import (latest_full, load_checkpoint, save_checkpoint,
+                                writer_lock)
 
 
 TEACHER_REVISION = "32b71b12589c2f8d625668d2335a01cac3249519"
@@ -50,13 +52,17 @@ def full_size_pair(selected_cuda, gpu_evidence):
 
 
 def _ids(device):
-    return torch.tensor([[15496, 11, 616, 1438, 318, 257, 1332, 13]], device=device)
+    # A deterministic full Stage 06 context. Token semantics are irrelevant to
+    # numerical and memory-shape validation, but the vocabulary IDs are valid.
+    values = (torch.arange(128, device=device) * 7919 + 15496) % 50257
+    return values.unsqueeze(0)
 
 
 def test_full_size_native_features_and_causal_edits(full_size_pair, selected_cuda, gpu_evidence):
     teacher, student = full_size_pair
     measurements = gpu_evidence[0]["measurements"]
     ids = _ids(selected_cuda)
+    measurements["sequence_length"] = ids.shape[1]
     torch.cuda.reset_peak_memory_stats(selected_cuda)
     for name, adapter in (("teacher", teacher), ("student", student)):
         with torch.no_grad():
@@ -88,11 +94,16 @@ def test_eligible_condition_objective_smoke(full_size_pair, selected_cuda, gpu_e
     ids = _ids(selected_cuda)
     teacher_map = tuple((s + 1) * 36 // 24 - (0 if (s + 1) * 36 % 24 else 1) for s in range(24))
     values = {}
-    for condition in ("C0", "C1", "C2", "C5", "C6"):
+    role = gpu_evidence[0]["requested_role"]
+    conditions = (("C1", "C2", "C3", "C4") if role == "rtx3090" else
+                  ("C0", "C1", "C2", "C5", "C6"))
+    for condition in conditions:
         student.model.zero_grad(set_to_none=True)
         loss_fn = make_objective_loss(study="S1", condition=condition, student_adapter=student,
                                       teacher_adapter=None if condition == "C0" else teacher,
-                                      teacher_map=teacher_map)
+                                      teacher_map=teacher_map,
+                                      mse_scale=1.0 if condition == "C3" else None,
+                                      rel_scale=1.0 if condition == "C4" else None)
         with torch.autocast("cuda", dtype=torch.bfloat16):
             loss, components = loss_fn(ids)
         loss.backward()
@@ -104,6 +115,11 @@ def test_eligible_condition_objective_smoke(full_size_pair, selected_cuda, gpu_e
         student.model.zero_grad(set_to_none=True)
         torch.cuda.empty_cache()
     gpu_evidence[0]["measurements"]["bf16_objective_smoke"] = values
+    gpu_evidence[0]["measurements"]["objective_smoke_scope"] = {
+        "sequence_length": ids.shape[1],
+        "batch": ids.shape[0],
+        "c3_c4_scale_status": "raw_engineering_scale_1_not_calibration_factor",
+    }
 
 
 def test_full_size_precision_metrics_and_rng_neutrality(full_size_pair, selected_cuda, gpu_evidence, tmp_path):
@@ -200,3 +216,116 @@ def test_cuda_bf16_checkpoint_resume_cursor_rng_and_next_loss(selected_cuda, gpu
     gpu_evidence[0]["measurements"]["tiny_cuda_resume"] = {
         "steps": 3, "model_max_error": max_error, "cursor_equal": True,
         "cpu_cuda_rng_equal": True, "lr_equal": True, "last_loss_equal": True}
+
+
+def _tensor_digest(tensor):
+    value = tensor.detach().cpu().contiguous()
+    digest = hashlib.sha256()
+    digest.update(str(value.dtype).encode("ascii"))
+    digest.update(json.dumps(list(value.shape)).encode("ascii"))
+    digest.update(value.reshape(-1).view(torch.uint8).numpy().tobytes())
+    return digest.hexdigest()
+
+
+def _model_digest(model):
+    return {name: _tensor_digest(value) for name, value in model.state_dict().items()}
+
+
+def _optimizer_digest(optimizer):
+    result = []
+    state = optimizer.state_dict()
+    for parameter_id, values in sorted(state["state"].items()):
+        row = {"parameter_id": parameter_id}
+        for name, value in sorted(values.items()):
+            row[name] = _tensor_digest(value) if isinstance(value, torch.Tensor) else value
+        result.append(row)
+    result.append({"param_groups": state["param_groups"]})
+    return result
+
+
+def _rng_digest(state):
+    return {
+        "python": repr(state["python"]),
+        "numpy": repr(state["numpy"]),
+        "torch_cpu": _tensor_digest(state["torch_cpu"]),
+        "torch_cuda": [_tensor_digest(value) for value in state["torch_cuda"]],
+    }
+
+
+def test_full_size_bf16_checkpoint_interruption_resume_replay(selected_cuda, gpu_evidence, tmp_path):
+    """Destroy and reconstruct a full GPT-2-medium process at a save boundary."""
+    if gpu_evidence[0]["requested_role"] != "rtx3090":
+        pytest.skip("full-size checkpoint replay is assigned to the RTX 3090 gate")
+
+    config = GPT2Config(n_layer=24, n_head=16, n_embd=1024,
+                        _attn_implementation="eager")
+    ids = _ids(selected_cuda)
+    identity = {key: "full-size-engineering" for key in (
+        "protocol_hash", "data_hash", "init_hash", "hardware_hash",
+        "calibration_hash", "model_hash", "backend")}
+    identity.update(study="S1", condition="C0", seed=1729,
+                    run_id="stage06-full-size-resume", precision="bf16",
+                    microbatch=1, device_role="rtx3090",
+                    gpu_uuid=gpu_evidence[0]["nvidia_smi"][0].split(",")[1].strip())
+
+    def fresh_model():
+        with torch.device("cpu"), torch.random.fork_rng(devices=[]):
+            torch.manual_seed(1729)
+            return GPT2LMHeadModel(config).to(selected_cuda).train()
+
+    def one_step(model, optimizer):
+        optimizer.zero_grad(set_to_none=True)
+        with torch.autocast("cuda", dtype=torch.bfloat16):
+            logits = model(input_ids=ids, use_cache=False).logits
+            loss = torch.nn.functional.cross_entropy(
+                logits[:, :-1].float().reshape(-1, logits.shape[-1]),
+                ids[:, 1:].reshape(-1))
+        loss.backward()
+        torch.nn.utils.clip_grad_norm_(model.parameters(), 1.0)
+        optimizer.step()
+        torch.cuda.synchronize(selected_cuda)
+        return float(loss.detach())
+
+    model = fresh_model()
+    optimizer = make_optimizer(model)
+    torch.manual_seed(991)
+    torch.cuda.manual_seed_all(991)
+    first_loss = one_step(model, optimizer)
+    checkpoint_state = {"schema_version": 1, "optimizer": optimizer.state_dict(),
+                        "rng": _rng_state(), "interrupted_after_step": 1}
+    with writer_lock(tmp_path):
+        checkpoint = save_checkpoint(tmp_path / "checkpoints", step=1, kind="rolling",
+                                     model=model, state=checkpoint_state,
+                                     identity=identity)
+    reference_next_loss = one_step(model, optimizer)
+    reference_model = _model_digest(model)
+    reference_optimizer = _optimizer_digest(optimizer)
+    reference_rng = _rng_digest(_rng_state())
+    del optimizer, model
+    gc.collect()
+    torch.cuda.empty_cache()
+
+    resumed_model = fresh_model()
+    resumed_optimizer = make_optimizer(resumed_model)
+    manifest, restored = load_checkpoint(checkpoint, model=resumed_model,
+                                         identity=identity)
+    resumed_optimizer.load_state_dict(restored["optimizer"])
+    _restore_rng(restored["rng"])
+    resumed_next_loss = one_step(resumed_model, resumed_optimizer)
+    assert manifest["step"] == 1 and restored["interrupted_after_step"] == 1
+    assert resumed_next_loss == reference_next_loss
+    assert _model_digest(resumed_model) == reference_model
+    assert _optimizer_digest(resumed_optimizer) == reference_optimizer
+    assert _rng_digest(_rng_state()) == reference_rng
+    gpu_evidence[0]["measurements"]["full_size_checkpoint_replay"] = {
+        "architecture": "random_gpt2_medium_24l_16h_1024d",
+        "sequence_length": ids.shape[1],
+        "precision": "fp32_parameters_adam_bf16_autocast",
+        "first_loss": first_loss,
+        "reference_next_loss": reference_next_loss,
+        "resumed_next_loss": resumed_next_loss,
+        "model_equal": True,
+        "optimizer_equal": True,
+        "rng_equal": True,
+        "interruption_boundary": "after_optimizer_step_1",
+    }

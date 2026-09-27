@@ -1,68 +1,149 @@
 {
   "schema_version": 1,
   "stage_id": "06",
-  "status": "blocked_hardware_approval_and_inputs",
+  "status": "blocked_approval_inputs_4080_profile_and_complete_matrix",
   "starting_commit": "5396f84828bd2de5eb29b6f0467eb084c1b2af8c",
+  "resume_starting_commit": "aeb064f76ded84b7b1a7999371be6fd6ee7266f6",
   "implementation_milestones": [
     "760bf0cfbfaf690c0299a62cdcd60ae596276824",
-    "4241c6222567c3f1156c6eac9ab9329510cc9b54"
+    "4241c6222567c3f1156c6eac9ab9329510cc9b54",
+    "cd8e38619562c924d32bc1544eae2fa333b8c016"
   ],
   "task_status": {
     "06.1": "passed: all independent S1 C0-C6 and optional S3 C0-C4 configs validate strict study, architecture, variant, explicit seed and C4 device role",
-    "06.2": "implementation validated but approval blocked: explicit draft 21-run and 27-run S1 plans and disabled 15-run S3 plan; exact named job inspection never launches; no researcher-approved plan exists",
-    "06.3": "partial: full-size cached GPT-2-large teacher and random GPT-2-medium student pass native, adapter, intervention and five assigned-condition BF16 objective probes on actual RTX 4080 SUPER; RTX 3090 and C3/C4 assigned-device smoke blocked",
-    "06.4": "blocked: no RTX 3090 C4/REL profile, no complete seven-divisor matrix for every assigned condition/device, no common microbatch or accumulation lock, no approved training corpus/panels or production calibration factors",
-    "06.5": "partial: 4080 full-size FP32/BF16 diagnostic, causal metrics and RNG neutrality, plus tiny CUDA BF16 checkpoint/resume parity pass; full-size resume, both-device diagnostics and approval locks blocked"
+    "06.2": "implementation validated but approval blocked: explicit draft 21-run and 27-run S1 plans and disabled 15-run S3 plan; no researcher-approved plan exists",
+    "06.3": "passed engineering gate: assigned-condition full-size GPT-2-large to random GPT-2-medium native, adapter, intervention and BF16 objective smokes pass on the RTX 4080 SUPER and RTX 3090; the 3090 probe uses sequence length 128 and covers C1-C4 including REL; REL-on-4080 refusal remains enforced",
+    "06.4": "partial: 3090 sequence-128 full-cycle profiles establish safe maxima C1=16, C2=8, C3=8, C4=8 and an RTX-3090-only common microbatch 8/accumulation 8; final two-device common schedule, complete seven-divisor matrices, 4080 sequence-128 profiles, approved production corpus/panels and calibration factors are absent",
+    "06.5": "partial: 3090 full-size FP32/BF16 numerical, causal evaluation/RNG neutrality and full GPT-2-medium BF16 checkpoint destruction/reload/replay pass; approval locks, 4080 production-shape profiling and final readiness remain blocked"
   },
   "hardware": {
-    "available_gpu": "NVIDIA GeForce RTX 4080 SUPER",
-    "uuid": "GPU-72b4b307-b613-c35e-ea32-53f4431de9ee",
-    "reported_vram_mib": 16376,
+    "current_gpu": "NVIDIA GeForce RTX 3090",
+    "current_uuid": "GPU-a21766e4-bb31-9b79-5e8f-e58021e9708e",
+    "current_vram_mib": 24576,
     "driver": "591.86",
-    "missing_required_gpu": "RTX 3090 24 GB",
-    "host_ram_total_bytes": 68470386688,
-    "host_ram_free_bytes_at_report": 59112591360,
-    "c_drive_free_bytes_at_report": 1556115456,
-    "f_drive_free_bytes_at_report": 212486877184
+    "cuda_driver_api": "13.1",
+    "prior_evidence_gpu": "NVIDIA GeForce RTX 4080 SUPER",
+    "prior_evidence_uuid": "GPU-72b4b307-b613-c35e-ea32-53f4431de9ee",
+    "prior_evidence_vram_mib": 16376
+  },
+  "environment": {
+    "os": "Windows 11 WDDM",
+    "python": "3.12.3",
+    "torch": "2.10.0+cu128",
+    "torch_cuda": "12.8",
+    "cudnn": 91002,
+    "transformers": "5.3.0",
+    "dependency_lock": "uv.lock",
+    "dependency_install": "uv sync --locked",
+    "pip_check": "passed"
   },
   "artifacts": {
     "teacher_revision": "32b71b12589c2f8d625668d2335a01cac3249519",
     "teacher_safetensors_sha256": "5f47f3e12f91cd33b662ce7e433b6150ad5512b5884a2cee961b50e9c3bbebce",
-    "student": "random from full GPT-2-medium configuration, engineering seed 1729; no pretrained student weights",
-    "corpus": null,
+    "gpu_smoke_student": "random from full GPT-2-medium configuration, engineering seed 1729; no pretrained student weights",
+    "profile_student_initialization_sha256": "1a27890c588f317a4ae5523430f8af53c591bca29c9a78d13bf182c9c145fc09",
+    "profile_input_scope": "deterministic synthetic sequence-128 memory-shape fixture only",
+    "production_corpus": null,
     "frozen_training_calibration_panel": null,
     "approved_protocol_lock": null,
-    "approved_hardware_lock": null
+    "approved_hardware_lock": null,
+    "approved_calibration_lock": null
   },
   "evidence": {
     "rtx4080super_path": "reports/stage06_4080_gpu_evidence.json",
     "rtx4080super_sha256": "00c42af0d62c3aba3d8a76be6269814c695771ea19098f44812910b233a09fda",
-    "rtx3090_path": "reports/stage06_3090_gpu_evidence.json",
-    "rtx3090_sha256": "92b3a22a7d321c7e063208946c89ef9251b45edb1bff116ccdd1d2ba3d14b525",
-    "scope": "8-token synthetic full-size GPU engineering probes; measured preflight peak is not a 128-token optimizer/evaluation/save profile",
-    "preflight_peak_allocated_bytes": 4623578112,
+    "rtx3090_gpu_path": "reports/stage06_3090_gpu_evidence.json",
+    "rtx3090_gpu_sha256": "0513a8e8954ec5c2f0144f64e3d07ac563c3d5b9bf68215f3040094601e4ea15",
+    "rtx3090_profile_path": "reports/stage06_3090_profile_evidence.json",
+    "rtx3090_profile_sha256": "c0f612cdc2cc2d94607568bc723eb8d89599a7182cd661d6b5c5079351e2dca5",
+    "rtx3090_sequence_length": 128,
+    "rtx3090_safe_maxima": {
+      "C1": 16,
+      "C2": 8,
+      "C3": 8,
+      "C4": 8
+    },
+    "rtx3090_common_microbatch": 8,
+    "rtx3090_accumulation": 8,
+    "effective_sequences": 64,
+    "input_tokens_per_update": 8192,
+    "shifted_targets_per_update": 8128,
+    "final_two_device_common_microbatch": null,
     "fp32_native_and_noop_max_logit_error": 0.0,
     "fp32_feature_probability_max_error": 0.0,
-    "fp32_vs_bf16_max_logit_error": 0.028235673904418945,
-    "fp32_vs_bf16_ce_abs_nats_per_target": 0.00272369384765625,
-    "bf16_probability_row_sum_max_error": 1.1920928955078125e-07,
-    "tiny_cuda_resume_model_max_error": 0.0,
-    "tiny_cuda_resume_cursor_lr_rng_last_loss_equal": true,
-    "full_size_causal_evaluation_rng_neutral": true,
+    "fp32_vs_bf16_max_logit_error": 0.03470997512340546,
+    "fp32_vs_bf16_ce_abs_nats_per_target": 0.0006939745324803149,
+    "bf16_probability_row_sum_max_error": 2.384185791015625e-07,
+    "c4_raw_relation_loss_scale1": 0.8300293684005737,
+    "c4_first_qkv_grad_norm": 1.3967061042785645,
+    "evaluation_rng_neutral": true,
+    "full_size_checkpoint_next_loss": 9.506715774536133,
+    "full_size_checkpoint_resumed_next_loss": 9.506715774536133,
+    "full_size_checkpoint_model_optimizer_rng_equal": true,
     "calibration_factors": null,
-    "common_microbatch": null,
-    "accumulation": null,
     "production_10k_runs": 0
   },
   "tests": [
-    {"command": ".\\.venv\\Scripts\\python.exe -m pytest -q tests/unit/test_stage06_plans.py", "exit_code": 0, "passed": 6, "failed": 0, "skipped": 0},
-    {"command": ".\\.venv\\Scripts\\python.exe -m pytest -q tests/unit tests/integration -m 'not gpu and not network'", "exit_code": 0, "passed": 113, "failed": 0, "skipped": 0, "warnings": 1},
-    {"command": ".\\.venv\\Scripts\\python.exe -m pytest -q tests/gpu --device-role rtx4080super --evidence-out reports/stage06_4080_gpu_evidence.json", "exit_code": 0, "passed": 4, "failed": 0, "skipped": 0},
-    {"command": ".\\.venv\\Scripts\\python.exe -m pytest -q tests/gpu --device-role rtx3090 --evidence-out reports/stage06_3090_gpu_evidence.json", "exit_code": 0, "passed": 0, "failed": 0, "skipped": 4, "gate_status": "blocked_missing_gpu"},
-    {"command": ".\\.venv\\Scripts\\python.exe -m sinklab profile-candidate --config configs/s1/c4_rtx3090.json --seed 0 --microbatch 1 --corpus missing.json --panels missing.json --student-config missing.json --initialization missing.json --teacher-dir missing --profile-dir missing --output missing.json", "exit_code": 1, "expected_refusal": "actual GPU role differs from requested eligible role; no profile or run started"}
+    {
+      "command": ".\\.venv\\Scripts\\python.exe -m pytest -q tests\\unit\\test_stage06_plans.py",
+      "exit_code": 0,
+      "passed": 6,
+      "failed": 0,
+      "skipped": 0
+    },
+    {
+      "command": ".\\.venv\\Scripts\\python.exe -m pytest -q tests\\gpu --device-role rtx3090 --evidence-out reports\\stage06_3090_gpu_evidence.json --basetemp E:\\KD-SINK-stage06-3090\\pytest-temp-full-v4",
+      "exit_code": 0,
+      "passed": 5,
+      "failed": 0,
+      "skipped": 0
+    },
+    {
+      "command": ".\\.venv\\Scripts\\python.exe -m pytest -q tests\\unit tests\\integration -m \"not gpu and not network\"",
+      "exit_code": 0,
+      "passed": 113,
+      "failed": 0,
+      "skipped": 0,
+      "warnings": 1
+    },
+    {
+      "command": ".\\.venv\\Scripts\\python.exe -m pytest -q tests\\integration\\test_clean_wheel.py",
+      "exit_code": 0,
+      "passed": 1,
+      "failed": 0,
+      "skipped": 0,
+      "note": "repair verification after the exact sync exposed an undeclared python-build frontend assumption"
+    },
+    {
+      "command": ".\\.venv\\Scripts\\python.exe -m pip check",
+      "exit_code": 0,
+      "passed": 1,
+      "failed": 0,
+      "skipped": 0
+    },
+    {
+      "command": ".\\.venv\\Scripts\\uv.exe lock --check --python .\\.venv\\Scripts\\python.exe",
+      "exit_code": 0,
+      "passed": 1,
+      "failed": 0,
+      "skipped": 0
+    }
   ],
-  "scientific_coverage": "none; no S1/S3 production training, production calibration or full-context hardware fit is inferred from engineering probes",
+  "resolved_test_failures": [
+    "First full-size checkpoint replay run: 4 passed/1 failed because the test digest helper could not byte-view a scalar Adam step tensor; flattening before byte-view fixed the helper and the unchanged replay assertions passed.",
+    "First full CPU regression: 112 passed/1 failed because exact uv sync does not install the undeclared python-build frontend. The offline wheel test now uses the already-installed pip PEP 517 frontend with no build isolation/dependencies; the same no-Upstream wheel/install assertions pass."
+  ],
+  "scientific_coverage": "none; no S1/S3 production training or approved production calibration occurred",
   "upstream_files_changed": 0,
   "pushed": false,
-  "next_action": "On an available RTX 3090 with approved artifacts and protocol, run isolated full-context C4 and assigned-condition profiles; complete the two-device candidate matrix, freeze one common schedule, calibrate on the frozen training-only panel, then rerun full-size GPU resume/precision/readiness gates. S3 remains disabled until separately approved."
+  "remaining_blockers": [
+    "researcher approval of D01-D18 and the 21-versus-27 run allocation",
+    "approved protocol, artifact, environment, hardware and calibration locks",
+    "pinned production corpus, panels and seed-1729 calibration initialization",
+    "legitimate 16-effective-batch C3/C4 calibration factors",
+    "RTX 4080 SUPER sequence-128 full-cycle profiles and a final two-device common schedule",
+    "complete seven-divisor profile matrices required by build_batch_plan",
+    "optional S3 remains disabled"
+  ],
+  "next_action": "On the RTX 4080 SUPER, run the sequence-128 assigned-condition full-cycle profiles. After researcher approvals and pinned production artifacts exist, complete the profile matrices, freeze one two-device schedule no larger than microbatch 8, and run the 16-batch training-only calibration. Do not start 10k training before those locks exist."
 }

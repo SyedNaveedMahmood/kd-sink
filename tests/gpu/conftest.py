@@ -1,7 +1,9 @@
 """Explicit device selection for Stage 06 tests; no cross-device fallback."""
 
 import json
+import platform
 import subprocess
+import sys
 
 import pytest
 import torch
@@ -19,13 +21,18 @@ def gpu_evidence(request):
     devices = []
     for index in range(torch.cuda.device_count()):
         props = torch.cuda.get_device_properties(index)
-        devices.append({"index": index, "name": props.name, "total_bytes": props.total_memory})
+        devices.append({"index": index, "name": props.name,
+                        "total_bytes": props.total_memory,
+                        "compute_capability": list(torch.cuda.get_device_capability(index))})
     found = next((d for d in devices if ("3090" if role == "rtx3090" else "4080 SUPER") in d["name"].upper()), None)
     query = subprocess.run(["nvidia-smi", "--query-gpu=name,uuid,memory.total,memory.free,driver_version",
                             "--format=csv,noheader"], capture_output=True, text=True, check=False)
     evidence = {"requested_role": role, "visible_devices": devices,
                 "nvidia_smi": query.stdout.strip().splitlines() if query.returncode == 0 else None,
+                "python_version": sys.version.split()[0], "platform": platform.platform(),
                 "torch_version": torch.__version__, "transformers_version": transformers.__version__,
+                "torch_cuda_version": torch.version.cuda,
+                "cudnn_version": torch.backends.cudnn.version(),
                 "status": "available" if found else "blocked_missing_gpu", "measurements": {}}
     yield evidence, found
     path = request.config.getoption("--evidence-out")

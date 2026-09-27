@@ -62,12 +62,12 @@ Work order: [05_EVALUATION](design/e6a_v2/stages/05_EVALUATION.md).
 Work order: [06_S1_S3_INTEGRATION](design/e6a_v2/stages/06_S1_S3_INTEGRATION.md).
 - [x]06.1 Independent S1/S3 configs and variant checks.
 - [ ]06.2 Explicit approved job plans; no default sweeps.
-- [ ]06.3 Actual3090/4080 model/teacher/intervention/objective smoke.
+- [x]06.3 Actual3090/4080 model/teacher/intervention/objective smoke.
 - [ ]06.4 Measured profiles,common microbatch,calibration/resources.
 - [ ]06.5 ActualGPU resume/precision tests and readiness locks.
 - [ ] Stage06 required evidence reviewed and milestone committed; unavailableGPU marked BLOCKED.
 
-Stage06 status: BLOCKED. Draft 21/27 S1 and optional 15 S3 job plans validate and inspect one named run without launching, but none is researcher-approved. Real 4080 preflight and tiny CUDA resume pass; the RTX 3090, complete production-size profile matrix, common batch, frozen calibration panel/factors and approval locks are absent. See `reports/stage06.json`. No Stage07 work or production training started.
+Stage06 status: BLOCKED. Assigned-condition full-size smoke now passes on both recorded devices, including sequence-128 C1-C4 and C4/REL on the RTX 3090. Descending 3090 full-cycle profiles establish safe maxima C1=16 and C2/C3/C4=8, so the 3090-only common candidate is microbatch8 with accumulation8. This is not the final paired schedule: the required 4080 sequence-128 profiles, complete seven-divisor matrices, researcher approvals, production artifacts/panels, calibration factors and readiness locks are absent. See `reports/stage06.json`. No Stage07 work or production training started.
 
 ## Stage07 - S2
 Work order: [07_S2_PRETRAINING](design/e6a_v2/stages/07_S2_PRETRAINING.md).

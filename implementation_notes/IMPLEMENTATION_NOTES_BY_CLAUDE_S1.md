@@ -56,3 +56,13 @@ Exact final commands: `.\\.venv\\Scripts\\python.exe -m pytest -q tests/unit/tes
 ## 2026-09-27T11:01:30Z - Codex (GPT-6) - Stage06 S1 evidence SHA
 
 S1 Stage06 partial real-4080/blocking-3090 evidence and the 06.1 checklist update were committed as `cd8e38619562c924d32bc1544eae2fa333b8c016`. No production S1 run, common hardware plan, calibration factor, Stage07 work or push.
+
+## 2026-09-27T15:13:00Z - Codex (GPT-5) - S1 RTX 3090 Stage06 evidence
+
+Starting commit `aeb064f76ded84b7b1a7999371be6fd6ee7266f6` was verified in a fresh clone. On RTX3090 UUID `GPU-a21766e4-bb31-9b79-5e8f-e58021e9708e`, the full-size sequence128 S1 C1-C4 smoke passed, including C3 and C4/QQ+KK+VV. Raw scale1 C4 loss was0.8300293684 with finite first-QKV gradient norm1.3967061043; this is engineering evidence, not a calibrated coefficient.
+
+Descending complete-cycle profiles used64 sequences/update, BF16 autocast, FP32 student/Adam, full optimizer allocation, dense64-shaped evaluation and checkpoint serialization. Safe maxima were C1=16,C2=8,C3=8,C4=8; the 3090-only common candidate is microbatch8/accumulation8, preserving8192 inputs and8128 shifted targets. C4 mb8 peaked20,163,869,696 allocated/20,476,592,128 reserved with3,794,948,096 free against a2,576,927,948-byte margin; C4 mb16 was unsafe at30,663,444,992/30,809,260,032 and zero free. Complete measurements/failures are in `reports/stage06_3090_profile_evidence.json`.
+
+Sequence128 native/no-op/features, FP32/BF16 diagnostics and clean/no-op/delete/relocate evaluation passed with RNG neutrality. A full random GPT-2-medium checkpoint interruption/reconstruction replay matched the next loss, model, Adam and RNG exactly. Final GPU command passed5/5; final CPU regression passed113/113 with one external warning after repairing an undeclared wheel-frontend assumption without adding dependencies. `Upstream/` remained untouched.
+
+No approved production corpus/panels, calibration16x64 input, D01-D18 approval or hardware/calibration locks exist, so no C3/C4 factor or production S1 training was produced. The 4080 evidence is still sequence8; no final two-device common schedule can be frozen. `NEXT_STEPS` marks06.3 only. Stage06 remains BLOCKED; milestone commit pending and no push.

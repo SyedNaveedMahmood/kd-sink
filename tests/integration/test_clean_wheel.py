@@ -29,8 +29,9 @@ def test_offline_wheel_without_reference_tree(tmp_path):
 
     env = os.environ.copy()
     env.update(PIP_NO_INDEX="1", UV_OFFLINE="1", HF_HUB_OFFLINE="1")
-    _run([sys.executable, "-m", "build", "--wheel", "--no-isolation",
-          "--outdir", str(tmp_path / "dist")], cwd=isolated, env=env)
+    _run([sys.executable, "-m", "pip", "wheel", ".", "--no-build-isolation",
+          "--no-deps", "--wheel-dir", str(tmp_path / "dist")],
+         cwd=isolated, env=env)
     wheels = list((tmp_path / "dist").glob("*.whl"))
     assert len(wheels) == 1
     with zipfile.ZipFile(wheels[0]) as archive:

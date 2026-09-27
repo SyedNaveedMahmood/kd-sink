@@ -1,17 +1,155 @@
 {
-  "measurements": {},
+  "cudnn_version": 91002,
+  "measurements": {
+    "bf16_objective_smoke": {
+      "C1": {
+        "components": {
+          "ce": 11.018940925598145,
+          "kd": 2.1907031536102295
+        },
+        "first_qkv_grad_norm": 1.39586341381073,
+        "loss": 6.604822158813477
+      },
+      "C2": {
+        "components": {
+          "attention": 0.329352468252182,
+          "ce": 11.018940925598145,
+          "kd": 2.1907031536102295
+        },
+        "first_qkv_grad_norm": 1.396540641784668,
+        "loss": 6.641417026519775
+      },
+      "C3": {
+        "components": {
+          "attention": 0.004026812966912985,
+          "ce": 11.018940925598145,
+          "kd": 2.1907031536102295
+        },
+        "first_qkv_grad_norm": 1.3971168994903564,
+        "loss": 6.605269432067871
+      },
+      "C4": {
+        "components": {
+          "ce": 11.018940925598145,
+          "kd": 2.1907031536102295,
+          "relation": 0.8300293684005737
+        },
+        "first_qkv_grad_norm": 1.3967061042785645,
+        "loss": 6.697047710418701
+      }
+    },
+    "evaluation_rng_neutral": true,
+    "full_size_checkpoint_replay": {
+      "architecture": "random_gpt2_medium_24l_16h_1024d",
+      "first_loss": 11.034031867980957,
+      "interruption_boundary": "after_optimizer_step_1",
+      "model_equal": true,
+      "optimizer_equal": true,
+      "precision": "fp32_parameters_adam_bf16_autocast",
+      "reference_next_loss": 9.506715774536133,
+      "resumed_next_loss": 9.506715774536133,
+      "rng_equal": true,
+      "sequence_length": 128
+    },
+    "metric_operations": [
+      "clean",
+      "none",
+      "delete",
+      "relocate"
+    ],
+    "metric_summary": {
+      "clean": {
+        "clean_ce_nats": 11.018941323588214,
+        "edited_ce_nats": 11.018941323588214,
+        "prediction_flip_fraction": 0.0,
+        "self_kl_nats": 0.0,
+        "teacher_kl_nats": 3.1564736554003137
+      },
+      "delete": {
+        "clean_ce_nats": 11.018941323588214,
+        "edited_ce_nats": 11.009372260626845,
+        "prediction_flip_fraction": 0.5984251968503937,
+        "self_kl_nats": 0.027999199750855214,
+        "teacher_kl_nats": 3.1680221557617188
+      },
+      "none": {
+        "clean_ce_nats": 11.018941323588214,
+        "edited_ce_nats": 11.018941323588214,
+        "prediction_flip_fraction": 0.0,
+        "self_kl_nats": 0.0,
+        "teacher_kl_nats": 3.1564736554003137
+      },
+      "relocate": {
+        "clean_ce_nats": 11.018941323588214,
+        "edited_ce_nats": 11.007377083845965,
+        "prediction_flip_fraction": 0.6377952755905512,
+        "self_kl_nats": 0.036566790633314236,
+        "teacher_kl_nats": 3.173842542753445
+      }
+    },
+    "objective_smoke_scope": {
+      "batch": 1,
+      "c3_c4_scale_status": "raw_engineering_scale_1_not_calibration_factor",
+      "sequence_length": 128
+    },
+    "peak_allocated_bytes_preflight": 5105936896,
+    "precision": {
+      "bf16_probability_row_sum_max_abs": 2.384185791015625e-07,
+      "device": "cuda:0",
+      "fp32_noop_logit_max_abs": 0.0,
+      "fp32_vs_bf16_ce_abs_nats": 0.0006939745324803149,
+      "fp32_vs_bf16_logit_max_abs": 0.03470997512340546,
+      "schema_version": "e6a-v2-metrics-1",
+      "status": "diagnostic_only"
+    },
+    "sequence_length": 128,
+    "student": {
+      "delete_max_logit_change": 1.5889573097229004,
+      "native_logit_max_error": 0.0,
+      "noop_logit_max_error": 0.0,
+      "pre_dropout_probability_max_error": 0.0,
+      "relocate_max_logit_change": 1.6460273265838623
+    },
+    "teacher": {
+      "delete_max_logit_change": 0.9032707214355469,
+      "native_logit_max_error": 0.0,
+      "noop_logit_max_error": 0.0,
+      "pre_dropout_probability_max_error": 0.0,
+      "relocate_max_logit_change": 0.9032707214355469
+    },
+    "tiny_cuda_resume": {
+      "cpu_cuda_rng_equal": true,
+      "cursor_equal": true,
+      "last_loss_equal": true,
+      "lr_equal": true,
+      "model_max_error": 0.0,
+      "steps": 3
+    }
+  },
   "nvidia_smi": [
-    "NVIDIA GeForce RTX 4080 SUPER, GPU-72b4b307-b613-c35e-ea32-53f4431de9ee, 16376 MiB, 15660 MiB, 591.86"
+    "NVIDIA GeForce RTX 3090, GPU-a21766e4-bb31-9b79-5e8f-e58021e9708e, 24576 MiB, 23902 MiB, 591.86"
   ],
+  "platform": "Windows-11-10.0.26200-SP0",
+  "python_version": "3.12.3",
   "requested_role": "rtx3090",
-  "status": "blocked_missing_gpu",
+  "status": "available",
+  "student_initialization": "random_from_config_seed1729",
+  "student_parameters": 354823168,
+  "teacher_parameters": 774030080,
+  "teacher_revision": "32b71b12589c2f8d625668d2335a01cac3249519",
+  "teacher_safetensors_sha256": "5f47f3e12f91cd33b662ce7e433b6150ad5512b5884a2cee961b50e9c3bbebce",
+  "torch_cuda_version": "12.8",
   "torch_version": "2.10.0+cu128",
   "transformers_version": "5.3.0",
   "visible_devices": [
     {
+      "compute_capability": [
+        8,
+        6
+      ],
       "index": 0,
-      "name": "NVIDIA GeForce RTX 4080 SUPER",
-      "total_bytes": 17170956288
+      "name": "NVIDIA GeForce RTX 3090",
+      "total_bytes": 25769279488
     }
   ]
 }
