@@ -1,0 +1,12 @@
+{
+  "kind": "stage08_teacher_engineering_calibration_v1",
+  "status": "engineering_only_not_production_panel",
+  "source": "agent-authored English text frozen before GPT-2-large probe qualification",
+  "context": 128,
+  "texts": [
+    "At dawn the library opened its doors. A visitor returned a map, asked about the river path, and read a short note beside the window. Later, the librarian sorted the shelves while two students compared their notes about the old bridge and the public garden. The quiet room filled gradually as neighbors arrived to borrow books and discuss their plans for the week.",
+    "The weather station recorded a cool morning and a warm afternoon. Its operator checked each instrument, wrote down the readings, and sent a summary to the nearby school. The class used the report to compare yesterday's clouds with today's clear sky. They discussed how a change in wind could affect the route of a small sailing boat on the lake.",
+    "A cook prepared a simple meal for a group of friends. First she washed the vegetables and measured the rice. Then she heated a pan, added the ingredients in order, and tasted the soup before serving it. After dinner, everyone helped clean the table. They saved the remaining food for the next day and wrote down the recipe so they could make it again.",
+    "A train reached the station shortly before sunset. Travelers checked the platform signs, carried their bags across the hall, and waited for the doors to open. One passenger studied a timetable while another called home to say the journey was nearly finished. When the train departed, the station became quiet again and the lights along the track turned on."
+  ]
+}
