@@ -44,3 +44,14 @@ dimensions. Prepared manifest filenames contain their payload SHA-256. Use
 `sinklab.data.load_corpus` with the expected tokenizer file hash and manifest
 digest before consuming blocks. Production revisions, licenses, approvals,
 and hardware readiness are not established by these synthetic Stage 01 tests.
+
+Stage 02 adds CPU-tested eager-attention adapters for local
+`GPT2LMHeadModel` and `GPTNeoXForCausalLM` instances. Use
+`sinklab.adapt_causal_lm(model)` to run an unchanged full-context forward,
+`forward_with_features(...)` to obtain differentiable projected Q/K/V and
+normalized FP32 pre-dropout probabilities, or `forward(...,
+intervention=AttentionIntervention(...))` for a transactional delete,
+relocate, or explicit no-op before value aggregation. Feature and causal calls
+require `use_cache=False`, eager attention, right padding, and local model
+objects; they perform no downloads. Full-size and mixed-precision GPU parity
+remain Stage 06 gates.

@@ -22,10 +22,10 @@ Work order: [01_DATA_PROVENANCE](design/e6a_v2/stages/01_DATA_PROVENANCE.md).
 
 ## Stage02 - Models and interventions
 Work order: [02_MODEL_INTERVENTIONS](design/e6a_v2/stages/02_MODEL_INTERVENTIONS.md).
-- [ ]02.1 Native-faithful GPT-2/GPT-NeoX adapters.
-- [ ]02.2 Pre-dropout probabilities and Q/K/V,pure recomputation paths.
-- [ ]02.3 Delete/relocate/no-op before value aggregation.
-- [ ]02.4 Independent references and restoration checks.
+- [x]02.1 Native-faithful GPT-2/GPT-NeoX adapters.
+- [x]02.2 Pre-dropout probabilities and Q/K/V,pure recomputation paths.
+- [x]02.3 Delete/relocate/no-op before value aggregation.
+- [x]02.4 Independent references and restoration checks.
 - [ ]02.5 T02/T07/regression and measured tolerances.
 - [ ] Stage02 evidence reviewed and milestone committed.
 
