@@ -31,6 +31,9 @@ def main(argv: Sequence[str] | None = None) -> int:
     validate.add_argument("--seed", type=int, required=True)
     validate.add_argument("--protocol-lock", type=Path)
     validate.add_argument("--production", action="store_true")
+    jobs = command.add_parser("validate-job-plan", help="inspect explicit jobs; never launch")
+    jobs.add_argument("--plan", type=Path, required=True)
+    jobs.add_argument("--config-root", type=Path, required=True)
     corpus = command.add_parser("prepare-corpus", help="prepare a pinned local JSONL corpus; no downloads")
     corpus.add_argument("--input-jsonl", type=Path, required=True)
     corpus.add_argument("--tokenizer-dir", type=Path, required=True)
@@ -94,6 +97,9 @@ def main(argv: Sequence[str] | None = None) -> int:
         elif args.command in {"train", "profile-candidate"}:
             from .training_entry import run_approved_training, run_profile_candidate
             output = run_approved_training(args) if args.command == "train" else run_profile_candidate(args)
+        elif args.command == "validate-job-plan":
+            from .job_plan import validate_job_plan
+            output = validate_job_plan(_json(args.plan), args.config_root)
         elif args.command == "validate":
             raw = _json(args.config)
             lock = _json(args.protocol_lock) if args.protocol_lock else None

@@ -1,0 +1,83 @@
+{
+  "schema_version": 1,
+  "status": "draft",
+  "study": "S3",
+  "jobs": [
+    {
+      "run_id": "s3-c0-seed0-rtx3090",
+      "config": "s3/c0_rtx3090.json",
+      "seed": 0
+    },
+    {
+      "run_id": "s3-c0-seed1-rtx3090",
+      "config": "s3/c0_rtx3090.json",
+      "seed": 1
+    },
+    {
+      "run_id": "s3-c0-seed2-rtx3090",
+      "config": "s3/c0_rtx3090.json",
+      "seed": 2
+    },
+    {
+      "run_id": "s3-c1-seed0-rtx3090",
+      "config": "s3/c1_rtx3090.json",
+      "seed": 0
+    },
+    {
+      "run_id": "s3-c1-seed1-rtx3090",
+      "config": "s3/c1_rtx3090.json",
+      "seed": 1
+    },
+    {
+      "run_id": "s3-c1-seed2-rtx3090",
+      "config": "s3/c1_rtx3090.json",
+      "seed": 2
+    },
+    {
+      "run_id": "s3-c2-seed0-rtx3090",
+      "config": "s3/c2_rtx3090.json",
+      "seed": 0
+    },
+    {
+      "run_id": "s3-c2-seed1-rtx3090",
+      "config": "s3/c2_rtx3090.json",
+      "seed": 1
+    },
+    {
+      "run_id": "s3-c2-seed2-rtx3090",
+      "config": "s3/c2_rtx3090.json",
+      "seed": 2
+    },
+    {
+      "run_id": "s3-c3-seed0-rtx3090",
+      "config": "s3/c3_rtx3090.json",
+      "seed": 0
+    },
+    {
+      "run_id": "s3-c3-seed1-rtx3090",
+      "config": "s3/c3_rtx3090.json",
+      "seed": 1
+    },
+    {
+      "run_id": "s3-c3-seed2-rtx3090",
+      "config": "s3/c3_rtx3090.json",
+      "seed": 2
+    },
+    {
+      "run_id": "s3-c4-seed0-rtx3090",
+      "config": "s3/c4_rtx3090.json",
+      "seed": 0
+    },
+    {
+      "run_id": "s3-c4-seed1-rtx3090",
+      "config": "s3/c4_rtx3090.json",
+      "seed": 1
+    },
+    {
+      "run_id": "s3-c4-seed2-rtx3090",
+      "config": "s3/c4_rtx3090.json",
+      "seed": 2
+    }
+  ],
+  "optional_s3_enabled": false
+}

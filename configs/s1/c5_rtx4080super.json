@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "study": "S1",
+  "condition": "C5",
+  "variant": "cosine_soft_conditional_nosink_jsd_v1",
+  "device_role": "rtx4080super",
+  "teacher": {
+    "layers": 36,
+    "heads": 20,
+    "width": 1280
+  },
+  "student": {
+    "layers": 24,
+    "heads": 16,
+    "width": 1024,
+    "initialization": "random_from_config"
+  },
+  "protocol_digest": null
+}

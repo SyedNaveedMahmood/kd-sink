@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "study": "S3",
+  "condition": "C0",
+  "variant": "ce_only",
+  "device_role": "rtx3090",
+  "teacher": {
+    "layers": 12,
+    "heads": 12,
+    "width": 768
+  },
+  "student": {
+    "layers": 6,
+    "heads": 12,
+    "width": 768,
+    "initialization": "random_from_config"
+  },
+  "protocol_digest": null
+}
