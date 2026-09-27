@@ -8,7 +8,8 @@
     "760bf0cfbfaf690c0299a62cdcd60ae596276824",
     "4241c6222567c3f1156c6eac9ab9329510cc9b54",
     "cd8e38619562c924d32bc1544eae2fa333b8c016",
-    "63bfcf1b68bf57927a01cc3b01fdc9c1da3c0192"
+    "63bfcf1b68bf57927a01cc3b01fdc9c1da3c0192",
+    "afebe96eb4fb5fcbee910276684ca6d5e3cf54c6"
   ],
   "task_status": {
     "06.1": "passed: all independent S1 C0-C6 and optional S3 C0-C4 configs validate strict study, architecture, variant, explicit seed and C4 device role",
@@ -223,7 +224,7 @@
   ],
   "scientific_coverage": "none; no S1/S3 production training or approved production calibration occurred",
   "upstream_files_changed": 0,
-  "pushed": false,
+  "pushed": true,
   "remaining_blockers": [
     "researcher approval of D01-D18 and the 21-versus-27 run allocation",
     "approved protocol, artifact, environment, hardware and calibration locks",
@@ -256,5 +257,7 @@
     "C2 microbatch4 exceeded the margin by 170,242,868 bytes.",
     "C2/C5/C6 microbatch8 were terminated after real VRAM free fell below margin; no complete-cycle pass is claimed for them.",
     "Production calibration and scientific outcomes are not inferred from synthetic token IDs."
-  ]
+  ],
+  "latest_pushed_milestone": "afebe96eb4fb5fcbee910276684ca6d5e3cf54c6",
+  "push_destination": "origin/main"
 }
