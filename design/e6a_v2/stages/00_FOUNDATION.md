@@ -1,6 +1,6 @@
 # Stage00 - Foundations and strict configuration
 
-Status:NOT IMPLEMENTED. Start here. Read root AGENTS.md,NEXT_STEPS.md and current CORE journal, then DECISIONS.md,SOFTWARE_AND_ARTIFACT_CONTRACTS.md,SOURCES_AND_UPSTREAM_AUDIT.md.
+Status:NOT IMPLEMENTED. Start here. Read root AGENTS.md,NEXT_STEPS.md and `implementation_notes/IMPLEMENTATION_NOTES_BY_CLAUDE_CORE.md`, then DECISIONS.md,SOFTWARE_AND_ARTIFACT_CONTRACTS.md,SOURCES_AND_UPSTREAM_AUDIT.md.
 
 ## Tasks
 - [ ]00.1 Inspect current tree/licenses; record any borrowed functions and immutable provenance. Do not modify/delete Upstream.

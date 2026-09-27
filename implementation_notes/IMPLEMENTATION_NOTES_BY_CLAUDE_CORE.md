@@ -1,0 +1,40 @@
+# Append-only implementation journal - CORE
+
+The owner requires this filename for Claude,Codex and other coding agents. Identify the actual agent in entries. Use design/e6a_v2/templates/IMPLEMENTATION_LOG_TEMPLATE.md.
+
+## 2026-09-27 - ChatGPT design handoff
+Scope: researched E6A v2 design,not implementation/training. Reference commit96a80e1e7ad581728c8befd697547f9b3f3a2e85; uppercase Upstream preserved. User requirements include independent single-seed objectives,10k continuation,dense100-update causal measurements,common paired batching,REL-only3090,extensive tests,sequential stages and milestone commits.
+
+Important findings: old large/medium used mean-head JSD; paper-facing amad_jsd is differentiable cosine-soft alignment without a separate adapter. New probability-MSE/causal REL are explicit adaptations. Binary SinkOnly and masking BEFORE alignment are specified to prevent vacuous/leaky controls. Main architecture is20-to16 heads. Decisions/proposals/unknown measurements are separated in DECISIONS.md; no new research approval is inferred.
+
+User-visible communication: the design pack includes S1-S6,C0-C6,ten stages,checkpoint contracts,test gates,journals; source naming discrepancy reported; GitHub additions preserve Upstream. Experiment CPU/GPU tests and scientific runs are NOT performed by this design handoff. Subsequent agents must replace no claims with invented evidence.
+
+Next action: read AGENTS.md,NEXT_STEPS.md,DECISIONS.md and implement stage00. Do not launch a campaign until approvals/locks/actualGPU gates are complete.
+
+## 2026-09-27T07:17:24Z - Codex - Stage00/00.4 partial environment setup
+- Starting branch/commit: `main` at `4898be5c765298dd7f15f92653931cbac8dbb045` after `git pull --ff-only origin main`.
+- User request and approved scope: mirror the direct dependencies in `Upstream/requirements.txt` as TOML pins and create a local virtual environment; no dependency installation or experiment execution requested.
+- Source files/functions read,immutable revisions and licenses: read root instructions and Stage00 contracts plus `Upstream/requirements.txt`; no source functions or code were borrowed, and `Upstream/` was not changed.
+- Files changed: added `pyproject.toml` with 16 exact direct dependency pins and a CUDA 12.8 uv index/source mapping; added root `.gitignore` rules for `.venv` and Python caches; created ignored `.venv/`; appended this CORE entry.
+- Decisions,concise technical rationale and rejected alternatives: used Python 3.11 because the complete candidate set resolved for the available Python 3.11.7 interpreter; pinned the previously open upstream entries to versions returned by the package indexes and accepted together by pip's resolver. Kept the full legacy dependency set because the user explicitly requested parity, despite the new design's smaller candidate environment. Did not install the roughly 2.87 GB CUDA Torch wheel because creating the environment, not populating it, was requested.
+- Discoveries/discrepancies,affected runs,blockers: the upstream file left `huggingface_hub`, `peft`, `pyyaml`, `pyarrow`, `pytest`, and `pytest-timeout` partly or wholly unpinned. This setup pins them to `1.33.0`, `0.21.0`, `6.0.3`, `25.0.1`, `9.1.1`, and `2.4.0`, respectively. No scientific runs are affected. Full Stage00 dependency/import validation remains incomplete.
+- User-visible communications summary (no secrets/private reasoning): reported the successful pull, legacy-environment override, resolver result, CUDA wheel size, and creation/validation of the virtual environment.
+- Tests: `git pull --ff-only origin main` (exit 0); `python -m pip index versions <package>` for each previously unpinned package (all exit 0); `python -m pip install --dry-run --ignore-installed --extra-index-url https://download.pytorch.org/whl/cu128` with all 16 exact candidate pins (Python 3.11.7, CPU metadata resolution only, exit 0); `python -m venv .venv` followed by `.\\.venv\\Scripts\\python.exe --version`, pip version, TOML assertions for 16 pins and the Torch index, and `git check-ignore -v .venv\\pyvenv.cfg` (exit 0); `git diff --check` (exit 0). No package import, CPU suite, GPU test, or scientific run was performed.
+- Produced artifacts and hashes: `pyproject.toml` SHA-256 `2b6e979998a3323129f47d84468dc48272a14ec0dd8ffab1fb544f46a59d5189`; ignored local environment `.venv/` using Python 3.11.7 and pip 23.2.1.
+- NEXT_STEPS tasks actually completed: none; 00.4 stays unchecked pending installation, compatibility/import tests, and the required real environment lock evidence.
+- Remaining work/first task for the next agent: continue Stage00 from 00.1 in order; when reaching 00.4, install/test the approved minimal environment and generate the project lock evidence rather than treating this direct-pin resolution as the full gate.
+- Milestone commit (append after creation): none created in this session.
+
+## 2026-09-27T07:33:42Z - Codex - implementation-journal organization
+- Starting branch/commit: `main` at `4898be5c765298dd7f15f92653931cbac8dbb045` with the uncommitted Stage00/00.4 environment setup documented immediately above.
+- User request and approved scope: put all implementation-note files in one folder and push the changes.
+- Source files/functions read,immutable revisions and licenses: inspected all root `IMPLEMENTATION_NOTES_BY_CLAUDE_*.md` paths and every non-Upstream reference to those filenames; no source code was borrowed and `Upstream/` was unchanged.
+- Files changed: moved the CORE and S1-S6 journals into `implementation_notes/`; updated `AGENTS.md`, the design-pack reading order and software tree, Stage00 instructions, and all six study journal links.
+- Decisions,concise technical rationale and rejected alternatives: selected the explicit root-level `implementation_notes/` directory so journal filenames remain unchanged while their purpose stays discoverable. Updated references in the same change to prevent stale agent and study instructions.
+- Discoveries/discrepancies,affected runs,blockers: seven journal files existed; none remain at repository root. No experiment implementation or scientific run is affected.
+- User-visible communications summary (no secrets/private reasoning): reported the selected directory, the seven-file scope, reference updates, validation plan, and inclusion of the prior environment setup in the requested push.
+- Tests: enumerated `implementation_notes/IMPLEMENTATION_NOTES_BY_CLAUDE_*.md` and root matches (seven destination files, zero root files); reference search with `rg`; `git diff --check`; staged rename/diff inspection; post-push branch/status verification. The first negative-lookbehind `rg` attempt omitted `--pcre2` and returned a regex-engine error; it was rerun with `--pcre2`. No code tests were applicable.
+- Produced artifacts and hashes: none; documentation paths only.
+- NEXT_STEPS tasks actually completed: none.
+- Remaining work/first task for the next agent: continue Stage00 from task 00.1; use the journals under `implementation_notes/`.
+- Milestone commit (append after creation): none; this organizational delivery is committed and pushed per the user request after the entry is written.

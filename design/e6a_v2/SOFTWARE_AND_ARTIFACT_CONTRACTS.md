@@ -4,8 +4,9 @@
 ```text
 AGENTS.md
 NEXT_STEPS.md
-IMPLEMENTATION_NOTES_BY_CLAUDE_CORE.md
-IMPLEMENTATION_NOTES_BY_CLAUDE_S1.md ... _S6.md
+implementation_notes/
+  IMPLEMENTATION_NOTES_BY_CLAUDE_CORE.md
+  IMPLEMENTATION_NOTES_BY_CLAUDE_S1.md ... _S6.md
 pyproject.toml
 src/sinklab/
   cli.py config.py provenance.py data.py

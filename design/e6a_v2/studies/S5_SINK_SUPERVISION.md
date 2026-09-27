@@ -13,4 +13,4 @@ Conditional non-sink and binary targets change the auxiliary objective/informati
 
 No extra S5 training jobs or duplicated seed counts; every row points back to unique S1 run IDs and compatible versions.
 
-Journal: IMPLEMENTATION_NOTES_BY_CLAUDE_S5.md. Stage08, final analysis09.
+Journal: `implementation_notes/IMPLEMENTATION_NOTES_BY_CLAUDE_S5.md`. Stage08, final analysis09.

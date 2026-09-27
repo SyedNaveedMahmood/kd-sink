@@ -19,7 +19,7 @@ S1 contains 21 distinct condition/seed combinations. The recommended two-GPU blo
 2. [Objectives](OBJECTIVES.md), [data/provenance](DATA_AND_PROVENANCE.md), [models/interventions](MODEL_AND_INTERVENTION_CONTRACTS.md).
 3. [Metrics/analysis](METRICS_AND_ANALYSIS.md), [training/resume](TRAINING_AND_CHECKPOINTING.md), [hardware](HARDWARE_AND_EXECUTION.md), [software/artifacts](SOFTWARE_AND_ARTIFACT_CONTRACTS.md).
 4. Relevant file under `studies/`, then the current file under `stages/` and [test matrix](TEST_MATRIX.md).
-5. Root `NEXT_STEPS.md` and implementation journals.
+5. Root `NEXT_STEPS.md` and the journals under `implementation_notes/`.
 
 ## Revised evidence standard
 The manuscript's main 500-step study and single-seed longer-horizon appendix motivate a longitudinal, multi-seed replacement. Preserve its distinction among pattern, circuit, and function; do not presume its conclusion survives longer training. Ten thousand updates at this batch is 81.92M input tokens, not evidence of full pretraining convergence. A resumable 10k run supports later extension, but any claim about later development requires actual later measurements.

@@ -20,4 +20,4 @@ Local fake inventories exercise missing branches,seed1234 mapping,no-latest fall
 
 Architecture,data,tokenizer,schedule and scale differ from S1. Present within-family trajectories and qualitative developmental comparisons, not a randomized causal attribution. Missing observations remain missing. Cite Pythia/PolyPythias appropriately in the eventual manuscript using verified source metadata.
 
-Journal: IMPLEMENTATION_NOTES_BY_CLAUDE_S2.md. Stage07 after common evaluator.
+Journal: `implementation_notes/IMPLEMENTATION_NOTES_BY_CLAUDE_S2.md`. Stage07 after common evaluator.

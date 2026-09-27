@@ -16,4 +16,4 @@ Absence of these routes does not exhaustively identify a student's alternative c
 
 Required tests: batched EPE transport equals per-example reference; vector-sum conservation but no false norm claim; K/Q/V slices correctly isolated; top3 tie-break/random-set cardinality; all weights/modes restored after exceptions; zero-norm and small-baseline guards; explicit Pythia non-applicability.
 
-Journal: IMPLEMENTATION_NOTES_BY_CLAUDE_S4.md. Stage08.
+Journal: `implementation_notes/IMPLEMENTATION_NOTES_BY_CLAUDE_S4.md`. Stage08.

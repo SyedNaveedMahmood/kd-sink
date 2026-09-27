@@ -19,4 +19,4 @@ All C0-C6 unit/integration suites, exact resume and evaluation-RNG parity, actua
 
 Primary endpoint is10k with individual-seed and complete longitudinal evidence.10k is81.92M input tokens atcontext128, not full pretraining convergence. Increased function is a valid central finding. Nondetection is bounded to the horizon,operations,contexts and uncertainty tested. Later extension requires approved comparison coverage and full-state continuation, not a new warmup or selective favorable-condition extension.
 
-Journal: IMPLEMENTATION_NOTES_BY_CLAUDE_S1.md. Capability stages00-06, analysis/release09.
+Journal: `implementation_notes/IMPLEMENTATION_NOTES_BY_CLAUDE_S1.md`. Capability stages00-06, analysis/release09.

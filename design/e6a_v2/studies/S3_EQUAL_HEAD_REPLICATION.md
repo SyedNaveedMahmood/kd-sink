@@ -14,4 +14,4 @@ Same exact-resume,intervention,numerical and data tests, native teacher prefligh
 
 Implementing the capability does not authorize launching15 jobs. Report S3 optional or incomplete until actual approved coverage exists.
 
-Journal: IMPLEMENTATION_NOTES_BY_CLAUDE_S3.md. Capability stage06; analysis09.
+Journal: `implementation_notes/IMPLEMENTATION_NOTES_BY_CLAUDE_S3.md`. Capability stage06; analysis09.

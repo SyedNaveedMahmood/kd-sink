@@ -13,4 +13,4 @@ Keep integer teacher/student scopes and numerical policy explicit per length/cor
 
 Tests: deterministic selection/field extraction,no answer leakage,minimum2 real tokens,right padding,exact40/128 document matching,correct pooling,1024bound,no OOM truncation,edit restoration and no external code execution.
 
-Journal: IMPLEMENTATION_NOTES_BY_CLAUDE_S6.md. Stage08; long-context production separately approved.
+Journal: `implementation_notes/IMPLEMENTATION_NOTES_BY_CLAUDE_S6.md`. Stage08; long-context production separately approved.

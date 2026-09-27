@@ -22,7 +22,7 @@ This is a new implementation of the revised attention-sink study, not a patch to
 Important corrections: this architecture is 20 -> 16 attention heads; the older medium/small case was 16 -> 12. Legacy `amad_js_attn_loss` computes differentiable cosine-soft weights without a separately parameterized alignment module. It is not the published Jin A2D module. C3 is post-softmax, head-mean probability MSE, inspired by but not an exact reproduction of TinyBERT. C4 is a causal, multilayer adaptation of MiniLMv2. Details are in `OBJECTIVES.md`.
 
 ## Session records and milestone commits
-Maintain `IMPLEMENTATION_NOTES_BY_CLAUDE_CORE.md` and, for every affected study, `IMPLEMENTATION_NOTES_BY_CLAUDE_S1.md` through `..._S6.md`. Keep these exact names even when the agent is Codex; identify the actual agent in each entry. Append chronological entries; never rewrite previous findings. Use the template under `design/e6a_v2/templates/`.
+Maintain `implementation_notes/IMPLEMENTATION_NOTES_BY_CLAUDE_CORE.md` and, for every affected study, `implementation_notes/IMPLEMENTATION_NOTES_BY_CLAUDE_S1.md` through `..._S6.md`. Keep these exact names even when the agent is Codex; identify the actual agent in each entry. Append chronological entries; never rewrite previous findings. Use the template under `design/e6a_v2/templates/`.
 
 Record UTC time, starting commit, task IDs, files changed, concise decision rationale, discoveries, user-visible communications, exact test commands and exit status, failures/skips, artifact locations, next action, and milestone commit. Do not record secrets or hidden reasoning. A summary of technical reasons is sufficient.
 
