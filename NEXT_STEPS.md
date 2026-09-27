@@ -13,10 +13,10 @@ Work order: [00_FOUNDATION](design/e6a_v2/stages/00_FOUNDATION.md).
 
 ## Stage01 - Data and provenance
 Work order: [01_DATA_PROVENANCE](design/e6a_v2/stages/01_DATA_PROVENANCE.md).
-- [ ]01.1 Deterministic document split/dedup/packing/manifests.
-- [ ]01.2 Shared CPU FP32 initialization artifacts per seed.
-- [ ]01.3 Effective-update order,cursors,prefixes and extension.
-- [ ]01.4 Frozen evaluation/calibration panels with synthetic tests.
+- [x]01.1 Deterministic document split/dedup/packing/manifests.
+- [x]01.2 Shared CPU FP32 initialization artifacts per seed.
+- [x]01.3 Effective-update order,cursors,prefixes and extension.
+- [x]01.4 Frozen evaluation/calibration panels with synthetic tests.
 - [ ]01.5 T01/regression,usage and artifact evidence.
 - [ ] Stage01 evidence reviewed and milestone committed.
 

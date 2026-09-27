@@ -13,3 +13,6 @@ First tested milestone 3a84d0ae50750a6f71bc145f228a57b69f4bb514. T00 report: rep
 
 ## 2026-09-27T07:59:27Z - Codex (GPT-6) - milestone SHA correction
 Stage00 completion report and checklist were committed as bd14d04 (docs(stage00): record CPU gate and handoff). The first tested foundation milestone was 3a84d0a. No study or GPU run was performed.
+
+## 2026-09-27T08:49:00Z - Codex (GPT-6) - Stage01 domain input preparation
+Starting commit `e5b4ace`. Added offline synthetic SST-2 validation `sentence`, GSM8K test `question`, and HumanEval test `prompt` selection, each deterministically ranked to 100 unique documents with common 128/40 right-padded renderings and separate masks. Answer/completion/test fields are not copied into inputs; no HumanEval code is executed. This is only frozen input preparation, not Stage08 S6 evaluation or any task-accuracy result. No production source/revision/license, GPU or study run was verified; no Upstream reuse/change. Full CPU suite `.\.venv\Scripts\python.exe -m pytest -q tests/unit tests/integration -m 'not gpu and not network'` exited 0, 27 passed/0 failed/0 skipped (one external warning); see CORE for detailed evidence. User was updated on the offline fixture command path. Next: 01.5 report, then Stage08 S6 evaluation remains future work. Milestone SHA pending.

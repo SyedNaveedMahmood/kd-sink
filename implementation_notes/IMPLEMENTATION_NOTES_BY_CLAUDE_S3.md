@@ -13,3 +13,6 @@ First tested milestone 3a84d0ae50750a6f71bc145f228a57b69f4bb514. T00 report: rep
 
 ## 2026-09-27T07:59:27Z - Codex (GPT-6) - milestone SHA correction
 Stage00 completion report and checklist were committed as bd14d04 (docs(stage00): record CPU gate and handoff). The first tested foundation milestone was 3a84d0a. No study or GPU run was performed.
+
+## 2026-09-27T08:49:00Z - Codex (GPT-6) - Stage01 shared optional-S3 preparation boundary
+Starting commit `e5b4ace`. The offline Stage01 corpus/order and random CPU-FP32 GPT-2 initialization interfaces also accept explicit S3 dimensions; tests use tiny fixtures, not S3-scale models. No S3 approval, Pythia data, GPU, training or scientific execution was performed; `Upstream/` remained untouched. Full CPU suite `.\.venv\Scripts\python.exe -m pytest -q tests/unit tests/integration -m 'not gpu and not network'` exited 0, 27 passed/0 failed/0 skipped (one external warning); see CORE for detailed evidence and corrected initial CLI syntax error. User was updated about offline fixtures and test results. Next: 01.5 report, then separate later-stage S3 enablement only with approval. Milestone SHA pending.
