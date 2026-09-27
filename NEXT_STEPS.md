@@ -26,8 +26,8 @@ Work order: [02_MODEL_INTERVENTIONS](design/e6a_v2/stages/02_MODEL_INTERVENTIONS
 - [x]02.2 Pre-dropout probabilities and Q/K/V,pure recomputation paths.
 - [x]02.3 Delete/relocate/no-op before value aggregation.
 - [x]02.4 Independent references and restoration checks.
-- [ ]02.5 T02/T07/regression and measured tolerances.
-- [ ] Stage02 evidence reviewed and milestone committed.
+- [x]02.5 T02/T07/regression and measured tolerances.
+- [x] Stage02 evidence reviewed and milestone committed.
 
 ## Stage03 - Objectives
 Work order: [03_OBJECTIVES](design/e6a_v2/stages/03_OBJECTIVES.md).

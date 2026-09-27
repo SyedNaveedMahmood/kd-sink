@@ -1,0 +1,135 @@
+{
+  "schema_version": 1,
+  "stage_id": "02",
+  "status": "complete_cpu_tiny_models",
+  "starting_commit": "5108da8",
+  "implementation_milestone_commit": "c7bd0202024a8fcea962f3aa4c027b19f74bf879",
+  "regression_fix_commit": "464fdd24ae46a74b9b88c8f4dcf6d4c5883f321e",
+  "task_ids_completed": ["02.1", "02.2", "02.3", "02.4", "02.5"],
+  "scope": "Tiny randomly initialized GPT-2/GPT-NeoX CPU FP32 adapter and intervention validation only; no model download, full-size model, GPU, training or scientific run",
+  "changed_files": [
+    "src/sinklab/models.py",
+    "src/sinklab/interventions.py",
+    "src/sinklab/__init__.py",
+    "tests/unit/test_models.py",
+    "tests/unit/test_interventions.py",
+    "README.md",
+    "NEXT_STEPS.md",
+    "implementation_notes/IMPLEMENTATION_NOTES_BY_CLAUDE_CORE.md",
+    "implementation_notes/IMPLEMENTATION_NOTES_BY_CLAUDE_S1.md",
+    "implementation_notes/IMPLEMENTATION_NOTES_BY_CLAUDE_S2.md",
+    "reports/stage02.json"
+  ],
+  "decisions": [
+    "Clean calls delegate to the pinned Transformers 5.3.0 eager model without replacing parameters or modules.",
+    "Differentiable pre-dropout FP32 probabilities and projected Q/K/V are purely recomputed from returned layer inputs; no global collector or auxiliary side effect is used.",
+    "Causal calls transactionally replace selected attention forwards and edit normalized probabilities before dropout and value aggregation, restoring instance state in finally.",
+    "Delete uses a fresh conditional masked softmax of original scaled scores, so saturated sink rows do not divide by one minus sink mass and no uniform fallback exists.",
+    "Padding queries are excluded from valid edges and left unchanged; q0 and length-one rows remain unchanged when no valid alternative/destination exists.",
+    "Package-level model exports are lazy so the Stage00 dependency-free offline wheel import remains valid."
+  ],
+  "invariants_verified": [
+    "GPT-2 fused Conv1D QKV layout, scale flags, absolute-position behavior and tied input/output embeddings",
+    "GPT-NeoX fused Linear QKV layout, native rotary Q/K, unrotated V and parallel residual path",
+    "native causal/key padding support and explicit exclusion of padded query rows from valid edges",
+    "normalized FP32 probabilities before attention dropout and differentiable student Q/K/V/probability paths",
+    "native versus adapter clean/no-op forward and parameter-gradient parity",
+    "delete, relocate, explicit no-op and strength-zero edits before P@V with analytic downstream change",
+    "row sums, nonnegativity, causal support, q0, padding, length-one, doses and saturated-sink stability",
+    "integer native-layer scopes and exact mapped-teacher subsets, including generic key1 deletion support",
+    "returned attention tuple edits do not change already computed logits; causal adapter edits do",
+    "attention forward, parameters, modes and hooks restore after normal completion and forced exceptions",
+    "activation checkpoint recomputation matches direct feature gradients without duplicated feature side effects"
+  ],
+  "numerical_measurements": {
+    "fixture": "deterministic tiny CPU FP32 models from tests/unit/test_models.py",
+    "gpt2": {
+      "noop_logit_max_abs_error": 0.0,
+      "noop_gradient_max_abs_error": 0.0,
+      "feature_probability_vs_native_max_abs_error": 0.0,
+      "delete_logit_max_abs_change": 0.0987902358174324
+    },
+    "gpt_neox": {
+      "noop_logit_max_abs_error": 0.0,
+      "noop_gradient_max_abs_error": 0.0,
+      "feature_probability_vs_native_max_abs_error": 0.0,
+      "delete_logit_max_abs_change": 0.11851672828197479
+    },
+    "probability_rows": {
+      "fp32_sum_max_abs_error": 0.0,
+      "bf16_cast_sum_max_abs_error": 0.001220703125,
+      "fp32_validation_atol": 0.000002,
+      "note": "BF16 is recorded as cast-rounding sensitivity, not judged by the FP32 tolerance. Full mixed-precision model checks remain Stage06."
+    }
+  },
+  "tests": [
+    {
+      "id": "T02_T07_cpu_tiny",
+      "command": ".\\.venv\\Scripts\\python.exe -m pytest -q tests/unit/test_models.py tests/unit/test_interventions.py",
+      "device": "CPU",
+      "versions": "CPython 3.12.3; torch 2.10.0+cu128; transformers 5.3.0",
+      "exit_code": 0,
+      "passed": 40,
+      "failed": 0,
+      "skipped": 0
+    },
+    {
+      "id": "T00_T02_T07_cpu_regression_initial",
+      "command": ".\\.venv\\Scripts\\python.exe -m pytest -q tests/unit tests/integration -m 'not gpu and not network'",
+      "device": "CPU",
+      "exit_code": 1,
+      "passed": 67,
+      "failed": 1,
+      "skipped": 0,
+      "failure": "Dependency-free clean-wheel smoke imported eager Stage02 package exports and lacked torch. Fixed with lazy package exports; assertions and gate were not weakened."
+    },
+    {
+      "id": "T00_wheel_T02_T07_repair",
+      "command": ".\\.venv\\Scripts\\python.exe -m pytest -q tests/integration/test_clean_wheel.py tests/unit/test_models.py tests/unit/test_interventions.py",
+      "device": "CPU",
+      "exit_code": 0,
+      "passed": 41,
+      "failed": 0,
+      "skipped": 0
+    },
+    {
+      "id": "T00_T01_T02_T07_cpu_regression_final",
+      "command": ".\\.venv\\Scripts\\python.exe -m pytest -q tests/unit tests/integration -m 'not gpu and not network'",
+      "device": "CPU",
+      "exit_code": 0,
+      "passed": 68,
+      "failed": 0,
+      "skipped": 0,
+      "warnings": 1,
+      "note": "One external astor deprecation warning. Includes offline clean-wheel build/install/import with no Upstream tree."
+    },
+    {
+      "id": "dependency_metadata",
+      "command": ".\\.venv\\Scripts\\python.exe -m pip check",
+      "exit_code": 0
+    },
+    {
+      "id": "environment_lock",
+      "command": ".\\.venv\\Scripts\\uv.exe lock --check --python .\\.venv\\Scripts\\python.exe",
+      "exit_code": 0,
+      "resolved_packages": 121
+    }
+  ],
+  "required_tests_blocked": [],
+  "hardware_tested": ["CPU"],
+  "deferred_gates": [
+    "T02 real GPT-2-large/GPT-2-medium/Pythia model-scale no-op and mixed-precision checks on eligible RTX 3090/4080 SUPER hardware are Stage06",
+    "Production artifacts, approvals, profiles, training, evaluator metrics and scientific coverage"
+  ],
+  "network_downloads": 0,
+  "upstream_files_changed": 0,
+  "upstream_runtime_dependency": false,
+  "scientific_runs_executed": [],
+  "journal_paths": [
+    "implementation_notes/IMPLEMENTATION_NOTES_BY_CLAUDE_CORE.md",
+    "implementation_notes/IMPLEMENTATION_NOTES_BY_CLAUDE_S1.md",
+    "implementation_notes/IMPLEMENTATION_NOTES_BY_CLAUDE_S2.md"
+  ],
+  "next_task": "Stage03 task 03.1 only under a separate request; Stage06 retains full-size/GPU parity gates",
+  "note": "Stage02 CPU exit gate is complete. This does not establish production or GPU readiness."
+}
