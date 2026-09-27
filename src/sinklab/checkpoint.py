@@ -75,6 +75,11 @@ def save_checkpoint(root: Path, *, step: int, kind: str, model: torch.nn.Module,
     destination = root / name
     if destination.exists():
         verify_checkpoint(destination, identity=identity)
+        prior = load_file(str(destination / "model.safetensors"), device="cpu")
+        current = model.state_dict()
+        if set(prior) != set(current) or any(not torch.equal(prior[k], v.detach().cpu())
+                                             for k, v in current.items()):
+            raise CheckpointError("same-step checkpoint has different model content")
         return destination
     if kind != "weights" and state is None or kind == "weights" and state is not None:
         raise CheckpointError("full and weights-only classes require distinct payloads")
@@ -99,6 +104,8 @@ def save_checkpoint(root: Path, *, step: int, kind: str, model: torch.nn.Module,
         if fail_at == "before_rename":
             raise OSError("injected pre-rename save failure")
         os.replace(temporary, destination)
+        if fail_at == "after_rename":
+            raise OSError("injected post-rename save interruption")
         verify_checkpoint(destination, identity=identity)
         return destination
     finally:

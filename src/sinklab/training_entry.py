@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import math
 import subprocess
 import time
 from dataclasses import asdict
@@ -14,12 +15,14 @@ from transformers import GPT2Config, GPT2LMHeadModel
 
 from .config import MODELS, resolve_config
 from .data import load_corpus
+from .panels import validate_owt_panels
 from .hardware import DIVISORS, HardwareError, measure_candidate
 from .initialization import load_initialization
 from .models import GPT2Adapter, ModelShape
 from .provenance import canonical_json_bytes, payload_digest, validate_protocol_lock, verify_envelope
 from .train import Trainer, make_objective_loss
 from .interventions import AttentionIntervention
+from .evaluate import RecordStore, cadence, evaluate_panel
 
 
 def _read(path: Path) -> dict:
@@ -43,10 +46,26 @@ def _teacher_map(study: str) -> tuple[int, ...]:
     return (1, 3, 5, 7, 9, 11)
 
 
+def _model_digest(model: torch.nn.Module) -> str:
+    """Stream exact current tensor content into the evaluation cache identity."""
+    h = hashlib.sha256()
+    for name, tensor in sorted(model.state_dict().items()):
+        h.update(name.encode("utf-8") + b"\0")
+        h.update(str(tensor.dtype).encode("ascii") + b"\0")
+        h.update(canonical_json_bytes({"shape": list(tensor.shape)}))
+        h.update(tensor.detach().cpu().contiguous().view(torch.uint8).numpy().tobytes())
+    return h.hexdigest()
+
+
 def run_approved_training(args) -> dict:
     raw, protocol, plan = _read(args.config), _read(args.protocol_lock), _read(args.hardware_plan)
     spec = resolve_config(raw, seed=args.seed, protocol_lock=protocol, production=True)
     lock, _ = validate_protocol_lock(protocol)
+    evaluation_rules = lock["protocol"].get("evaluation")
+    if not isinstance(evaluation_rules, dict) or not isinstance(
+        evaluation_rules.get("fingerprint_denominator_floor"), (float, int)
+    ) or not math.isfinite(evaluation_rules["fingerprint_denominator_floor"]) or evaluation_rules["fingerprint_denominator_floor"] <= 0:
+        raise ValueError("approved protocol must lock fingerprint denominator floor")
     if plan.get("sha256") != payload_digest({k: v for k, v in plan.items() if k != "sha256"}):
         raise HardwareError("hardware plan checksum mismatch")
     if plan.get("evidence") != "measured_gpu" or lock["hardware_lock_digest"] != plan["sha256"]:
@@ -66,38 +85,74 @@ def run_approved_training(args) -> dict:
     config._attn_implementation = "eager"
     student = GPT2LMHeadModel(config)
     student.load_state_dict(load_initialization(args.initialization, config=config, seed=spec.seed), strict=True)
-    teacher = None
-    if spec.condition != "C0":
-        teacher = GPT2LMHeadModel.from_pretrained(str(args.teacher_dir), local_files_only=True,
-                                                   attn_implementation="eager")
-        teacher_shape = MODELS[spec.study][0]
-        teacher = GPT2Adapter(teacher, ModelShape(teacher_shape["layers"], teacher_shape["heads"],
-                                                   teacher_shape["width"]))
+    teacher = GPT2LMHeadModel.from_pretrained(str(args.teacher_dir), local_files_only=True,
+                                               attn_implementation="eager")
+    teacher_shape = MODELS[spec.study][0]
+    teacher = GPT2Adapter(teacher, ModelShape(teacher_shape["layers"], teacher_shape["heads"],
+                                               teacher_shape["width"]))
     student = GPT2Adapter(student, ModelShape(expected["layers"], expected["heads"], expected["width"]))
     corpus_doc = _read(args.corpus)
     tokenizer_hash = corpus_doc["payload"]["tokenizer"]["files_sha256"]
     corpus, corpus_hash = load_corpus(args.corpus, tokenizer_sha256=tokenizer_hash)
     blocks = {b["id"]: b["token_ids"] for b in corpus["partitions"]["training"]["blocks"]}
+    panel_doc = _read(args.panels)
+    panel_hash = validate_owt_panels(panel_doc, corpus_doc)
+    evaluation_blocks = {b["id"]: b["token_ids"] for b in corpus["partitions"]["evaluation"]["blocks"]}
     model_hash = hashlib.sha256(canonical_json_bytes(config.to_dict())).hexdigest()
     identity = {"study": spec.study, "condition": spec.condition, "seed": spec.seed,
                 "run_id": args.run_dir.name, "protocol_hash": spec.protocol_digest,
                 "data_hash": corpus_hash, "init_hash": _read(args.initialization)["payload"]["tensor_content_sha256"],
                 "hardware_hash": plan["sha256"], "calibration_hash": lock["calibration_lock_digest"],
                 "model_hash": model_hash, "precision": "bf16", "backend": "eager",
-                "microbatch": plan["microbatch"], "device_role": role}
+                "microbatch": plan["microbatch"], "device_role": role, "gpu_uuid": gpu_uuid}
     device = torch.device("cuda:0")
     student.model.to(device)
-    if teacher is not None:
-        teacher.model.to(device).eval().requires_grad_(False)
+    teacher.model.to(device).eval().requires_grad_(False)
     loss = make_objective_loss(study=spec.study, condition=spec.condition, student_adapter=student,
-                               teacher_adapter=teacher, teacher_map=_teacher_map(spec.study),
+                               teacher_adapter=None if spec.condition == "C0" else teacher,
+                               teacher_map=_teacher_map(spec.study),
                                mse_scale=args.mse_scale, rel_scale=args.rel_scale)
     trainer = Trainer(model=student.model, blocks=blocks, loss_fn=loss, identity=identity,
                       run_dir=args.run_dir, device=device, microbatch=plan["microbatch"],
                       seed=spec.seed)
     if (args.run_dir / "checkpoints").exists():
         trainer.resume()
-    result = trainer.train(stop_after=args.stop_after, extension_id=args.extension_id)
+    store = RecordStore(args.run_dir / "evaluation")
+    teacher_digest = _model_digest(teacher.model)
+    def evaluate_step(step: int) -> None:
+        for panel_name in cadence(step):
+            ids = panel_doc["payload"][panel_name]
+            items = [{"id": ident, "input_ids": evaluation_blocks[ident],
+                      "attention_mask": [1] * 128} for ident in ids]
+            result = evaluate_panel(adapter=student, items=items, panel=panel_name,
+                                    panel_hash=panel_hash, checkpoint_hash=_model_digest(student.model),
+                                    run_id=identity["run_id"], step=step, store=store,
+                                    teacher_adapter=None if panel_name == "owt_lm2000" else teacher,
+                                    teacher_map=_teacher_map(spec.study),
+                                    operations=("clean",) if panel_name == "owt_lm2000" else
+                                               ("clean", "delete", "relocate"),
+                                    precision="bf16", behavior_only=panel_name == "owt_lm2000",
+                                    denominator_floor=evaluation_rules["fingerprint_denominator_floor"],
+                                    run_identity={"study": spec.study, "condition": spec.condition,
+                                                  "seed": spec.seed, "model_sha256": model_hash,
+                                                  "corpus_sha256": corpus_hash,
+                                                  "protocol_sha256": spec.protocol_digest})
+            if any(row["status"] != "complete" for row in result["operations"].values()):
+                raise ValueError(f"evaluation incomplete: {panel_name} step {step}; inspect item records")
+            if panel_name != "owt_lm2000":
+                teacher_result = evaluate_panel(adapter=teacher, items=items, panel=panel_name,
+                    panel_hash=panel_hash, checkpoint_hash=teacher_digest,
+                    run_id=identity["run_id"], step=step, store=store,
+                    layer_scope=_teacher_map(spec.study), operations=("clean", "delete", "relocate"),
+                    precision="bf16", model_role="teacher",
+                    denominator_floor=evaluation_rules["fingerprint_denominator_floor"],
+                    run_identity={"study": spec.study, "condition": spec.condition,
+                                  "seed": spec.seed, "model_sha256": teacher_digest,
+                                  "corpus_sha256": corpus_hash, "protocol_sha256": spec.protocol_digest})
+                if any(row["status"] != "complete" for row in teacher_result["operations"].values()):
+                    raise ValueError(f"teacher evaluation incomplete: {panel_name} step {step}")
+    result = trainer.train(stop_after=args.stop_after, extension_id=args.extension_id,
+                           evaluate=evaluate_step)
     return {"action": "single_run_stopped", "study": spec.study, "condition": spec.condition,
             "seed": spec.seed, "run_id": identity["run_id"], "step": result.step,
             "input_tokens": result.input_tokens, "shifted_targets": result.target_tokens}
@@ -121,13 +176,11 @@ def run_profile_candidate(args) -> dict:
     student_model = GPT2LMHeadModel(config)
     student_model.load_state_dict(load_initialization(args.initialization, config=config, seed=spec.seed), strict=True)
     student = GPT2Adapter(student_model, ModelShape(expected["layers"], expected["heads"], expected["width"]))
-    teacher = None
-    if spec.condition != "C0":
-        teacher_model = GPT2LMHeadModel.from_pretrained(str(args.teacher_dir), local_files_only=True,
-                                                         attn_implementation="eager")
-        shape = MODELS[spec.study][0]
-        teacher = GPT2Adapter(teacher_model, ModelShape(shape["layers"], shape["heads"], shape["width"]))
-        teacher.model.cuda().eval().requires_grad_(False)
+    teacher_model = GPT2LMHeadModel.from_pretrained(str(args.teacher_dir), local_files_only=True,
+                                                     attn_implementation="eager")
+    shape = MODELS[spec.study][0]
+    teacher = GPT2Adapter(teacher_model, ModelShape(shape["layers"], shape["heads"], shape["width"]))
+    teacher.model.cuda().eval().requires_grad_(False)
     student.model.cuda()
     corpus_doc = _read(args.corpus)
     corpus, corpus_hash = load_corpus(args.corpus,
@@ -146,9 +199,10 @@ def run_profile_candidate(args) -> dict:
                 "hardware_hash": "candidate-only", "calibration_hash": "candidate-only",
                 "model_hash": hashlib.sha256(canonical_json_bytes(config.to_dict())).hexdigest(),
                 "precision": "bf16", "backend": "eager", "microbatch": args.microbatch,
-                "device_role": role}
+                "device_role": role, "gpu_uuid": uuid}
     loss = make_objective_loss(study=spec.study, condition=spec.condition, student_adapter=student,
-                               teacher_adapter=teacher, teacher_map=_teacher_map(spec.study),
+                               teacher_adapter=None if spec.condition == "C0" else teacher,
+                               teacher_map=_teacher_map(spec.study),
                                mse_scale=args.mse_scale, rel_scale=args.rel_scale)
     trainer = Trainer(model=student.model, blocks=training, loss_fn=loss, identity=identity,
                       run_dir=args.profile_dir, device=torch.device("cuda:0"),
@@ -170,18 +224,30 @@ def run_profile_candidate(args) -> dict:
                     student.forward(input_ids=ids)
                     for operation in ("delete", "relocate"):
                         student.forward(input_ids=ids, intervention=AttentionIntervention(operation))
+                    teacher.forward(input_ids=ids)
+                    for operation in ("delete", "relocate"):
+                        teacher.forward(input_ids=ids, intervention=AttentionIntervention(operation),
+                                        layer_scope=_teacher_map(spec.study))
         finally:
             student.model.train(was_training)
 
     started = time.perf_counter()
     args.profile_dir.mkdir(parents=True, exist_ok=False)
     from .checkpoint import writer_lock
-    with writer_lock(args.profile_dir):
-        profile = measure_candidate(condition=spec.condition, device_role=role,
-                                    device_uuid=uuid, microbatch=args.microbatch,
-                                    train_update=trainer._one_update, evaluate=evaluation_pass,
-                                    save=lambda: trainer._save("rolling"),
-                                    headroom_bytes=max(1610612736, int(torch.cuda.get_device_properties(0).total_memory * .1)))
+    try:
+        with writer_lock(args.profile_dir):
+            profile = measure_candidate(condition=spec.condition, device_role=role,
+                                        device_uuid=uuid, microbatch=args.microbatch,
+                                        train_update=trainer._one_update, evaluate=evaluation_pass,
+                                        save=lambda: trainer._save("rolling"),
+                                        headroom_bytes=max(1610612736, int(torch.cuda.get_device_properties(0).total_memory * .1)))
+    except Exception as exc:
+        failure = {"status": "failed", "evidence": "measured_gpu_candidate_failure",
+                   "condition": spec.condition, "device_role": role, "gpu_uuid": uuid,
+                   "microbatch": args.microbatch, "error_type": type(exc).__name__,
+                   "error": str(exc), "profile_dir": str(args.profile_dir)}
+        args.output.write_bytes(canonical_json_bytes(failure) + b"\n")
+        raise
     report = {"profile": asdict(profile), "gpu_name": name, "wall_seconds": time.perf_counter() - started,
               "profile_dir": str(args.profile_dir), "evidence": "measured_gpu", "status": "complete"}
     args.output.write_bytes(canonical_json_bytes(report) + b"\n")

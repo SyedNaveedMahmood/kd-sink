@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "stage_id": "05",
+  "status": "complete_cpu_evaluation",
+  "starting_commit": "8417c616bd2a7b5d8dfe51d65753a7b298a9bade",
+  "task_ids_completed": ["05.1", "05.2", "05.3", "05.4", "05.5"],
+  "evidence": {
+    "behavior": "CPU manual full-vocabulary references verify shifted CE/PPL from aggregate NLL, teacher-to-student KL at T=1, clean-to-intervened self-KL, absolute target log-probability change, flips and accuracies. Opposite signed CE effects cancel while absolute change and flips remain positive. Token chunking matches unchunked reductions.",
+    "structure": "Second-half real-query sink head/layer tables, native-layer amplitude, 16-point normalized depth, weighted 1D Wasserstein, guarded Spearman, full and sink-excluded head-mean similarities, and guarded absolute/ratio fingerprints are covered by tiny CPU fixtures.",
+    "cadence": "Simulated 0..10000 optimizer clock produces 101 dense observations at exact 100-update multiples, full observations at 0/100/250/500/1000/2000/5000/7500/10000, and clean NLL-only endpoints at 0/10000. Step250 does not replace 200 or 300.",
+    "records": "Each item key includes run provenance, panel hash, checkpoint tensor hash, model role, step, scope, intervention, strength, precision, numerical floor and version. Atomic checksummed item and aggregate records cache completed observations; failed/missing IDs remain explicit and failed retry is opt-in. Endpoint records contain clean NLL/count/accuracy only.",
+    "neutrality": "Actual tiny causal evaluation inserted between updates 2 and 3 leaves subsequent model tensors and data order identical to a five-update run without it. Exception tests restore Python/NumPy/Torch RNG and model modes. A mid-accumulation failure replays from the prior full state to exact weights/order. No-op causal effects are zero within 1e-6 in the CPU fixture.",
+    "analysis_primitives": "Paired-seed joins require one endpoint per seed within one device block; duplicate hardware replicas and missing points fail. Matched-CE selection uses CE and step only; changing sink fields does not alter the chosen pair."
+  },
+  "tests": [
+    {"id": "T07_T08_T10_targeted_final", "command": ".\\.venv\\Scripts\\python.exe -m pytest -q tests/unit/test_analysis_primitives.py tests/unit/test_metrics_evaluate.py tests/unit/test_train_resume.py tests/integration/test_cli.py", "device": "CPU", "exit_code": 0, "passed": 23, "failed": 0, "skipped": 0},
+    {"id": "full_cpu_regression_final", "command": ".\\.venv\\Scripts\\python.exe -m pytest -q tests/unit tests/integration -m 'not gpu and not network'", "device": "CPU", "versions": "CPython 3.12.3; torch 2.10.0+cu128; transformers 5.3.0", "exit_code": 0, "passed": 107, "failed": 0, "skipped": 0, "warnings": 1}
+  ],
+  "stage04_followup_fixes": ["Reject existing same-step checkpoints with different model tensors during replay.", "Save protected 10k full state before endpoint evaluation, so an evaluation failure cannot remove the continuation point.", "Load the pinned teacher for C0 evaluation while keeping it out of C0 training objectives; identify actual GPU name/UUID/VRAM in the banner.", "Report each active objective component as an effective-batch weighted value and inactive components as null; require FP32 trainable student parameters and persist failed real profile candidate evidence.", "Validate manifest step and cumulative token counters during resume; simulate failures during accumulation and after atomic rename."],
+  "failed_attempts": ["A progress-log edit briefly misplaced an except clause; repaired before the final scoped and full CPU regressions."],
+  "hardware_tested": ["CPU"],
+  "required_tests_blocked": [],
+  "deferred_gates": ["Stage06 actual RTX 3090/RTX 4080 SUPER full-size FP32/BF16, intervention, profile and resume diagnostics", "Approved protocol must lock the fingerprint denominator floor and all production artifacts/hardware/calibration before runs", "No GPU readiness or production trajectory is claimed from simulated clock tests"],
+  "scientific_runs_executed": [],
+  "network_downloads": 0,
+  "upstream_files_changed": 0,
+  "next_task": "Stage06 handoff only; do not start Stage06 in this session"
+}

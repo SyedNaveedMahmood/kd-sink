@@ -62,7 +62,7 @@ def main(argv: Sequence[str] | None = None) -> int:
     order.add_argument("--updates", type=int, required=True)
     order.add_argument("--out-dir", type=Path, required=True)
     train = command.add_parser("train", help="one approved condition/seed; no sweep")
-    for flag in ("config", "protocol-lock", "hardware-plan", "corpus", "student-config",
+    for flag in ("config", "protocol-lock", "hardware-plan", "corpus", "panels", "student-config",
                  "initialization", "teacher-dir", "run-dir"):
         train.add_argument(f"--{flag}", type=Path, required=True)
     train.add_argument("--seed", type=int, required=True)

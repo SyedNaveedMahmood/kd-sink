@@ -3,6 +3,7 @@
   "stage_id": "04",
   "status": "complete_cpu_trainer",
   "starting_commit": "29c4c6f0fdbc9a966655a0b3e5086cfc261f363b",
+  "milestone_commit": "8417c616bd2a7b5d8dfe51d65753a7b298a9bade",
   "task_ids_completed": ["04.1", "04.2", "04.3", "04.4", "04.5", "04.6"],
   "evidence": {
     "resume": "Tiny CPU FP32 5 updates equals 2 plus resume to 5 in exact model tensors, optimizer LR, order cursor and snapshot; separately resumed sixth update matches optimizer moments, model tensors, order and next loss exactly.",

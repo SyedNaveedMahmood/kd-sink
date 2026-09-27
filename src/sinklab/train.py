@@ -103,7 +103,8 @@ class Trainer:
                  loss_fn: Callable[[torch.Tensor], tuple[torch.Tensor, Mapping[str, float]]],
                  identity: dict, run_dir: Path, device: torch.device,
                  microbatch: int, seed: int, engineering_fixture: bool = False):
-        if set(identity) != REQUIRED_IDENTITY or identity["seed"] != seed or identity["microbatch"] != microbatch:
+        if (set(identity) not in (REQUIRED_IDENTITY, REQUIRED_IDENTITY | {"gpu_uuid"}) or
+                identity["seed"] != seed or identity["microbatch"] != microbatch):
             raise TrainError("immutable single-run identity is incomplete or inconsistent")
         if identity["study"] not in {"S1", "S3"} or identity["condition"] not in {f"C{i}" for i in range(7)}:
             raise TrainError("one explicit supported study/condition required")
@@ -112,6 +113,8 @@ class Trainer:
             raise TrainError("production C4 requires RTX 3090")
         if not engineering_fixture and (device.type != "cuda" or identity["precision"] != "bf16"):
             raise TrainError("production training requires pinned CUDA/BF16 plan")
+        if not engineering_fixture and any(p.dtype != torch.float32 for p in model.parameters() if p.requires_grad):
+            raise TrainError("production student trainable parameters must remain FP32")
         if microbatch not in (1, 2, 4, 8, 16, 32, 64) or not blocks:
             raise TrainError("microbatch must divide 64 and block manifest must be nonempty")
         lengths = {len(v) for v in blocks.values()}
@@ -143,7 +146,7 @@ class Trainer:
 
     def resume(self, path: Path | None = None) -> None:
         path = path or latest_full(self.run_dir / "checkpoints", identity=self.identity)
-        _, saved = load_checkpoint(path, model=self.model, identity=self.identity)
+        manifest, saved = load_checkpoint(path, model=self.model, identity=self.identity)
         if saved is None or saved["schema_version"] != 1 or saved["scaler"] is not None:
             raise TrainError("full unscaled trainer state required")
         sched = saved["scheduler"]
@@ -155,6 +158,11 @@ class Trainer:
         self.order = UpdateOrder.resume(list(self.blocks), saved["order"])
         self.state = TrainingState(**saved["counters"])
         self.extension_id = saved["extension_id"]
+        length = len(next(iter(self.blocks.values())))
+        if (manifest["step"] != self.state.step or
+                self.state.input_tokens != self.state.step * 64 * length or
+                self.state.target_tokens != self.state.step * 64 * (length - 1)):
+            raise TrainError("checkpoint step or token counters disagree")
         if self.order.presentations != self.state.step * 64:
             raise TrainError("data cursor and optimizer clock disagree")
         backend = saved["backend"]
@@ -176,7 +184,9 @@ class Trainer:
             group["lr"] = update_lr(next_step, self.peak_lr)
         self.optimizer.zero_grad(set_to_none=True)
         samples = self.order.take_update()
-        losses, diagnostics = [], {}
+        losses = []
+        diagnostics: dict[str, float | None] = {"ce": None, "kd": None,
+                                                "attention": None, "relation": None}
         for batch in microbatches(samples, self.microbatch):
             ids = torch.tensor([self.blocks[item["block_id"]] for item in batch],
                                dtype=torch.long, device=self.device)
@@ -187,7 +197,10 @@ class Trainer:
                 raise TrainError("nonfinite or nonscalar objective")
             (loss * len(batch) / 64).backward()
             losses.append(float(loss.detach()) * len(batch) / 64)
-            diagnostics = dict(active)
+            for name, value in active.items():
+                if name not in diagnostics:
+                    raise TrainError(f"unknown active objective component: {name}")
+                diagnostics[name] = (diagnostics[name] or 0.) + float(value) * len(batch) / 64
         grad_norm = float(torch.nn.utils.clip_grad_norm_(self.model.parameters(), 1.0))
         if not math.isfinite(grad_norm):
             raise TrainError("nonfinite accumulated gradient")
@@ -225,9 +238,14 @@ class Trainer:
                 self._save("weights")
                 if evaluate is not None:
                     evaluate(0)
+            elif evaluate is not None and (self.state.step % 100 == 0 or self.state.step == 250):
+                evaluate(self.state.step)  # idempotent cache completes interrupted evaluation
             banner = {"event": "start", "study": self.identity["study"],
                       "condition": self.identity["condition"], "seed": self.seed,
                       "run_id": self.identity["run_id"], "gpu": str(self.device),
+                      "gpu_name": torch.cuda.get_device_name(self.device) if self.device.type == "cuda" else None,
+                      "gpu_uuid": self.identity.get("gpu_uuid"),
+                      "gpu_total_bytes": torch.cuda.get_device_properties(self.device).total_memory if self.device.type == "cuda" else None,
                       "microbatch": self.microbatch, "accumulation": 64 // self.microbatch,
                       "effective_batch": 64, "input_tokens_per_update": 64 * len(next(iter(self.blocks.values()))),
                       "target_tokens_per_update": 64 * (len(next(iter(self.blocks.values()))) - 1),
@@ -276,6 +294,8 @@ class Trainer:
                     if step % 500 == 0:
                         self._save("rolling")
                         prune_rolling(self.run_dir / "checkpoints", identity=self.identity)
+                    if step == 10000:
+                        self._save("final")  # preserve continuation even if endpoint evaluation fails
                     if evaluate is not None and (step % 100 == 0 or step == 250):
                         evaluate(step)
                 if self.state.step == 10000 or (self.state.step > 10000 and self.state.step == stop_after):

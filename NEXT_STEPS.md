@@ -51,12 +51,12 @@ Work order: [04_TRAINER_RESUME](design/e6a_v2/stages/04_TRAINER_RESUME.md).
 
 ## Stage05 - Evaluation
 Work order: [05_EVALUATION](design/e6a_v2/stages/05_EVALUATION.md).
-- [ ]05.1 Exact behavioral/causal full-vocabulary metrics.
-- [ ]05.2 Structure/topology/fingerprint primitives.
-- [ ]05.3 Dense/full cadence and RNG-neutral evaluator.
-- [ ]05.4 Versioned per-item records,caches and resume.
-- [ ]05.5 T07/T08/T10/cancellation/training-parity evidence.
-- [ ] Stage05 evidence reviewed and milestone committed.
+- [x]05.1 Exact behavioral/causal full-vocabulary metrics.
+- [x]05.2 Structure/topology/fingerprint primitives.
+- [x]05.3 Dense/full cadence and RNG-neutral evaluator.
+- [x]05.4 Versioned per-item records,caches and resume.
+- [x]05.5 T07/T08/T10/cancellation/training-parity CPU evidence.
+- [x] Stage05 CPU evidence reviewed and milestone committed; realGPU validation remains Stage06.
 
 ## Stage06 - S1/S3 and hardware
 Work order: [06_S1_S3_INTEGRATION](design/e6a_v2/stages/06_S1_S3_INTEGRATION.md).

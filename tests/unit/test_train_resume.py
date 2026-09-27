@@ -107,6 +107,11 @@ def test_atomic_failure_corruption_and_writer(tmp_path):
         save_checkpoint(root, step=2, kind="rolling", model=trainer.model,
                         state=trainer._snapshot(), identity=trainer.identity, fail_at="before_rename")
     assert latest_full(root, identity=trainer.identity) == prior
+    with pytest.raises(OSError), writer_lock(tmp_path):
+        save_checkpoint(root, step=2, kind="weights", model=trainer.model,
+                        state=None, identity=trainer.identity, fail_at="after_rename")
+    assert verify_checkpoint(root / "weights-000002", identity=trainer.identity)["step"] == 2
+    assert latest_full(root, identity=trainer.identity) == prior
     with writer_lock(tmp_path):
         with pytest.raises(CheckpointError, match="duplicate writer"):
             with writer_lock(tmp_path):
@@ -114,6 +119,11 @@ def test_atomic_failure_corruption_and_writer(tmp_path):
     (root / "rolling-000999").mkdir()
     assert latest_full(root, identity=trainer.identity) == prior
     assert verify_checkpoint(prior, identity=trainer.identity)["step"] == 1
+    with torch.no_grad():
+        trainer.model.linear.bias.add_(1)
+    with pytest.raises(CheckpointError, match="different model content"):
+        save_checkpoint(root, step=1, kind="rolling", model=trainer.model,
+                        state=trainer._snapshot(), identity=trainer.identity)
     with pytest.raises(CheckpointError):
         verify_checkpoint(prior, identity={**trainer.identity, "seed": 7})
 
@@ -149,3 +159,87 @@ def test_effective_batch_accumulates_once_and_stop_keeps_clock(tmp_path):
     assert small.state.target_tokens == 64 * 3
     with pytest.raises(ValueError, match="extension ID"):
         run_silent(small, stop_after=10001)
+
+
+def test_rng_neutral_evaluation_insertion_preserves_future_training(tmp_path):
+    from sinklab.evaluate import RecordStore, evaluate_panel
+    from sinklab.models import GPT2Adapter
+    from transformers import GPT2Config, GPT2LMHeadModel
+    baseline = fixture(tmp_path / "baseline")
+    run_silent(baseline, stop_after=5)
+    adapter = GPT2Adapter(GPT2LMHeadModel(GPT2Config(
+        vocab_size=11, n_positions=4, n_ctx=4, n_embd=8, n_layer=1, n_head=2,
+        resid_pdrop=.2, embd_pdrop=.2, attn_pdrop=.2, _attn_implementation="eager")))
+    inserted = fixture(tmp_path / "inserted")
+    run_silent(inserted, stop_after=2)
+    with contextlib.redirect_stdout(io.StringIO()):
+        evaluation = evaluate_panel(adapter=adapter, items=[{"id": "x", "input_ids": [1, 2, 3, 4],
+                             "attention_mask": [1, 1, 1, 1]}], panel="fixture",
+                             panel_hash="a" * 64, checkpoint_hash="b" * 64,
+                             run_id="parity", step=2, store=RecordStore(tmp_path / "evaluation"),
+                             operations=("clean", "delete", "relocate"), terminal=False)
+    assert all(row["status"] == "complete" for row in evaluation["operations"].values())
+    run_silent(inserted, stop_after=5)
+    for a, b in zip(baseline.model.parameters(), inserted.model.parameters()):
+        torch.testing.assert_close(a, b, rtol=0, atol=0)
+    assert baseline.order.snapshot() == inserted.order.snapshot()
+
+
+def test_mid_accumulation_failure_replays_from_last_full_state(tmp_path):
+    baseline = fixture(tmp_path / "baseline")
+    run_silent(baseline, stop_after=3)
+    broken = fixture(tmp_path / "interrupted")
+    original, calls = broken.loss_fn, 0
+    def fail_on_second_microbatch(ids):
+        nonlocal calls
+        calls += 1
+        if calls == 2:
+            raise RuntimeError("injected mid-accumulation interruption")
+        return original(ids)
+    broken.loss_fn = fail_on_second_microbatch
+    with pytest.raises(RuntimeError, match="mid-accumulation"):
+        run_silent(broken, stop_after=3)
+    restored = fixture(tmp_path / "interrupted")
+    restored.resume()
+    assert restored.state.step == 0
+    run_silent(restored, stop_after=3)
+    for a, b in zip(baseline.model.parameters(), restored.model.parameters()):
+        torch.testing.assert_close(a, b, rtol=0, atol=0)
+    assert baseline.order.snapshot() == restored.order.snapshot()
+
+
+def test_simulated_10k_trainer_clock_keeps_250_full_and_final(tmp_path):
+    from sinklab.evaluate import cadence
+    trainer = fixture(tmp_path)
+    observations, saves = [], []
+    def fake_update():
+        trainer.state.step += 1
+        trainer.state.input_tokens += 256
+        trainer.state.target_tokens += 192
+        return 0., {"grad_norm": 0.}
+    trainer._one_update = fake_update
+    trainer._save = lambda kind: saves.append((kind, trainer.state.step))
+    trainer.train(stop_after=10000, evaluate=lambda step: observations.append((step, cadence(step))),
+                  terminal=False, text_interval=10001)
+    dense = [step for step, panels in observations if "owt_dense64" in panels]
+    assert dense == list(range(0, 10001, 100))
+    assert (250, ("owt_full300",)) in observations
+    assert ("final", 10000) in saves
+
+
+def test_non_tty_banner_and_update_are_structured(tmp_path):
+    import json
+    trainer = fixture(tmp_path)
+    output = io.StringIO()
+    with contextlib.redirect_stdout(output):
+        trainer.train(stop_after=1, terminal=False, text_interval=1)
+    rows = [json.loads(line) for line in output.getvalue().splitlines()]
+    banner, update = rows
+    assert (banner["study"], banner["condition"], banner["seed"], banner["run_id"]) == ("S1", "C0", 5, "test")
+    assert (banner["microbatch"], banner["accumulation"], banner["effective_batch"]) == (8, 8, 64)
+    assert banner["gpu_name"] is None and banner["gpu_total_bytes"] is None
+    assert update["step"] == 1 and update["loss"] > 0
+    assert update["ce"] == pytest.approx(update["loss"], abs=1e-7)
+    assert update["kd"] is None and update["attention"] is None and update["relation"] is None
+    assert update["input_tokens"] == 256 and update["target_tokens"] == 192
+    assert update["eta_train_seconds"] > 0 and update["tokens_per_second"] > 0
