@@ -1,50 +1,63 @@
 {
+  "cudnn_version": 91002,
   "measurements": {
     "bf16_objective_smoke": {
       "C0": {
         "components": {
-          "ce": 10.988706588745117
+          "ce": 11.018804550170898
         },
-        "first_qkv_grad_norm": 12.573637962341309,
-        "loss": 10.988706588745117
+        "first_qkv_grad_norm": 2.77984881401062,
+        "loss": 11.018804550170898
       },
       "C1": {
         "components": {
-          "ce": 10.988706588745117,
-          "kd": 5.27398681640625
+          "ce": 11.018804550170898,
+          "kd": 2.1916840076446533
         },
-        "first_qkv_grad_norm": 6.8192362785339355,
-        "loss": 8.131346702575684
+        "first_qkv_grad_norm": 1.3963428735733032,
+        "loss": 6.605244159698486
       },
       "C2": {
         "components": {
-          "attention": 0.20148977637290955,
-          "ce": 10.988706588745117,
-          "kd": 5.27398681640625
+          "attention": 0.32936760783195496,
+          "ce": 11.018804550170898,
+          "kd": 2.1916840076446533
         },
-        "first_qkv_grad_norm": 6.812009811401367,
-        "loss": 8.15373420715332
+        "first_qkv_grad_norm": 1.3958888053894043,
+        "loss": 6.64184045791626
       },
       "C5": {
         "components": {
-          "attention": 0.06426210701465607,
-          "ce": 10.988706588745117,
-          "kd": 5.27398681640625
+          "attention": 0.2048613429069519,
+          "ce": 11.018804550170898,
+          "kd": 2.1916840076446533
         },
-        "first_qkv_grad_norm": 6.814536094665527,
-        "loss": 8.138486862182617
+        "first_qkv_grad_norm": 1.396286964416504,
+        "loss": 6.628006458282471
       },
       "C6": {
         "components": {
-          "attention": 0.17381387948989868,
-          "ce": 10.988706588745117,
-          "kd": 5.27398681640625
+          "attention": 0.19513604044914246,
+          "ce": 11.018804550170898,
+          "kd": 2.1916840076446533
         },
-        "first_qkv_grad_norm": 6.813187122344971,
-        "loss": 8.150659561157227
+        "first_qkv_grad_norm": 1.3964239358901978,
+        "loss": 6.626925945281982
       }
     },
     "evaluation_rng_neutral": true,
+    "full_size_checkpoint_replay": {
+      "architecture": "random_gpt2_medium_24l_16h_1024d",
+      "first_loss": 11.034100532531738,
+      "interruption_boundary": "after_optimizer_step_1",
+      "model_equal": true,
+      "optimizer_equal": true,
+      "precision": "fp32_parameters_adam_bf16_autocast",
+      "reference_next_loss": 9.506991386413574,
+      "resumed_next_loss": 9.506991386413574,
+      "rng_equal": true,
+      "sequence_length": 128
+    },
     "metric_operations": [
       "clean",
       "none",
@@ -53,57 +66,63 @@
     ],
     "metric_summary": {
       "clean": {
-        "clean_ce_nats": 10.988706316266741,
-        "edited_ce_nats": 10.988706316266741,
+        "clean_ce_nats": 11.018804354930488,
+        "edited_ce_nats": 11.018804354930488,
         "prediction_flip_fraction": 0.0,
         "self_kl_nats": 0.0,
-        "teacher_kl_nats": 6.346194131033761
+        "teacher_kl_nats": 3.159972123273714
       },
       "delete": {
-        "clean_ce_nats": 10.988706316266741,
-        "edited_ce_nats": 10.93594469342913,
-        "prediction_flip_fraction": 0.42857142857142855,
-        "self_kl_nats": 0.04100303564752851,
-        "teacher_kl_nats": 6.3721144539969305
+        "clean_ce_nats": 11.018804354930488,
+        "edited_ce_nats": 11.008118636964813,
+        "prediction_flip_fraction": 0.6062992125984252,
+        "self_kl_nats": 0.028034136051268088,
+        "teacher_kl_nats": 3.1718334288109005
       },
       "none": {
-        "clean_ce_nats": 10.988706316266741,
-        "edited_ce_nats": 10.988706316266741,
+        "clean_ce_nats": 11.018804354930488,
+        "edited_ce_nats": 11.018804354930488,
         "prediction_flip_fraction": 0.0,
         "self_kl_nats": 0.0,
-        "teacher_kl_nats": 6.346194131033761
+        "teacher_kl_nats": 3.159972123273714
       },
       "relocate": {
-        "clean_ce_nats": 10.988706316266741,
-        "edited_ce_nats": 10.938347952706474,
-        "prediction_flip_fraction": 0.42857142857142855,
-        "self_kl_nats": 0.0472337007522583,
-        "teacher_kl_nats": 6.346225738525391
+        "clean_ce_nats": 11.018804354930488,
+        "edited_ce_nats": 11.006529079647514,
+        "prediction_flip_fraction": 0.6220472440944882,
+        "self_kl_nats": 0.03654031068321288,
+        "teacher_kl_nats": 3.1774617593119463
       }
     },
-    "peak_allocated_bytes_preflight": 4623578112,
+    "objective_smoke_scope": {
+      "batch": 1,
+      "c3_c4_scale_status": "raw_engineering_scale_1_not_calibration_factor",
+      "sequence_length": 128
+    },
+    "peak_allocated_bytes_preflight": 5105936896,
     "precision": {
-      "bf16_probability_row_sum_max_abs": 1.1920928955078125e-07,
+      "bf16_probability_row_sum_max_abs": 2.384185791015625e-07,
       "device": "cuda:0",
       "fp32_noop_logit_max_abs": 0.0,
-      "fp32_vs_bf16_ce_abs_nats": 0.00272369384765625,
-      "fp32_vs_bf16_logit_max_abs": 0.028235673904418945,
+      "fp32_vs_bf16_ce_abs_nats": 0.0005574864665354331,
+      "fp32_vs_bf16_logit_max_abs": 0.03320145606994629,
       "schema_version": "e6a-v2-metrics-1",
       "status": "diagnostic_only"
     },
+    "sequence_length": 128,
     "student": {
-      "delete_max_logit_change": 1.8429489135742188,
+      "delete_max_logit_change": 1.588956356048584,
       "native_logit_max_error": 0.0,
       "noop_logit_max_error": 0.0,
       "pre_dropout_probability_max_error": 0.0,
-      "relocate_max_logit_change": 1.8429489135742188
+      "relocate_max_logit_change": 1.6460257768630981
     },
     "teacher": {
-      "delete_max_logit_change": 1.0446702241897583,
+      "delete_max_logit_change": 0.9032700061798096,
       "native_logit_max_error": 0.0,
       "noop_logit_max_error": 0.0,
       "pre_dropout_probability_max_error": 0.0,
-      "relocate_max_logit_change": 1.6290806531906128
+      "relocate_max_logit_change": 0.9032700061798096
     },
     "tiny_cuda_resume": {
       "cpu_cuda_rng_equal": true,
@@ -115,8 +134,10 @@
     }
   },
   "nvidia_smi": [
-    "NVIDIA GeForce RTX 4080 SUPER, GPU-72b4b307-b613-c35e-ea32-53f4431de9ee, 16376 MiB, 15661 MiB, 591.86"
+    "NVIDIA GeForce RTX 4080 SUPER, GPU-72b4b307-b613-c35e-ea32-53f4431de9ee, 16376 MiB, 15669 MiB, 591.86"
   ],
+  "platform": "Windows-11-10.0.26200-SP0",
+  "python_version": "3.12.3",
   "requested_role": "rtx4080super",
   "status": "available",
   "student_initialization": "random_from_config_seed1729",
@@ -124,10 +145,15 @@
   "teacher_parameters": 774030080,
   "teacher_revision": "32b71b12589c2f8d625668d2335a01cac3249519",
   "teacher_safetensors_sha256": "5f47f3e12f91cd33b662ce7e433b6150ad5512b5884a2cee961b50e9c3bbebce",
+  "torch_cuda_version": "12.8",
   "torch_version": "2.10.0+cu128",
   "transformers_version": "5.3.0",
   "visible_devices": [
     {
+      "compute_capability": [
+        8,
+        9
+      ],
       "index": 0,
       "name": "NVIDIA GeForce RTX 4080 SUPER",
       "total_bytes": 17170956288

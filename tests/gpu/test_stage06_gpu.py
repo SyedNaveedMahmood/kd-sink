@@ -254,9 +254,6 @@ def _rng_digest(state):
 
 def test_full_size_bf16_checkpoint_interruption_resume_replay(selected_cuda, gpu_evidence, tmp_path):
     """Destroy and reconstruct a full GPT-2-medium process at a save boundary."""
-    if gpu_evidence[0]["requested_role"] != "rtx3090":
-        pytest.skip("full-size checkpoint replay is assigned to the RTX 3090 gate")
-
     config = GPT2Config(n_layer=24, n_head=16, n_embd=1024,
                         _attn_implementation="eager")
     ids = _ids(selected_cuda)
@@ -265,7 +262,7 @@ def test_full_size_bf16_checkpoint_interruption_resume_replay(selected_cuda, gpu
         "calibration_hash", "model_hash", "backend")}
     identity.update(study="S1", condition="C0", seed=1729,
                     run_id="stage06-full-size-resume", precision="bf16",
-                    microbatch=1, device_role="rtx3090",
+                    microbatch=1, device_role=gpu_evidence[0]["requested_role"],
                     gpu_uuid=gpu_evidence[0]["nvidia_smi"][0].split(",")[1].strip())
 
     def fresh_model():

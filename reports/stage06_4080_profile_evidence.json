@@ -1,0 +1,166 @@
+{
+  "limits": [
+    "4080 search was capped at microbatch 8 by the measured RTX 3090 REL maximum",
+    "larger 4080 candidates and smaller-than-first-safe candidates were not run",
+    "the build_batch_plan seven-divisor lock is incomplete",
+    "inputs and dense64 panel are deterministic synthetic memory-shape fixtures",
+    "no researcher approval, production calibration or 10k training is inferred"
+  ],
+  "prior_3090_profile_sha256": "cfa129c971516ae4c42e9290db73b0a3a7f5a9ac5a524c064c099c80b8cbfb6b",
+  "rtx3090_safe_maxima": {
+    "C1": 16,
+    "C2": 8,
+    "C3": 8,
+    "C4": 8
+  },
+  "rtx4080super": {
+    "c5_mb4_repeat": {
+      "free_bytes": 1732214784,
+      "free_margin_over_required_bytes": 15119156,
+      "raw_sha256": "ca35ea5bd19fee9d6f5f69f04824966f4c3f7c1e2ab9bf3bd847e5c40eb3328c",
+      "wall_seconds": 69.58588899999813
+    },
+    "headroom_bytes": 1717095628,
+    "name": "NVIDIA GeForce RTX 4080 SUPER",
+    "profiles": [
+      {
+        "condition": "C0",
+        "evaluation_passed": true,
+        "free_bytes": 2489942016,
+        "free_margin_over_required_bytes": 772846388,
+        "microbatch": 8,
+        "optimizer_allocated": true,
+        "peak_allocated_bytes": 12712020992,
+        "peak_reserved_bytes": 13147045888,
+        "raw_sha256": "09898ad8c6f73fbe87ec91902fc7a99eab3a2734789789564e76012cde64ff70",
+        "save_passed": true,
+        "source": "c0_mb8.json",
+        "status": "complete_safe",
+        "wall_seconds": 64.35539919999792
+      },
+      {
+        "condition": "C1",
+        "evaluation_passed": true,
+        "free_bytes": 1715634176,
+        "free_margin_over_required_bytes": -1461452,
+        "microbatch": 8,
+        "optimizer_allocated": true,
+        "peak_allocated_bytes": 13531217920,
+        "peak_reserved_bytes": 13912506368,
+        "raw_sha256": "d12e3f27c5594508f26a0b0a42a2e28bda6d4b54e1d43a06d5a65cc408c85f9b",
+        "save_passed": true,
+        "source": "c1_mb8.json",
+        "status": "complete_unsafe",
+        "wall_seconds": 61.40020150000055
+      },
+      {
+        "condition": "C1",
+        "evaluation_passed": true,
+        "free_bytes": 3596779520,
+        "free_margin_over_required_bytes": 1879683892,
+        "microbatch": 4,
+        "optimizer_allocated": true,
+        "peak_allocated_bytes": 11567773696,
+        "peak_reserved_bytes": 12031361024,
+        "raw_sha256": "a4cff0691f481daeada8d5e95b4276b15255a947b3ffb3509e9ba73d1bcad6ab",
+        "save_passed": true,
+        "source": "c1_mb4.json",
+        "status": "complete_safe",
+        "wall_seconds": 66.45936409999922
+      },
+      {
+        "completed_full_cycle": false,
+        "condition": "C2",
+        "microbatch": 8,
+        "observed_gpu_free_mib": 66,
+        "observed_gpu_used_mib": 15982,
+        "raw_sha256": "694acaad135ca0c6af08f6d7ed7e47e0ef644d52024a548ce455ea4293f93836",
+        "source": "c2_mb8.json",
+        "status": "terminated_unsafe_wddm_paging"
+      },
+      {
+        "condition": "C2",
+        "evaluation_passed": true,
+        "free_bytes": 1887338496,
+        "free_margin_over_required_bytes": 170242868,
+        "microbatch": 4,
+        "optimizer_allocated": true,
+        "peak_allocated_bytes": 13277464064,
+        "peak_reserved_bytes": 13740539904,
+        "raw_sha256": "e263fbf60f96ce72e7701c1032bfb1e26b97ab15f56426e30d013dd34c7a9e50",
+        "save_passed": true,
+        "source": "c2_mb4.json",
+        "status": "complete_safe",
+        "wall_seconds": 70.78898529999788
+      },
+      {
+        "completed_full_cycle": false,
+        "condition": "C5",
+        "microbatch": 8,
+        "observed_gpu_free_mib": 74,
+        "observed_gpu_used_mib": 15974,
+        "raw_sha256": "5b85ec05c3404825cc7843aa9f420415589066096f7d31363ca761d906dec509",
+        "source": "c5_mb8.json",
+        "status": "terminated_unsafe_wddm_paging"
+      },
+      {
+        "condition": "C5",
+        "evaluation_passed": true,
+        "free_bytes": 1741062144,
+        "free_margin_over_required_bytes": 23966516,
+        "microbatch": 4,
+        "optimizer_allocated": true,
+        "peak_allocated_bytes": 13518885376,
+        "peak_reserved_bytes": 13895729152,
+        "raw_sha256": "3d432b1f40cf44db4b8e564793dfa6647d6d2d21c7fbcdfb5a1b4e3ebc86ef1b",
+        "save_passed": true,
+        "source": "c5_mb4.json",
+        "status": "complete_safe",
+        "wall_seconds": 71.37183200000072
+      },
+      {
+        "completed_full_cycle": false,
+        "condition": "C6",
+        "microbatch": 8,
+        "observed_gpu_free_mib": 181,
+        "observed_gpu_used_mib": 15867,
+        "raw_sha256": "7f4d1c21f16e6821d8972031a6ed01e546f6419b2323bdafe0e5781607574c38",
+        "source": "c6_mb8.json",
+        "status": "terminated_unsafe_wddm_paging"
+      },
+      {
+        "condition": "C6",
+        "evaluation_passed": true,
+        "free_bytes": 2555215872,
+        "free_margin_over_required_bytes": 838120244,
+        "microbatch": 4,
+        "optimizer_allocated": true,
+        "peak_allocated_bytes": 12602166784,
+        "peak_reserved_bytes": 13090422784,
+        "raw_sha256": "5c9ef005bea4c8cc583e543418e50b38d2d6e97a26c744fa2413f3000a5279e6",
+        "save_passed": true,
+        "source": "c6_mb4.json",
+        "status": "complete_safe",
+        "wall_seconds": 68.55569390000164
+      }
+    ],
+    "safe_maxima_within_3090_bound_8": {
+      "C0": 8,
+      "C1": 4,
+      "C2": 4,
+      "C5": 4,
+      "C6": 4
+    },
+    "total_bytes": 17170956288,
+    "uuid": "GPU-72b4b307-b613-c35e-ea32-53f4431de9ee"
+  },
+  "schema_version": 1,
+  "status": "measured_engineering_common_candidate_not_approved_lock",
+  "two_device_common_candidate": {
+    "accumulation": 16,
+    "effective_sequences": 64,
+    "input_tokens_per_update": 8192,
+    "microbatch": 4,
+    "shifted_targets_per_update": 8128
+  }
+}

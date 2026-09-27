@@ -67,7 +67,7 @@ Work order: [06_S1_S3_INTEGRATION](design/e6a_v2/stages/06_S1_S3_INTEGRATION.md)
 - [ ]06.5 ActualGPU resume/precision tests and readiness locks.
 - [ ] Stage06 required evidence reviewed and milestone committed; unavailableGPU marked BLOCKED.
 
-Stage06 status: BLOCKED. Assigned-condition full-size smoke now passes on both recorded devices, including sequence-128 C1-C4 and C4/REL on the RTX 3090. Descending 3090 full-cycle profiles establish safe maxima C1=16 and C2/C3/C4=8, so the 3090-only common candidate is microbatch8 with accumulation8. This is not the final paired schedule: the required 4080 sequence-128 profiles, complete seven-divisor matrices, researcher approvals, production artifacts/panels, calibration factors and readiness locks are absent. See `reports/stage06.json`. No Stage07 work or production training started.
+Stage06 status: BLOCKED. Assigned-condition full-size smoke, causal evaluation, numerical diagnostics and checkpoint replay pass on both recorded devices. The RTX 3090 safe maxima are C1=16 and C2/C3/C4=8. The RTX 4080 SUPER sequence-128 full-cycle search, capped at the 3090 REL bound of 8, gives C0=8 and C1/C2/C5/C6=4. The measured two-device engineering candidate is **microbatch 4 × accumulation 16 = effective batch 64**; C5's repeated pass has a narrow free-VRAM margin. This is not an approved hardware lock: complete seven-divisor matrices, researcher approvals, production corpus/panels, C3/C4 calibration factors and readiness locks remain absent. See `reports/stage06.json`. No Stage07 work or production training started.
 
 ## Stage07 - S2
 Work order: [07_S2_PRETRAINING](design/e6a_v2/stages/07_S2_PRETRAINING.md).

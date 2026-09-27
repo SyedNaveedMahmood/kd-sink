@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "stage_id": "06",
-  "status": "blocked_approval_inputs_4080_profile_and_complete_matrix",
+  "status": "blocked_approval_calibration_and_complete_matrix",
   "starting_commit": "5396f84828bd2de5eb29b6f0467eb084c1b2af8c",
   "resume_starting_commit": "aeb064f76ded84b7b1a7999371be6fd6ee7266f6",
   "implementation_milestones": [
@@ -14,18 +14,18 @@
     "06.1": "passed: all independent S1 C0-C6 and optional S3 C0-C4 configs validate strict study, architecture, variant, explicit seed and C4 device role",
     "06.2": "implementation validated but approval blocked: explicit draft 21-run and 27-run S1 plans and disabled 15-run S3 plan; no researcher-approved plan exists",
     "06.3": "passed engineering gate: assigned-condition full-size GPT-2-large to random GPT-2-medium native, adapter, intervention and BF16 objective smokes pass on the RTX 4080 SUPER and RTX 3090; the 3090 probe uses sequence length 128 and covers C1-C4 including REL; REL-on-4080 refusal remains enforced",
-    "06.4": "partial: 3090 sequence-128 full-cycle profiles establish safe maxima C1=16, C2=8, C3=8, C4=8 and an RTX-3090-only common microbatch 8/accumulation 8; final two-device common schedule, complete seven-divisor matrices, 4080 sequence-128 profiles, approved production corpus/panels and calibration factors are absent",
-    "06.5": "partial: 3090 full-size FP32/BF16 numerical, causal evaluation/RNG neutrality and full GPT-2-medium BF16 checkpoint destruction/reload/replay pass; approval locks, 4080 production-shape profiling and final readiness remain blocked"
+    "06.4": "partial: measured 4080 sequence-128 full-cycle capped profiles give C0=8 and C1/C2/C5/C6=4 within the 3090 REL bound 8; two-device engineering candidate is microbatch4/accumulation16, preserving effective64; complete seven-divisor matrices, approved production corpus/panels and calibration factors remain absent",
+    "06.5": "partial: full-size RTX 3090 and RTX 4080 SUPER FP32/BF16 numerical, causal evaluation/RNG neutrality and GPT-2-medium BF16 checkpoint destruction/reload/next-step replay pass; approved readiness locks and production calibration remain blocked"
   },
   "hardware": {
-    "current_gpu": "NVIDIA GeForce RTX 3090",
-    "current_uuid": "GPU-a21766e4-bb31-9b79-5e8f-e58021e9708e",
-    "current_vram_mib": 24576,
+    "current_gpu": "NVIDIA GeForce RTX 4080 SUPER",
+    "current_uuid": "GPU-72b4b307-b613-c35e-ea32-53f4431de9ee",
+    "current_vram_mib": 16376,
     "driver": "591.86",
     "cuda_driver_api": "13.1",
-    "prior_evidence_gpu": "NVIDIA GeForce RTX 4080 SUPER",
-    "prior_evidence_uuid": "GPU-72b4b307-b613-c35e-ea32-53f4431de9ee",
-    "prior_evidence_vram_mib": 16376
+    "prior_evidence_gpu": "NVIDIA GeForce RTX 3090",
+    "prior_evidence_uuid": "GPU-a21766e4-bb31-9b79-5e8f-e58021e9708e",
+    "prior_evidence_vram_mib": 24576
   },
   "environment": {
     "os": "Windows 11 WDDM",
@@ -48,15 +48,22 @@
     "frozen_training_calibration_panel": null,
     "approved_protocol_lock": null,
     "approved_hardware_lock": null,
-    "approved_calibration_lock": null
+    "approved_calibration_lock": null,
+    "rtx4080_shape_fixture": {
+      "external_root": "F:\\KD-SINK-stage06-4080",
+      "status": "deterministic_synthetic_memory_shape_only",
+      "corpus_sha256": "3148a68f253e312ff84a8e082a2db7941e989560395326721c2f2f2abe79b22f",
+      "panel_sha256": "2833d84737e8f10e46287e77e84f5ff197bf5939c7bfe29ea0e42da841c2d08d",
+      "student_initialization_tensor_sha256": "1a27890c588f317a4ae5523430f8af53c591bca29c9a78d13bf182c9c145fc09"
+    }
   },
   "evidence": {
     "rtx4080super_path": "reports/stage06_4080_gpu_evidence.json",
-    "rtx4080super_sha256": "00c42af0d62c3aba3d8a76be6269814c695771ea19098f44812910b233a09fda",
+    "rtx4080super_sha256": "8ff403a134eae5e12db3e1788f70a9c7735e4e9b9ec0870731ec015725574907",
     "rtx3090_gpu_path": "reports/stage06_3090_gpu_evidence.json",
     "rtx3090_gpu_sha256": "0513a8e8954ec5c2f0144f64e3d07ac563c3d5b9bf68215f3040094601e4ea15",
     "rtx3090_profile_path": "reports/stage06_3090_profile_evidence.json",
-    "rtx3090_profile_sha256": "c0f612cdc2cc2d94607568bc723eb8d89599a7182cd661d6b5c5079351e2dca5",
+    "rtx3090_profile_sha256": "cfa129c971516ae4c42e9290db73b0a3a7f5a9ac5a524c064c099c80b8cbfb6b",
     "rtx3090_sequence_length": 128,
     "rtx3090_safe_maxima": {
       "C1": 16,
@@ -69,7 +76,7 @@
     "effective_sequences": 64,
     "input_tokens_per_update": 8192,
     "shifted_targets_per_update": 8128,
-    "final_two_device_common_microbatch": null,
+    "final_two_device_common_microbatch": 4,
     "fp32_native_and_noop_max_logit_error": 0.0,
     "fp32_feature_probability_max_error": 0.0,
     "fp32_vs_bf16_max_logit_error": 0.03470997512340546,
@@ -82,7 +89,52 @@
     "full_size_checkpoint_resumed_next_loss": 9.506715774536133,
     "full_size_checkpoint_model_optimizer_rng_equal": true,
     "calibration_factors": null,
-    "production_10k_runs": 0
+    "production_10k_runs": 0,
+    "rtx4080_profile_path": "reports/stage06_4080_profile_evidence.json",
+    "rtx4080_profile_sha256": "7834d8638b5d15444e4a50c63c62c269f8b24f71942f604f525c3c8069c91748",
+    "rtx4080_safe_maxima_within_3090_bound_8": {
+      "C0": 8,
+      "C1": 4,
+      "C2": 4,
+      "C5": 4,
+      "C6": 4
+    },
+    "final_two_device_accumulation": 16,
+    "final_two_device_common_status": "measured_engineering_candidate_not_approved_hardware_lock",
+    "rtx4080_c5_mb4_repeat_free_margin_over_required_bytes": 15119156,
+    "rtx4080_sequence_length": 128,
+    "rtx4080_fp32_vs_bf16_max_logit_error": 0.03320145606994629,
+    "rtx4080_fp32_vs_bf16_ce_abs_nats_per_target": 0.0005574864665354331,
+    "rtx4080_bf16_probability_row_sum_max_error": 2.384185791015625e-07,
+    "rtx4080_native_noop_feature_max_errors": {
+      "teacher": {
+        "delete_max_logit_change": 0.9032700061798096,
+        "native_logit_max_error": 0.0,
+        "noop_logit_max_error": 0.0,
+        "pre_dropout_probability_max_error": 0.0,
+        "relocate_max_logit_change": 0.9032700061798096
+      },
+      "student": {
+        "delete_max_logit_change": 1.588956356048584,
+        "native_logit_max_error": 0.0,
+        "noop_logit_max_error": 0.0,
+        "pre_dropout_probability_max_error": 0.0,
+        "relocate_max_logit_change": 1.6460257768630981
+      }
+    },
+    "rtx4080_evaluation_rng_neutral": true,
+    "rtx4080_full_size_checkpoint_replay": {
+      "architecture": "random_gpt2_medium_24l_16h_1024d",
+      "first_loss": 11.034100532531738,
+      "interruption_boundary": "after_optimizer_step_1",
+      "model_equal": true,
+      "optimizer_equal": true,
+      "precision": "fp32_parameters_adam_bf16_autocast",
+      "reference_next_loss": 9.506991386413574,
+      "resumed_next_loss": 9.506991386413574,
+      "rng_equal": true,
+      "sequence_length": 128
+    }
   },
   "tests": [
     {
@@ -128,11 +180,46 @@
       "passed": 1,
       "failed": 0,
       "skipped": 0
+    },
+    {
+      "command": ".\\.venv\\Scripts\\python.exe -m pytest -q tests/gpu --device-role rtx4080super --evidence-out reports/stage06_4080_gpu_evidence.json --basetemp F:\\KD-SINK-stage06-4080\\pytest-temp-full-v1",
+      "exit_code": 0,
+      "passed": 5,
+      "failed": 0,
+      "skipped": 0
+    },
+    {
+      "command": ".\\.venv\\Scripts\\python.exe -m pytest -q tests/unit tests/integration -m \"not gpu and not network\"",
+      "exit_code": 0,
+      "passed": 113,
+      "failed": 0,
+      "skipped": 0,
+      "warnings": 1
+    },
+    {
+      "command": ".\\.venv\\Scripts\\python.exe -m pip check",
+      "exit_code": 0
+    },
+    {
+      "command": ".\\.venv\\Scripts\\uv.exe lock --check --python .\\.venv\\Scripts\\python.exe",
+      "exit_code": 0
+    },
+    {
+      "command": ".\\.venv\\Scripts\\python.exe tests/gpu/summarize_stage06_profiles.py --profile-dir F:\\KD-SINK-stage06-4080\\profiles --prior-3090 reports\\stage06_3090_profile_evidence.json --out reports\\stage06_4080_profile_evidence.json",
+      "exit_code": 0,
+      "candidate_microbatch": 4,
+      "candidate_accumulation": 16
+    },
+    {
+      "command": ".\\.venv\\Scripts\\python.exe -m sinklab profile-candidate --config configs/s1/c4_rtx3090.json --seed 0 --microbatch 8 --corpus missing.json --panels missing.json --student-config missing.json --initialization missing.json --teacher-dir missing --profile-dir missing --output missing.json",
+      "exit_code": 1,
+      "expected_refusal": "actual GPU role differs from requested eligible role"
     }
   ],
   "resolved_test_failures": [
     "First full-size checkpoint replay run: 4 passed/1 failed because the test digest helper could not byte-view a scalar Adam step tensor; flattening before byte-view fixed the helper and the unchanged replay assertions passed.",
-    "First full CPU regression: 112 passed/1 failed because exact uv sync does not install the undeclared python-build frontend. The offline wheel test now uses the already-installed pip PEP 517 frontend with no build isolation/dependencies; the same no-Upstream wheel/install assertions pass."
+    "First full CPU regression: 112 passed/1 failed because exact uv sync does not install the undeclared python-build frontend. The offline wheel test now uses the already-installed pip PEP 517 frontend with no build isolation/dependencies; the same no-Upstream wheel/install assertions pass.",
+    "The first synthetic shape-fixture command failed at Python parse time because of a mismatched closing bracket; syntax was corrected and the same preparation command exited 0. No GPU profile was run before that correction."
   ],
   "scientific_coverage": "none; no S1/S3 production training or approved production calibration occurred",
   "upstream_files_changed": 0,
@@ -140,11 +227,34 @@
   "remaining_blockers": [
     "researcher approval of D01-D18 and the 21-versus-27 run allocation",
     "approved protocol, artifact, environment, hardware and calibration locks",
-    "pinned production corpus, panels and seed-1729 calibration initialization",
+    "pinned production corpus, frozen evaluation/calibration panels and seed-1729 calibration initialization",
     "legitimate 16-effective-batch C3/C4 calibration factors",
-    "RTX 4080 SUPER sequence-128 full-cycle profiles and a final two-device common schedule",
-    "complete seven-divisor profile matrices required by build_batch_plan",
+    "complete seven-divisor profile matrices required by build_batch_plan; the measured 4x16 schedule is an engineering candidate, not a frozen lock",
     "optional S3 remains disabled"
   ],
-  "next_action": "On the RTX 4080 SUPER, run the sequence-128 assigned-condition full-cycle profiles. After researcher approvals and pinned production artifacts exist, complete the profile matrices, freeze one two-device schedule no larger than microbatch 8, and run the 16-batch training-only calibration. Do not start 10k training before those locks exist."
+  "next_action": "Obtain researcher approval and pinned production corpus/panels/locks; complete any required seven-divisor or final-workload validation, freeze the single measured candidate 4x16 only if approved, and run legitimate 16-effective-batch training-only C3/C4 calibration. Do not launch 10k training before these gates.",
+  "resume_4080_starting_commit": "0959501af6cd4a8285bd7eb9733cdcf6651e615b",
+  "resources_4080_at_summary": {
+    "observed_utc": "2026-09-27T16:24:43Z",
+    "host_ram_total_bytes": 68470386688,
+    "host_ram_free_bytes": 58881556480,
+    "f_drive_free_bytes": 160131903488,
+    "c_drive_free_bytes": 1520721920,
+    "external_profile_artifact_bytes": 52354581305,
+    "external_profile_file_count": 89,
+    "profile_wall_seconds_by_candidate": {
+      "C0_mb8": 64.35539919999792,
+      "C1_mb8": 61.40020150000055,
+      "C1_mb4": 66.45936409999922,
+      "C2_mb4": 70.78898529999788,
+      "C5_mb4": 71.37183200000072,
+      "C6_mb4": 68.55569390000164
+    }
+  },
+  "profile_caveats_4080": [
+    "C5 microbatch4 passed twice but exceeded the required free-VRAM margin by only 23,966,516 and 15,119,156 bytes; revalidate under the final desktop workload before locking.",
+    "C2 microbatch4 exceeded the margin by 170,242,868 bytes.",
+    "C2/C5/C6 microbatch8 were terminated after real VRAM free fell below margin; no complete-cycle pass is claimed for them.",
+    "Production calibration and scientific outcomes are not inferred from synthetic token IDs."
+  ]
 }
