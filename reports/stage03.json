@@ -5,6 +5,7 @@
   "starting_commit": "e008ee5c0f8521d638ed74cdd4a92d64c80d0987",
   "implementation_milestone_commit": "a32deba941ae46fc38a82e26a5cc0612c53b3bf9",
   "calibration_contract_commit": "5f7daae10c6f4ddb536ee36c63cb82a0597b723e",
+  "completion_evidence_commit": "362baf170892f853a7c77a3dd5996f987c11d5ef",
   "task_ids_completed": ["03.1", "03.2", "03.3", "03.4", "03.5", "03.6"],
   "changed_files": [
     "src/sinklab/objectives.py",
