@@ -81,11 +81,13 @@ Stage07 status: CPU capability implemented and tested. Actual public checkpoint 
 
 ## Stage08 - S4/S5/S6
 Work order: [08_S4_S5_S6](design/e6a_v2/stages/08_S4_S5_S6.md).
-- [ ]08.1 Anchor/route battery and model-local coordinate controls.
-- [ ]08.2 S5 reanalysis-only joins and contrasts.
-- [ ]08.3 Domain/length panels and optional long contexts.
+- [x]08.1 Anchor/route battery and model-local coordinate controls (CPU capability; real teacher calibration pending).
+- [x]08.2 S5 reanalysis-only joins and contrasts (CPU capability; no production S1 records yet).
+- [x]08.3 Domain/length panels and optional long contexts (CPU capability; optional long contexts disabled without approval/memory validation).
 - [ ]08.4 Study tests,new-teacher checks and approvedGPU smoke.
 - [ ] Stage08 evidence reviewed and milestone committed.
+
+Stage08 status: S4/S5/S6 CPU capability is implemented and the earlier CPU regression passes. Real GPT-2-large responsiveness qualification and authorized GPU/context smoke have not run, so 08.4 and the Stage08 exit gate remain open. No S4/S5/S6 scientific coverage exists. See `reports/stage08.json`. Stage06 and Stage07 blocks remain unchanged.
 
 ## Stage09 - Analysis and release
 Work order: [09_ANALYSIS_RELEASE](design/e6a_v2/stages/09_ANALYSIS_RELEASE.md).

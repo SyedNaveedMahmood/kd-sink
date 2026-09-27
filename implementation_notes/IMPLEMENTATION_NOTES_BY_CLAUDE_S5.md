@@ -19,3 +19,10 @@ Starting commit `e008ee5`; read Stage03, OBJECTIVES/DECISIONS, model contract an
 
 ## 2026-09-27T09:34:05Z - Codex (GPT-6) - Stage03 S5 milestone SHA
 Stage03 CPU evidence/checklist commit: `362baf170892f853a7c77a3dd5996f987c11d5ef`. No S5 reanalysis was run.
+## 2026-09-27T17:08:43Z - Codex (GPT-6) - Stage08 S5 reuse-only analysis
+
+- Starting commit: `94cad936157c700a01d17296cb696853e5c3aac3`; task 08.2 and CPU portion of 08.4. Read S5 study, objectives, Stage08, evaluator record contract and latest CORE/S5 journal. User required no new S5 training and preservation of Stage06/07 blocks.
+- Files: `src/sinklab/s5_analysis.py`, `tests/unit/test_stage08_s5.py`, `reports/stage08.json`, NEXT_STEPS and CORE/S5 journals. Implementation milestone `f17150d0499fd148ab41389d37936493ebb942ea`.
+- Decision: verify sealed existing S1 aggregate and each per-item clean/delete/relocate record before extracting C1/C2/C5/C6 measures. Join by original seed/device/panel/protocol/initialization/data/precision/scope/items; report missing quartets without interpolation or hardware-replica seed inflation. Contrasts include S, full and sink-excluded attention, clean CE and causal effects. Source run IDs and record digests remain attached. No training entry point or outcome-dependent pairing was added.
+- Tests: `.venv/Scripts/python.exe -m pytest -q tests/unit/test_stage08_probes.py tests/unit/test_stage08_s5.py tests/unit/test_stage08_s6.py` exit 0, 10 passed/0 failed/0 skipped; `.venv/Scripts/python.exe -m pytest -q tests/unit tests/integration -m 'not gpu and not network'` exit 0, 130 passed/0 failed/0 skipped. One external astor warning. `reports/stage08.json` records evidence. No production S1 evaluation records were present; no S5 scientific contrast was computed. User was updated on read-only joins and the absence of production records; no messages sent to others.
+- NEXT_STEPS 08.2 checked for CPU capability; 08.4/Stage08 gate open. Next: reuse actual approved S1 records after those runs exist. Evidence commit pending; append SHA after commit.

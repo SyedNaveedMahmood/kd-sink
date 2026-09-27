@@ -1,3 +1,5 @@
+import json
+
 import pytest
 import torch
 from transformers import GPT2Config, GPT2LMHeadModel, GPTNeoXConfig, GPTNeoXForCausalLM
@@ -107,6 +109,8 @@ def test_probe_battery_records_nonresponse_guard_and_neox_not_applicable(tmp_pat
         responsiveness_floor=1e6, provenance={"fixture": True})
     first = evaluate_probe_battery(**kwargs)
     assert first["status"] == "complete"
+    stored = json.loads(next(tmp_path.glob("*.json")).read_text(encoding="utf-8"))
+    assert stored["payload"]["value"]["attention_mask"] == [[1, 1, 1, 1]]
     assert len(first["probes"]) == 10
     assert all(v["responsiveness"] == "nonresponsive" for v in first["probes"].values())
     assert all(v["fingerprint"]["ratio"] is None for v in first["probes"].values())

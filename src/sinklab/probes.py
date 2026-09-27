@@ -218,7 +218,8 @@ def evaluate_probe_battery(*, adapter, items: list[dict], store: RecordStore,
                         edited = adapter.forward_with_features(input_ids=ids, attention_mask=mask)
                     edited_structure = sink_profile([f.probabilities for f in edited.attention], mask)
                     behavior = behavioral_item(clean.outputs.logits, edited.outputs.logits, ids, mask)
-                    value = {"behavior": behavior, "clean_structure": clean_structure,
+                    value = {"behavior": behavior, "attention_mask": mask.int().tolist(),
+                        "clean_structure": clean_structure,
                         "probed_structure": edited_structure, "fingerprint": fingerprint(
                             clean_structure["native_layer_mean"], edited_structure["native_layer_mean"],
                             denominator_floor=denominator_floor), "input_token_count": int(mask.sum())}

@@ -1,0 +1,76 @@
+{
+  "schema_version": 1,
+  "stage_id": "08",
+  "status": "cpu_capability_implemented_external_validation_blocked",
+  "starting_commit": "94cad936157c700a01d17296cb696853e5c3aac3",
+  "implementation_milestone": "f17150d0499fd148ab41389d37936493ebb942ea",
+  "task_ids_completed": ["08.1", "08.2", "08.3"],
+  "task_08_4": "T07-T10 relevant CPU fixtures and earlier regression pass; real GPT-2-large teacher qualification and authorized GPU/context smoke remain unrun",
+  "stage06_status": "blocked_unchanged: approvals, production corpus/panels, final hardware/calibration locks, complete profiles, legitimate C3/C4 calibration, C5 margin revalidation",
+  "stage07_status": "07.4_open_unchanged: no real network/GPU Pythia smoke, public checkpoint resolution, or storage/download budget",
+  "s4": {
+    "probes": ["position0_to1", "remove_absolute_positions", "q_bias_all", "epe_transport_layer0", "k_top3_all", "five_model_local_random_k_controls"],
+    "coordinate_rule": "top three by |E0| independently within each model/checkpoint; ascending index tie break; five distinct cardinality-three random controls outside top three",
+    "epe": "E_j=p_j+MLP_0(p_j) without LayerNorm; exact per-example batched transport; conserves m0+m1, makes no norm-conservation claim",
+    "records": "sealed per-item probe keys include locus, integer layers, coordinates, mask-derived behavior, checkpoint/panel hashes, provenance, guarded sink ratio, responsiveness and failure state",
+    "restoration": "parameter edits and hooks restore after exceptions; CPU state and RNG checks pass",
+    "pythia": "GPT-NeoX route battery explicitly not_applicable",
+    "real_teacher_responsiveness": null,
+    "nonresponsive_real_teacher_probes": null,
+    "reason": "GPT-2-large weights and frozen calibration panel were not authorized/available for this stage run"
+  },
+  "s5": {
+    "mode": "read_only_reuse_of_sealed_S1_C1_C2_C5_C6_item_and_aggregate_records",
+    "joins": "same seed, device block, panel, protocol, initialization, data, precision, layer scope and item IDs; missing quartets reported without imputation",
+    "contrasts": "descriptive full and sink-excluded attention, S, clean CE, delete/relocate DeltaCE, self-KL, absolute log effects and flips",
+    "new_training_jobs": 0,
+    "production_records_joined": 0
+  },
+  "s6": {
+    "domains": ["SST-2 validation sentence", "GSM8K test question", "HumanEval test prompt"],
+    "primary_contexts": [40, 128],
+    "same_document_pairing": true,
+    "labels": "standard causal-LM shifted valid targets from right-padded attention masks; language-model metrics only",
+    "pooling": ["equal_item", "token_weighted"],
+    "optional_contexts": [512, 1024],
+    "optional_context_status": "disabled; separate approval and measured one-item evaluation memory gate required",
+    "production_domain_items_evaluated": 0
+  },
+  "tests": [
+    {
+      "command": ".\\.venv\\Scripts\\python.exe -m pytest -q tests\\unit\\test_stage08_probes.py tests\\unit\\test_stage08_s5.py tests\\unit\\test_stage08_s6.py",
+      "device": "CPU synthetic/local",
+      "exit_code": 0,
+      "passed": 10,
+      "failed": 0,
+      "skipped": 0,
+      "covers": ["T07 restoration", "T08 guarded ratios and aggregation", "T09 S4/S5/S6", "T10 sealed provenance"]
+    },
+    {
+      "command": ".\\.venv\\Scripts\\python.exe -m pytest -q tests\\unit tests\\integration -m 'not gpu and not network'",
+      "device": "CPU",
+      "exit_code": 0,
+      "passed": 130,
+      "failed": 0,
+      "skipped": 0,
+      "warning": "one external astor deprecation warning"
+    }
+  ],
+  "required_tests_blocked": [
+    "real frozen-panel GPT-2-large instrumentation and responsiveness calibration",
+    "approved RTX 3090/RTX 4080 S4/S6 GPU smoke at locked numerical policy",
+    "optional 512/1024 context memory validation and approved evaluation"
+  ],
+  "hardware_tested": [],
+  "network_tests_run": 0,
+  "scientific_runs_executed": [],
+  "scientific_coverage": "none: no S1/S3 retained states, S5 production evaluation records or S6 production panel evaluation",
+  "journal_paths": [
+    "implementation_notes/IMPLEMENTATION_NOTES_BY_CLAUDE_CORE.md",
+    "implementation_notes/IMPLEMENTATION_NOTES_BY_CLAUDE_S4.md",
+    "implementation_notes/IMPLEMENTATION_NOTES_BY_CLAUDE_S5.md",
+    "implementation_notes/IMPLEMENTATION_NOTES_BY_CLAUDE_S6.md"
+  ],
+  "next_task": "Stage08 external teacher/GPU qualification only under explicit operator scope; Stage06/07 production gates remain blocked",
+  "milestone_commit": "f17150d0499fd148ab41389d37936493ebb942ea"
+}
