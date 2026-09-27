@@ -47,3 +47,7 @@ S3 draft-config/plan status and blocked optional-study gate were committed as `c
 ## 2026-09-27T15:13:00Z - Codex (GPT-5) - Stage06 3090 continuation, S3 boundary unchanged
 
 Fresh-clone starting commit `aeb064f76ded84b7b1a7999371be6fd6ee7266f6`. This continuation executed only S1/full-size large-to-medium RTX3090 work; no S3-scale model, calibration or training was authorized or run. Shared CPU regression passed113 tests and the explicit optional S3 plan remains disabled/unapproved. The measured S1 microbatch8 result must not be reused as an S3 hardware or calibration lock because S3 is a different architecture pair with its own required profile and factors. `Upstream/` was unchanged. Stage06 and optional S3 remain BLOCKED; milestone commit pending, no push.
+
+## 2026-09-27T15:16:00Z - Codex (GPT-5) - shared milestone reference
+
+The S1-only RTX3090 Stage06 milestone is `63bfcf1b68bf57927a01cc3b01fdc9c1da3c0192`. It adds no S3 authorization or evidence; optional S3 remains blocked and unrun.

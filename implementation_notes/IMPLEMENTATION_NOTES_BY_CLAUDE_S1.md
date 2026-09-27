@@ -66,3 +66,7 @@ Descending complete-cycle profiles used64 sequences/update, BF16 autocast, FP32 
 Sequence128 native/no-op/features, FP32/BF16 diagnostics and clean/no-op/delete/relocate evaluation passed with RNG neutrality. A full random GPT-2-medium checkpoint interruption/reconstruction replay matched the next loss, model, Adam and RNG exactly. Final GPU command passed5/5; final CPU regression passed113/113 with one external warning after repairing an undeclared wheel-frontend assumption without adding dependencies. `Upstream/` remained untouched.
 
 No approved production corpus/panels, calibration16x64 input, D01-D18 approval or hardware/calibration locks exist, so no C3/C4 factor or production S1 training was produced. The 4080 evidence is still sequence8; no final two-device common schedule can be frozen. `NEXT_STEPS` marks06.3 only. Stage06 remains BLOCKED; milestone commit pending and no push.
+
+## 2026-09-27T15:16:00Z - Codex (GPT-5) - S1 3090 milestone SHA
+
+The tested S1 RTX3090 Stage06 milestone is `63bfcf1b68bf57927a01cc3b01fdc9c1da3c0192`. No production run, calibration factor or push occurred; Stage06 remains BLOCKED.
