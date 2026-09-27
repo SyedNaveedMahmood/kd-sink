@@ -147,6 +147,13 @@ def test_real_teacher_s4_fixed_probe_battery_and_restoration(real_pair, gpu_evid
     sum_error = float((batched[:, :2].sum(1) - sample[:, :2].sum(1)).abs().max())
     assert parity_error <= 1e-5 and sum_error <= 1e-5
 
+    # Transformers 5.3 installs its own persistent output-capture hooks lazily
+    # on the first feature forward. Baseline hook accounting after that forward;
+    # probe-owned hooks must still disappear after both normal and fault paths.
+    warm_ids = torch.tensor([items[0]["input_ids"]], dtype=torch.long, device=sample.device)
+    warm_mask = torch.tensor([items[0]["attention_mask"]], dtype=torch.bool, device=sample.device)
+    with torch.inference_mode():
+        teacher.forward_with_features(input_ids=warm_ids, attention_mask=warm_mask)
     modes = [module.training for module in teacher.model.modules()]
     hooks = [len(module._forward_hooks) for module in teacher.model.modules()]
     cpu_rng = torch.get_rng_state().clone()
@@ -196,6 +203,7 @@ def test_real_teacher_s4_fixed_probe_battery_and_restoration(real_pair, gpu_evid
         "epe_batched_reference_max_abs_error": parity_error,
         "epe_vector_sum_max_abs_error": sum_error,
         "parameter_hash_restored": True, "modes_hooks_rng_restored": True,
+        "native_output_capture_hook_baseline": "warmed_before_probe; persistent Transformers hook excluded from probe leak check",
         "elapsed_seconds": time.perf_counter() - started,
         "peak_allocated_bytes": torch.cuda.max_memory_allocated(sample.device),
         "probes": result["probes"],
