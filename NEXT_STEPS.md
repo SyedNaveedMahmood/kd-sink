@@ -60,12 +60,14 @@ Work order: [05_EVALUATION](design/e6a_v2/stages/05_EVALUATION.md).
 
 ## Stage06 - S1/S3 and hardware
 Work order: [06_S1_S3_INTEGRATION](design/e6a_v2/stages/06_S1_S3_INTEGRATION.md).
-- [ ]06.1 Independent S1/S3 configs and variant checks.
+- [x]06.1 Independent S1/S3 configs and variant checks.
 - [ ]06.2 Explicit approved job plans; no default sweeps.
 - [ ]06.3 Actual3090/4080 model/teacher/intervention/objective smoke.
 - [ ]06.4 Measured profiles,common microbatch,calibration/resources.
 - [ ]06.5 ActualGPU resume/precision tests and readiness locks.
 - [ ] Stage06 required evidence reviewed and milestone committed; unavailableGPU marked BLOCKED.
+
+Stage06 status: BLOCKED. Draft 21/27 S1 and optional 15 S3 job plans validate and inspect one named run without launching, but none is researcher-approved. Real 4080 preflight and tiny CUDA resume pass; the RTX 3090, complete production-size profile matrix, common batch, frozen calibration panel/factors and approval locks are absent. See `reports/stage06.json`. No Stage07 work or production training started.
 
 ## Stage07 - S2
 Work order: [07_S2_PRETRAINING](design/e6a_v2/stages/07_S2_PRETRAINING.md).
