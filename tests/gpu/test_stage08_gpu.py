@@ -18,10 +18,11 @@ from transformers import GPT2Config, GPT2LMHeadModel, GPT2TokenizerFast
 
 from sinklab.evaluate import RecordStore, evaluate_panel
 from sinklab.initialization import tensor_content_hash
+from sinklab.interventions import AttentionIntervention
 from sinklab.models import GPT2Adapter, ModelShape
 from sinklab.probes import (PROBE_IDS, apply_probe, epe_directions,
                             evaluate_probe_battery, probe_plan, transport_epe_batch)
-from sinklab.provenance import payload_digest
+from sinklab.provenance import payload_digest, verify_envelope
 from sinklab.s5_analysis import join_s5
 from sinklab.s6 import prepare_s6_domains, render_domain_items
 
@@ -154,6 +155,12 @@ def test_real_teacher_s4_fixed_probe_battery_and_restoration(real_pair, gpu_evid
     warm_mask = torch.tensor([items[0]["attention_mask"]], dtype=torch.bool, device=sample.device)
     with torch.inference_mode():
         teacher.forward_with_features(input_ids=warm_ids, attention_mask=warm_mask)
+        native_logits = teacher.model(input_ids=warm_ids, attention_mask=warm_mask,
+                                      use_cache=False).logits
+        noop_logits = teacher.forward(input_ids=warm_ids, attention_mask=warm_mask,
+            intervention=AttentionIntervention("none"), layer_scope=range(36)).logits
+    noop_max_error = float((native_logits - noop_logits).abs().max())
+    assert noop_max_error <= 1e-5
     modes = [module.training for module in teacher.model.modules()]
     hooks = [len(module._forward_hooks) for module in teacher.model.modules()]
     cpu_rng = torch.get_rng_state().clone()
@@ -184,6 +191,16 @@ def test_real_teacher_s4_fixed_probe_battery_and_restoration(real_pair, gpu_evid
     assert result["status"] == "complete" and set(result["probes"]) == set(PROBE_IDS)
     assert all(row["status"] == "complete" and row["complete_item_count"] == 4
                for row in result["probes"].values())
+    raw_records = list((tmp_path / "s4_probe_records").glob("*.json"))
+    assert len(raw_records) == 4 * len(PROBE_IDS)
+    expected_masks = {item["id"]: [item["attention_mask"]] for item in items}
+    for path in raw_records:
+        payload, _ = verify_envelope(json.loads(path.read_text(encoding="utf-8")))
+        key, value = payload["key"], payload["value"]
+        assert key["checkpoint_sha256"] == TEACHER_WEIGHTS_SHA256
+        assert key["panel_sha256"] == panel_sha and key["probe_id"] in PROBE_IDS
+        assert key["provenance"]["source_panel_sha256"] == source_sha
+        assert value["attention_mask"] == expected_masks[key["item_id"]]
     assert _edited_parameter_hash(teacher.model) == parameter_sha
     assert [module.training for module in teacher.model.modules()] == modes
     assert [len(module._forward_hooks) for module in teacher.model.modules()] == hooks
@@ -202,6 +219,7 @@ def test_real_teacher_s4_fixed_probe_battery_and_restoration(real_pair, gpu_evid
         "epe_norms": directions["norms"],
         "epe_batched_reference_max_abs_error": parity_error,
         "epe_vector_sum_max_abs_error": sum_error,
+        "teacher_noop_logit_max_abs_error": noop_max_error,
         "parameter_hash_restored": True, "modes_hooks_rng_restored": True,
         "native_output_capture_hook_baseline": "warmed_before_probe; persistent Transformers hook excluded from probe leak check",
         "elapsed_seconds": time.perf_counter() - started,
