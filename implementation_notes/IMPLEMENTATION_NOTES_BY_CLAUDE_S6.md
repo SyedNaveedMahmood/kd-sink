@@ -42,3 +42,7 @@ The S6 label/provenance audit, tests and updated report were committed as `d8c97
 - Optional512/1024 contexts were neither enabled nor profiled; no approval/memory validation exists. No production source revision/panel or retained S1 state was evaluated. Full per-domain smoke numbers/provenance are in `reports/stage08_4080_gpu_evidence.json`; compact status in `reports/stage08.json`.
 - Final exact GPU command and counts are in CORE: RTX4080 v3 exit0,2 passed; T07-T10 targeted CPU exit0,41 passed; full CPU regression exit0,130 passed/0 failed/0 skipped, one external astor warning. Initial setup failure and native-hook harness mismatch are recorded in CORE; S6 passed when S4 hook accounting first failed and again on final rerun. No network or production run. User was updated on scope/results; no messages sent to others.
 - Files: GPU harness/frozen panel, reports, NEXT_STEPS and CORE/S4/S5/S6 journals. 08.4 capability gate checked; actual S6 scientific coverage remains zero. Final evidence milestone commit pending; append SHA after commit.
+
+## 2026-09-27T18:12:03Z - Codex (GPT-6) - S6 GPU smoke evidence SHA
+
+The paired 40/128-token RTX 4080 SUPER engineering smoke and report were committed as `51e7903a0a400e2daac80e2aa0b295d8603dba42`. Optional512/1024 and production domain coverage remain absent; no task-accuracy claim or push.

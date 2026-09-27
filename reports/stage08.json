@@ -142,5 +142,5 @@
     "implementation_notes/IMPLEMENTATION_NOTES_BY_CLAUDE_S6.md"
   ],
   "next_task": "Stage08 capability is complete; Stage09 was not started. Stage06/07 production gates and actual S4/S5/S6 scientific coverage remain separate and blocked/absent.",
-  "milestone_commit": "5f0162ca02576623c056be691c751abb6b17dddd"
+  "milestone_commit": "51e7903a0a400e2daac80e2aa0b295d8603dba42"
 }
