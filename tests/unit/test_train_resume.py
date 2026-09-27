@@ -75,8 +75,16 @@ def test_exact_resume_next_loss_rng_and_order(tmp_path):
     assert full.state.input_tokens == resumed.state.input_tokens == 1280
     assert full.state.target_tokens == resumed.state.target_tokens == 960
     assert full.optimizer.param_groups[0]["lr"] == resumed.optimizer.param_groups[0]["lr"]
-    assert random.getstate() == torch.load(latest_full(resumed.run_dir / "checkpoints", identity=resumed.identity) / "state.pt", weights_only=True)["rng"]["python"]
-    assert np.array_equal(torch.get_rng_state(), torch.load(latest_full(resumed.run_dir / "checkpoints", identity=resumed.identity) / "state.pt", weights_only=True)["rng"]["torch_cpu"])
+    full_rng = torch.load(latest_full(full.run_dir / "checkpoints", identity=full.identity) / "state.pt",
+                          weights_only=True)["rng"]
+    resumed_rng = torch.load(latest_full(resumed.run_dir / "checkpoints", identity=resumed.identity) / "state.pt",
+                             weights_only=True)["rng"]
+    assert full_rng["python"] == resumed_rng["python"] == random.getstate()
+    assert full_rng["numpy"] == resumed_rng["numpy"]
+    torch.testing.assert_close(full_rng["torch_cpu"], resumed_rng["torch_cpu"], rtol=0, atol=0)
+    assert len(full_rng["torch_cuda"]) == len(resumed_rng["torch_cuda"])
+    for left, right in zip(full_rng["torch_cuda"], resumed_rng["torch_cuda"]):
+        torch.testing.assert_close(left, right, rtol=0, atol=0)
     # Compare the entire next update, including its loss and optimizer moments.
     full_next = fixture(tmp_path / "full")
     full_next.resume()
