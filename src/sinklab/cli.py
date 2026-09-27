@@ -61,9 +61,40 @@ def main(argv: Sequence[str] | None = None) -> int:
     order.add_argument("--seed", type=int, required=True)
     order.add_argument("--updates", type=int, required=True)
     order.add_argument("--out-dir", type=Path, required=True)
+    train = command.add_parser("train", help="one approved condition/seed; no sweep")
+    for flag in ("config", "protocol-lock", "hardware-plan", "corpus", "student-config",
+                 "initialization", "teacher-dir", "run-dir"):
+        train.add_argument(f"--{flag}", type=Path, required=True)
+    train.add_argument("--seed", type=int, required=True)
+    train.add_argument("--stop-after", type=int, default=10000)
+    train.add_argument("--extension-id")
+    train.add_argument("--mse-scale", type=float)
+    train.add_argument("--rel-scale", type=float)
+    profile = command.add_parser("profile-candidate", help="one isolated real CUDA batch candidate")
+    for flag in ("config", "corpus", "panels", "student-config", "initialization",
+                 "teacher-dir", "profile-dir", "output"):
+        profile.add_argument(f"--{flag}", type=Path, required=True)
+    profile.add_argument("--seed", type=int, required=True)
+    profile.add_argument("--microbatch", type=int, required=True)
+    profile.add_argument("--mse-scale", type=float)
+    profile.add_argument("--rel-scale", type=float)
+    solve = command.add_parser("solve-batch-plan", help="solve one complete approved profile matrix")
+    solve.add_argument("--required", type=Path, required=True)
+    solve.add_argument("--profiles", type=Path, nargs="+", required=True)
+    solve.add_argument("--out", type=Path, required=True)
+    solve.add_argument("--production", action="store_true")
     args = parser.parse_args(argv)
     try:
-        if args.command == "validate":
+        if args.command == "solve-batch-plan":
+            from .hardware import Profile, build_batch_plan
+            profiles = [Profile(**_json(path)["profile"]) for path in args.profiles]
+            required = {tuple(row) for row in _json(args.required)["required"]}
+            output = build_batch_plan(profiles, required, production=args.production)
+            args.out.write_text(json.dumps(output, sort_keys=True, indent=2) + "\n", encoding="utf-8")
+        elif args.command in {"train", "profile-candidate"}:
+            from .training_entry import run_approved_training, run_profile_candidate
+            output = run_approved_training(args) if args.command == "train" else run_profile_candidate(args)
+        elif args.command == "validate":
             raw = _json(args.config)
             lock = _json(args.protocol_lock) if args.protocol_lock else None
             spec = resolve_config(raw, seed=args.seed, protocol_lock=lock, production=args.production)

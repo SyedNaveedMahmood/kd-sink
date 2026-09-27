@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "stage_id": "04",
+  "status": "complete_cpu_trainer",
+  "starting_commit": "29c4c6f0fdbc9a966655a0b3e5086cfc261f363b",
+  "task_ids_completed": ["04.1", "04.2", "04.3", "04.4", "04.5", "04.6"],
+  "evidence": {
+    "resume": "Tiny CPU FP32 5 updates equals 2 plus resume to 5 in exact model tensors, optimizer LR, order cursor and snapshot; separately resumed sixth update matches optimizer moments, model tensors, order and next loss exactly.",
+    "batch": "Fixed 64 sequences; 64 versus 8 microbatch yields matching one-step tensors with one optimizer step; toy four-token count is 256 inputs and 192 shifted targets/update. Production 128-token formula is 8192 and 8128.",
+    "checkpoint": "Weights-only sparse, rolling full, protected final at 10k or approved extension; content hashes, COMPLETE marker, same-filesystem atomic rename, duplicate-writer lock, verified fallback and two rolling generations. Injected failed rename preserves prior full checkpoint.",
+    "profiles": "Complete mock eligibility matrix selects one common microbatch; mock evidence rejected for production. CUDA candidate command is implemented but not executed; no GPU fit or readiness is claimed.",
+    "schedule": "Absolute warmup to update 500, cosine through 10000 and fixed floor from 10001; stop-after leaves formula unchanged. Extension requires ID and protected 10k parent."
+  },
+  "tests": [
+    {"id": "T04_T05_T06_T10_targeted", "command": ".\\.venv\\Scripts\\python.exe -m pytest -q tests/unit/test_train_resume.py tests/integration/test_cli.py", "device": "CPU", "exit_code": 0, "passed": 7, "failed": 0, "skipped": 0},
+    {"id": "full_cpu_regression", "command": ".\\.venv\\Scripts\\python.exe -m pytest -q tests/unit tests/integration -m 'not gpu and not network'", "device": "CPU", "versions": "CPython 3.12.3; torch 2.10.0+cu128; transformers 5.3.0", "exit_code": 0, "passed": 91, "failed": 0, "skipped": 0, "warnings": 1}
+  ],
+  "failed_attempts": ["Initial Windows atomic-save fsync used a read-only descriptor and failed two focused tests; changed to a writable descriptor and reran.", "Initial next-update comparison advanced two trainers against one process-global RNG in sequence; compared each from its own saved state, matching independent process replay."],
+  "hardware_tested": ["CPU"],
+  "required_tests_blocked": [],
+  "deferred_gates": ["Stage06 measured RTX 3090/4080 SUPER model, objective, profile and resume tests", "No approved protocol, measured common hardware lock, calibration factors, production data or production training in this session"],
+  "scientific_runs_executed": [],
+  "upstream_files_changed": 0,
+  "next_task": "Stage05 task 05.1 after Stage04 milestone commit"
+}

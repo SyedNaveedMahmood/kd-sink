@@ -25,3 +25,5 @@ Starting commit `e008ee5`; read Stage03/OBJECTIVES/DECISIONS, S3 study contract,
 
 ## 2026-09-27T09:34:05Z - Codex (GPT-6) - Stage03 S3 milestone SHA
 Stage03 CPU evidence/checklist commit: `362baf170892f853a7c77a3dd5996f987c11d5ef`. S3 remains optional and unapproved for training.
+## 2026-09-27T09:57:00Z - Codex (GPT-6) - Stage04 optional S3 trainer capability
+Starting commit `29c4c6f0fdbc9a966655a0b3e5086cfc261f363b`. Shared single-run trainer and strict CLI also accept S3 architecture/method IDs; optional S3 remains unapproved. CPU T04/T05/T06/T10 targeted command `.\.venv\Scripts\python.exe -m pytest -q tests/unit/test_train_resume.py tests/integration/test_cli.py` exit 0 (7 passed); full CPU regression exit 0 (91 passed, one external warning). Details and failed-attempt corrections are in CORE and `reports/stage04.json`. No S3 scale run, GPU test, calibration, approved protocol, scientific result or `Upstream/` change. User was told CPU-only Stage04 passed. Next Stage05 capability; milestone commit pending.

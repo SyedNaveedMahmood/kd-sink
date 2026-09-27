@@ -41,13 +41,13 @@ Work order: [03_OBJECTIVES](design/e6a_v2/stages/03_OBJECTIVES.md).
 
 ## Stage04 - Trainer and resume
 Work order: [04_TRAINER_RESUME](design/e6a_v2/stages/04_TRAINER_RESUME.md).
-- [ ]04.1 Single-run trainer,accumulation,precision and schedule.
-- [ ]04.2 Isolated profiles/common-batch solver and mock tests.
-- [ ]04.3 Sparse/rolling/protected full checkpoints,atomic saves.
-- [ ]04.4 Exact resume/extension/interruption and compatibility.
-- [ ]04.5 tqdm/elapsed/ETA/GPU/memory/non-TTY logs.
-- [ ]04.6 T04/T05/T06/T10 CPU evidence; realGPU pending.
-- [ ] Stage04 evidence reviewed and milestone committed.
+- [x]04.1 Single-run trainer,accumulation,precision and schedule.
+- [x]04.2 Isolated profiles/common-batch solver and mock tests.
+- [x]04.3 Sparse/rolling/protected full checkpoints,atomic saves.
+- [x]04.4 Exact resume/extension/interruption and compatibility.
+- [x]04.5 tqdm/elapsed/ETA/GPU/memory/non-TTY logs.
+- [x]04.6 T04/T05/T06/T10 CPU evidence; realGPU pending.
+- [x] Stage04 CPU evidence reviewed and milestone committed; realGPU validation remains Stage06.
 
 ## Stage05 - Evaluation
 Work order: [05_EVALUATION](design/e6a_v2/stages/05_EVALUATION.md).

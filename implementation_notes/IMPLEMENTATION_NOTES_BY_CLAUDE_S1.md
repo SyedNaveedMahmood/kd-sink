@@ -34,3 +34,5 @@ Starting commit `e008ee5`; user authorized Stage03 only. Read Stage03, OBJECTIVE
 
 ## 2026-09-27T09:34:05Z - Codex (GPT-6) - Stage03 S1 milestone SHA
 Stage03 CPU evidence/checklist commit: `362baf170892f853a7c77a3dd5996f987c11d5ef`. No S1 training or GPU test occurred.
+## 2026-09-27T09:57:00Z - Codex (GPT-6) - Stage04 S1 single-run trainer capability
+Starting commit `29c4c6f0fdbc9a966655a0b3e5086cfc261f363b`. S1 C0-C6 use one explicit condition/seed with shared 64-example schedule and frozen teacher objective binding; C4 physical role is RTX 3090 only. CPU toy exact resume, fixed batch and mock common-plan tests passed; targeted command `.\.venv\Scripts\python.exe -m pytest -q tests/unit/test_train_resume.py tests/integration/test_cli.py` exit 0 (7 passed), full CPU regression exit 0 (91 passed, one external warning). See `reports/stage04.json` and CORE for commands/failures. No S1 real weights, GPU profile, approved lock or training was run; mock profile is explicitly non-hardware evidence. User received scope and gate updates. `Upstream/` untouched. Next Stage05 after Stage04 milestone; commit pending.
