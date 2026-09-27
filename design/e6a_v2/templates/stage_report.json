@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "stage_id": null,
+  "status": "not_started",
+  "starting_commit": null,
+  "task_ids_completed": [],
+  "changed_files": [],
+  "decisions": [],
+  "tests": [],
+  "required_tests_blocked": [],
+  "hardware_tested": [],
+  "reports": [],
+  "scientific_runs_executed": [],
+  "journal_paths": [],
+  "next_task": null,
+  "milestone_commit": null,
+  "note": "Template only. Each test needs command,device,versions,exit code,counts and report path. Skipped required tests block completion."
+}

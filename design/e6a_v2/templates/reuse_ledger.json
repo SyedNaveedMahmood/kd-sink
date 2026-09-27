@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "entries": [],
+  "entry_contract": {
+    "source_path": "required",
+    "source_commit_or_blob": "required",
+    "source_license": "verify before literal reuse",
+    "function_or_lines": "required",
+    "destination": "required",
+    "reuse_type": "idea or literal",
+    "intentional_changes": "required",
+    "independent_tests": "required",
+    "reviewer": "required",
+    "milestone_commit": "append after commit"
+  }
+}

@@ -1,0 +1,18 @@
+schema_version: 1
+status: draft
+researcher_approval: null
+approved_at_utc: null
+approved_decision_ids: []
+amended_decisions: {}
+# A committed file or passing test does not constitute researcher approval.
+measured_artifact_lock: null
+measured_environment_lock: null
+measured_hardware_lock: null
+measured_calibration_lock: null
+teacher_preflight_report: null
+required_gpu_test_reports: []
+optional_s3_enabled: false
+optional_long_context_enabled: false
+practical_equivalence_margin: null
+functional_onset_definition: null
+production_ready: false

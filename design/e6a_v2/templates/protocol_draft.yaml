@@ -1,0 +1,101 @@
+schema_version: 1
+status: draft
+protocol_id: e6a_v2_proposal_20260927
+reference_commit: 96a80e1e7ad581728c8befd697547f9b3f3a2e85
+approval_file: null
+study: S1
+condition: null
+seed: null
+scientific_replication_plan: [0, 1, 2]
+launch_all_seeds_by_default: false
+teacher:
+  id: openai-community/gpt2-large
+  candidate_revision: 32b71b12589c2f8d625668d2335a01cac3249519
+  verified_revision: null
+  layers: 36
+  heads: 20
+  width: 1280
+student:
+  config_id: openai-community/gpt2-medium
+  candidate_revision: 6dcaa7a952f72f9298047fd5137cd6e4f05f41da
+  verified_revision: null
+  initialization: random_from_config
+  layers: 24
+  heads: 16
+  width: 1024
+teacher_layers_for_student: [1, 2, 4, 5, 7, 8, 10, 11, 13, 14, 16, 17, 19, 20, 22, 23, 25, 26, 28, 29, 31, 32, 34, 35]
+training:
+  optimizer_updates: 10000
+  sequence_length: 128
+  effective_sequences: 64
+  input_tokens_per_update: 8192
+  targets_per_update: 8128
+  microbatch: null
+  accumulation: null
+  hardware_plan: null
+  precision: bf16_autocast_fp32_student_and_adam
+  attention_backend: eager
+  activation_checkpoint_policy: null
+  optimizer: adamw
+  lr: 0.0005
+  betas: [0.9, 0.95]
+  epsilon: 0.00000001
+  weight_decay: 0.1
+  clip_norm: 1.0
+  warmup_updates: 500
+  schedule: warmup_cosine_to_10000_then_constant_floor
+  floor_ratio: 0.1
+  student_dropout: 0.1
+  teacher_eval: true
+objectives:
+  ce_weight_c1_to_c6: 0.5
+  kd_weight_c1_to_c6: 0.5
+  kd_temperature: 2.0
+  auxiliary_reference_weight: 0.1111111111111111
+  C0: ce_only
+  C1: logit_kd
+  C2: cosine_soft_jsd_v2
+  C3: head_mean_probability_mse_v1
+  C4: causal_qq_kk_vv_v1
+  C5: cosine_soft_conditional_nosink_jsd_v1
+  C6: cosine_soft_binary_sink_jsd_v1
+  soft_alignment_temperature: 1.0
+  relation_heads: 64
+  relation_types: [QQ, KK, VV]
+  calibration_seed: 1729
+  calibration_effective_batches: 16
+  calibrated_mse_scale: null
+  calibrated_rel_scale: null
+  calibration_lock: null
+measurement:
+  dense_every_updates: 100
+  include_step_zero: true
+  dense_panel_size: 64
+  full_panel_size: 300
+  endpoint_nll_panel_size: 2000
+  primary_student_scope: all_native_layers
+  primary_teacher_scope: mapped_teacher_layers
+  primary_operations: [delete, relocate]
+  primary_strength: 1.0
+  fp32_precision_checkpoints: [0, 500, 10000]
+  panel_locks: null
+checkpointing:
+  retained_model_steps: [0, 100, 250, 500, 1000, 2000, 5000, 7500, 10000]
+  full_resume_every: 500
+  active_rolling_generations: 2
+  protect_final_full_resume: true
+hardware:
+  recommended_plan: two_gpu_blocks_27_runs
+  rel_device_role: rtx3090
+  common_microbatch_across_paired_jobs: true
+  midrun_batch_retuning: false
+analysis:
+  primary_step: 10000
+  show_individual_seeds: true
+  primary_summary: paired_descriptive_mean_sample_sd
+  binary_onset_enabled: false
+  equivalence_enabled: false
+optional_studies:
+  S3: false
+  S6_long_context: false
+production_ready: false

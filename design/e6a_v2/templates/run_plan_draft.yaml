@@ -1,0 +1,21 @@
+schema_version: 1
+status: draft
+approved_plan: null
+# Template only. Never interpret this as an executable default sweep.
+blocks:
+  A:
+    device_role: rtx3090
+    conditions: [C1, C2, C3, C4]
+    explicitly_planned_seeds: [0, 1, 2]
+  B:
+    device_role: rtx4080super
+    conditions: [C0, C1, C2, C5, C6]
+    explicitly_planned_seeds: [0, 1, 2]
+unique_s1_condition_seed_combinations: 21
+physical_s1_runs_if_approved: 27
+shared_conditions_are_hardware_replicas: [C1, C2]
+shared_replicas_are_new_training_seeds: false
+common_hardware_lock: null
+optional_s3_runs: 15
+optional_s3_enabled: false
+launch_requires_explicit_operator_opt_in: true
