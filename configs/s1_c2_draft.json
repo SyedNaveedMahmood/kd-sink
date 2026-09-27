@@ -1,0 +1,10 @@
+{
+  "schema_version": 1,
+  "study": "S1",
+  "condition": "C2",
+  "variant": "cosine_soft_jsd_v2",
+  "device_role": "rtx3090",
+  "teacher": {"layers": 36, "heads": 20, "width": 1280},
+  "student": {"layers": 24, "heads": 16, "width": 1024, "initialization": "random_from_config"},
+  "protocol_digest": null
+}

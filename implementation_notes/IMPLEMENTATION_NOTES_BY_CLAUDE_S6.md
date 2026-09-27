@@ -4,3 +4,6 @@ Required CLAUDE filename applies to every agent; identify actual agent. Follow d
 
 ## 2026-09-27 - ChatGPT design handoff
 Design only; domain/context evaluations not executed. Read studies/S6_CROSS_DOMAIN.md. SST2/GSM8K/HumanEval are frozen text probes,not task-accuracy claims; never execute code.40/128 renderings share documents;512/1024 checks are optional and require resource approval. Stage08 after common evaluator. Append actual session tests,communications,decisions and milestone commits.
+## 2026-09-27T07:52:26Z - Codex - Stage00 shared foundation
+
+Starting commit `05004b1`; user requested Stage00 only. The installable package, exact Windows Python 3.12 lock, and protocol integrity boundary are shared foundations; S6 domain/long-context evaluation is not implemented or enabled. No Upstream code reused or GPU/scientific run occurred. Exact CPU suite: `.\\.venv\\Scripts\\python.exe -m pytest -q tests/unit tests/integration -m 'not gpu and not network'`, exit 0, 17 passed/0 failed/0 skipped; report pending. User was told the foundation and environment results. NEXT_STEPS 00.1-00.4 checked; next is final T00 report, then Stage01. Milestone SHA to be appended after commit.

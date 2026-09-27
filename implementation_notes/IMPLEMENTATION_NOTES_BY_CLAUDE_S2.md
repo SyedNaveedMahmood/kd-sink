@@ -4,3 +4,6 @@ Use the required CLAUDE filename even for Codex; record actual agent. Follow des
 
 ## 2026-09-27 - ChatGPT design handoff
 Design only; no public trajectory evaluation or GPU tests completed. S2 is an external observational baseline,not S1's randomized CE-only control. Public training seeds differ from evaluator RNG. Native checkpoint inventory,immutable revisions and download budget remain gates. No automatic924-checkpoint fetch. Read studies/S2_PRETRAINING_DEVELOPMENT.md; sequential implementation reaches stage07. Preserve actual session communications/tests/decisions/milestones here.
+## 2026-09-27T07:52:26Z - Codex - Stage00 shared foundation
+
+Starting commit `05004b1`; user requested Stage00 only. The new package, Windows Python 3.12/CUDA 12.8 `uv.lock`, and approval boundary provide shared infrastructure; S2 evaluator/configuration is not implemented or enabled. No Upstream code reused and no dataset/model/network/GPU work occurred. Exact CPU suite: `.\\.venv\\Scripts\\python.exe -m pytest -q tests/unit tests/integration -m 'not gpu and not network'`, exit 0, 17 passed/0 failed/0 skipped; stage report pending. User was told the foundation and environment results. NEXT_STEPS 00.1-00.4 checked; next is final T00 report, then Stage01. Milestone SHA to be appended after commit.

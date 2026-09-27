@@ -4,3 +4,6 @@ Required CLAUDE filename applies to every agent; identify actual agent. Follow d
 
 ## 2026-09-27 - ChatGPT design handoff
 Design only; no new S5 training is planned. Reuse S1 full/NoSink/SinkOnly/LogitKD records. NoSink removes key0 BEFORE alignment; SinkOnly matches binary mass,not a normalized single column. Necessity/sufficiency claims are restricted to supervision under this recipe. Read studies/S5_SINK_SUPERVISION.md; stage08. Append actual session tests,communications,decisions and milestones.
+## 2026-09-27T07:52:26Z - Codex - Stage00 shared foundation
+
+Starting commit `05004b1`; user requested Stage00 only. The installable package, exact Windows Python 3.12 lock, and protocol integrity boundary are shared foundations; S5 reanalysis is not implemented. No Upstream code reused or GPU/scientific run occurred. Exact CPU suite: `.\\.venv\\Scripts\\python.exe -m pytest -q tests/unit tests/integration -m 'not gpu and not network'`, exit 0, 17 passed/0 failed/0 skipped; report pending. User was told the foundation and environment results. NEXT_STEPS 00.1-00.4 checked; next is final T00 report, then Stage01. Milestone SHA to be appended after commit.

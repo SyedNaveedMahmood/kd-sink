@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "status": "draft",
+  "production_ready": false,
+  "researcher": null,
+  "approved_at_utc": null,
+  "approved_decision_ids": [],
+  "approval_sha256": null,
+  "artifact_lock_digest": null,
+  "environment_lock_digest": null,
+  "hardware_lock_digest": null,
+  "calibration_lock_digest": null
+}

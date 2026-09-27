@@ -1,0 +1,5 @@
+{
+  "schema_version": 1,
+  "entries": [],
+  "note": "Stage 00 borrows no source code from Upstream. Record each later reuse with source SHA, license, changes, independent tests, reviewer, and milestone commit."
+}

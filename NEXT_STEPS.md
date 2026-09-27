@@ -4,10 +4,10 @@ DESIGN ONLY: no experiment code,CPU/GPU acceptance or scientific campaign is mar
 
 ## Stage00 - Foundation
 Work order: [00_FOUNDATION](design/e6a_v2/stages/00_FOUNDATION.md).
-- [ ]00.1 Inspect tree/licenses and document reuse; leave Upstream unchanged.
-- [ ]00.2 Minimal package,strict configuration and explicit single-seed CLI.
-- [ ]00.3 Draft/approval locks,canonical hashing and templates.
-- [ ]00.4 Resolve/test dependency versions and lock environment.
+- [x]00.1 Inspect tree/licenses and document reuse; leave Upstream unchanged.
+- [x]00.2 Minimal package,strict configuration and explicit single-seed CLI.
+- [x]00.3 Draft/approval locks,canonical hashing and templates.
+- [x]00.4 Resolve/test dependency versions and lock environment.
 - [ ]00.5 T00/offline no-Upstream build tests,report and journals.
 - [ ] Stage00 evidence reviewed and milestone committed.
 
