@@ -21,3 +21,7 @@ Stage00 completion report and checklist were committed as bd14d04 (docs(stage00)
 - Tests: `python -m pytest -q tests/unit/test_stage08_probes.py tests/unit/test_stage08_s5.py tests/unit/test_stage08_s6.py` under `.venv` exit 0, 10 passed/0 failed/0 skipped; full CPU regression `python -m pytest -q tests/unit tests/integration -m 'not gpu and not network'` exit 0, 130 passed/0 failed/0 skipped. Exact Windows launcher was `.venv/Scripts/python.exe`. An intermediate stale S6 test import caused collection exit 1, corrected before final pass. Report: `reports/stage08.json`.
 - No real GPT-2-large teacher or frozen calibration panel was available. Real teacher responsiveness/nonresponsiveness is unmeasured; synthetic fixture labels cannot substitute. RTX 3090 absent and no Stage08 GPU smoke authorized. No S4 scientific state evaluated. User was updated on implementation, parity/restoration and these limits; no messages sent to others.
 - NEXT_STEPS 08.1 checked for CPU capability; 08.4/Stage08 gate open. Next: separately authorized real-teacher qualification and GPU smoke. Evidence commit pending; append SHA after commit.
+
+## 2026-09-27T17:36:48Z - Codex (GPT-6) - Stage08 S4 evidence SHA
+
+Evidence report/checklist/journals were committed locally as `6f4a6812e2a29b50a7199d75a0d765d5dda489dc`; implementation milestone remains `f17150d0499fd148ab41389d37936493ebb942ea`. Final CPU suite in `reports/stage08.json` passed 130/130; no real teacher responsiveness or GPU smoke was inferred. No push or scientific run. Final polish commit pending.

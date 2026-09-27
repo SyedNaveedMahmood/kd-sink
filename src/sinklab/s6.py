@@ -57,9 +57,18 @@ def render_domain_items(document: dict, *, tokenizer_sha256: str,
     items = []
     for row in source["items"]:
         rendering = row["renderings"][str(context)]
+        ids = rendering["input_ids"]
+        mask = rendering["attention_mask"]
         items.append({"id": row["document_sha256"],
-                      "input_ids": rendering["input_ids"],
-                      "attention_mask": rendering["attention_mask"]})
+                      "document_sha256": row["document_sha256"],
+                      "source_field": row["source_field"],
+                      "source_split": row["source_split"],
+                      "source_revision": source["revision"],
+                      "source_license": payload["source_licenses"][domain],
+                      "input_ids": ids, "attention_mask": mask,
+                      "labels": [token if valid else -100 for token, valid in zip(ids, mask)],
+                      "valid_target_count": rendering["real_token_count"] - 1,
+                      "metric_label": "causal_language_modeling_not_domain_task_accuracy"})
     panel_hash = payload_digest({"s6_manifest_sha256": digest, "domain": domain,
         "context": context, "items": items})
     return items, panel_hash
@@ -79,8 +88,8 @@ def equal_item_behavior(values: list[dict]) -> dict:
             "self_kl_nats": item_mean("self_kl_sum_nats"),
             "absolute_target_logprob_change_nats": item_mean("absolute_target_logprob_change_sum_nats"),
             "prediction_flip_fraction": item_mean("flip_count"),
-            "clean_accuracy_fraction": item_mean("clean_correct_count"),
-            "edited_accuracy_fraction": item_mean("edited_correct_count"),
+            "clean_next_token_accuracy_fraction": item_mean("clean_correct_count"),
+            "edited_next_token_accuracy_fraction": item_mean("edited_correct_count"),
             "total_valid_targets": sum(v["valid_targets"] for v in values),
             "metric_label": "causal_language_modeling_not_domain_task_accuracy"}
 
@@ -94,6 +103,8 @@ def evaluate_s6_domains(*, adapter, document: dict, tokenizer_sha256: str,
     """Explicit domain battery; matched IDs, separate context masks and cache keys."""
     if contexts != (40, 128):
         raise S6Error("S6 primary domain battery requires paired 40/128 renderings")
+    if step not in {0, 500, 2000, 10000}:
+        raise S6Error("S6 requires one of the fixed retained checkpoints")
     if not isinstance(checkpoint_sha256, str) or not SHA256_PATTERN.fullmatch(checkpoint_sha256):
         raise S6Error("immutable checkpoint SHA-256 required")
     if precision not in {"fp32", "bf16"}:
@@ -133,8 +144,11 @@ def evaluate_s6_domains(*, adapter, document: dict, tokenizer_sha256: str,
         for op in ("clean", "delete", "relocate"):
             all_values = [value for domain in DOMAIN_FIELDS
                           for value in observations[domain, context, op].values()]
+            weighted = aggregate_behavior(all_values)
+            weighted["metric_label"] = "causal_language_modeling_not_domain_task_accuracy"
+            weighted["accuracy_definition"] = "next_token_argmax_fraction"
             pooled[f"{context}_{op}"] = {"equal_item": equal_item_behavior(all_values),
-                                         "token_weighted": aggregate_behavior(all_values),
+                                         "token_weighted": weighted,
                                          "domain_count": 3}
     paired = {}
     for domain in DOMAIN_FIELDS:

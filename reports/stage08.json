@@ -17,7 +17,7 @@
     "pythia": "GPT-NeoX route battery explicitly not_applicable",
     "real_teacher_responsiveness": null,
     "nonresponsive_real_teacher_probes": null,
-    "reason": "GPT-2-large weights and frozen calibration panel were not authorized/available for this stage run"
+    "reason": "A frozen S4 calibration panel and scoped real-teacher/GPU run were not available; Stage06 cached teacher weights were not used"
   },
   "s5": {
     "mode": "read_only_reuse_of_sealed_S1_C1_C2_C5_C6_item_and_aggregate_records",
@@ -30,8 +30,9 @@
     "domains": ["SST-2 validation sentence", "GSM8K test question", "HumanEval test prompt"],
     "primary_contexts": [40, 128],
     "same_document_pairing": true,
-    "labels": "standard causal-LM shifted valid targets from right-padded attention masks; language-model metrics only",
+    "labels": "explicit unshifted labels equal real input IDs and -100 on padding; common evaluator scores standard shifted causal-LM targets; language-model metrics only",
     "pooling": ["equal_item", "token_weighted"],
+    "accuracy_definition": "next-token argmax fraction, never domain-task accuracy",
     "optional_contexts": [512, 1024],
     "optional_context_status": "disabled; separate approval and measured one-item evaluation memory gate required",
     "production_domain_items_evaluated": 0

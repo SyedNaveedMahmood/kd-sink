@@ -50,6 +50,12 @@ def test_same_document_contexts_masks_provenance_and_no_answer_leakage():
                 assert sum(mask) >= 2
                 assert mask == [1] * sum(mask) + [0] * (len(mask) - sum(mask))
                 assert sum(mask[i] and mask[i + 1] for i in range(len(mask) - 1)) == sum(mask) - 1
+                assert row["labels"] == [token if valid else -100
+                                         for token, valid in zip(row["input_ids"], mask)]
+                assert row["valid_target_count"] == sum(mask) - 1
+                assert row["source_revision"] == "pinned-fixture"
+                assert row["source_license"] == "fixture"
+                assert row["metric_label"] == "causal_language_modeling_not_domain_task_accuracy"
     assert "LEAK" not in str(document)
     damaged = copy.deepcopy(document["payload"])
     damaged["base_panel"]["domains"]["sst2"]["items"][0]["renderings"]["40"]["attention_mask"][0] = 0
@@ -68,6 +74,7 @@ def test_equal_item_lm_pool_differs_from_target_weighting():
     assert result["clean_ce_nats"] == 2.
     assert result["clean_ce_nats"] != (2 + 24) / 10
     assert result["metric_label"] == "causal_language_modeling_not_domain_task_accuracy"
+    assert result["clean_next_token_accuracy_fraction"] == .25
     with pytest.raises(S6Error, match="nonempty"):
         equal_item_behavior([])
 
@@ -135,5 +142,11 @@ def test_domain_evaluation_wrapper_pairs_contexts_and_pools_items(tmp_path, monk
         run_identity={"fixture": True}, denominator_floor=1e-8, precision="fp32")
     assert result["status"] == "complete"
     assert result["pooled"]["40_delete"]["equal_item"]["item_count"] == 3
+    assert result["pooled"]["40_delete"]["token_weighted"]["accuracy_definition"] == "next_token_argmax_fraction"
     assert result["paired"]["sst2_delete"][0]["targets_40"] == 39
     assert result["paired"]["sst2_delete"][0]["targets_128"] >= 39
+    with pytest.raises(S6Error, match="fixed retained"):
+        evaluate_s6_domains(adapter=object(), document=document,
+            tokenizer_sha256="b" * 64, checkpoint_sha256="c" * 64,
+            run_id="fixture", step=100, store=RecordStore(tmp_path / "invalid"),
+            run_identity={"fixture": True}, denominator_floor=1e-8, precision="fp32")
