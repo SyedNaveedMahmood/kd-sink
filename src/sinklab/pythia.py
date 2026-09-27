@@ -251,7 +251,8 @@ def evaluate_one(*, entry: dict, snapshot: Path, panel_path: Path,
     model = (model_loader or GPTNeoXForCausalLM.from_pretrained)(
         str(snapshot), local_files_only=True, attn_implementation="eager")
     try:
-        model.to(device)
+        source_weight_dtype = str(next(model.parameters()).dtype)
+        model.to(device=device, dtype=torch.float32)
         adapter = GPTNeoXAdapter(model)
         identity = _run_identity(entry, panel, panel_hash, checkpoint_hash, device, precision)
         result = evaluate_panel(adapter=adapter, items=panel["items"], panel="pythia",
@@ -267,6 +268,8 @@ def evaluate_one(*, entry: dict, snapshot: Path, panel_path: Path,
                 "branch": entry["branch"], "revision": entry["revision"],
                 "checkpoint_sha256": checkpoint_hash, "tokenizer": panel["tokenizer"],
                 "panel_sha256": panel_hash, "device": device, "precision": precision,
+                "source_weight_dtype": source_weight_dtype,
+                "compute_weight_dtype": str(next(model.parameters()).dtype),
                 "evaluation": result}
     finally:
         del model

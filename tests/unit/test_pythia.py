@@ -159,3 +159,39 @@ def test_one_branch_resolver_never_uses_latest_or_conflates_seeds():
                                    native_step=1000, api=Api())
     assert entry["revision"] == "f" * 40
     assert entry["training_tokens"] == 1000 * TOKENS_PER_STEP
+
+
+def test_opt_in_eviction_only_after_verified_result(tmp_path):
+    entry, inventory_path, snapshot, panel = _fixture(tmp_path)
+    inventory, _ = load_inventory(inventory_path)
+    cache = tmp_path / "owned-cache"
+    def copy_download(*, repo_id, revision, allow_patterns, local_dir):
+        target = Path(local_dir)
+        target.mkdir()
+        for name in allow_patterns:
+            (target / name).write_bytes((snapshot / name).read_bytes())
+    kwargs = dict(inventory=inventory, size="160m", training_seed=1234,
+        native_steps=[0], cache_root=cache,
+        byte_cap=sum(m["bytes"] for m in entry["files"].values()),
+        panel_path=panel, tokenizer_sha256="c" * 64,
+        store_root=tmp_path / "records", evaluator_seed=3,
+        downloader=copy_download, evict_after_verified=True)
+    assert run_trajectory(**kwargs)["status"] == "complete"
+    assert not list(cache.iterdir())
+    assert snapshot.is_dir()  # source checkpoint is outside the owned cache
+    assert run_trajectory(**kwargs)["completed"][0]["status"] == "verified_resume"
+
+
+def test_network_and_trajectory_commands_require_operator_flags():
+    from sinklab.cli import main
+    with pytest.raises(SystemExit) as resolved:
+        main(["pythia-resolve-one", "--size", "160m", "--training-seed", "1234",
+              "--native-step", "0", "--out", "entry.json"])
+    assert resolved.value.code == 2
+    with pytest.raises(SystemExit) as trajectory:
+        main(["pythia-trajectory", "--inventory", "i.json", "--size", "160m",
+              "--training-seed", "1234", "--native-steps", "0", "--panel", "p.json",
+              "--tokenizer-sha256", "c" * 64, "--store-root", "records",
+              "--evaluator-seed", "1", "--device", "cpu", "--precision", "fp32",
+              "--cache-root", "cache", "--byte-cap", "100"])
+    assert trajectory.value.code == 2

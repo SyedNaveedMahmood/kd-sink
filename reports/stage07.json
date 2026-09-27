@@ -1,0 +1,93 @@
+{
+  "schema_version": 1,
+  "stage_id": "07",
+  "status": "cpu_capability_complete_external_validation_blocked",
+  "starting_commit": "79dd970e3baae17966105f86f5f77c0eef77b2f1",
+  "implementation_milestone": "8c73b38e8c8d8116a90b498c199fafd101649241",
+  "task_ids_completed": ["07.1", "07.2", "07.3"],
+  "task_07_4": "local CPU tests passed; real network and GPU smoke not authorized or executed",
+  "stage06_status": "blocked_for_production_readiness_unchanged",
+  "inventory": {
+    "kind": "pythia-inventory-v1",
+    "supported_sizes": ["160m", "410m"],
+    "training_seeds": [1234, 1, 2],
+    "standard_training_seed": 1234,
+    "native_steps_per_proposed_trajectory": 154,
+    "training_tokens_per_native_step": 2097152,
+    "identity": "explicit repository, step branch, immutable 40-character commit, per-file SHA-256 and byte size",
+    "public_entries_resolved": 0,
+    "missing_policy": "report exact missing steps; never substitute latest or start a partial trajectory without a coverage decision"
+  },
+  "evaluation": {
+    "scope": "one explicit checkpoint, all native GPT-NeoX layers, clean/delete/relocate",
+    "model": "local GPTNeoXForCausalLM with eager native rotary attention; pinned config and weight files verified before load; source weight dtype recorded and FP32 weights used for FP32 or CUDA BF16 autocast evaluation",
+    "panel": "separate Pythia-tokenized frozen raw-document manifest with pinned tokenizer revision/file hash, right-padding masks and source-panel SHA-256",
+    "axes": ["native_step", "training_tokens"],
+    "evaluator_rng": "explicit evaluator seed is separate metadata from public training seed; deterministic item evaluation does not consume it",
+    "not_applicable": ["GPT-2 absolute-position/EPE fingerprints", "teacher KL", "GPT-2 teacher layer mapping"]
+  },
+  "trajectory": {
+    "invocation": "requires explicit native steps, allow-download flag, cache root and byte cap",
+    "resume": "skip a checkpoint only after sealed summary, aggregate provenance and every per-item result verify",
+    "cache": "one commit-pinned checkpoint at a time; byte metadata preflight and post-download cap check; optional owned-cache eviction only after verified completion",
+    "automatic_full_collection_download": false
+  },
+  "environment": {
+    "os": "Windows 11",
+    "python": "3.12.3",
+    "torch": "2.10.0+cu128",
+    "transformers": "5.3.0",
+    "huggingface_hub": "1.33.0"
+  },
+  "tests": [
+    {
+      "command": ".\\.venv\\Scripts\\python.exe -m pytest -q tests\\unit\\test_pythia.py tests\\unit\\test_models.py tests\\unit\\test_interventions.py tests\\unit\\test_data.py tests\\unit\\test_panels.py tests\\unit\\test_metrics_evaluate.py",
+      "device": "CPU synthetic/local",
+      "exit_code": 0,
+      "passed": 61,
+      "failed": 0,
+      "skipped": 0,
+      "covers": ["T09 S2", "T02", "T07", "T01 tokenizer", "T10 cache"]
+    },
+    {
+      "command": ".\\.venv\\Scripts\\python.exe -m pytest -q tests\\unit tests\\integration -m 'not gpu and not network'",
+      "device": "CPU",
+      "exit_code": 0,
+      "passed": 120,
+      "failed": 0,
+      "skipped": 0,
+      "warning": "one external astor Python 3.14 deprecation warning"
+    },
+    {
+      "command": "git diff --check; git diff --name-only HEAD -- Upstream upstream",
+      "device": "local repository",
+      "exit_code": 0,
+      "result": "no whitespace errors or Upstream changes"
+    }
+  ],
+  "required_tests_blocked": [
+    "real-network checkpoint availability, weight/config hashes and download-size inventory",
+    "real Pythia step-0 and later checkpoint GPU/native parity and causal evaluation"
+  ],
+  "hardware_tested": [],
+  "network_smoke": "not run; no explicitly scoped public checkpoint or download budget supplied",
+  "storage_download_estimates": {
+    "actual_public_checkpoint_bytes": null,
+    "full_trajectory_bytes": null,
+    "downloaded_checkpoint_count": 0,
+    "reason": "public inventory not resolved; theoretical 924 states is a count, not a byte estimate"
+  },
+  "scientific_runs_executed": [],
+  "production_gates": [
+    "approved S2 checkpoint coverage and frozen inventory",
+    "measured storage and download budget",
+    "real network and GPU smoke",
+    "approved protocol/artifact/environment/hardware locks"
+  ],
+  "journal_paths": [
+    "implementation_notes/IMPLEMENTATION_NOTES_BY_CLAUDE_CORE.md",
+    "implementation_notes/IMPLEMENTATION_NOTES_BY_CLAUDE_S2.md"
+  ],
+  "next_task": "Stage07 external validation only under explicit operator scope; do not start Stage08 or a production trajectory",
+  "milestone_commit": "8c73b38e8c8d8116a90b498c199fafd101649241"
+}

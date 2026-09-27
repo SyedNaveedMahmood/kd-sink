@@ -71,11 +71,13 @@ Stage06 status: BLOCKED. Assigned-condition full-size smoke, causal evaluation, 
 
 ## Stage07 - S2
 Work order: [07_S2_PRETRAINING](design/e6a_v2/stages/07_S2_PRETRAINING.md).
-- [ ]07.1 Immutable public checkpoint/seed inventory.
-- [ ]07.2 Single Pythia-checkpoint evaluator/manifests.
-- [ ]07.3 Opt-in trajectories,bounded cache/download,resume.
+- [x]07.1 Immutable public checkpoint/seed inventory capability; actual public entries remain unresolved.
+- [x]07.2 Single Pythia-checkpoint evaluator/manifests on local CPU fixtures.
+- [x]07.3 Opt-in trajectories,bounded cache/download,resume on local CPU fixtures.
 - [ ]07.4 Local tests and approved real network/GPU evidence.
 - [ ] Stage07 evidence reviewed and milestone committed.
+
+Stage07 status: CPU capability implemented and tested. Actual public checkpoint availability, measured download/storage budget and real network/GPU smoke are blocked pending explicit operator scope; no full S2 trajectory or scientific coverage exists. See `reports/stage07.json`. Stage06 production-readiness status remains BLOCKED.
 
 ## Stage08 - S4/S5/S6
 Work order: [08_S4_S5_S6](design/e6a_v2/stages/08_S4_S5_S6.md).
