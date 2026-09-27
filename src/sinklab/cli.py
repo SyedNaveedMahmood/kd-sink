@@ -90,9 +90,88 @@ def main(argv: Sequence[str] | None = None) -> int:
     solve.add_argument("--profiles", type=Path, nargs="+", required=True)
     solve.add_argument("--out", type=Path, required=True)
     solve.add_argument("--production", action="store_true")
+    inventory = command.add_parser("pythia-inventory-add", help="append one explicit immutable checkpoint entry")
+    inventory.add_argument("--entry", type=Path, required=True)
+    inventory.add_argument("--inventory", type=Path)
+    inventory.add_argument("--out-dir", type=Path, required=True)
+    resolve = command.add_parser("pythia-resolve-one", help="opt-in network resolution of one branch")
+    resolve.add_argument("--size", choices=("160m", "410m"), required=True)
+    resolve.add_argument("--training-seed", type=int, required=True)
+    resolve.add_argument("--native-step", type=int, required=True)
+    resolve.add_argument("--allow-network", action="store_true", required=True)
+    resolve.add_argument("--out", type=Path, required=True)
+    ppanel = command.add_parser("pythia-prepare-panel", help="retokenize selected raw documents locally")
+    ppanel.add_argument("--input-jsonl", type=Path, required=True)
+    ppanel.add_argument("--selected-document-hashes", type=Path, required=True)
+    ppanel.add_argument("--source-panel-sha256", required=True)
+    ppanel.add_argument("--tokenizer-dir", type=Path, required=True)
+    ppanel.add_argument("--tokenizer-id", required=True)
+    ppanel.add_argument("--tokenizer-revision", required=True)
+    ppanel.add_argument("--out-dir", type=Path, required=True)
+    pone = command.add_parser("pythia-evaluate-one", help="evaluate exactly one local pinned state")
+    trajectory = command.add_parser("pythia-trajectory", help="opt-in bounded trajectory over explicit steps")
+    for p in (pone, trajectory):
+        p.add_argument("--inventory", type=Path, required=True)
+        p.add_argument("--size", choices=("160m", "410m"), required=True)
+        p.add_argument("--training-seed", type=int, required=True)
+        p.add_argument("--panel", type=Path, required=True)
+        p.add_argument("--tokenizer-sha256", required=True)
+        p.add_argument("--store-root", type=Path, required=True)
+        p.add_argument("--evaluator-seed", type=int, required=True)
+        p.add_argument("--device", choices=("cpu", "cuda"), required=True)
+        p.add_argument("--precision", choices=("fp32", "bf16"), required=True)
+    pone.add_argument("--native-step", type=int, required=True)
+    pone.add_argument("--snapshot", type=Path, required=True)
+    trajectory.add_argument("--native-steps", type=int, nargs="+", required=True)
+    trajectory.add_argument("--cache-root", type=Path, required=True)
+    trajectory.add_argument("--byte-cap", type=int, required=True)
+    trajectory.add_argument("--allow-download", action="store_true", required=True)
+    trajectory.add_argument("--evict-after-verified", action="store_true",
+                            help="delete only this command's verified checkpoint directory after each result")
     args = parser.parse_args(argv)
     try:
-        if args.command == "solve-batch-plan":
+        if args.command.startswith("pythia-"):
+            from .pythia import (create_inventory, load_inventory, resolve_one_hub_branch,
+                prepare_panel, evaluate_one, select_checkpoint, run_trajectory)
+            from .data import local_tokenizer, save_manifest, tokenizer_files_hash
+            if args.command == "pythia-inventory-add":
+                prior = load_inventory(args.inventory)[0]["entries"] if args.inventory else []
+                document = create_inventory([*prior, _json(args.entry)])
+                path = save_manifest(document, args.out_dir, "pythia-inventory")
+                output = {"action": "inventory_added", "path": str(path), "sha256": document["sha256"]}
+            elif args.command == "pythia-resolve-one":
+                entry = resolve_one_hub_branch(size=args.size, training_seed=args.training_seed,
+                    native_step=args.native_step)
+                args.out.write_text(json.dumps(entry, sort_keys=True, indent=2) + "\n", encoding="utf-8")
+                output = {"action": "resolved_one", "path": str(args.out), "revision": entry["revision"]}
+            elif args.command == "pythia-prepare-panel":
+                tokenizer = local_tokenizer(args.tokenizer_dir)
+                document = prepare_panel(_jsonl(args.input_jsonl), tokenizer,
+                    tokenizer_id=args.tokenizer_id, tokenizer_revision=args.tokenizer_revision,
+                    tokenizer_sha256=tokenizer_files_hash(args.tokenizer_dir),
+                    source_panel_sha256=args.source_panel_sha256,
+                    selected_document_hashes=_json(args.selected_document_hashes))
+                path = save_manifest(document, args.out_dir, "pythia-panel")
+                output = {"action": "prepared_pythia_panel", "path": str(path), "sha256": document["sha256"]}
+            else:
+                inventory_payload, inventory_hash = load_inventory(args.inventory)
+                if args.command == "pythia-evaluate-one":
+                    entry = select_checkpoint(inventory_payload, size=args.size,
+                        training_seed=args.training_seed, native_step=args.native_step)
+                    output = evaluate_one(entry=entry, snapshot=args.snapshot,
+                        panel_path=args.panel, tokenizer_sha256=args.tokenizer_sha256,
+                        store_root=args.store_root, evaluator_seed=args.evaluator_seed,
+                        device=args.device, precision=args.precision)
+                else:
+                    output = run_trajectory(inventory=inventory_payload, size=args.size,
+                        training_seed=args.training_seed, native_steps=args.native_steps,
+                        cache_root=args.cache_root, byte_cap=args.byte_cap, panel_path=args.panel,
+                        tokenizer_sha256=args.tokenizer_sha256, store_root=args.store_root,
+                        evaluator_seed=args.evaluator_seed, device=args.device,
+                        precision=args.precision,
+                        evict_after_verified=args.evict_after_verified)
+                output["inventory_sha256"] = inventory_hash
+        elif args.command == "solve-batch-plan":
             from .hardware import Profile, build_batch_plan
             profiles = [Profile(**_json(path)["profile"]) for path in args.profiles]
             required = {tuple(row) for row in _json(args.required)["required"]}
