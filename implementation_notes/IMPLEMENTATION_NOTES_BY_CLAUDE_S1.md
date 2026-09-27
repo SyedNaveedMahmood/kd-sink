@@ -10,3 +10,6 @@ Starting commit `05004b1`; user requested Stage00 only. Added and CPU-tested str
 
 ## 2026-09-27T07:57:40Z - Codex (GPT-6) - Stage00 closeout
 First tested milestone 3a84d0ae50750a6f71bc145f228a57b69f4bb514. T00 report: reports/stage00.json. Exact CPU suite reran with exit 0, 17 passed/0 failed/0 skipped; offline wheel and tiny GPT-2 smoke included. No GPU or S1 run occurred. NEXT_STEPS 00.1-00.5 and Stage00 checked; next Stage01 task 01.1.
+
+## 2026-09-27T07:59:27Z - Codex (GPT-6) - milestone SHA correction
+Stage00 completion report and checklist were committed as bd14d04 (docs(stage00): record CPU gate and handoff). The first tested foundation milestone was 3a84d0a. No study or GPU run was performed.
