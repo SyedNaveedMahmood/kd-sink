@@ -1,0 +1,117 @@
+{
+  "schema_version": 1,
+  "stage_id": "00",
+  "status": "complete_cpu_foundation",
+  "starting_commit": "05004b1",
+  "first_milestone_commit": "3a84d0ae50750a6f71bc145f228a57b69f4bb514",
+  "task_ids_completed": ["00.1", "00.2", "00.3", "00.4", "00.5"],
+  "changed_files": [
+    "pyproject.toml", "uv.lock", ".gitignore", "README.md", "NEXT_STEPS.md",
+    "src/sinklab/", "configs/s1_c2_draft.json", "protocols/",
+    "tests/unit/", "tests/integration/", "reports/stage00.json",
+    "implementation_notes/"
+  ],
+  "decisions": [
+    "Preserved the 16 previously requested direct upstream dependencies and resolved their transitive versions for Windows CPython 3.12.",
+    "Used the system Python 3.12.3 after the Anaconda Python 3.11.7 process failed to initialize Torch c10.dll.",
+    "The Stage 00 CLI validates one explicit study/condition/variant/seed/device request; it has no training command.",
+    "An approved protocol digest binds the run config to the canonical JSON payload. Approval D01-D18 and measured lock digests are required structurally; later stages validate scientific lock contents."
+  ],
+  "source_audit": {
+    "reference_tree": "Upstream/",
+    "tracked_reference_files": 237,
+    "license_files_found_by_git": [],
+    "literal_or_conceptual_code_reuse": [],
+    "reuse_ledger": "protocols/reuse_ledger.json",
+    "upstream_files_changed": 0
+  },
+  "environment": {
+    "os": "Windows",
+    "python": "3.12.3",
+    "torch": "2.10.0+cu128",
+    "torch_cuda_build": "12.8",
+    "transformers": "5.3.0",
+    "uv": "0.10.12",
+    "resolved_package_count": 121,
+    "lockfile": "uv.lock",
+    "lockfile_sha256": "b71f143ff21a0ccdd45e995b006430399134bb1564b1210bdc70fb3c67f4c3d5",
+    "installed_environment": ".venv/",
+    "cache_used": "F:\\KD-SINK\\.uv-cache"
+  },
+  "tests": [
+    {
+      "id": "T00_cpu",
+      "command": ".\\.venv\\Scripts\\python.exe -m pytest -q tests/unit tests/integration -m 'not gpu and not network'",
+      "device": "CPU",
+      "exit_code": 0,
+      "passed": 17,
+      "failed": 0,
+      "skipped": 0,
+      "warnings": 1,
+      "note": "The warning is an astor deprecation notice from the installed nnsight dependency. Includes a tiny GPT-2 CPU forward/backward check and offline clean-wheel installation/import with Upstream absent."
+    },
+    {
+      "id": "lock_consistency",
+      "command": ".\\.venv\\Scripts\\uv.exe lock --check --python .\\.venv\\Scripts\\python.exe",
+      "device": "CPU",
+      "exit_code": 0,
+      "passed": 1,
+      "failed": 0,
+      "skipped": 0
+    },
+    {
+      "id": "environment_sync",
+      "command": ".\\.venv\\Scripts\\uv.exe sync --check --locked --inexact",
+      "device": "CPU",
+      "exit_code": 0,
+      "passed": 1,
+      "failed": 0,
+      "skipped": 0,
+      "note": "After refreshing the editable package, uv checked 101 installed locked packages and proposed no changes."
+    },
+    {
+      "id": "dependency_metadata",
+      "command": ".\\.venv\\Scripts\\python.exe -m pip check",
+      "device": "CPU",
+      "exit_code": 0,
+      "passed": 1,
+      "failed": 0,
+      "skipped": 0
+    },
+    {
+      "id": "draft_production_rejection",
+      "command": ".\\.venv\\Scripts\\python.exe -m sinklab validate --config configs\\s1_c2_draft.json --seed 0 --production",
+      "device": "CPU",
+      "exit_code": 2,
+      "expected_exit_code": 2,
+      "passed": 1,
+      "failed": 0,
+      "skipped": 0
+    }
+  ],
+  "resolved_setup_failures": [
+    "First wheel test: 13 passed, 1 failed because wheel 0.46.3 was absent; installing the pinned build tool fixed it.",
+    "Anaconda Python 3.11.7: Torch c10.dll initialization failed with WinError 1114; system Python 3.12.3 imported the same DLL and passed the model smoke.",
+    "First Python 3.12 uv sync: C: lacked space for Torch extraction; retry with UV_CACHE_DIR on F: succeeded.",
+    "First uv sync --check after source edits found the editable package outdated; a locked sync refreshed it and the check then passed."
+  ],
+  "required_tests_blocked": [],
+  "hardware_tested": ["CPU"],
+  "later_gates_not_claimed": [
+    "RTX 4080 SUPER and RTX 3090 compatibility, real model memory, and production hardware profiles",
+    "Approved D01-D18 protocol and measured artifact, hardware, calibration, and model locks",
+    "Training, causal intervention, evaluation, exact resume, and scientific study coverage"
+  ],
+  "reports": ["reports/stage00.json"],
+  "scientific_runs_executed": [],
+  "journal_paths": [
+    "implementation_notes/IMPLEMENTATION_NOTES_BY_CLAUDE_CORE.md",
+    "implementation_notes/IMPLEMENTATION_NOTES_BY_CLAUDE_S1.md",
+    "implementation_notes/IMPLEMENTATION_NOTES_BY_CLAUDE_S2.md",
+    "implementation_notes/IMPLEMENTATION_NOTES_BY_CLAUDE_S3.md",
+    "implementation_notes/IMPLEMENTATION_NOTES_BY_CLAUDE_S4.md",
+    "implementation_notes/IMPLEMENTATION_NOTES_BY_CLAUDE_S5.md",
+    "implementation_notes/IMPLEMENTATION_NOTES_BY_CLAUDE_S6.md"
+  ],
+  "next_task": "Stage01 task 01.1: deterministic document split, deduplication, packing, and manifests."
+}

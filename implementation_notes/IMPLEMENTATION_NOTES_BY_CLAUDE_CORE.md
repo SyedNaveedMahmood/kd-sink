@@ -49,3 +49,9 @@ Next action: read AGENTS.md,NEXT_STEPS.md,DECISIONS.md and implement stage00. Do
 - Artifacts: `uv.lock` SHA-256 `b71f143ff21a0ccdd45e995b006430399134bb1564b1210bdc70fb3c67f4c3d5`; local ignored `.venv/` (CPython 3.12.3), ignored `.uv-cache/`; stage report still pending.
 - NEXT_STEPS: 00.1-00.4 checked only after the CPU tests above; 00.5 and Stage00 completion remain open pending final evidence report and rerun.
 - Next: finish T00/report/journal evidence, rerun the exact CPU suite after final edits, then complete Stage00. Milestone commit SHA will be added in a subsequent append-only entry after creation.
+
+## 2026-09-27T07:55:35Z - Codex - Stage00 handoff evidence
+- First tested milestone: 3a84d0ae50750a6f71bc145f228a57b69f4bb514 (feat(stage00): add strict run contracts and locked package).
+- Report: reports/stage00.json; Stage00 tasks 00.1-00.5 and CPU exit gate are complete. This is a CPU foundation result, not GPU/production readiness.
+- Final exact CPU suite: .\\.venv\\Scripts\\python.exe -m pytest -q tests/unit tests/integration -m 'not gpu and not network', CPython 3.12.3, exit 0, 17 passed, 0 failed, 0 skipped, one astor deprecation warning. The test builds and imports a wheel offline in a clean directory without Upstream. uv lock --check exited 0; pip check exited 0; draft production validation returned expected exit 2. An initial uv sync --check --locked --inexact reported the editable package outdated after source edits; uv sync --locked --inexact --link-mode=copy refreshed it and the check then exited 0 with no changes proposed.
+- User-visible communication: Stage00 package, lock, CPU tests, corrected Python runtime, and cache location were reported. No GPU, training, model download, or scientific production run occurred. Next authorized work is Stage01 task 01.1 in a later turn. This handoff is the Stage00 completion milestone.
