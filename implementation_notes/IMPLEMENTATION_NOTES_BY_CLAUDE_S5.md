@@ -30,3 +30,7 @@ Stage03 CPU evidence/checklist commit: `362baf170892f853a7c77a3dd5996f987c11d5ef
 ## 2026-09-27T17:36:48Z - Codex (GPT-6) - Stage08 S5 evidence SHA
 
 Evidence report/checklist/journals were committed locally as `6f4a6812e2a29b50a7199d75a0d765d5dda489dc`; implementation milestone remains `f17150d0499fd148ab41389d37936493ebb942ea`. The final full CPU suite passed 130/130. S5 still has zero production records joined and zero new training jobs; 08.4 and the Stage08 exit gate remain open. No push. Final polish commit pending.
+
+## 2026-09-27T17:39:52Z - Codex (GPT-6) - Stage08 final polish SHA
+
+Final S6 audit/report polish was committed as `d8c977184f59465ad65853b65e433f189c00c78c`. S5 reuse-only implementation remains at `f17150d`; no production S1 records were joined and no new S5 training was launched. Stage08 08.4 remains open.

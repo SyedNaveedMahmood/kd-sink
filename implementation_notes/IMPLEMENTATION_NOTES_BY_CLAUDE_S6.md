@@ -30,3 +30,7 @@ Implementation milestone `4b99a89446d16cd071f083809b66e7f5f3ca541a`; final CPU r
 ## 2026-09-27T17:36:48Z - Codex (GPT-6) - Stage08 S6 evidence SHA and label audit
 
 Evidence report/checklist/journals were committed locally as `6f4a6812e2a29b50a7199d75a0d765d5dda489dc`; implementation milestone remains `f17150d0499fd148ab41389d37936493ebb942ea`. After the user's “continue” instruction, `src/sinklab/s6.py` and `tests/unit/test_stage08_s6.py` were tightened to expose per-item unshifted masked labels, valid target counts and source field/split/revision/license in the 40/128 renderings, reject states outside 0/500/2000/10000, and label accuracy as next-token argmax rather than domain-task accuracy. `reports/stage08.json` was updated. Exact commands/results in that report: targeted CPU tests exit 0, 10 passed; full CPU regression exit 0, 130 passed; JSON parse, whitespace and Upstream change checks exit 0. No real domain, long-context, GPU or production evaluation occurred. 08.4 and Stage08 exit gate remain open; final polish commit pending.
+
+## 2026-09-27T17:39:52Z - Codex (GPT-6) - Stage08 final polish SHA
+
+The S6 label/provenance audit, tests and updated report were committed as `d8c977184f59465ad65853b65e433f189c00c78c`. Final CPU suite passed 130/130. No production domain/context evaluation or approved GPU smoke occurred; Stage08 08.4 and the exit gate remain open.

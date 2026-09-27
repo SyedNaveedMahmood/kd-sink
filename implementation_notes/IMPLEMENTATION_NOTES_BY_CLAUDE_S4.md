@@ -25,3 +25,7 @@ Stage00 completion report and checklist were committed as bd14d04 (docs(stage00)
 ## 2026-09-27T17:36:48Z - Codex (GPT-6) - Stage08 S4 evidence SHA
 
 Evidence report/checklist/journals were committed locally as `6f4a6812e2a29b50a7199d75a0d765d5dda489dc`; implementation milestone remains `f17150d0499fd148ab41389d37936493ebb942ea`. Final CPU suite in `reports/stage08.json` passed 130/130; no real teacher responsiveness or GPU smoke was inferred. No push or scientific run. Final polish commit pending.
+
+## 2026-09-27T17:39:52Z - Codex (GPT-6) - Stage08 final polish SHA
+
+Final S6 audit/report polish was committed as `d8c977184f59465ad65853b65e433f189c00c78c`. S4 probe implementation remains at `f17150d`; no new S4 experiment or teacher calibration was run. Stage08 08.4 remains open.
