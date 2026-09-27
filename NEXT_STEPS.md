@@ -84,10 +84,10 @@ Work order: [08_S4_S5_S6](design/e6a_v2/stages/08_S4_S5_S6.md).
 - [x]08.1 Anchor/route battery and model-local coordinate controls (CPU capability; real teacher calibration pending).
 - [x]08.2 S5 reanalysis-only joins and contrasts (CPU capability; no production S1 records yet).
 - [x]08.3 Domain/length panels and optional long contexts (CPU capability; optional long contexts disabled without approval/memory validation).
-- [ ]08.4 Study tests,new-teacher checks and approvedGPU smoke.
-- [ ] Stage08 evidence reviewed and milestone committed.
+- [x]08.4 Study tests,new-teacher checks and approvedGPU smoke (RTX 4080 SUPER engineering qualification; S5 analysis has no GPU kernel).
+- [x] Stage08 capability evidence reviewed and milestone committed; scientific coverage remains absent.
 
-Stage08 status: S4/S5/S6 CPU capability is implemented and the earlier CPU regression passes. Real GPT-2-large responsiveness qualification and authorized GPU/context smoke have not run, so 08.4 and the Stage08 exit gate remain open. No S4/S5/S6 scientific coverage exists. See `reports/stage08.json`. Stage06 and Stage07 blocks remain unchanged.
+Stage08 status: capability and external qualification COMPLETE on the RTX 4080 SUPER using a pinned GPT-2-large teacher and a frozen engineering calibration panel. All ten fixed S4 probes responded at the predeclared numerical reporting floor; that observation is not a scientific transfer claim. Paired 40/128-token S6 GPU smoke passed on agent-authored engineering inputs. S5 remains read-only with no production C1/C2/C5/C6 records; none were fabricated. Optional 512/1024 contexts remain disabled. No S4/S5/S6 scientific coverage exists. See `reports/stage08.json`. Stage06 and Stage07 blocks remain unchanged; Stage09 has not started.
 
 ## Stage09 - Analysis and release
 Work order: [09_ANALYSIS_RELEASE](design/e6a_v2/stages/09_ANALYSIS_RELEASE.md).

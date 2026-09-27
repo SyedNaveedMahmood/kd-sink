@@ -34,3 +34,10 @@ Evidence report/checklist/journals were committed locally as `6f4a6812e2a29b50a7
 ## 2026-09-27T17:39:52Z - Codex (GPT-6) - Stage08 final polish SHA
 
 Final S6 audit/report polish was committed as `d8c977184f59465ad65853b65e433f189c00c78c`. S5 reuse-only implementation remains at `f17150d`; no production S1 records were joined and no new S5 training was launched. Stage08 08.4 remains open.
+
+## 2026-09-27T18:09:38Z - Codex (GPT-6) - Stage08 08.4 S5 external qualification boundary
+
+- Starting commit `de829af`; user authorized Stage08 08.4 only. Read S5/Stage08 contracts and latest CORE/S5 journal. `src/sinklab/s5_analysis.py` was unchanged: S5 remains pure read-only joins over verified S1 C1/C2/C5/C6 records with no GPU kernel and no training path.
+- On the RTX 4080 SUPER host, the missing-record path returned all four absent condition rows for one engineering seed/step. No S1-labeled fixture records were created to fill them, no production record was joined, and no S5 training occurred. GPU compute is not applicable to this analysis-only function. The CPU fixture join tests remain the applicable capability check.
+- Evidence: `reports/stage08_4080_gpu_evidence.json` and `reports/stage08.json`. Final GPU command exit0,2 passed (S4/S6 tests plus S5 missing-record assertion); relevant T07-T10 CPU tests exit0,41 passed; full CPU regression exit0,130 passed/0 failed/0 skipped, one external astor warning. Initial missing temp parent and native-hook harness failures are recorded in CORE; neither involved S5. No network or S5 scientific contrast. User was updated on the reuse-only limit; no messages sent to others.
+- Files changed for Stage08 08.4: GPU harness/frozen panel, reports, NEXT_STEPS and CORE/S4/S5/S6 journals. 08.4 capability gate checked; real S5 contrasts await genuine approved S1 records. Final evidence milestone commit pending; append SHA after commit.

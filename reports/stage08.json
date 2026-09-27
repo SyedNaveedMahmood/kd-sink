@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
   "stage_id": "08",
-  "status": "cpu_capability_implemented_external_validation_blocked",
+  "status": "capability_and_real_teacher_qualification_complete_scientific_coverage_absent",
   "starting_commit": "94cad936157c700a01d17296cb696853e5c3aac3",
   "implementation_milestone": "f17150d0499fd148ab41389d37936493ebb942ea",
-  "task_ids_completed": ["08.1", "08.2", "08.3"],
-  "task_08_4": "T07-T10 relevant CPU fixtures and earlier regression pass; real GPT-2-large teacher qualification and authorized GPU/context smoke remain unrun",
+  "task_ids_completed": ["08.1", "08.2", "08.3", "08.4"],
+  "task_08_4": "Pinned GPT-2-large teacher probe battery and real RTX 4080 SUPER S4/S6 standard-context smoke pass; S5 is read-only analysis with absent S1 records, so its missing-record path is verified without fabricated data; T07-T10 CPU and full regression pass",
   "stage06_status": "blocked_unchanged: approvals, production corpus/panels, final hardware/calibration locks, complete profiles, legitimate C3/C4 calibration, C5 margin revalidation",
   "stage07_status": "07.4_open_unchanged: no real network/GPU Pythia smoke, public checkpoint resolution, or storage/download budget",
   "s4": {
@@ -13,18 +13,49 @@
     "coordinate_rule": "top three by |E0| independently within each model/checkpoint; ascending index tie break; five distinct cardinality-three random controls outside top three",
     "epe": "E_j=p_j+MLP_0(p_j) without LayerNorm; exact per-example batched transport; conserves m0+m1, makes no norm-conservation claim",
     "records": "sealed per-item probe keys include locus, integer layers, coordinates, mask-derived behavior, checkpoint/panel hashes, provenance, guarded sink ratio, responsiveness and failure state",
-    "restoration": "parameter edits and hooks restore after exceptions; CPU state and RNG checks pass",
+    "restoration": "real teacher edited-parameter SHA, modes, probe hooks and CPU/CUDA RNG restore after injected exceptions and complete battery; native Transformers output-capture hooks are initialized before the hook baseline",
     "pythia": "GPT-NeoX route battery explicitly not_applicable",
-    "real_teacher_responsiveness": null,
-    "nonresponsive_real_teacher_probes": null,
-    "reason": "A frozen S4 calibration panel and scoped real-teacher/GPU run were not available; Stage06 cached teacher weights were not used"
+    "real_teacher_responsiveness": {
+      "model": "openai-community/gpt2-large",
+      "revision": "32b71b12589c2f8d625668d2335a01cac3249519",
+      "weights_sha256": "5f47f3e12f91cd33b662ce7e433b6150ad5512b5884a2cee961b50e9c3bbebce",
+      "panel_kind": "agent-authored engineering calibration, frozen in commit 25e8a75 before probe outcomes; not production OWT",
+      "panel_source_sha256": "29974142a3f3c9aead3d0e5f314da64b107aaf136a46df844a449a2535ad4745",
+      "tokenized_panel_sha256": "c68e6ffecb6b8cfd3a43c94c5811677325bd6094edcb3596a0f56a5e35b3ed67",
+      "item_count": 4,
+      "real_token_counts": [71, 68, 72, 67],
+      "context": 128,
+      "precision": "fp32",
+      "baseline_S": 0.4235755880671816,
+      "reporting_floor": 0.000001,
+      "reporting_rule": "responsive when absolute DeltaS or self-KL exceeds the fixed numerical reporting floor; this is an engineering calibration label, not a scientific effect threshold",
+      "responsive_probes": ["position0_to1", "remove_absolute_positions", "q_bias_all", "epe_transport_layer0", "k_top3_all", "k_random0_all", "k_random1_all", "k_random2_all", "k_random3_all", "k_random4_all"],
+      "nonresponsive_probes": [],
+      "not_applicable_probes": [],
+      "teacher_top3_coordinates": [792, 870, 440],
+      "student_top3_coordinates_selected_separately": [657, 366, 563],
+      "control_seed": 20260927,
+      "epe_absolute_delta_S": -0.4163829775135572,
+      "epe_self_kl_nats": 0.2683983272872865,
+      "q_bias_absolute_delta_S": -0.11159858411247209,
+      "top3_k_absolute_delta_S": -0.027863278393660873,
+      "random_control_absolute_delta_S_range": [-0.0014630687442456214, 0.00045067768116063833],
+      "epe_batched_reference_max_abs_error": 5.960464477539063e-8,
+      "epe_vector_sum_max_abs_error": 2.384185791015625e-7,
+      "teacher_noop_logit_max_abs_error": 0.0,
+      "detailed_probe_metrics": "reports/stage08_4080_gpu_evidence.json",
+      "interpretation_limit": "random controls also respond at the numerical floor; these four engineering items do not establish route specificity or scientific transfer"
+    },
+    "nonresponsive_real_teacher_probes": [],
+    "raw_probe_records": "F:/KD-SINK-stage08-4080/pytest-temp-v3/test_real_teacher_s4_fixed_pro0/s4_probe_records"
   },
   "s5": {
     "mode": "read_only_reuse_of_sealed_S1_C1_C2_C5_C6_item_and_aggregate_records",
     "joins": "same seed, device block, panel, protocol, initialization, data, precision, layer scope and item IDs; missing quartets reported without imputation",
     "contrasts": "descriptive full and sink-excluded attention, S, clean CE, delete/relocate DeltaCE, self-KL, absolute log effects and flips",
     "new_training_jobs": 0,
-    "production_records_joined": 0
+    "production_records_joined": 0,
+    "gpu_applicability": "not_applicable_to_pure_read_only_join; on the GPU host the missing C1/C2/C5/C6 record quartet was reported without creating substitute records"
   },
   "s6": {
     "domains": ["SST-2 validation sentence", "GSM8K test question", "HumanEval test prompt"],
@@ -35,7 +66,8 @@
     "accuracy_definition": "next-token argmax fraction, never domain-task accuracy",
     "optional_contexts": [512, 1024],
     "optional_context_status": "disabled; separate approval and measured one-item evaluation memory gate required",
-    "production_domain_items_evaluated": 0
+    "production_domain_items_evaluated": 0,
+    "gpu_smoke": "RTX 4080 SUPER FP32; one agent-authored engineering item per domain at each 40/128 context; same document IDs, 39/127 valid targets, clean/no-op/delete/relocate, zero no-op self-KL; random GPT-2-medium student and pinned GPT-2-large teacher; no task accuracy or scientific coverage"
   },
   "tests": [
     {
@@ -55,14 +87,51 @@
       "failed": 0,
       "skipped": 0,
       "warning": "one external astor deprecation warning"
+    },
+    {
+      "command": ".\\.venv\\Scripts\\python.exe -m pytest -q tests\\unit\\test_interventions.py tests\\unit\\test_metrics_evaluate.py tests\\unit\\test_analysis_primitives.py tests\\unit\\test_stage08_probes.py tests\\unit\\test_stage08_s5.py tests\\unit\\test_stage08_s6.py tests\\integration\\test_cli.py tests\\integration\\test_clean_wheel.py",
+      "device": "CPU",
+      "exit_code": 0,
+      "passed": 41,
+      "failed": 0,
+      "skipped": 0,
+      "covers": ["T07", "T08", "T09 S4/S5/S6", "T10"]
+    },
+    {
+      "command": ".\\.venv\\Scripts\\python.exe -m pytest -q tests\\gpu\\test_stage08_gpu.py --device-role rtx4080super --evidence-out reports\\stage08_4080_gpu_evidence.json --basetemp F:\\KD-SINK-stage08-4080\\pytest-temp-v3",
+      "device": "RTX 4080 SUPER",
+      "exit_code": 0,
+      "passed": 2,
+      "failed": 0,
+      "skipped": 0,
+      "elapsed_seconds": 43.53,
+      "evidence_path": "reports/stage08_4080_gpu_evidence.json",
+      "evidence_sha256": "c380227c18df4f63cbdd9089a7aa404b4626aefc06214ddc95af141de13baf86"
     }
   ],
-  "required_tests_blocked": [
-    "real frozen-panel GPT-2-large instrumentation and responsiveness calibration",
-    "approved RTX 3090/RTX 4080 S4/S6 GPU smoke at locked numerical policy",
-    "optional 512/1024 context memory validation and approved evaluation"
+  "qualification_failures_resolved": [
+    "First GPU command exited 1 with two pytest setup errors because the external --basetemp parent was absent; no probe ran. The directory was created before rerun.",
+    "Second GPU command exited 1 with one S4 restoration assertion failure and one passing S6 test: Transformers 5.3 lazily installs a persistent native output-capture hook on first feature forward. The test now warms native output capture before taking the probe-hook baseline; probe definitions and response thresholds were unchanged.",
+    "After the hook accounting fix, v2 passed two GPU tests; the expanded no-op and sealed-mask assertions were committed and v3 passed two GPU tests. Earlier raw scratch records remain under the separate v1/v2 temp paths."
   ],
-  "hardware_tested": [],
+  "required_tests_blocked": [],
+  "optional_work_not_run": [
+    "512/1024 long contexts: no separate approval or memory validation",
+    "RTX 3090 Stage08 smoke: device not visible and not needed for non-REL S4/S6 qualification",
+    "production S4/S5/S6 evaluations: no S1/S3 retained trajectories or approved production domain/panel coverage"
+  ],
+  "hardware_tested": [{
+    "role": "rtx4080super",
+    "name": "NVIDIA GeForce RTX 4080 SUPER",
+    "uuid": "GPU-72b4b307-b613-c35e-ea32-53f4431de9ee",
+    "memory_total_mib": 16376,
+    "teacher_probe_peak_allocated_bytes": 6023061504,
+    "python": "3.12.3",
+    "torch": "2.10.0+cu128",
+    "transformers": "5.3.0",
+    "cuda": "12.8",
+    "driver": "591.86"
+  }],
   "network_tests_run": 0,
   "scientific_runs_executed": [],
   "scientific_coverage": "none: no S1/S3 retained states, S5 production evaluation records or S6 production panel evaluation",
@@ -72,6 +141,6 @@
     "implementation_notes/IMPLEMENTATION_NOTES_BY_CLAUDE_S5.md",
     "implementation_notes/IMPLEMENTATION_NOTES_BY_CLAUDE_S6.md"
   ],
-  "next_task": "Stage08 external teacher/GPU qualification only under explicit operator scope; Stage06/07 production gates remain blocked",
-  "milestone_commit": "f17150d0499fd148ab41389d37936493ebb942ea"
+  "next_task": "Stage08 capability is complete; Stage09 was not started. Stage06/07 production gates and actual S4/S5/S6 scientific coverage remain separate and blocked/absent.",
+  "milestone_commit": "5f0162ca02576623c056be691c751abb6b17dddd"
 }

@@ -34,3 +34,11 @@ Evidence report/checklist/journals were committed locally as `6f4a6812e2a29b50a7
 ## 2026-09-27T17:39:52Z - Codex (GPT-6) - Stage08 final polish SHA
 
 The S6 label/provenance audit, tests and updated report were committed as `d8c977184f59465ad65853b65e433f189c00c78c`. Final CPU suite passed 130/130. No production domain/context evaluation or approved GPU smoke occurred; Stage08 08.4 and the exit gate remain open.
+
+## 2026-09-27T18:09:38Z - Codex (GPT-6) - Stage08 08.4 standard-context GPU smoke
+
+- Starting commit `de829af`; user authorized Stage08 08.4 only. Read S6/Stage08/model contracts and latest CORE/S6 journal. No S6 scientific panel or long-context approval was inferred.
+- On RTX 4080 SUPER FP32, a random-from-config GPT-2-medium student (CPU FP32 seed1729, tensor-content SHA-256 `5fc6604f5eb8d2ff63958ec7a894736a727d56910db4fb68b865f203dbe93879`) and pinned real GPT-2-large teacher completed six small GPU evaluations: one agent-authored engineering source item each for SST-2 sentence, GSM8K question and HumanEval prompt field shapes at paired 40/128 contexts. Same document IDs, right padding/explicit LM labels, 39/127 valid shifted targets and clean/no-op/delete/relocate passed; no-op self-KL0 in every case. No answers, completions or test code entered inputs or were executed. These are causal-LM smoke metrics, not domain-task accuracy or scientific robustness results.
+- Optional512/1024 contexts were neither enabled nor profiled; no approval/memory validation exists. No production source revision/panel or retained S1 state was evaluated. Full per-domain smoke numbers/provenance are in `reports/stage08_4080_gpu_evidence.json`; compact status in `reports/stage08.json`.
+- Final exact GPU command and counts are in CORE: RTX4080 v3 exit0,2 passed; T07-T10 targeted CPU exit0,41 passed; full CPU regression exit0,130 passed/0 failed/0 skipped, one external astor warning. Initial setup failure and native-hook harness mismatch are recorded in CORE; S6 passed when S4 hook accounting first failed and again on final rerun. No network or production run. User was updated on scope/results; no messages sent to others.
+- Files: GPU harness/frozen panel, reports, NEXT_STEPS and CORE/S4/S5/S6 journals. 08.4 capability gate checked; actual S6 scientific coverage remains zero. Final evidence milestone commit pending; append SHA after commit.
