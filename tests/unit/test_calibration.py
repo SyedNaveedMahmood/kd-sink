@@ -43,11 +43,10 @@ def test_full_batch_gradient_norm_ratios_modes_rng_and_architecture():
     expected = torch.autograd.grad(((manual @ flat_x - flat_y).square()).mean(), manual)[0].norm().item()
     rng = torch.get_rng_state().clone()
     evidence = calibrate_initial_gradients(
-        model, [batch, batch], {"jsd": _loss(1.0), "mse": _loss(2.0), "rel": _loss(0.5)},
+        model, [batch] * 16, {"jsd": _loss(1.0), "mse": _loss(2.0), "rel": _loss(0.5)},
         architecture="s1_large_medium", panel_manifest="fixture-sha", panel_role="training_calibration",
-        expected_batches=2,
     )
-    assert evidence.raw_norms["jsd"] == pytest.approx((expected, expected), rel=1e-6)
+    assert evidence.raw_norms["jsd"] == pytest.approx((expected,) * 16, rel=1e-6)
     assert evidence.factors == pytest.approx({"mse": 0.5, "rel": 2.0})
     assert evidence.architecture == "s1_large_medium"
     assert model.training and model.dropout.training
@@ -57,22 +56,22 @@ def test_full_batch_gradient_norm_ratios_modes_rng_and_architecture():
 
 def test_calibration_rejects_panel_and_degenerate_gradients():
     model = Tiny()
-    batches = [[(torch.ones(2, 1), torch.zeros(1))]]
+    batches = [[(torch.ones(2, 1), torch.zeros(1))]] * 16
     losses = {"jsd": _loss(1), "mse": _loss(2), "rel": _loss(3)}
     with pytest.raises(CalibrationError, match="training-only"):
         calibrate_initial_gradients(model, batches, losses, architecture="s1", panel_manifest="x",
-                                    panel_role="final_evaluation", expected_batches=1)
+                                    panel_role="final_evaluation")
     with pytest.raises(CalibrationError, match="degenerate"):
         calibrate_initial_gradients(model, batches, {**losses, "mse": _loss(0)},
                                     architecture="s1", panel_manifest="x",
-                                    panel_role="training_calibration", expected_batches=1)
+                                    panel_role="training_calibration")
     assert model.training
 
 
 def test_calibration_rejects_mutation_and_restores_model():
     model = Tiny()
     original = model.weight.detach().clone()
-    batches = [[(torch.ones(2, 1), torch.zeros(1))]]
+    batches = [[(torch.ones(2, 1), torch.zeros(1))]] * 16
 
     def bad(model, micro):
         with torch.no_grad():
@@ -82,5 +81,5 @@ def test_calibration_rejects_mutation_and_restores_model():
     with pytest.raises(CalibrationError, match="modified"):
         calibrate_initial_gradients(model, batches, {"jsd": bad, "mse": _loss(1), "rel": _loss(1)},
                                     architecture="s3_small_distil", panel_manifest="x",
-                                    panel_role="training_calibration", expected_batches=1)
+                                    panel_role="training_calibration")
     assert torch.equal(model.weight, original)

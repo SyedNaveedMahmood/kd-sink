@@ -37,7 +37,6 @@ def calibrate_initial_gradients(
     panel_manifest: str,
     panel_role: str,
     seed: int = 1729,
-    expected_batches: int = 16,
 ) -> CalibrationEvidence:
     """Measure each full-effective-batch gradient at one unchanged initialization.
 
@@ -47,8 +46,8 @@ def calibrate_initial_gradients(
     """
     if seed != 1729 or panel_role != "training_calibration" or not panel_manifest or not architecture:
         raise CalibrationError("requires seed 1729 and identified training-only calibration panel")
-    if len(effective_batches) != expected_batches or expected_batches < 1 or any(not b for b in effective_batches):
-        raise CalibrationError("requires the fixed number of nonempty effective batches")
+    if len(effective_batches) != 16 or any(not b for b in effective_batches):
+        raise CalibrationError("requires 16 nonempty effective batches")
     if set(losses) != {"jsd", "mse", "rel"}:
         raise CalibrationError("requires raw jsd, mse and rel objectives")
     params = tuple(p for p in model.parameters() if p.requires_grad)
