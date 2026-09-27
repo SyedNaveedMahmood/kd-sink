@@ -1,0 +1,73 @@
+{
+  "schema_version": 1,
+  "stage_id": "01",
+  "status": "complete_cpu_offline_preparation",
+  "starting_commit": "e5b4ace",
+  "implementation_milestone_commit": "4b99a89446d16cd071f083809b66e7f5f3ca541a",
+  "task_ids_completed": ["01.1", "01.2", "01.3", "01.4", "01.5"],
+  "scope": "Synthetic/offline preparation and CPU regression only; no production corpus, training or GPU run",
+  "artifacts": {
+    "commands": "README.md Stage 01 preparation section",
+    "generated_fixture_location": "pytest temporary directories only; not committed",
+    "corpus_format": "content-addressed JSON with exact token IDs, document hashes/boundaries, EOS rule and tail",
+    "initialization_format": "per-seed CPU-FP32 safetensors with canonical tensor-content SHA-256 and sealed metadata",
+    "order_format": "seeded epoch permutation, cursor, dedicated RNG state and rolling prefix SHA-256",
+    "panel_format": "sealed nested OWT panels, separate calibration and three-field domain inputs"
+  },
+  "invariants_verified": [
+    "NFC, CRLF-to-LF, strip and empty-text rejection",
+    "exact normalized SHA-256 dedup and first-64-bit big-endian modulo-1000 document partitions",
+    "zero document overlap, pinned source order, exactly one inter-document EOS and only final partial block dropped",
+    "manifest and tokenizer mismatch/corruption rejection; synthetic manifest hashes reproduce",
+    "identical per-seed initialization tensor hashes across conditions and caller-default-dtype isolation",
+    "microbatch-independent ordered 64-block updates with exact epoch/cursor/RNG resume and horizon-independent continuation",
+    "8192 input tokens and 8128 shifted targets per effective update",
+    "dense64 nested in full300 nested in NLL2000; independent calibration16x64",
+    "100 each SST-2 validation sentences, GSM8K test questions and HumanEval test prompts; no answer/completion/test leakage",
+    "shared 128/40 domain document prefixes, right-padding masks and insufficient-row failure"
+  ],
+  "tests": [
+    {
+      "id": "T01_cpu",
+      "command": ".\\.venv\\Scripts\\python.exe -m pytest -q tests/unit/test_data.py tests/unit/test_initialization.py tests/unit/test_order.py tests/unit/test_panels.py tests/integration/test_stage01_cli.py",
+      "exit_code": 0,
+      "passed": 11,
+      "failed": 0,
+      "skipped": 0
+    },
+    {
+      "id": "T01_T00_cpu_regression",
+      "command": ".\\.venv\\Scripts\\python.exe -m pytest -q tests/unit tests/integration -m 'not gpu and not network'",
+      "exit_code": 0,
+      "passed": 28,
+      "failed": 0,
+      "skipped": 0,
+      "warnings": 1,
+      "note": "One external astor deprecation warning. Includes T00 offline clean-wheel build/install/import without Upstream and tiny GPT-2 CPU smoke."
+    },
+    {
+      "id": "dependency_metadata",
+      "command": ".\\.venv\\Scripts\\python.exe -m pip check",
+      "exit_code": 0
+    },
+    {
+      "id": "environment_lock",
+      "command": ".\\.venv\\Scripts\\uv.exe lock --check --python .\\.venv\\Scripts\\python.exe",
+      "exit_code": 0,
+      "resolved_packages": 121
+    }
+  ],
+  "resolved_test_failure": "First new CLI integration test failed collection with a syntax error; assertion syntax was corrected and the scoped and full suites passed.",
+  "network_downloads": 0,
+  "production_revisions_and_licenses_verified": false,
+  "upstream_files_changed": 0,
+  "upstream_runtime_dependency": false,
+  "scientific_runs_executed": [],
+  "hardware_tested": ["CPU"],
+  "later_gates_not_claimed": [
+    "Actual OpenWebText/SST-2/GSM8K/HumanEval source revisions, licenses and adequate production row counts",
+    "Approved protocol, tokenizer/model artifact locks and measured hardware readiness",
+    "RTX 3090/4080 SUPER numerical parity, model interventions, training, evaluation and scientific coverage"
+  ],
+  "next_stage": "Stage02 only when separately requested; Stage01 preparation is not production authorization"
+}

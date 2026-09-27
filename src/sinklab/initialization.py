@@ -11,7 +11,7 @@ import torch
 from safetensors.torch import load_file, save_file
 from transformers import GPT2Config, GPT2LMHeadModel
 
-from .provenance import canonical_json_bytes, seal_payload, verify_envelope
+from .provenance import _no_duplicate_keys, canonical_json_bytes, seal_payload, verify_envelope
 
 
 class InitializationError(ValueError):
@@ -36,11 +36,16 @@ def create_initialization(config: GPT2Config, seed: int, directory: str | Path) 
         raise InitializationError("explicit nonnegative seed required")
     if not isinstance(config, GPT2Config):
         raise InitializationError("GPT2Config required; pretrained loading is forbidden")
-    with torch.random.fork_rng(devices=[]):
-        torch.manual_seed(seed)
-        model = GPT2LMHeadModel(config).cpu().float()
-        tensors = {key: value.detach().contiguous().clone()
-                   for key, value in model.state_dict().items()}
+    prior_dtype = torch.get_default_dtype()
+    try:
+        torch.set_default_dtype(torch.float32)
+        with torch.device("cpu"), torch.random.fork_rng(devices=[]):
+            torch.manual_seed(seed)
+            model = GPT2LMHeadModel(config)
+            tensors = {key: value.detach().contiguous().clone()
+                       for key, value in model.state_dict().items()}
+    finally:
+        torch.set_default_dtype(prior_dtype)
     if any(t.dtype != torch.float32 for t in tensors.values()):
         raise InitializationError("model is not wholly FP32")
     digest = tensor_content_hash(tensors)
@@ -66,7 +71,7 @@ def create_initialization(config: GPT2Config, seed: int, directory: str | Path) 
 def load_initialization(metadata: str | Path, *, config: GPT2Config, seed: int) -> dict[str, torch.Tensor]:
     metadata = Path(metadata)
     try:
-        document = json.loads(metadata.read_text(encoding="utf-8"))
+        document = json.loads(metadata.read_text(encoding="utf-8"), object_pairs_hook=_no_duplicate_keys)
         payload, _ = verify_envelope(document)
         if payload["kind"] != "gpt2-random-cpu-fp32-v1" or payload["seed"] != seed:
             raise InitializationError("initialization identity mismatch")

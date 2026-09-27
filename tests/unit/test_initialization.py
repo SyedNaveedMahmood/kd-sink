@@ -38,3 +38,14 @@ def test_tensor_corruption_detected(tmp_path):
     weights.write_bytes(data)
     with pytest.raises(InitializationError, match="content"):
         load_initialization(metadata, config=config, seed=1)
+
+
+def test_initialization_forces_fp32_and_restores_default_dtype(tmp_path):
+    config = tiny_config()
+    torch.set_default_dtype(torch.float64)
+    try:
+        _, metadata, digest = create_initialization(config, 11, tmp_path)
+        assert torch.get_default_dtype() == torch.float64
+        assert tensor_content_hash(load_initialization(metadata, config=config, seed=11)) == digest
+    finally:
+        torch.set_default_dtype(torch.float32)

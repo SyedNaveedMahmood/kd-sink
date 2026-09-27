@@ -17,8 +17,8 @@ Work order: [01_DATA_PROVENANCE](design/e6a_v2/stages/01_DATA_PROVENANCE.md).
 - [x]01.2 Shared CPU FP32 initialization artifacts per seed.
 - [x]01.3 Effective-update order,cursors,prefixes and extension.
 - [x]01.4 Frozen evaluation/calibration panels with synthetic tests.
-- [ ]01.5 T01/regression,usage and artifact evidence.
-- [ ] Stage01 evidence reviewed and milestone committed.
+- [x]01.5 T01/regression,usage and artifact evidence.
+- [x] Stage01 evidence reviewed and milestone committed.
 
 ## Stage02 - Models and interventions
 Work order: [02_MODEL_INTERVENTIONS](design/e6a_v2/stages/02_MODEL_INTERVENTIONS.md).
