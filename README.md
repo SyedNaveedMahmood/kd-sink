@@ -2,7 +2,7 @@
 
 The new implementation is specified in [the E6A v2 design pack](design/e6a_v2/README.md).
 
-Coding agents start with [AGENTS.md](AGENTS.md) and [NEXT_STEPS.md](NEXT_STEPS.md). The current delivery contains design files, not a completed experiment implementation. Production runs require approval and measured feasibility gates.
+Coding agents start with [AGENTS.md](AGENTS.md) and [NEXT_STEPS.md](NEXT_STEPS.md). Stages 00-03 provide CPU-tested preparation, model, intervention, and objective primitives; no training campaign has run. Production runs require approval and measured feasibility gates.
 
 `Upstream/` is the archived reference implementation. New code may borrow reviewed components with provenance, but must work when that directory is absent. Do not edit or delete it during this design handoff.
 
@@ -55,3 +55,13 @@ relocate, or explicit no-op before value aggregation. Feature and causal calls
 require `use_cache=False`, eager attention, right padding, and local model
 objects; they perform no downloads. Full-size and mixed-precision GPU parity
 remain Stage 06 gates.
+
+Stage 03 adds pure loss functions in `sinklab.objectives`: shifted CE, exact
+full-vocabulary temperature-scaled KD, S1 C2/C3/C5/C6 attention losses,
+causal QQ/KK/VV relations, and S3 fixed-index variants. `compose_objective`
+returns active tensors plus explicit inactive fields and requires measured,
+frozen C3/C4 scales. `sinklab.calibration.calibrate_initial_gradients` accepts
+16 identified training-only effective batches and records raw full-batch
+gradient norms and architecture-specific median ratios without updating the
+model. No production calibration constants have been measured. The exact CPU
+evidence is in `reports/stage03.json`; full-size GPU checks remain Stage 06.

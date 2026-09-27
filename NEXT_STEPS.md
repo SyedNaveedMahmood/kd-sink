@@ -31,13 +31,13 @@ Work order: [02_MODEL_INTERVENTIONS](design/e6a_v2/stages/02_MODEL_INTERVENTIONS
 
 ## Stage03 - Objectives
 Work order: [03_OBJECTIVES](design/e6a_v2/stages/03_OBJECTIVES.md).
-- [ ]03.1 CE/KD masks,temperature and shared base.
-- [ ]03.2 Cosine-soft JSD and head-mean probability MSE.
-- [ ]03.3 Causal QQ/KK/VV and exact chunked gradients.
-- [ ]03.4 NoSink/SinkOnly invariance and gradient tests.
-- [ ]03.5 Separate training-only gradient calibration.
-- [ ]03.6 S3 index variants,T03/T04/regression.
-- [ ] Stage03 evidence reviewed and milestone committed.
+- [x]03.1 CE/KD masks,temperature and shared base.
+- [x]03.2 Cosine-soft JSD and head-mean probability MSE.
+- [x]03.3 Causal QQ/KK/VV and exact chunked gradients.
+- [x]03.4 NoSink/SinkOnly invariance and gradient tests.
+- [x]03.5 Separate training-only gradient calibration.
+- [x]03.6 S3 index variants,T03/T04/regression.
+- [x] Stage03 CPU evidence reviewed and milestone committed; real GPU validation remains Stage06.
 
 ## Stage04 - Trainer and resume
 Work order: [04_TRAINER_RESUME](design/e6a_v2/stages/04_TRAINER_RESUME.md).

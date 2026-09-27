@@ -1,0 +1,84 @@
+{
+  "schema_version": 1,
+  "stage_id": "03",
+  "status": "complete_cpu_objectives",
+  "starting_commit": "e008ee5c0f8521d638ed74cdd4a92d64c80d0987",
+  "implementation_milestone_commit": "a32deba941ae46fc38a82e26a5cc0612c53b3bf9",
+  "calibration_contract_commit": "5f7daae10c6f4ddb536ee36c63cb82a0597b723e",
+  "task_ids_completed": ["03.1", "03.2", "03.3", "03.4", "03.5", "03.6"],
+  "changed_files": [
+    "src/sinklab/objectives.py",
+    "src/sinklab/calibration.py",
+    "tests/unit/test_objectives.py",
+    "tests/unit/test_calibration.py",
+    "README.md",
+    "NEXT_STEPS.md",
+    "reports/stage03.json",
+    "implementation_notes/IMPLEMENTATION_NOTES_BY_CLAUDE_CORE.md",
+    "implementation_notes/IMPLEMENTATION_NOTES_BY_CLAUDE_S1.md",
+    "implementation_notes/IMPLEMENTATION_NOTES_BY_CLAUDE_S3.md",
+    "implementation_notes/IMPLEMENTATION_NOTES_BY_CLAUDE_S5.md"
+  ],
+  "method_ids_match_config": true,
+  "decisions": [
+    "C0 computes CE without teacher use; C1-C6 share 0.5 CE + 0.5 exact full-vocabulary T=2 KD, with one T-squared factor and explicit inactive fields.",
+    "C2 and C5/C6 use per-example differentiable cosine-soft head alignment; C5 recomputes conditional maps from non-sink scores before alignment and C6 aligns binary sink/rest outcomes only.",
+    "C3 is post-softmax head-mean cell MSE; S3 C2/C3 have distinct fixed-index JSD/MSE IDs and require equal native head counts.",
+    "C4 uses own-width sqrt relation scaling, causal QQ/KK/VV, diagonal support, q>=1 rows, R=64 by default and a fixed denominator across chunks.",
+    "Calibration measures accumulated full-effective-batch gradients on exactly 16 identified training-only batches with seed 1729, unchanged initialization and dropout disabled; it does not provide production factors."
+  ],
+  "numerical_parity": {
+    "fixture": "deterministic CPU FP32 tensors, two examples with right padding and unequal 3/2 or equal 2/2 native heads",
+    "attention_methods": {
+      "cosine_soft_jsd_v2": {"forward_abs_error": 7.450580596923828e-09, "student_gradient_max_abs_error": 1.0477378964424133e-09},
+      "head_mean_probability_mse_v1": {"forward_abs_error": 0.0, "student_gradient_max_abs_error": 0.0},
+      "cosine_soft_conditional_nosink_jsd_v1": {"forward_abs_error": 7.450580596923828e-09, "student_gradient_max_abs_error": 9.313225746154785e-10},
+      "cosine_soft_binary_sink_jsd_v1": {"forward_abs_error": 0.0, "student_gradient_max_abs_error": 9.313225746154785e-10},
+      "index_jsd_v1": {"forward_abs_error": 0.0, "student_gradient_max_abs_error": 0.0},
+      "index_probability_mse_v1": {"forward_abs_error": 1.4901161193847656e-08, "student_gradient_max_abs_error": 0.0}
+    },
+    "relation": {
+      "full_vs_independent_forward_abs_error": 2.9802322387695312e-08,
+      "full_vs_independent_gradient_max_abs_error": 9.313225746154785e-10,
+      "chunk_vs_full_forward_abs_error": 0.0,
+      "chunk_vs_full_gradient_max_abs_error": 0.0
+    },
+    "other_verified": [
+      "shifted CE and full-vocabulary KD forward/gradient match independent token-loop references",
+      "all teacher outputs are detached and all intended student gradients are finite",
+      "C5 original sink-score direct gradient is exactly zero in the fixture and loss is invariant under +1000 sink-score perturbation",
+      "C6 non-sink probability direct gradients are zero, fixed-sink-mass redistribution is invariant and changing sink mass changes loss",
+      "S1 C2 is student-head permutation invariant; S3 fixed-index C2 is sensitive to the same permutation",
+      "finite differences support C2 attention-score and REL projected-value gradients",
+      "calibration ratios use the accumulated full-batch gradient, restore modes, parameter gradients and RNG, and reject invalid panels/degenerate gradients"
+    ]
+  },
+  "tests": [
+    {"id": "T03_T04_targeted_final", "command": ".\\.venv\\Scripts\\python.exe -m pytest -q tests/unit/test_calibration.py tests/unit/test_objectives.py", "device": "CPU", "exit_code": 0, "passed": 18, "failed": 0, "skipped": 0},
+    {"id": "T00_T01_T02_T03_T04_T07_cpu_regression_final", "command": ".\\.venv\\Scripts\\python.exe -m pytest -q tests/unit tests/integration -m 'not gpu and not network'", "device": "CPU", "versions": "CPython 3.12.3; torch 2.10.0+cu128; transformers 5.3.0", "exit_code": 0, "passed": 86, "failed": 0, "skipped": 0, "warnings": 1, "note": "External astor deprecation warning; includes offline clean-wheel/no-Upstream gate."},
+    {"id": "dependency_metadata", "command": ".\\.venv\\Scripts\\python.exe -m pip check", "exit_code": 0},
+    {"id": "environment_lock", "command": ".\\.venv\\Scripts\\uv.exe lock --check --python .\\.venv\\Scripts\\python.exe", "exit_code": 0, "resolved_packages": 121}
+  ],
+  "failed_attempts": [
+    "Initial targeted objective run: 8 passed, 5 failed because xlogy zero cells had finite values but NaN backward derivatives. Replaced the JSD log terms with clamped-log products and reran without weakening assertions."
+  ],
+  "hardware_tested": ["CPU"],
+  "required_tests_blocked": [],
+  "deferred_gates": [
+    "Stage06 actual RTX 3090/4080 SUPER full-size and mixed-precision objective/model smoke; production-size REL and profiling only on RTX 3090",
+    "M03 real training-only panel calibration raw norms and frozen S1/S3 factors",
+    "Production protocol approvals, artifact/hardware locks, training and scientific runs"
+  ],
+  "production_calibration_constants": null,
+  "scientific_runs_executed": [],
+  "network_downloads": 0,
+  "upstream_files_changed": 0,
+  "upstream_runtime_dependency": false,
+  "journal_paths": [
+    "implementation_notes/IMPLEMENTATION_NOTES_BY_CLAUDE_CORE.md",
+    "implementation_notes/IMPLEMENTATION_NOTES_BY_CLAUDE_S1.md",
+    "implementation_notes/IMPLEMENTATION_NOTES_BY_CLAUDE_S3.md",
+    "implementation_notes/IMPLEMENTATION_NOTES_BY_CLAUDE_S5.md"
+  ],
+  "next_task": "Stage04 task 04.1 under a separate request; actual GPU and production calibration remain Stage06 gates"
+}
