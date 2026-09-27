@@ -25,3 +25,6 @@ Starting commit `5108da8`. Implemented tasks 02.1-02.4 for local eager GPT-2 and
 
 ## 2026-09-27T09:11:11Z - Codex (GPT-6) - Stage02 S1 CPU handoff
 Implementation milestone `c7bd0202024a8fcea962f3aa4c027b19f74bf879`; clean-wheel regression fix `464fdd24ae46a74b9b88c8f4dcf6d4c5883f321e`. The first full regression exposed eager Torch imports in the dependency-free wheel smoke (67 passed/1 failed); lazy Stage02 package exports fixed the cause without weakening the test. Repair scope passed 41/41 and final full CPU regression passed 68/68 with one external warning; pip and lock checks passed. `reports/stage02.json` records exact numerical results and commands. Stage02 02.1-02.5 is complete for tiny CPU FP32 models only. No S1 training, production weights, GPU/network work or scientific run occurred; full-size/BF16 checks remain Stage06. `Upstream/` unchanged. Stop before Stage03; final evidence commit pending.
+
+## 2026-09-27T09:13:36Z - Codex (GPT-6) - Stage02 S1 milestone SHA
+Stage02 CPU completion evidence is `e171238aca04e1002a178d432a95582e9865c5c7`; implementation and regression-fix commits are `c7bd0202024a8fcea962f3aa4c027b19f74bf879` and `464fdd24ae46a74b9b88c8f4dcf6d4c5883f321e`. No push or S1 run occurred.

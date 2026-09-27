@@ -5,6 +5,7 @@
   "starting_commit": "5108da8",
   "implementation_milestone_commit": "c7bd0202024a8fcea962f3aa4c027b19f74bf879",
   "regression_fix_commit": "464fdd24ae46a74b9b88c8f4dcf6d4c5883f321e",
+  "completion_evidence_commit": "e171238aca04e1002a178d432a95582e9865c5c7",
   "task_ids_completed": ["02.1", "02.2", "02.3", "02.4", "02.5"],
   "scope": "Tiny randomly initialized GPT-2/GPT-NeoX CPU FP32 adapter and intervention validation only; no model download, full-size model, GPU, training or scientific run",
   "changed_files": [

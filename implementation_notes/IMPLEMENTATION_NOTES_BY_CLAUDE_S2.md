@@ -19,3 +19,6 @@ Starting commit `5108da8`. Implemented tasks 02.1-02.4 for local eager `GPTNeoXF
 
 ## 2026-09-27T09:11:11Z - Codex (GPT-6) - Stage02 S2 CPU handoff
 Implementation milestone `c7bd0202024a8fcea962f3aa4c027b19f74bf879`; clean-wheel regression fix `464fdd24ae46a74b9b88c8f4dcf6d4c5883f321e`. After the initial dependency-free wheel failure from eager Torch exports (67 passed/1 failed), lazy package exports restored the boundary; repair scope passed 41/41 and the full CPU regression passed 68/68 with one external warning. Pip and environment-lock checks passed. `reports/stage02.json` records exact commands/numerics. Stage02 is complete for tiny CPU GPT-NeoX only. No public checkpoint inventory/download, S2 trajectory evaluation, GPU/network/scientific run or `Upstream/` change occurred; full-size checks remain Stage06 and S2 inventory remains Stage07. Stop before Stage03; final evidence commit pending.
+
+## 2026-09-27T09:13:36Z - Codex (GPT-6) - Stage02 S2 milestone SHA
+Stage02 CPU completion evidence is `e171238aca04e1002a178d432a95582e9865c5c7`; implementation and regression-fix commits are `c7bd0202024a8fcea962f3aa4c027b19f74bf879` and `464fdd24ae46a74b9b88c8f4dcf6d4c5883f321e`. No push, public-checkpoint evaluation or S2 run occurred.

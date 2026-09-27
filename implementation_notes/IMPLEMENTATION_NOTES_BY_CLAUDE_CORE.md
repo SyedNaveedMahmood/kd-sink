@@ -104,3 +104,6 @@ Stage00 completion report and checklist were committed as bd14d04 (docs(stage00)
 - NEXT_STEPS tasks actually completed: 02.5 and Stage02 CPU evidence/commit gate; Stage02 tasks 02.1-02.5 are complete.
 - Remaining work/first task for the next agent: stop here. Stage03 task 03.1 requires a separate request. Stage06 must later run full-size/BF16/GPU parity on eligible hardware.
 - Milestone commit (append after creation): final evidence commit pending.
+
+## 2026-09-27T09:13:36Z - Codex (GPT-6) - Stage02 milestone SHA correction
+Stage02 completion evidence and checklist were committed as `e171238aca04e1002a178d432a95582e9865c5c7` (`docs(stage02): record CPU model intervention gate`). Implementation is `c7bd0202024a8fcea962f3aa4c027b19f74bf879`; the clean-wheel regression fix is `464fdd24ae46a74b9b88c8f4dcf6d4c5883f321e`. No push, GPU/network work, model download, training or scientific run occurred.
