@@ -34,6 +34,10 @@ def main(argv: Sequence[str] | None = None) -> int:
     jobs = command.add_parser("validate-job-plan", help="inspect explicit jobs; never launch")
     jobs.add_argument("--plan", type=Path, required=True)
     jobs.add_argument("--config-root", type=Path, required=True)
+    one_job = command.add_parser("inspect-job", help="inspect one named job; never launch")
+    one_job.add_argument("--plan", type=Path, required=True)
+    one_job.add_argument("--config-root", type=Path, required=True)
+    one_job.add_argument("--run-id", required=True)
     corpus = command.add_parser("prepare-corpus", help="prepare a pinned local JSONL corpus; no downloads")
     corpus.add_argument("--input-jsonl", type=Path, required=True)
     corpus.add_argument("--tokenizer-dir", type=Path, required=True)
@@ -94,6 +98,9 @@ def main(argv: Sequence[str] | None = None) -> int:
             required = {tuple(row) for row in _json(args.required)["required"]}
             output = build_batch_plan(profiles, required, production=args.production)
             args.out.write_text(json.dumps(output, sort_keys=True, indent=2) + "\n", encoding="utf-8")
+        elif args.command == "inspect-job":
+            from .job_plan import inspect_job
+            output = inspect_job(_json(args.plan), args.config_root, args.run_id)
         elif args.command in {"train", "profile-candidate"}:
             from .training_entry import run_approved_training, run_profile_candidate
             output = run_approved_training(args) if args.command == "train" else run_profile_candidate(args)

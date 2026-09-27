@@ -6,7 +6,7 @@ from pathlib import Path
 import pytest
 
 from sinklab.config import ConfigError, VARIANTS, resolve_config
-from sinklab.job_plan import JobPlanError, validate_job_plan
+from sinklab.job_plan import JobPlanError, inspect_job, validate_job_plan
 
 
 ROOT = Path(__file__).resolve().parents[2] / "configs"
@@ -49,3 +49,8 @@ def test_explicit_plans_validate_without_launch(name, count, unique):
     assert result["status"] == "draft"
     with pytest.raises(JobPlanError, match="duplicate"):
         validate_job_plan({**plan, "jobs": plan["jobs"] + [plan["jobs"][0]]}, ROOT)
+    one = inspect_job(plan, ROOT, plan["jobs"][0]["run_id"])
+    assert one["seed"] == plan["jobs"][0]["seed"]
+    assert one["action"] == "inspection_only" and one["launchable"] is False
+    with pytest.raises(JobPlanError, match="exactly one"):
+        inspect_job(plan, ROOT, "unlisted-run")

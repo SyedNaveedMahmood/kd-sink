@@ -7,6 +7,7 @@ from pathlib import Path
 from typing import Any, Mapping
 
 from .config import ConfigError, resolve_config
+from .provenance import _no_duplicate_keys
 
 
 class JobPlanError(ValueError):
@@ -37,7 +38,7 @@ def validate_job_plan(plan: Mapping[str, Any], config_root: str | Path) -> dict[
         if not path.is_relative_to(root) or path.suffix != ".json":
             raise JobPlanError("config must be a JSON file inside config root")
         try:
-            raw = json.loads(path.read_text(encoding="utf-8"))
+            raw = json.loads(path.read_text(encoding="utf-8"), object_pairs_hook=_no_duplicate_keys)
             spec = resolve_config(raw, seed=row["seed"])
         except (OSError, ValueError, TypeError, ConfigError) as exc:
             raise JobPlanError(f"invalid job config: {exc}") from exc
@@ -65,6 +66,23 @@ def validate_job_plan(plan: Mapping[str, Any], config_root: str | Path) -> dict[
             raise JobPlanError("21-run plan must keep comparisons on the 3090")
     elif study == "S1":
         raise JobPlanError("S1 plan must contain 21 or 27 explicit physical runs")
+    elif len(seen) != 15 or any(role != "rtx3090" for _, _, role in seen):
+        raise JobPlanError("optional S3 plan must contain 15 explicit 3090 runs")
     return {"study": study, "status": plan["status"], "physical_runs": len(seen),
             "unique_condition_seed_pairs": sum(len(value) for value in per_condition.values()),
             "seeds": sorted(seeds), "launchable": False}
+
+
+def inspect_job(plan: Mapping[str, Any], config_root: str | Path, run_id: str) -> dict[str, Any]:
+    """Resolve precisely one named row for operator review, without executing it."""
+    summary = validate_job_plan(plan, config_root)
+    matches = [row for row in plan["jobs"] if row["run_id"] == run_id]
+    if len(matches) != 1:
+        raise JobPlanError("exactly one explicit --run-id must match the plan")
+    row = matches[0]
+    raw = json.loads((Path(config_root) / row["config"]).read_text(encoding="utf-8"),
+                     object_pairs_hook=_no_duplicate_keys)
+    spec = resolve_config(raw, seed=row["seed"])
+    return {"run_id": run_id, "config": row["config"], "seed": spec.seed,
+            "study": spec.study, "condition": spec.condition, "device_role": spec.device_role,
+            "plan_status": summary["status"], "action": "inspection_only", "launchable": False}

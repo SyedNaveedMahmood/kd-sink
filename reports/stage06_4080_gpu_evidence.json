@@ -1,0 +1,136 @@
+{
+  "measurements": {
+    "bf16_objective_smoke": {
+      "C0": {
+        "components": {
+          "ce": 10.988706588745117
+        },
+        "first_qkv_grad_norm": 12.573637962341309,
+        "loss": 10.988706588745117
+      },
+      "C1": {
+        "components": {
+          "ce": 10.988706588745117,
+          "kd": 5.27398681640625
+        },
+        "first_qkv_grad_norm": 6.8192362785339355,
+        "loss": 8.131346702575684
+      },
+      "C2": {
+        "components": {
+          "attention": 0.20148977637290955,
+          "ce": 10.988706588745117,
+          "kd": 5.27398681640625
+        },
+        "first_qkv_grad_norm": 6.812009811401367,
+        "loss": 8.15373420715332
+      },
+      "C5": {
+        "components": {
+          "attention": 0.06426210701465607,
+          "ce": 10.988706588745117,
+          "kd": 5.27398681640625
+        },
+        "first_qkv_grad_norm": 6.814536094665527,
+        "loss": 8.138486862182617
+      },
+      "C6": {
+        "components": {
+          "attention": 0.17381387948989868,
+          "ce": 10.988706588745117,
+          "kd": 5.27398681640625
+        },
+        "first_qkv_grad_norm": 6.813187122344971,
+        "loss": 8.150659561157227
+      }
+    },
+    "evaluation_rng_neutral": true,
+    "metric_operations": [
+      "clean",
+      "none",
+      "delete",
+      "relocate"
+    ],
+    "metric_summary": {
+      "clean": {
+        "clean_ce_nats": 10.988706316266741,
+        "edited_ce_nats": 10.988706316266741,
+        "prediction_flip_fraction": 0.0,
+        "self_kl_nats": 0.0,
+        "teacher_kl_nats": 6.346194131033761
+      },
+      "delete": {
+        "clean_ce_nats": 10.988706316266741,
+        "edited_ce_nats": 10.93594469342913,
+        "prediction_flip_fraction": 0.42857142857142855,
+        "self_kl_nats": 0.04100303564752851,
+        "teacher_kl_nats": 6.3721144539969305
+      },
+      "none": {
+        "clean_ce_nats": 10.988706316266741,
+        "edited_ce_nats": 10.988706316266741,
+        "prediction_flip_fraction": 0.0,
+        "self_kl_nats": 0.0,
+        "teacher_kl_nats": 6.346194131033761
+      },
+      "relocate": {
+        "clean_ce_nats": 10.988706316266741,
+        "edited_ce_nats": 10.938347952706474,
+        "prediction_flip_fraction": 0.42857142857142855,
+        "self_kl_nats": 0.0472337007522583,
+        "teacher_kl_nats": 6.346225738525391
+      }
+    },
+    "peak_allocated_bytes_preflight": 4623578112,
+    "precision": {
+      "bf16_probability_row_sum_max_abs": 1.1920928955078125e-07,
+      "device": "cuda:0",
+      "fp32_noop_logit_max_abs": 0.0,
+      "fp32_vs_bf16_ce_abs_nats": 0.00272369384765625,
+      "fp32_vs_bf16_logit_max_abs": 0.028235673904418945,
+      "schema_version": "e6a-v2-metrics-1",
+      "status": "diagnostic_only"
+    },
+    "student": {
+      "delete_max_logit_change": 1.8429489135742188,
+      "native_logit_max_error": 0.0,
+      "noop_logit_max_error": 0.0,
+      "pre_dropout_probability_max_error": 0.0,
+      "relocate_max_logit_change": 1.8429489135742188
+    },
+    "teacher": {
+      "delete_max_logit_change": 1.0446702241897583,
+      "native_logit_max_error": 0.0,
+      "noop_logit_max_error": 0.0,
+      "pre_dropout_probability_max_error": 0.0,
+      "relocate_max_logit_change": 1.6290806531906128
+    },
+    "tiny_cuda_resume": {
+      "cpu_cuda_rng_equal": true,
+      "cursor_equal": true,
+      "last_loss_equal": true,
+      "lr_equal": true,
+      "model_max_error": 0.0,
+      "steps": 3
+    }
+  },
+  "nvidia_smi": [
+    "NVIDIA GeForce RTX 4080 SUPER, GPU-72b4b307-b613-c35e-ea32-53f4431de9ee, 16376 MiB, 15661 MiB, 591.86"
+  ],
+  "requested_role": "rtx4080super",
+  "status": "available",
+  "student_initialization": "random_from_config_seed1729",
+  "student_parameters": 354823168,
+  "teacher_parameters": 774030080,
+  "teacher_revision": "32b71b12589c2f8d625668d2335a01cac3249519",
+  "teacher_safetensors_sha256": "5f47f3e12f91cd33b662ce7e433b6150ad5512b5884a2cee961b50e9c3bbebce",
+  "torch_version": "2.10.0+cu128",
+  "transformers_version": "5.3.0",
+  "visible_devices": [
+    {
+      "index": 0,
+      "name": "NVIDIA GeForce RTX 4080 SUPER",
+      "total_bytes": 17170956288
+    }
+  ]
+}
