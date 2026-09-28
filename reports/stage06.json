@@ -9,7 +9,8 @@
     "4241c6222567c3f1156c6eac9ab9329510cc9b54",
     "cd8e38619562c924d32bc1544eae2fa333b8c016",
     "63bfcf1b68bf57927a01cc3b01fdc9c1da3c0192",
-    "afebe96eb4fb5fcbee910276684ca6d5e3cf54c6"
+    "afebe96eb4fb5fcbee910276684ca6d5e3cf54c6",
+    "aef95f328fe052c0b0e79502823b05b66d8dc70e"
   ],
   "task_status": {
     "06.1": "passed: all independent S1 C0-C6 and optional S3 C0-C4 configs validate strict study, architecture, variant, explicit seed and C4 device role",
@@ -694,7 +695,7 @@
     "production_ready": false,
     "scientific_coverage": "none",
     "final_protocol_root_sha256": null,
-    "source_milestone_push": "pending_at_report_cutoff",
+    "source_milestone_push": "pending_origin_main_push_after_handoff_attribution",
     "cpu_focused_tests": {
       "command": ".venv\\Scripts\\python.exe -m pytest -q tests/unit/test_stage06_readiness.py tests/unit/test_stage06_plans.py tests/unit/test_owt_compat.py tests/unit/test_calibration.py tests/unit/test_train_resume.py tests/unit/test_config.py",
       "exit_code": 0,
@@ -743,6 +744,13 @@
       "failed": 0,
       "skipped": 0,
       "warnings": 1
+    },
+    "tested_source_milestone_commit": "aef95f328fe052c0b0e79502823b05b66d8dc70e",
+    "wrong_gpu_handoff_check": {
+      "command": ".\\scripts\\stage06_3090_calibration.ps1 -ArtifactRoot F:\\KD-SINK-stage06-production",
+      "exit_code": 1,
+      "expected_result": "all committed inputs verified; refused current RTX4080 SUPER before loading models because approved RTX3090 must be CUDA device 0",
+      "calibration_performed": false
     }
   }
 }

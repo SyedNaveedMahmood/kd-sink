@@ -1,6 +1,6 @@
 # Stage 06 RTX 3090 calibration handoff
 
-The current host has only an RTX 4080 SUPER. Stage 06 remains blocked; this handoff does not report measured C3/C4 factors or a final production lock. On the approved RTX 3090 (`GPU-a21766e4-bb31-9b79-5e8f-e58021e9708e`), pull the exact pushed `origin/main` source milestone, copy the external `F:\KD-SINK-stage06-production` tree to one local artifact root, and install the locked environment with `uv sync --locked`. Keep the checkout clean. Then invoke:
+The current host has only an RTX 4080 SUPER. Stage 06 remains blocked; this handoff does not report measured C3/C4 factors or a final production lock. The tested source milestone is `aef95f328fe052c0b0e79502823b05b66d8dc70e`; the attribution commit that follows it changes records only. On the approved RTX 3090 (`GPU-a21766e4-bb31-9b79-5e8f-e58021e9708e`), pull the exact pushed `origin/main` that contains this source milestone, copy the external `F:\KD-SINK-stage06-production` tree to one local artifact root, and install the locked environment with `uv sync --locked` (or `python -m uv sync --locked` if uv is installed as a module). Keep the checkout clean. Then invoke:
 
 ```powershell
 .\scripts\stage06_3090_calibration.ps1 -ArtifactRoot 'F:\KD-SINK-stage06-production'

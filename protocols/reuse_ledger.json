@@ -65,7 +65,7 @@
         "tests/integration/test_clean_wheel.py"
       ],
       "reviewer": "Codex (GPT-6), 2026-09-28",
-      "milestone_commit": "pending_tested_source_milestone"
+      "milestone_commit": "aef95f328fe052c0b0e79502823b05b66d8dc70e"
     }
   ],
   "note": "Stage 00 borrows no source code from Upstream. Record each later reuse with source SHA, license, changes, independent tests, reviewer, and milestone commit."
