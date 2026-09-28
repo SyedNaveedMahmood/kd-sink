@@ -1,8 +1,8 @@
 # Approval lock boundary
 
-The checked `design/e6a_v2/templates/` files are drafts. No production lock is
-provided here, and `sinklab validate --production` requires one explicit
-approved `protocol.lock.json` plus an exact digest in its run config.
+The checked `design/e6a_v2/templates/` files remain drafts. The final S1 seed-0
+production lock is `protocol.lock.json`; `sinklab validate --production`
+requires that explicit lock and its exact digest in each run config.
 
 An approved lock has `schema_version`, `payload`, and `sha256`. The digest is
 SHA-256 of the UTF-8 JSON payload with sorted keys, compact separators, and
@@ -82,3 +82,27 @@ the final validator records date precision explicitly rather than inventing a
 timestamp. Once that last value is approved, the final protocol root and all
 nine production configs can be sealed and validated without rerunning profiles
 or calibration. Scientific training coverage remains none.
+
+## Final Stage 06 S1 production root
+
+On 2026-09-28, before S1 production training, the researcher explicitly
+approved `fingerprint_denominator_floor=1e-8`. This only guards division in
+the reported S_I/S fingerprint ratio; it is not an effect-size threshold. If
+`abs(baseline_sink)<1e-8`, the ratio is unavailable, while baseline sink,
+probed sink and their absolute difference remain reported. The value is frozen
+before outcomes and must not be changed based on results. The earlier D01-D18
+approval and corrected amendment remain intact.
+
+The real final sealer verified the four unchanged component envelopes:
+artifact `2e721e9726e666cb8dc08a9b7d606a6d6ff99b434011b40fe2cf41f8eb315ccd`,
+environment `0266e734fa97357ed0609e722c8d492284b34a06f726ce37b7301e703a370025`,
+hardware `c284abebf7b9915053c282d57555a1a28cf9ad8250f3c402a3f313207eaae138`,
+and calibration `fa031af3de63832e054b89539d3867c2904c9b592b1e7a8b3e4ca3e3676c532f`.
+The validated `protocol.lock.json` envelope SHA-256 and production root is
+`2a11da9bb71957a4d6b3a2f93a34bd67491dd9d21d70577a7a10858930a8943e`.
+It preserves calibration source commit
+`a29bcebc6253a5300452594bbaabe4b8e082a463` and binds the exact
+reviewed nine-job 4x16 seed-0 plan. The nine generated configs and plan under
+`configs/production/` each pass production validation. Stage 06 is
+`production_ready`, but scientific coverage is `none`; no 10,000-update S1
+job has been launched.

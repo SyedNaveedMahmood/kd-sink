@@ -8,6 +8,7 @@ from pathlib import Path
 import pytest
 
 from sinklab.config import ConfigError, production_binding_for, resolve_config
+from sinklab.metrics import fingerprint
 from sinklab.provenance import LockError, seal_payload, validate_protocol_lock, verify_envelope
 from sinklab.stage06_readiness import (ReadinessError, SOURCE_COMMIT,
                                        build_production_configs, build_protocol_lock,
@@ -17,6 +18,25 @@ from sinklab.stage06_readiness import (ReadinessError, SOURCE_COMMIT,
 
 
 ROOT = Path(__file__).resolve().parents[2]
+
+
+def test_approved_stage06_root_uses_pretraining_fingerprint_guard():
+    documents = validate_final_lock_set(ROOT / "protocols")
+    protocol = documents["protocol"]
+    assert protocol["sha256"] == "2a11da9bb71957a4d6b3a2f93a34bd67491dd9d21d70577a7a10858930a8943e"
+    floor = protocol["payload"]["protocol"]["evaluation"]["fingerprint_denominator_floor"]
+    assert floor == 1e-8
+    below = fingerprint(0.5e-8, 0.2, denominator_floor=floor)
+    assert below == {
+        "baseline_sink": 0.5e-8,
+        "probed_sink": 0.2,
+        "absolute_delta_sink": 0.2 - 0.5e-8,
+        "ratio": None,
+        "ratio_unavailable_reason": "negligible_baseline",
+        "denominator_floor": 1e-8,
+    }
+    assert fingerprint(1e-8, 0.2, denominator_floor=floor)["ratio"] == 0.2 / 1e-8
+    assert validate_production_configs(ROOT, documents["protocol"])["physical_runs"] == 9
 
 
 def test_measured_component_locks_bind_real_inputs_without_claiming_root():

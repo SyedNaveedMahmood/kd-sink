@@ -1,6 +1,6 @@
 # Sequential implementation worklist
 
-DESIGN ONLY: no experiment code,CPU/GPU acceptance or scientific campaign is marked complete. Read AGENTS.md first. Work in order from the first incomplete task. A checkbox becomes checked ONLY when its implementation AND required tests actually pass with report/journal evidence. Missing hardware/network/approval is BLOCKED,not passed. Stage capability,validation and scientific coverage are separate. Optional studies remain disabled until approval.
+Implementation and Stage 06 production readiness are complete; no S1 scientific campaign has run. Read AGENTS.md first. Work in order from the first incomplete task. A checkbox becomes checked ONLY when its implementation AND required tests actually pass with report/journal evidence. Missing hardware/network/approval is BLOCKED,not passed. Stage capability,validation and scientific coverage are separate. Optional studies remain disabled until approval.
 
 ## Stage00 - Foundation
 Work order: [00_FOUNDATION](design/e6a_v2/stages/00_FOUNDATION.md).
@@ -63,11 +63,11 @@ Work order: [06_S1_S3_INTEGRATION](design/e6a_v2/stages/06_S1_S3_INTEGRATION.md)
 - [x]06.1 Independent S1/S3 configs and variant checks.
 - [x]06.2 Explicit reviewed seed-0 nine-physical-job plan for seven unique conditions, with C1/C2 same-seed hardware bridges; no default sweeps.
 - [x]06.3 Actual3090/4080 model/teacher/intervention/objective smoke.
-- [ ]06.4 Measured profiles,common microbatch,calibration/resources.
-- [ ]06.5 ActualGPU resume/precision tests and readiness locks.
-- [ ] Stage06 required evidence reviewed and milestone committed; unavailableGPU marked BLOCKED.
+- [x]06.4 Measured profiles,common microbatch,calibration/resources.
+- [x]06.5 ActualGPU resume/precision tests and readiness locks.
+- [x] Stage06 required evidence reviewed and milestone committed; no scientific S1 training launched.
 
-Stage06 status: **BLOCKED pending one approved metric floor and the final protocol root/configs**. Researcher choices D01-D18 are approved with sealed amendments taking precedence. `configs/s1_jobs_seed0_reviewed.json` fixes nine physical seed-0 jobs for seven unique C0-C6 condition/seed pairs: RTX4080 SUPER C0/C1/C2/C5/C6 and RTX3090 C1/C2/C3/C4. C1/C2 are same-seed hardware bridges. The measured scheduled-pair profiles establish common microbatch4 × accumulation16 (64 sequences, 8,192 inputs and 8,128 shifted targets per update). RTX3090 C0/C5/C6 and RTX4080 C3 remain unmeasured/unused; C4/REL is3090-only. The transferred ZIP at `E:\KD-SINK-stage06-production-transfer.zip` matched its 4080 SHA-256 receipt and restored the verified scientific inventory to `E:\KD-SINK-stage06-production`; the original ZIP remains external. Both exact environment records match on all 101 lock-managed packages. The approved RTX3090 seed1729 16-batch C2/C3/C4 calibration passed with `s_MSE=68.00580071126464` and `s_REL=0.120179255876581`, raw evidence under the external artifact root. Four measured component locks are sealed in `protocols/`. The evaluator requires an explicitly locked positive fingerprint denominator floor, but D01-D18 and the committed contracts do not give a numerical value; do not invent one. Until it is approved and the transitive protocol root, nine configs and final validation pass, 06.4/06.5 and Stage06 remain open. No 10k production run or Stage09 work has started; scientific coverage is none. See `reports/stage06.json`.
+Stage06 status: **production_ready**, with scientific coverage **none**. Researcher choices D01-D18 and the corrected amendment remain sealed; on 2026-09-28 the researcher additionally approved `fingerprint_denominator_floor=1e-8` before training. This is solely a numerical guard for reported S_I/S, not an effect-size threshold: if `abs(baseline_sink)<1e-8`, the ratio is unavailable while baseline/probed sinks and their absolute difference are retained. `configs/production/s1_jobs_seed0.json` fixes nine physical seed-0 jobs for seven unique C0-C6 condition/seed pairs: RTX4080 SUPER C0/C1/C2/C5/C6 and RTX3090 C1/C2/C3/C4. C1/C2 are same-seed hardware bridges. The measured common microbatch is 4 × accumulation16 (64 sequences, 8,192 inputs and 8,128 shifted targets per update). RTX3090 C0/C5/C6 and RTX4080 C3 remain unmeasured/unused; C4/REL is3090-only. The verified external artifact tree, exact two-role environment, seed1729 16-batch calibration (`s_MSE=68.00580071126464`, `s_REL=0.120179255876581`), unchanged four component locks and nine root-bound configs all pass transitive validation. The production root is `2a11da9bb71957a4d6b3a2f93a34bd67491dd9d21d70577a7a10858930a8943e`. No 10k production run or Stage09 work has started. See `reports/stage06.json`.
 
 ## Stage07 - S2
 Work order: [07_S2_PRETRAINING](design/e6a_v2/stages/07_S2_PRETRAINING.md).
@@ -77,7 +77,7 @@ Work order: [07_S2_PRETRAINING](design/e6a_v2/stages/07_S2_PRETRAINING.md).
 - [x]07.4 Local tests and approved real network/GPU evidence.
 - [x] Stage07 capability evidence reviewed and milestone committed; S2 scientific coverage remains absent.
 
-Stage07 status: external capability acceptance COMPLETE using one immutable public Pythia-160m step0 checkpoint on the RTX 4080 SUPER. Its hashes, tokenizer, native rotary/masks, evaluator, restoration, resume and storage were measured. Full checkpoint coverage and the full-trajectory storage/download budget still require approval and measurement; no S2 scientific trajectory or coverage exists. See `reports/stage07.json`. Stage06 production-readiness status remains BLOCKED.
+Stage07 status: external capability acceptance COMPLETE using one immutable public Pythia-160m step0 checkpoint on the RTX 4080 SUPER. Its hashes, tokenizer, native rotary/masks, evaluator, restoration, resume and storage were measured. Full checkpoint coverage and the full-trajectory storage/download budget still require approval and measurement; no S2 scientific trajectory or coverage exists. See `reports/stage07.json`. Stage06 is now production-ready, without scientific coverage.
 
 ## Stage08 - S4/S5/S6
 Work order: [08_S4_S5_S6](design/e6a_v2/stages/08_S4_S5_S6.md).
@@ -87,7 +87,7 @@ Work order: [08_S4_S5_S6](design/e6a_v2/stages/08_S4_S5_S6.md).
 - [x]08.4 Study tests,new-teacher checks and approvedGPU smoke (RTX 4080 SUPER engineering qualification; S5 analysis has no GPU kernel).
 - [x] Stage08 capability evidence reviewed and milestone committed; scientific coverage remains absent.
 
-Stage08 status: capability and external qualification COMPLETE on the RTX 4080 SUPER using a pinned GPT-2-large teacher and a frozen engineering calibration panel. All ten fixed S4 probes responded at the predeclared numerical reporting floor; that observation is not a scientific transfer claim. Paired 40/128-token S6 GPU smoke passed on agent-authored engineering inputs. S5 remains read-only with no production C1/C2/C5/C6 records; none were fabricated. Optional 512/1024 contexts remain disabled. No S4/S5/S6 scientific coverage exists. See `reports/stage08.json`. Stage06 remains BLOCKED; Stage07 external capability acceptance is complete without scientific coverage. Stage09 has not started.
+Stage08 status: capability and external qualification COMPLETE on the RTX 4080 SUPER using a pinned GPT-2-large teacher and a frozen engineering calibration panel. All ten fixed S4 probes responded at the predeclared numerical reporting floor; that observation is not a scientific transfer claim. Paired 40/128-token S6 GPU smoke passed on agent-authored engineering inputs. S5 remains read-only with no production C1/C2/C5/C6 records; none were fabricated. Optional 512/1024 contexts remain disabled. No S4/S5/S6 scientific coverage exists. See `reports/stage08.json`. Stage06 is now production-ready; Stage07 external capability acceptance is complete without scientific coverage. Stage09 has not started.
 
 ## Stage09 - Analysis and release
 Work order: [09_ANALYSIS_RELEASE](design/e6a_v2/stages/09_ANALYSIS_RELEASE.md).
@@ -100,7 +100,7 @@ Work order: [09_ANALYSIS_RELEASE](design/e6a_v2/stages/09_ANALYSIS_RELEASE.md).
 
 ## Separate research execution opt-in
 - [ ] Researcher approves/amends D01-D18 and relevant M01-M05.
-- [ ] Protocol/environment/artifact/hardware/calibration locks frozen.
+- [x] Protocol/environment/artifact/hardware/calibration locks frozen for S1 seed0 production readiness.
 - [ ] Operator explicitly launches each approved study/condition/seed.
 - [ ] Actual completed coverage audited before paper claims.
 - [ ] Separate authorization obtained before eventual Upstream deletion.

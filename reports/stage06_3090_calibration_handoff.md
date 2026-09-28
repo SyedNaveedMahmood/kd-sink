@@ -34,3 +34,26 @@ From clean pushed commit `a29bcebc6253a5300452594bbaabe4b8e082a463`, the approve
 Four measured component locks are sealed in `protocols/`. Stage 06 is still **blocked**, not production-ready: the approved records do not specify a positive `fingerprint_denominator_floor`, which the production evaluator requires. Until that value is explicitly approved, `protocol.lock.json`, the production root and the nine final configs remain absent. The date-only approval record is represented at date precision, without inventing a UTC approval time. No profiles were rerun; scientific coverage remains none.
 
 The approved common schedule is microbatch 4 × accumulation 16 = 64 sequences of 128 tokens. C2 raw JSD, C3 raw MSE and C4 raw REL must be measured on the same seed-1729 CPU-FP32 initialization over the same 16 effective batches, with dropout disabled for calibration only and FP32 global norm reduction. The final locks and protocol root are sealed only after that measured result and the exact RTX 3090 environment are verified. Scientific coverage remains none.
+
+## 2026-09-28 final sealing closure
+
+The preceding blocked-state text is historical. The researcher explicitly approved
+`fingerprint_denominator_floor=1e-8` on 2026-09-28, before any S1 production
+training. It is only a numerical denominator guard for the reported S_I/S
+ratio, not an effect-size threshold. When `abs(baseline_sink)<1e-8`, the ratio
+is unavailable; baseline sink, probed sink and absolute sink difference remain.
+The value is frozen independent of future results, matching the Stage 08
+engineering guard without importing its fixture thresholds.
+
+The sealer reverified the unchanged artifact/environment/hardware/calibration
+component digests `2e721e9726e666cb8dc08a9b7d606a6d6ff99b434011b40fe2cf41f8eb315ccd`,
+`0266e734fa97357ed0609e722c8d492284b34a06f726ce37b7301e703a370025`,
+`c284abebf7b9915053c282d57555a1a28cf9ad8250f3c402a3f313207eaae138`,
+and `fa031af3de63832e054b89539d3867c2904c9b592b1e7a8b3e4ca3e3676c532f`.
+The final `protocol.lock.json` production root is
+`2a11da9bb71957a4d6b3a2f93a34bd67491dd9d21d70577a7a10858930a8943e`.
+All nine root-bound configs validate against that transitive lock set. Calibration
+source commit `a29bcebc6253a5300452594bbaabe4b8e082a463` remains unchanged.
+Stage 06 is production-ready; scientific coverage remains none and no 10k job
+has started. The nine config SHA-256 values and final acceptance counts are
+recorded in `reports/stage06.json`.

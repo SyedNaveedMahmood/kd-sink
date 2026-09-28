@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "stage_id": "06",
-  "status": "blocked_pending_approved_fingerprint_floor_protocol_root_and_production_configs",
+  "status": "production_ready",
   "starting_commit": "5396f84828bd2de5eb29b6f0467eb084c1b2af8c",
   "resume_starting_commit": "aeb064f76ded84b7b1a7999371be6fd6ee7266f6",
   "implementation_milestones": [
@@ -16,8 +16,8 @@
     "06.1": "passed: all independent S1 C0-C6 and optional S3 C0-C4 configs validate strict study, architecture, variant, explicit seed and C4 device role",
     "06.2": "passed: approved fixed-role seed0 plan has seven unique C0-C6 condition/seed pairs and nine physical jobs, with C1/C2 same-seed 3090 bridges; focused plan tests pass",
     "06.3": "passed engineering gate: assigned-condition full-size GPT-2-large to random GPT-2-medium native, adapter, intervention and BF16 objective smokes pass on the RTX 4080 SUPER and RTX 3090; the 3090 probe uses sequence length 128 and covers C1-C4 including REL; REL-on-4080 refusal remains enforced",
-    "06.4": "measured: every scheduled pair has committed sequence-128 full-cycle evidence, the reviewed common plan is 4x16, and approved RTX3090 C2/C3/C4 16-batch calibration passed; final Stage06 acceptance remains open",
-    "06.5": "partial: full RTX3090 GPU acceptance and exact-sync evidence for both approved roles pass; four measured component locks are sealed, but the fingerprint denominator floor, protocol root and final production configs remain blocked"
+    "06.4": "complete: every scheduled pair has committed sequence-128 full-cycle evidence, the reviewed common plan is 4x16, and approved RTX3090 C2/C3/C4 16-batch calibration passed",
+    "06.5": "complete: full RTX3090 GPU acceptance and exact-sync evidence for both approved roles pass; four measured component locks, approved fingerprint denominator floor, transitive protocol root and all nine production configs validate"
   },
   "hardware": {
     "current_gpu": "NVIDIA GeForce RTX 3090",
@@ -203,7 +203,8 @@
     "profile_input_scope": "deterministic synthetic sequence-128 memory-shape fixture only",
     "production_corpus": "76dcdc819b97ecff4d3c458bdf4dbd7c1a5dc2a525541e29099e6a6ac760d700",
     "frozen_training_calibration_panel": "306827da7f6987a02eadd716d43668fd4dceac1007cd7cb9b8bcdf4dd08b8413",
-    "approved_protocol_lock": null,
+    "approved_protocol_lock": "protocols/protocol.lock.json",
+    "approved_protocol_lock_sha256": "2a11da9bb71957a4d6b3a2f93a34bd67491dd9d21d70577a7a10858930a8943e",
     "approved_artifact_lock": "protocols/artifact.lock.json",
     "approved_artifact_lock_sha256": "2e721e9726e666cb8dc08a9b7d606a6d6ff99b434011b40fe2cf41f8eb315ccd",
     "approved_hardware_lock": "protocols/hardware.lock.json",
@@ -270,7 +271,7 @@
       "C6": 4
     },
     "final_two_device_accumulation": 16,
-    "final_two_device_common_status": "measured_engineering_candidate_not_approved_hardware_lock",
+    "final_two_device_common_status": "approved_measured_hardware_lock",
     "rtx4080_c5_mb4_repeat_free_margin_over_required_bytes": 15119156,
     "rtx4080_sequence_length": 128,
     "rtx4080_fp32_vs_bf16_max_logit_error": 0.03320145606994629,
@@ -818,6 +819,48 @@
     "calibration_performed": false,
     "production_training_runs": 0,
     "production_ready": false,
+    "scientific_coverage": "none"
+  },
+  "final_sealing_20260928": {
+    "starting_commit": "4c51d107ee59265d7c79f6654234b3bc8af92018",
+    "calibration_source_commit": "a29bcebc6253a5300452594bbaabe4b8e082a463",
+    "researcher_approved_on_utc_date": "2026-09-28",
+    "fingerprint_denominator_floor": 1e-8,
+    "fingerprint_floor_interpretation": "Numerical denominator guard for reported S_I/S only, not an effect-size threshold. If abs(baseline_sink) < 1e-8, ratio unavailable; retain baseline sink, probed sink and absolute sink difference. Approved before S1 production training and frozen independently of results.",
+    "component_lock_sha256": {
+      "artifact": "2e721e9726e666cb8dc08a9b7d606a6d6ff99b434011b40fe2cf41f8eb315ccd",
+      "environment": "0266e734fa97357ed0609e722c8d492284b34a06f726ce37b7301e703a370025",
+      "hardware": "c284abebf7b9915053c282d57555a1a28cf9ad8250f3c402a3f313207eaae138",
+      "calibration": "fa031af3de63832e054b89539d3867c2904c9b592b1e7a8b3e4ca3e3676c532f"
+    },
+    "protocol_lock_sha256": "2a11da9bb71957a4d6b3a2f93a34bd67491dd9d21d70577a7a10858930a8943e",
+    "production_root_sha256": "2a11da9bb71957a4d6b3a2f93a34bd67491dd9d21d70577a7a10858930a8943e",
+    "production_config_sha256_lf": {
+      "s1-c0-seed0-rtx4080super": "2847145b7fc8ca42aa54bb1ced3c84bbfaf766043f4167d45813495adfcb83d8",
+      "s1-c1-seed0-rtx4080super": "5a1f17e10fbf5ff5c1276b9f04959c05fef99ad0bd39ff5a588045028cf7f4f3",
+      "s1-c2-seed0-rtx4080super": "42e91faf9680789d89f222b6a3263854f344a9d4365daf08e92a825f8d64ae7a",
+      "s1-c3-seed0-rtx3090": "4aeccd952ba84db7ce27ef58b68883c7c20d5be04cd7e9fea82005ed82270269",
+      "s1-c4-seed0-rtx3090": "877505c0fbab58903f644a2c07ed86eb6d134a6cdaace93d6c264b4a44a39ac3",
+      "s1-c5-seed0-rtx4080super": "92f2f4a08a9ab1a4a397416d383ce9bc6d2fe52abf59933a55e8b08b7091af2b",
+      "s1-c6-seed0-rtx4080super": "704ff2f57608a2e8aa819f914daa70d58fc4e53be20860be2b47b005ab0bf1e3",
+      "s1-c1-seed0-rtx3090": "b0f6af167b416490ad5d7e21f84c1ac3b815b0a7ca45026ecb9c3374df8c59ba",
+      "s1-c2-seed0-rtx3090": "6efd7832638d4e60589ab9b9910bfca90669a1d349c425890513096386239919"
+    },
+    "production_plan": "configs/production/s1_jobs_seed0.json",
+    "physical_jobs": 9,
+    "unique_condition_seed_pairs": 7,
+    "per_config_production_validation": {"passed": 9, "failed": 0},
+    "transitive_plan_validation": "passed",
+    "focused_tests": {"passed": 51, "failed": 0, "skipped": 0},
+    "full_cpu_regression": {"passed": 160, "failed": 0, "skipped": 0, "warnings": 1},
+    "offline_clean_wheel": {"passed": 1, "failed": 0, "skipped": 0},
+    "pip_check": "passed",
+    "uv_sync_locked_dry_run": "Would make no changes",
+    "rtx3090_gpu_readiness": "reused committed 5-pass pinned-teacher evidence; not rerun",
+    "new_profiles": 0,
+    "new_calibrations": 0,
+    "production_training_runs": 0,
+    "production_ready": true,
     "scientific_coverage": "none"
   },
   "restored_transfer_calibration_and_component_locks_20260928": {
