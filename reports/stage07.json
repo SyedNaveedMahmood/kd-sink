@@ -229,7 +229,7 @@
     "implementation_notes/IMPLEMENTATION_NOTES_BY_CLAUDE_S2.md"
   ],
   "next_task": "Stage07 external capability acceptance complete; no S2 scientific trajectory. Preserve Stage06 BLOCKED and Stage08 capability-only status; Stage09 not started.",
-  "milestone_commit": "pending",
+  "milestone_commit": "71306724e68d0866e4052e935b4324cb434bed48",
   "external_acceptance_starting_commit": "18047b6",
   "acceptance_inputs_commit": "14b2e82c680b876382773dae7328dc0d4334b3ba",
   "qualification_failures_resolved": [
