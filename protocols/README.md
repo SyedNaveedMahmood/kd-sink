@@ -106,3 +106,39 @@ reviewed nine-job 4x16 seed-0 plan. The nine generated configs and plan under
 `configs/production/` each pass production validation. Stage 06 is
 `production_ready`, but scientific coverage is `none`; no 10,000-update S1
 job has been launched.
+
+## Runtime source provenance correction
+
+The former production root
+`2a11da9bb71957a4d6b3a2f93a34bd67491dd9d21d70577a7a10858930a8943e`
+is `superseded_nonlaunchable_due_to_runtime_source_provenance_defect`. It
+identified the calibration source commit as the production source even though
+the final runnable production binding was added later. Its measured artifact,
+environment, hardware and calibration component locks remain valid and
+unchanged. The approved RTX 3090 calibration source is
+`a29bcebc6253a5300452594bbaabe4b8e082a463`.
+
+The runtime guard uses execution-critical path set version 1:
+`src/sinklab/**`, `pyproject.toml`, and `uv.lock`. A launch requires the
+protocol's `production_runtime_source_commit` to be an ancestor of HEAD,
+those tracked paths to match the source milestone, and the active package
+to have no dirty or untracked importable files. The generated config must
+bind the same runtime source and path-set version as the protocol. Final
+locks and configs are committed in a later descendant, so HEAD equality
+is not required. The runtime milestone is
+`00b70dbd727e090c2f79ff48236b3b4ad9cfd136`.
+
+The local F: calibration-result envelope was reconstructed byte for byte
+from the already committed sealed calibration lock using the original
+calibration-entry schema. Its payload SHA-256 remains
+`ddce66f76c43be3406f672cd2d0b4fd79fb35257ba28355caee72520e4932165`.
+This operation recovered a copy of existing RTX 3090 evidence; it did not
+repeat or replace the calibration measurement.
+
+The replacement authoritative `protocol.lock.json` envelope SHA-256 is
+`910961fcc53edaed0df48e3139dbb7ca2e058bf7480b67dab27bae0bcd90f26f`.
+The prior envelope is retained under `protocols/superseded/`. All four
+measured component lock digests stayed unchanged. The nine regenerated
+configs bind the new root and runtime milestone; production validation of
+each config and the nine-job plan passed. Stage 06 is production-ready with
+S1 scientific coverage still none.

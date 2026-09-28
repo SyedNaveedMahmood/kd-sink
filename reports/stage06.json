@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "stage_id": "06",
-  "status": "blocked_pending_runtime_source_provenance_fix",
+  "status": "production_ready",
   "starting_commit": "5396f84828bd2de5eb29b6f0467eb084c1b2af8c",
   "resume_starting_commit": "aeb064f76ded84b7b1a7999371be6fd6ee7266f6",
   "implementation_milestones": [
@@ -17,7 +17,7 @@
     "06.2": "passed: approved fixed-role seed0 plan has seven unique C0-C6 condition/seed pairs and nine physical jobs, with C1/C2 same-seed 3090 bridges; focused plan tests pass",
     "06.3": "passed engineering gate: assigned-condition full-size GPT-2-large to random GPT-2-medium native, adapter, intervention and BF16 objective smokes pass on the RTX 4080 SUPER and RTX 3090; the 3090 probe uses sequence length 128 and covers C1-C4 including REL; REL-on-4080 refusal remains enforced",
     "06.4": "complete: every scheduled pair has committed sequence-128 full-cycle evidence, the reviewed common plan is 4x16, and approved RTX3090 C2/C3/C4 16-batch calibration passed",
-    "06.5": "blocked: measured GPU/environment evidence remains valid, but the old production root binds the calibration-era source rather than runnable production code; runtime source guard and resealing are pending"
+    "06.5": "complete: the old root is superseded; the new root binds the tested runtime milestone, unchanged measured locks and nine validated configs; 4080 runtime preflight and CPU regression pass"
   },
   "hardware": {
     "current_gpu": "NVIDIA GeForce RTX 3090",
@@ -434,12 +434,8 @@
   "scientific_coverage": "none; approved calibration is a training-side measurement, not an S1/S3 production training result",
   "upstream_files_changed": 0,
   "pushed": true,
-  "remaining_blockers": [
-    "old production root 2a11da9bb71957a4d6b3a2f93a34bd67491dd9d21d70577a7a10858930a8943e is superseded_nonlaunchable_due_to_runtime_source_provenance_defect",
-    "freeze and verify a distinct production runtime source milestone, then reseal the protocol root and all nine configs",
-    "reverify the external F: artifact inventory, freeze the runtime source milestone, and reseal the root and nine configs"
-  ],
-  "next_action": "Finish source guard tests and push immutable source milestone; reverify original F: artifacts; reseal and validate the root/configs. Do not launch S1 training.",
+  "remaining_blockers": [],
+  "next_action": "Operator may launch individually reviewed S1 seed-0 production jobs under the new root; no scientific run has yet started. Do not count readiness as scientific coverage.",
   "runtime_source_repair_20260928": {
     "starting_commit": "dceba4976c06399cffabdd50e80c41c94137a5e6",
     "old_root_sha256": "2a11da9bb71957a4d6b3a2f93a34bd67491dd9d21d70577a7a10858930a8943e",
@@ -451,8 +447,31 @@
     "calibration_local_copy_verified": true,
     "execution_critical_path_set_version": 1,
     "execution_critical_paths": ["src/sinklab", "pyproject.toml", "uv.lock"],
-    "production_runtime_source_commit": null,
-    "new_root_sha256": null,
+    "production_runtime_source_commit": "00b70dbd727e090c2f79ff48236b3b4ad9cfd136",
+    "new_root_sha256": "910961fcc53edaed0df48e3139dbb7ca2e058bf7480b67dab27bae0bcd90f26f",
+    "authoritative_root": true,
+    "artifact_inventory_reverified_path": "F:\\KD-SINK-stage06-4080\\evidence\\artifact-inventory-reverified.json",
+    "artifact_inventory_reverified_sha256": "e4f515d26b0dbe1100ba97dc80c67eb224f7e7dc170c848a98123c0e19cc748f",
+    "artifact_inventory_byte_equal_committed": true,
+    "component_locks_unchanged": true,
+    "production_config_file_sha256_lf": {
+      "c0_rtx4080super": "5c224ded5ff106a05a919d2651d54b505ad6f44a93dc6c6ccc704abb153efd53",
+      "c1_rtx3090": "e9a84b9dc5e3249b17cb07a60d0d907bf50127f4b5ed22c8f5867df977aa0bbf",
+      "c1_rtx4080super": "d8a81b7bf343f9f78a765efe77f910e3fb24e6dcc27d26326f5ed12e3f176fab",
+      "c2_rtx3090": "dcfe01dee13e3c2dfcb204b2a264fed415ee1dd91a62c8e496c95c33efdd4ba3",
+      "c2_rtx4080super": "4fdddf1b07d6452d77fb24c6659b4277d4a20674243398961e26cccb4d6f288e",
+      "c3_rtx3090": "792c367b1c69820038f61f8ae4891a03ea14ac92ca8b867dd95bd6683ddc36af",
+      "c4_rtx3090": "ce27750715de4fe560accbc30daaa2710a7fd22a300a4b275a6f66e498480fea",
+      "c5_rtx4080super": "a1af630ada37db31a51eb8d0c8bf83d3bcf2beb3006d5e832afbba19d5ae0c89",
+      "c6_rtx4080super": "ff1bef0a8d4062d791da6c53dcd59ab1e032e398cfcfe65a9f40fb658786bf70"
+    },
+    "validated_nine_job_plan": {"physical_runs": 9, "unique_condition_seed_pairs": 7, "seeds": [0], "hardware_confounds": [], "launchable": true},
+    "focused_cpu_tests": {"passed": 53, "failed": 0, "skipped": 0},
+    "full_cpu_regression": {"passed": 172, "failed": 0, "skipped": 0, "warnings": 1},
+    "gpu_4080_preflight": {"passed": 1, "failed": 0, "skipped": 0, "evidence": "F:\\KD-SINK-stage06-4080\\evidence\\stage06-runtime-preflight.json", "training_started": false},
+    "offline_clean_wheel": {"passed": 1, "failed": 0, "skipped": 0},
+    "production_training_runs": 0,
+    "production_ready": true,
     "scientific_coverage": "none"
   },
   "resume_4080_starting_commit": "0959501af6cd4a8285bd7eb9733cdcf6651e615b",
