@@ -207,6 +207,12 @@ Tested source milestone `00b70dbd727e090c2f79ff48236b3b4ad9cfd136` (`fix(stage06
 
 A documentation-only milestone commit was attempted after git diff --cached --check passed, but Git exited 128 because no author identity is configured. No author identity was invented or configured; the two journal changes remain unstaged for the operator's normal commit flow. The local venv, lock sync and verification remain successful.
 
+## 2026-09-28T12:42:56Z - Codex (GPT-6) - S1 local environment restoration
+
+- Starting commit `d57a92d73fc7666af2f4ffa30a054f419f1abb89`. Created ignored Python 3.12.3 `.venv/` and installed the exact 101 Windows packages from committed `uv.lock` using `python -m uv sync --locked` (exit 0), with ignored E: uv cache. No S1 production command, profile, calibration or scientific evaluation was run.
+- Corrected a local CRLF checkout of `uv.lock` to its committed LF bytes. Its on-disk SHA-256 now matches sealed environment lock `b71f143ff21a0ccdd45e995b006430399134bb1564b1210bdc70fb3c67f4c3d5`; the index and worktree were clean before journal edits. All 101 lock-managed versions match the sealed map. Local RTX 4080 SUPER reports CUDA available with Torch 2.10.0+cu128 and Transformers 5.3.0.
+- Exact checks: `.\.venv\Scripts\python.exe -m pip check` exit 0; `python -m uv sync --locked --dry-run` exit 0, no changes; `.\.venv\Scripts\sinklab.exe validate --config configs/s1_c2_draft.json --seed 0` exit 0, validation only. No pytest/GPU numerical suite was run for this environment-only request. User was updated on successful setup and lock line endings. No approved protocol or scientific coverage changed; NEXT_STEPS unchanged. Milestone commit: `chore(env): record locked local venv setup` (this journal-only commit).
+
 ## 2026-09-28T12:44:34Z - Codex (GPT-6) - Second RTX4080 SUPER Stage06 qualification, blocked before profiles
 
 - Starting branch/commit: `main` at `d57a92d73fc7666af2f4ffa30a054f419f1abb89`, equal to fetched `origin/main`. The previous local venv-session CORE/S1 journal edits were stashed to require a clean worktree for the first qualification gate, then restored. `git fetch origin` and `git pull --ff-only origin main` exited0; the clean gate passed before qualification. User scope: qualify a distinct second 4080 for C0/C1/C2/C5/C6, no C3/C4, no scientific training/calibration/Stage09, no push. Researcher-reported C0 run remains an unverified operator statement because no local C0 run directory was found; no run metadata or scientific coverage was changed.
