@@ -1,0 +1,60 @@
+{
+  "schema_version": 1,
+  "machine_label": "Adrita-PC",
+  "observed_windows_hostname": "DESKTOP-GPO5752",
+  "status": "blocked_before_qualification",
+  "captured_at_utc": "2026-09-28T12:47:01Z",
+  "starting_commit": "f763bcf51b32cd6aac03724201f51769e5697efc",
+  "origin_main": "d57a92d73fc7666af2f4ffa30a054f419f1abb89",
+  "authoritative_production_root": "910961fcc53edaed0df48e3139dbb7ca2e058bf7480b67dab27bae0bcd90f26f",
+  "runtime_source_commit": "00b70dbd727e090c2f79ff48236b3b4ad9cfd136",
+  "observed_gpu": {
+    "name": "NVIDIA GeForce RTX 4080 SUPER",
+    "uuid": "GPU-2a5c25d0-1f73-919b-fd8b-f6f0df709aaf",
+    "vram_mib": 16376,
+    "driver": "591.86",
+    "baseline_free_mib_one_sample": 13791,
+    "baseline_used_mib_one_sample": 2257
+  },
+  "observed_environment": {
+    "windows": "Windows-11-10.0.26200-SP0",
+    "python": "3.12.3",
+    "torch": "2.10.0+cu128",
+    "torch_cuda_runtime": "12.8",
+    "cudnn": 91002,
+    "transformers": "5.3.0",
+    "host_ram_bytes": 68470374400,
+    "uv_lock_sha256": "b71f143ff21a0ccdd45e995b006430399134bb1564b1210bdc70fb3c67f4c3d5",
+    "exact_environment_qualification": "not_completed_after_stop_gate"
+  },
+  "distinct_from_known_approved_uuids": true,
+  "naveedpc_uuid": null,
+  "naveedpc_evidence_in_current_repository": false,
+  "artifact_tree_verification": "not_run",
+  "gpu_acceptance": "not_run",
+  "runtime_preflight": "not_run",
+  "profiles": {
+    "C0": [],
+    "C1": [],
+    "C2": [],
+    "C5": [],
+    "C6": []
+  },
+  "mb4_all_five": false,
+  "qualified": false,
+  "draft_amendment": null,
+  "blocker": {
+    "kind": "execution_critical_single_uuid_schema",
+    "description": "The sealed hardware/config/entry path maps each rtx4080super role to one UUID. Adding a second RTX 4080 SUPER UUID for future jobs requires changing execution-critical source and resealing; the user instructed a stop at this boundary.",
+    "source_locations": [
+      "src/sinklab/stage06_readiness.py:22",
+      "src/sinklab/config.py:50",
+      "src/sinklab/hardware.py:78",
+      "src/sinklab/training_entry.py:164"
+    ]
+  },
+  "production_training_started": false,
+  "calibration_run": false,
+  "stage09_started": false,
+  "pushed": false
+}
