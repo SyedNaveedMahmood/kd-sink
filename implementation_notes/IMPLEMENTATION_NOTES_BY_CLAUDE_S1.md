@@ -154,3 +154,7 @@ The sealed RTX4080 SUPER exact-sync evidence, capture utility, Stage06 blocked-s
 ## 2026-09-28T08:30:00Z - Codex (GPT-6) - S1 measured-component milestone SHA
 
 The measured RTX3090 calibration evidence summary, four canonical component locks, final protocol/config validation code and tests, blocked-state records and journals were committed as `97ef8b076c9ef0ee8811bcb0daebabef3e4468d7`. Calibration's immutable source is still clean pre-calibration commit `a29bcebc6253a5300452594bbaabe4b8e082a463`; the later implementation commit does not change that provenance. No scientific run or production-ready claim was made. Exact metric-floor approval and the final root/config gate remain pending.
+
+## 2026-09-28T08:31:04Z - Codex (GPT-6) - S1 report current-field correction
+
+Updated only the current top-level Stage06 report to identify the restored E: production root, retain the historical F: source root, and reflect the four sealed measured component locks and C3/C4 factors. Dated prior observations remain historical. Protocol root remains null; no production training or new measurements. JSON/envelope checks passed.

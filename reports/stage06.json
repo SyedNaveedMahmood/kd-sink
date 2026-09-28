@@ -192,7 +192,8 @@
     "rtx3090_environment_record": "protocols/s1_environment_3090_exact_v1.json",
     "rtx3090_environment_sha256": "9f0344265d543c229306aa4a281f6577846e81d09625cfb400e38e49234ee908",
     "rtx3090_lock_managed_distribution_map_equal_4080": true,
-    "final_two_role_environment_lock": null
+    "final_two_role_environment_lock": "protocols/environment.lock.json",
+    "final_two_role_environment_lock_sha256": "0266e734fa97357ed0609e722c8d492284b34a06f726ce37b7301e703a370025"
   },
   "artifacts": {
     "teacher_revision": "32b71b12589c2f8d625668d2335a01cac3249519",
@@ -203,8 +204,12 @@
     "production_corpus": "76dcdc819b97ecff4d3c458bdf4dbd7c1a5dc2a525541e29099e6a6ac760d700",
     "frozen_training_calibration_panel": "306827da7f6987a02eadd716d43668fd4dceac1007cd7cb9b8bcdf4dd08b8413",
     "approved_protocol_lock": null,
-    "approved_hardware_lock": null,
-    "approved_calibration_lock": null,
+    "approved_artifact_lock": "protocols/artifact.lock.json",
+    "approved_artifact_lock_sha256": "2e721e9726e666cb8dc08a9b7d606a6d6ff99b434011b40fe2cf41f8eb315ccd",
+    "approved_hardware_lock": "protocols/hardware.lock.json",
+    "approved_hardware_lock_sha256": "c284abebf7b9915053c282d57555a1a28cf9ad8250f3c402a3f313207eaae138",
+    "approved_calibration_lock": "protocols/calibration.lock.json",
+    "approved_calibration_lock_sha256": "fa031af3de63832e054b89539d3867c2904c9b592b1e7a8b3e4ca3e3676c532f",
     "rtx4080_shape_fixture": {
       "external_root": "F:\\KD-SINK-stage06-4080",
       "status": "deterministic_synthetic_memory_shape_only",
@@ -216,7 +221,8 @@
     "seed0_training_order": "208b3bec7c15c1f8226972f8148d94b655b266b9faf7d3f0bc143eaa477e75f0",
     "seed0_initialization": "1a27890c588f317a4ae5523430f8af53c591bca29c9a78d13bf182c9c145fc09",
     "seed1729_initialization": "5fc6604f5eb8d2ff63958ec7a894736a727d56910db4fb68b865f203dbe93879",
-    "external_production_root": "F:\\KD-SINK-stage06-production",
+    "external_production_root": "E:\\KD-SINK-stage06-production",
+    "original_4080_production_root": "F:\\KD-SINK-stage06-production",
     "inventory_path": "reports/stage06_production_artifact_inventory.json",
     "inventory_sha256": "e4f515d26b0dbe1100ba97dc80c67eb224f7e7dc170c848a98123c0e19cc748f",
     "researcher_approval_sha256": "901ef13454dd07a40d90dc89d5db28b31f104897daa6907f54d2e4cc32ca2bae"
@@ -252,7 +258,7 @@
     "full_size_checkpoint_next_loss": 9.506715774536133,
     "full_size_checkpoint_resumed_next_loss": 9.506715774536133,
     "full_size_checkpoint_model_optimizer_rng_equal": true,
-    "calibration_factors": null,
+    "calibration_factors": {"s_MSE": 68.00580071126464, "s_REL": 0.120179255876581},
     "production_10k_runs": 0,
     "rtx4080_profile_path": "reports/stage06_4080_profile_evidence.json",
     "rtx4080_profile_sha256": "7834d8638b5d15444e4a50c63c62c269f8b24f71942f604f525c3c8069c91748",
