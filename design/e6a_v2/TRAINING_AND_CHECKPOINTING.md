@@ -23,7 +23,7 @@ Initialize Python/NumPy/Torch with the seed and reuse the exact CPU initializati
 
 Before update u>=1 set LR: peak*u/500 for u<=500; floor+(peak-floor)*(1+cos(pi*(u-500)/9500))/2 for500<u<=10000; floor thereafter, with floor=.1*peak. Advance scheduler state once after the optimizer update to prepare the next update. Test u=1,500,501,10000,10001 explicitly.
 
-A later extension requires an amendment/lineage ID and loads the10k full state. Do not reset moments, RNG, data cursor, scheduler clock or warmup; do not recompute old LRs with a newly enlarged cosine denominator. Continuing the fixed floor is NOT equivalent to a20k cosine schedule from scratch. Approve comparison coverage before later outcomes; do not selectively extend favorable conditions.
+A later extension requires a stable explicit extension/lineage ID and loads the checksum-verified, protected `final-010000` full state. Do not reset moments, RNG, data cursor, scheduler clock or warmup; do not recompute old LRs with a newly enlarged cosine denominator. Every extension update uses the constant 10% peak-LR floor. Rolling full recovery remains every500 absolute updates; dense evaluations remain every100 absolute updates. Save an extension endpoint as its own protected full checkpoint; never overwrite the protected10k state. Approve comparison coverage before later outcomes; do not selectively extend favorable conditions.
 
 ## Evaluation neutrality and failures
 Capture/restore model mode and Python/NumPy/Torch CPU/CUDA RNG around in-memory evaluation, including exceptions. Release training graphs before evaluation. No-grad/inference metrics must not consume training data or alter the next update. Test identical subsequent CPU trajectories with evaluation inserted/removed.

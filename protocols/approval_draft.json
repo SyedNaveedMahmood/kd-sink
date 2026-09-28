@@ -1,13 +1,24 @@
 {
   "schema_version": 1,
-  "status": "draft",
+  "status": "partial_researcher_amendment",
   "production_ready": false,
-  "researcher": null,
+  "researcher": "user-provided researcher decision; identity not asserted",
   "approved_at_utc": null,
-  "approved_decision_ids": [],
-  "approval_sha256": null,
+  "approved_decision_ids": [
+    "D01",
+    "D02",
+    "D07",
+    "D09",
+    "D10",
+    "D13",
+    "D18"
+  ],
+  "approval_sha256": "2cce8049d3940b61ae307de87d902f5cfc8ca957524ee43befdca84b19dae01f",
   "artifact_lock_digest": null,
   "environment_lock_digest": null,
   "hardware_lock_digest": null,
-  "calibration_lock_digest": null
+  "calibration_lock_digest": null,
+  "amendment_file": "s1_researcher_amendment_20260928.json",
+  "verified_artifact_component_digest": "391d9082f5e3f3cdb88150d35e016be052e49985ae03bf9d74fa36b6e9095327",
+  "verified_environment_component_digest": "cbac652bd37c3f96bf336a1de3f77b593a4f30d287292c5f0070130880531443"
 }

@@ -47,6 +47,17 @@ def main(argv: Sequence[str] | None = None) -> int:
     corpus.add_argument("--tokenizer-id", required=True)
     corpus.add_argument("--tokenizer-revision", required=True)
     corpus.add_argument("--out-dir", type=Path, required=True)
+    owt = command.add_parser("prepare-owt-compat", help="pack pinned local OWT train stream; no download")
+    owt.add_argument("--input-jsonl", type=Path, required=True)
+    owt.add_argument("--tokenizer-dir", type=Path, required=True)
+    owt.add_argument("--dataset-revision", required=True)
+    owt.add_argument("--tokenizer-revision", required=True)
+    owt.add_argument("--seed", type=int, required=True)
+    owt.add_argument("--out-dir", type=Path, required=True)
+    owt_panels = command.add_parser("prepare-owt-compat-panels", help="freeze historical OWT windows")
+    owt_panels.add_argument("--corpus", type=Path, required=True)
+    owt_panels.add_argument("--tokenizer-sha256", required=True)
+    owt_panels.add_argument("--out-dir", type=Path, required=True)
     init = command.add_parser("prepare-init", help="save one random CPU-FP32 GPT-2 state")
     init.add_argument("--config", type=Path, required=True)
     init.add_argument("--seed", type=int, required=True)
@@ -205,6 +216,31 @@ def main(argv: Sequence[str] | None = None) -> int:
             validate_corpus(artifact, tokenizer_sha256=digest)
             path = save_manifest(artifact, args.out_dir, "corpus")
             output = {"action": "prepared_corpus", "path": str(path), "sha256": artifact["sha256"]}
+        elif args.command == "prepare-owt-compat":
+            from .data import local_tokenizer, save_manifest, tokenizer_files_hash
+            from .owt_compat import prepare_owt_corpus, validate_owt_corpus
+
+            tokenizer = local_tokenizer(args.tokenizer_dir)
+            digest = tokenizer_files_hash(args.tokenizer_dir)
+            artifact = prepare_owt_corpus(_jsonl(args.input_jsonl), tokenizer, seed=args.seed,
+                dataset_revision=args.dataset_revision, tokenizer_revision=args.tokenizer_revision,
+                tokenizer_sha256=digest)
+            validate_owt_corpus(artifact, tokenizer_sha256=digest)
+            path = save_manifest(artifact, args.out_dir, "owt-corpus")
+            output = {"action": "prepared_owt_corpus", "path": str(path),
+                      "sha256": artifact["sha256"]}
+        elif args.command == "prepare-owt-compat-panels":
+            from .data import save_manifest
+            from .owt_compat import load_owt_corpus, prepare_owt_panels, validate_owt_panels
+            from .provenance import seal_payload
+
+            payload, _ = load_owt_corpus(args.corpus, tokenizer_sha256=args.tokenizer_sha256)
+            corpus = seal_payload(payload)
+            artifact = prepare_owt_panels(corpus)
+            validate_owt_panels(artifact, corpus)
+            path = save_manifest(artifact, args.out_dir, "owt-panels")
+            output = {"action": "prepared_owt_panels", "path": str(path),
+                      "sha256": artifact["sha256"]}
         elif args.command == "prepare-init":
             from transformers import GPT2Config
             from .config import MODELS

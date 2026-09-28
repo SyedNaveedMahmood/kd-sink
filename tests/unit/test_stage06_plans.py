@@ -25,7 +25,7 @@ def test_every_independent_config_is_strict(study):
         altered = {**raw, "student": {**raw["student"], "heads": 13}}
         with pytest.raises(ConfigError, match="dimensions"):
             resolve_config(altered, seed=0)
-    assert len(list((ROOT / study.lower()).glob("*.json"))) == (12 if study == "S1" else 5)
+        assert len(list((ROOT / study.lower()).glob("*.json"))) == (12 if study == "S1" else 5)
 
 
 def test_rel_on_4080_is_refused():
@@ -36,8 +36,10 @@ def test_rel_on_4080_is_refused():
 
 
 @pytest.mark.parametrize("name,count,unique", [
+    ("s1_jobs_draft.json", 7, 7),
     ("s1_jobs_21_draft.json", 21, 21),
-    ("s1_jobs_draft.json", 27, 21),
+    ("s1_jobs_seed1_draft.json", 7, 7),
+    ("s1_jobs_seed2_draft.json", 7, 7),
     ("s3_jobs_draft.json", 15, 15),
 ])
 def test_explicit_plans_validate_without_launch(name, count, unique):
@@ -54,3 +56,13 @@ def test_explicit_plans_validate_without_launch(name, count, unique):
     assert one["action"] == "inspection_only" and one["launchable"] is False
     with pytest.raises(JobPlanError, match="exactly one"):
         inspect_job(plan, ROOT, "unlisted-run")
+
+
+def test_s1_plans_require_all_3090_and_allow_primary_seed_alone():
+    plan = json.loads((ROOT / "s1_jobs_draft.json").read_text())
+    assert validate_job_plan(plan, ROOT)["seeds"] == [0]
+    changed = json.loads(json.dumps(plan))
+    changed["jobs"][0]["config"] = "s1/c0_rtx4080super.json"
+    changed["jobs"][0]["run_id"] = "s1-c0-seed0-rtx4080super"
+    with pytest.raises(JobPlanError, match="RTX 3090"):
+        validate_job_plan(changed, ROOT)

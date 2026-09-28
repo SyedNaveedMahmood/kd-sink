@@ -3,6 +3,7 @@ status: draft
 researcher_approval: null
 approved_at_utc: null
 approved_decision_ids: []
+researcher_amendment: protocols/s1_researcher_amendment_20260928.json
 amended_decisions: {}
 # A committed file or passing test does not constitute researcher approval.
 measured_artifact_lock: null

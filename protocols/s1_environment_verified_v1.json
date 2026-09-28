@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "payload": {
+    "kind": "verified_environment_components",
+    "status": "partial",
+    "production_ready": false,
+    "python": "3.12.3",
+    "torch": "2.10.0+cu128",
+    "transformers": "5.3.0",
+    "dependency_lock": "uv.lock",
+    "dependency_lock_sha256": "b71f143ff21a0ccdd45e995b006430399134bb1564b1210bdc70fb3c67f4c3d5",
+    "pip_check": "passed",
+    "uv_sync_locked_dry_run": "passed_with_three_extra_active_packages_to_remove",
+    "active_environment_exact_sync": false,
+    "numerical_policy": {
+      "student_parameters": "fp32",
+      "adam_states": "fp32",
+      "compute": "bf16_autocast",
+      "probability_and_loss_reductions": "fp32"
+    },
+    "production_environment_lock": null
+  },
+  "sha256": "cbac652bd37c3f96bf336a1de3f77b593a4f30d287292c5f0070130880531443"
+}

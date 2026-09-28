@@ -55,17 +55,11 @@ def validate_job_plan(plan: Mapping[str, Any], config_root: str | Path) -> dict[
     seeds = next(iter(per_condition.values()))
     if not seeds or any(value != seeds for value in per_condition.values()):
         raise JobPlanError("conditions do not share the same explicit seed set")
-    if study == "S1" and len(seen) == 27:
-        condition_roles = {condition: {role for c, _, role in seen if c == condition} for condition in expected}
-        if any("rtx3090" not in condition_roles[c] for c in ("C1", "C2", "C3", "C4")):
-            raise JobPlanError("3090 comparison block is incomplete")
-        if any("rtx4080super" not in condition_roles[c] for c in ("C0", "C1", "C2", "C5", "C6")):
-            raise JobPlanError("4080 comparison block is incomplete")
-    elif study == "S1" and len(seen) == 21:
+    if study == "S1":
+        if not seeds <= {0, 1, 2} or len(seen) != 7 * len(seeds):
+            raise JobPlanError("S1 plan requires complete C0-C6 for each explicitly listed seed")
         if any(role != "rtx3090" for _, _, role in seen):
-            raise JobPlanError("21-run plan must keep comparisons on the 3090")
-    elif study == "S1":
-        raise JobPlanError("S1 plan must contain 21 or 27 explicit physical runs")
+            raise JobPlanError("S1 primary and optional training runs require RTX 3090")
     elif len(seen) != 15 or any(role != "rtx3090" for _, _, role in seen):
         raise JobPlanError("optional S3 plan must contain 15 explicit 3090 runs")
     return {"study": study, "status": plan["status"], "physical_runs": len(seen),

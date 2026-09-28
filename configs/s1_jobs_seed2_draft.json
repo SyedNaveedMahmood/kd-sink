@@ -4,39 +4,39 @@
   "study": "S1",
   "jobs": [
     {
-      "run_id": "s1-c0-seed0-rtx3090",
+      "run_id": "s1-c0-seed2-rtx3090",
       "config": "s1/c0_rtx3090.json",
-      "seed": 0
+      "seed": 2
     },
     {
-      "run_id": "s1-c1-seed0-rtx3090",
+      "run_id": "s1-c1-seed2-rtx3090",
       "config": "s1/c1_rtx3090.json",
-      "seed": 0
+      "seed": 2
     },
     {
-      "run_id": "s1-c2-seed0-rtx3090",
+      "run_id": "s1-c2-seed2-rtx3090",
       "config": "s1/c2_rtx3090.json",
-      "seed": 0
+      "seed": 2
     },
     {
-      "run_id": "s1-c3-seed0-rtx3090",
+      "run_id": "s1-c3-seed2-rtx3090",
       "config": "s1/c3_rtx3090.json",
-      "seed": 0
+      "seed": 2
     },
     {
-      "run_id": "s1-c4-seed0-rtx3090",
+      "run_id": "s1-c4-seed2-rtx3090",
       "config": "s1/c4_rtx3090.json",
-      "seed": 0
+      "seed": 2
     },
     {
-      "run_id": "s1-c5-seed0-rtx3090",
+      "run_id": "s1-c5-seed2-rtx3090",
       "config": "s1/c5_rtx3090.json",
-      "seed": 0
+      "seed": 2
     },
     {
-      "run_id": "s1-c6-seed0-rtx3090",
+      "run_id": "s1-c6-seed2-rtx3090",
       "config": "s1/c6_rtx3090.json",
-      "seed": 0
+      "seed": 2
     }
   ],
   "optional_s3_enabled": false

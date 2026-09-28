@@ -1,19 +1,13 @@
-# Two-GPU execution and memory contract
+# S1 RTX 3090 execution and memory contract
 
 Upstream's historical13.8GiB optimizer microstep [UP1] does not establish memory for the rewritten REL objective, FP32 master states or dense evaluator. No new hardware fit or wallclock measurement is supplied here.
 
-## Recommended comparison blocks: approval D13
-| Block | Device | Conditions, each seeds0/1/2 | Runs |
-|---|---|---|---:|
-| A | RTX3090,24GB | C1,C2,C3,C4 |12|
-| B | RTX4080SUPER,16GB | C0,C1,C2,C5,C6 |15|
+## Approved S1 device role and campaign
 
-This is21 unique condition/seed combinations and27 physical runs. C1/C2 hardware repeats are not extra training seeds. Compare REL with methods trained on its own GPU; compare full/NoSink/SinkOnly within their own block. One duplicated reference does not eliminate all possible hardware-by-objective interactions.
-
-Alternative: all21 S1 jobs on3090 and use4080 for S2/eligible S3/evaluation. A21-run split with onlyREL on3090 is explicitly hardware-confounded; researcher approval must acknowledge that limitation. Do not silently inflate the budget to27. Production-size REL, including profiling and S3 REL, is allowed only on the approved3090; CPU synthetic tests remain allowed.
+The 2026-09-28 amendment assigns **all seven mandatory S1 C0-C6 seed0 jobs to the RTX3090 24GB**. Optional complete seed1 and seed2 campaigns add seven independent jobs each, also on3090, only when separately invoked. The RTX4080 SUPER may run engineering, evaluation, or other approved non-S1-production work. Earlier two-device 4x16 profiling is retained as historical engineering evidence; it does not define the amended production plan. S3 remains optional and its REL production/profile role is3090.
 
 ## Profile once, freeze a COMMON batch
-Independent jobs must not independently select different paired schedules. First profile all eligible assigned condition/device combinations using actual model sizes, context128, precision, optimizer and feature capture. Do not profile production REL on4080.
+Independent jobs must not independently select different paired schedules. First profile **all C0-C6 on the actual RTX3090** using actual model sizes, context128, precision, optimizer and feature capture. The prior3090 C1=16 and C2/C3/C4=8 safe maxima are partial historical evidence; C0/C5/C6 are unmeasured there. No common production microbatch or accumulation is locked.
 
 Try divisors of64 largest-first:64,32,16,8,4,2,1. Each candidate runs in a fresh isolated subprocess to avoid OOM allocator contamination. Complete warmup and at least two optimizer updates so Adam states exist; include scheduled evaluation with actual resident-model policy and a checkpoint serialization pass. Synchronize; record allocated/reserved peaks, free/total VRAM, other device processes, host RAM and walltime. Retain failed-candidate evidence. Forward-only fit is insufficient.
 
@@ -36,4 +30,4 @@ Use tqdm rather than a new dashboard dependency. Startup banner: study/condition
 Distinguish training-only ETA from total ETA including measured evaluation/save costs. Show estimating until enough observations exist. Use tqdm.write for saves/resumes/errors and persist UTC JSONL events. Non-TTY mode disables animated bars and emits bounded-frequency text (proposed every20 updates). Logging/progress must not change RNG. Restore cumulative counters on resume; no prompts/secrets in routine output.
 
 ## Budget gate
-Measure a representative100-update engineering pilot including dense evaluation and full save. Extrapolate separately by objective with uncertainty; REL/evaluation may dominate. Estimate21/27-run and optional15-run S3 cost, Pythia downloads, retained-weight/full-resume disk and RAM. Do not assert the old5-6-hour figure applies. Feasibility is not conditioned on reproducing the desired dissociation.
+Measure a representative100-update engineering pilot including dense evaluation and full save. Extrapolate separately by objective with uncertainty; REL/evaluation may dominate. Estimate the seven mandatory jobs, optional seven-job seed1/seed2 campaigns, optional15-run S3, Pythia downloads, retained-weight/full-resume disk and RAM. Do not assert the old5-6-hour figure applies. Feasibility is not conditioned on reproducing the desired dissociation.

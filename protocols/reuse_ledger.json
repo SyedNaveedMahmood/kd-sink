@@ -1,5 +1,36 @@
 {
   "schema_version": 1,
-  "entries": [],
+  "entries": [
+    {
+      "source_path": [
+        "Upstream/common/datasets_loader.py",
+        "Upstream/common/corpus_providers.py",
+        "Upstream/transformation_inheritance/train_distillation.py"
+      ],
+      "source_commit_or_blob": [
+        "bd7df3dbeb5c36b6b466934baae2341d11182fe9",
+        "e707d123615e432eb966f0c405335003df681c39",
+        "627ea31489805781de1b0cc4c115a370530a025f"
+      ],
+      "source_license": "No license found in the audited Upstream tree; no literal source copied. Conceptual behavior audit only.",
+      "function_or_lines": [
+        "OPENWEBTEXT_SPLIT_WINDOWS, _normalize_text, _pack_documents",
+        "source stream/window handling",
+        "training block epoch shuffle formula"
+      ],
+      "destination": [
+        "src/sinklab/owt_compat.py",
+        "src/sinklab/order.py"
+      ],
+      "reuse_type": "idea",
+      "intentional_changes": "Independent implementation; adds disjoint v2 calibration window, sealed source ownership/hashes, dense64 and disjoint validation lm2000 panels, extension-safe epoch state.",
+      "independent_tests": [
+        "tests/unit/test_owt_compat.py",
+        "tests/unit/test_train_resume.py"
+      ],
+      "reviewer": "Codex (GPT-6), 2026-09-28",
+      "milestone_commit": null
+    }
+  ],
   "note": "Stage 00 borrows no source code from Upstream. Record each later reuse with source SHA, license, changes, independent tests, reviewer, and milestone commit."
 }

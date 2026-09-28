@@ -3,17 +3,23 @@ status: draft
 approved_plan: null
 # Template only. Never interpret this as an executable default sweep.
 blocks:
-  A:
+  mandatory:
     device_role: rtx3090
-    conditions: [C1, C2, C3, C4]
-    explicitly_planned_seeds: [0, 1, 2]
-  B:
-    device_role: rtx4080super
-    conditions: [C0, C1, C2, C5, C6]
-    explicitly_planned_seeds: [0, 1, 2]
-unique_s1_condition_seed_combinations: 21
-physical_s1_runs_if_approved: 27
-shared_conditions_are_hardware_replicas: [C1, C2]
+    conditions: [C0, C1, C2, C3, C4, C5, C6]
+    explicitly_planned_seeds: [0]
+  optional_seed1:
+    device_role: rtx3090
+    conditions: [C0, C1, C2, C3, C4, C5, C6]
+    explicitly_planned_seeds: [1]
+    enabled: false
+  optional_seed2:
+    device_role: rtx3090
+    conditions: [C0, C1, C2, C3, C4, C5, C6]
+    explicitly_planned_seeds: [2]
+    enabled: false
+mandatory_s1_physical_runs: 7
+physical_s1_runs_with_both_optional_seeds: 21
+shared_conditions_are_hardware_replicas: []
 shared_replicas_are_new_training_seeds: false
 common_hardware_lock: null
 optional_s3_runs: 15

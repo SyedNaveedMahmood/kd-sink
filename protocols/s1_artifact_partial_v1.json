@@ -1,0 +1,61 @@
+{
+  "schema_version": 1,
+  "payload": {
+    "kind": "verified_artifact_components",
+    "status": "partial",
+    "production_ready": false,
+    "teacher": {
+      "id": "openai-community/gpt2-large",
+      "revision": "32b71b12589c2f8d625668d2335a01cac3249519",
+      "safetensors_sha256": "5f47f3e12f91cd33b662ce7e433b6150ad5512b5884a2cee961b50e9c3bbebce",
+      "config_sha256": "7fccdcfd6622055342a734c663ee0b61ff4fd697f42467595df0bf4448c8c170",
+      "layers": 36,
+      "heads": 20,
+      "width": 1280
+    },
+    "student_config": {
+      "id": "openai-community/gpt2-medium",
+      "revision": "6dcaa7a952f72f9298047fd5137cd6e4f05f41da",
+      "config_sha256": "ef1a44d889ad1a0acc7731c78134f1b87d2d222f110e97dd10fd4117331caf22",
+      "layers": 24,
+      "heads": 16,
+      "width": 1024,
+      "initialization": "random_from_config"
+    },
+    "tokenizer": {
+      "id": "openai-community/gpt2",
+      "revision": "607a30d783dfa663caf39e06633721c8d4cfcd7e",
+      "files_sha256": "68bfbc36e7d352017e23168f34c98b3b92a18bdcb658c163dea499d8d690c580",
+      "file_sha256": {
+        "vocab.json": "196139668be63f3b5d6574427317ae82f612a97c5d1cdaf36ed2256dbf636783",
+        "merges.txt": "1ce1664773c50f3e0cc8842619a93edc4624525b728b188a9e0be33b7726adc5",
+        "tokenizer.json": "8414cab924d8b9b33013f0d221c5862f365ee9be39c5c2bfae8a5a9e970478a6",
+        "tokenizer_config.json": "5e04eb606e3a1583530a42e36c2a6b6615c86f34fe77e44d9ddeb43ff940931f",
+        "config.json": "0daed7749b4f02b8f76240d5444551d7b08712dab4d0adb8239c56ba823bb7b4"
+      },
+      "eos_token_id": 50256
+    },
+    "dataset": {
+      "id": "Skylion007/openwebtext",
+      "revision": "79d93d786212f7344586290adb811d4ae6a1762c",
+      "source_split": "train",
+      "training_window": [
+        0,
+        400000
+      ],
+      "evaluation_window": [
+        400000,
+        408000
+      ],
+      "calibration_window": [
+        408000,
+        416000
+      ]
+    },
+    "production_corpus_sha256": null,
+    "production_panels_sha256": null,
+    "training_initialization_sha256": null,
+    "note": "Repository revisions and listed local file hashes verified; no production corpus/panels prepared."
+  },
+  "sha256": "391d9082f5e3f3cdb88150d35e016be052e49985ae03bf9d74fa36b6e9095327"
+}

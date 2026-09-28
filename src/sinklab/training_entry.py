@@ -16,6 +16,7 @@ from transformers import GPT2Config, GPT2LMHeadModel
 from .config import MODELS, resolve_config
 from .data import load_corpus
 from .panels import validate_owt_panels
+from .owt_compat import load_owt_corpus, validate_owt_panels as validate_upstream_owt_panels, RECIPE
 from .hardware import DIVISORS, HardwareError, measure_candidate
 from .initialization import load_initialization
 from .models import GPT2Adapter, ModelShape
@@ -57,6 +58,22 @@ def _model_digest(model: torch.nn.Module) -> str:
     return h.hexdigest()
 
 
+def _require_s1_data_lock(protocol: dict, corpus: dict, corpus_hash: str,
+                          panel_hash: str) -> None:
+    data = protocol.get("data", {})
+    if not isinstance(data, dict) or data.get("recipe") != RECIPE:
+        raise ValueError("approved S1 protocol must require upstream-compatible OWT recipe")
+    required = {
+        "dataset_revision": corpus["dataset"]["revision"],
+        "tokenizer_revision": corpus["tokenizer"]["revision"],
+        "tokenizer_files_sha256": corpus["tokenizer"]["files_sha256"],
+        "production_corpus_sha256": corpus_hash,
+        "frozen_panels_sha256": panel_hash,
+    }
+    if any(data.get(key) != value for key, value in required.items()):
+        raise ValueError("S1 source, tokenizer, corpus or frozen panels differ from approved lock")
+
+
 def run_approved_training(args) -> dict:
     raw, protocol, plan = _read(args.config), _read(args.protocol_lock), _read(args.hardware_plan)
     spec = resolve_config(raw, seed=args.seed, protocol_lock=protocol, production=True)
@@ -76,8 +93,8 @@ def run_approved_training(args) -> dict:
     role = "rtx3090" if "3090" in gpu_name else "rtx4080super" if "4080 SUPER" in gpu_name.upper() else None
     if role != spec.device_role or [spec.condition, role, gpu_uuid] not in plan["required"]:
         raise HardwareError("actual GPU name/UUID is absent from approved eligibility")
-    if spec.condition == "C4" and role != "rtx3090":
-        raise HardwareError("C4 production restricted to RTX 3090")
+    if spec.study == "S1" and role != "rtx3090":
+        raise HardwareError("all S1 production training is restricted to RTX 3090")
     config = GPT2Config(**_read(args.student_config))
     expected = MODELS[spec.study][1]
     if (config.n_layer, config.n_head, config.n_embd) != (expected["layers"], expected["heads"], expected["width"]):
@@ -93,10 +110,16 @@ def run_approved_training(args) -> dict:
     student = GPT2Adapter(student, ModelShape(expected["layers"], expected["heads"], expected["width"]))
     corpus_doc = _read(args.corpus)
     tokenizer_hash = corpus_doc["payload"]["tokenizer"]["files_sha256"]
-    corpus, corpus_hash = load_corpus(args.corpus, tokenizer_sha256=tokenizer_hash)
+    if spec.study == "S1":
+        corpus, corpus_hash = load_owt_corpus(args.corpus, tokenizer_sha256=tokenizer_hash)
+    else:
+        corpus, corpus_hash = load_corpus(args.corpus, tokenizer_sha256=tokenizer_hash)
     blocks = {b["id"]: b["token_ids"] for b in corpus["partitions"]["training"]["blocks"]}
     panel_doc = _read(args.panels)
-    panel_hash = validate_owt_panels(panel_doc, corpus_doc)
+    panel_hash = (validate_upstream_owt_panels(panel_doc, corpus_doc) if spec.study == "S1"
+                  else validate_owt_panels(panel_doc, corpus_doc))
+    if spec.study == "S1":
+        _require_s1_data_lock(lock["protocol"], corpus, corpus_hash, panel_hash)
     evaluation_blocks = {b["id"]: b["token_ids"] for b in corpus["partitions"]["evaluation"]["blocks"]}
     model_hash = hashlib.sha256(canonical_json_bytes(config.to_dict())).hexdigest()
     identity = {"study": spec.study, "condition": spec.condition, "seed": spec.seed,
@@ -114,7 +137,8 @@ def run_approved_training(args) -> dict:
                                mse_scale=args.mse_scale, rel_scale=args.rel_scale)
     trainer = Trainer(model=student.model, blocks=blocks, loss_fn=loss, identity=identity,
                       run_dir=args.run_dir, device=device, microbatch=plan["microbatch"],
-                      seed=spec.seed)
+                      seed=spec.seed, order_scheme="upstream-owt-epoch-v1" if spec.study == "S1"
+                      else "v2-horizon-independent")
     if (args.run_dir / "checkpoints").exists():
         trainer.resume()
     store = RecordStore(args.run_dir / "evaluation")

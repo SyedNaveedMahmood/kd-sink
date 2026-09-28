@@ -1,6 +1,6 @@
 # S5 - Full, excluded-sink and sink-only supervision
 
-ANALYSIS/EVALUATION OF S1; no new training. Compare C2 full JSD,C5 NoSink,C6 SinkOnly,with C1 LogitKD, within4080 block or approved all3090 allocation. Same seeds/manifests; no retuned replicas.
+ANALYSIS/EVALUATION OF S1; no new training. Compare C2 full JSD,C5 NoSink,C6 SinkOnly,with C1 LogitKD, within the amended RTX3090 seed0 campaign. Optional seed1/2 comparisons require their separately completed campaigns. Same seeds/manifests; no retuned replicas.
 
 Ask whether directly supervising sink mass accelerates its pattern, whether sink-only supervision is sufficient for the measured sensitivity/usefulness under this recipe, and whether non-sink structure explains any behavioral improvement. Analyze all dense steps and10k with common full/nonsink attention metrics,S,delete/relocate DeltaCE,self-KL,absolute log effects,flips and clean loss.
 

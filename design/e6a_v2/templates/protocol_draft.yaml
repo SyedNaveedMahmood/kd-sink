@@ -6,19 +6,22 @@ approval_file: null
 study: S1
 condition: null
 seed: null
-scientific_replication_plan: [0, 1, 2]
+mandatory_training_seeds: [0]
+optional_training_seeds: [1, 2]
 launch_all_seeds_by_default: false
 teacher:
   id: openai-community/gpt2-large
   candidate_revision: 32b71b12589c2f8d625668d2335a01cac3249519
-  verified_revision: null
+  verified_revision: 32b71b12589c2f8d625668d2335a01cac3249519
+  safetensors_sha256: 5f47f3e12f91cd33b662ce7e433b6150ad5512b5884a2cee961b50e9c3bbebce
   layers: 36
   heads: 20
   width: 1280
 student:
   config_id: openai-community/gpt2-medium
   candidate_revision: 6dcaa7a952f72f9298047fd5137cd6e4f05f41da
-  verified_revision: null
+  verified_revision: 6dcaa7a952f72f9298047fd5137cd6e4f05f41da
+  config_sha256: ef1a44d889ad1a0acc7731c78134f1b87d2d222f110e97dd10fd4117331caf22
   initialization: random_from_config
   layers: 24
   heads: 16
@@ -45,6 +48,10 @@ training:
   warmup_updates: 500
   schedule: warmup_cosine_to_10000_then_constant_floor
   floor_ratio: 0.1
+  extension_requires_protected_10000_full_state: true
+  extension_requires_explicit_lineage_id: true
+  extension_rolling_full_every_absolute_updates: 500
+  extension_dense_every_absolute_updates: 100
   student_dropout: 0.1
   teacher_eval: true
 objectives:
@@ -79,13 +86,34 @@ measurement:
   primary_strength: 1.0
   fp32_precision_checkpoints: [0, 500, 10000]
   panel_locks: null
+data:
+  recipe: owt-upstream-gpt2-pack-v1
+  dataset_id: Skylion007/openwebtext
+  dataset_revision: 79d93d786212f7344586290adb811d4ae6a1762c
+  source_split: train
+  source_windows:
+    training: [0, 400000]
+    evaluation: [400000, 408000]
+    calibration: [408000, 416000]
+  tokenizer_revision: 607a30d783dfa663caf39e06633721c8d4cfcd7e
+  tokenizer_files_sha256: 68bfbc36e7d352017e23168f34c98b3b92a18bdcb658c163dea499d8d690c580
+  normalization: python_strip_split_join_single_space
+  document_order: python_random_seed_shuffle_per_window
+  block_epoch_order: upstream_owt_epoch_v1
+  eos: after_each_nonempty_document
+  block_size: 128
+  no_block_diagonal_mask: true
+  production_corpus_sha256: null
+  frozen_panels_sha256: null
 checkpointing:
   retained_model_steps: [0, 100, 250, 500, 1000, 2000, 5000, 7500, 10000]
   full_resume_every: 500
   active_rolling_generations: 2
   protect_final_full_resume: true
 hardware:
-  recommended_plan: two_gpu_blocks_27_runs
+  recommended_plan: all_s1_on_rtx3090_seed0_seven_jobs
+  common_microbatch: null
+  accumulation: null
   rel_device_role: rtx3090
   common_microbatch_across_paired_jobs: true
   midrun_batch_retuning: false

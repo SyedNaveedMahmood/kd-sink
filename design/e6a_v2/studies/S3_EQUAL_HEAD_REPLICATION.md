@@ -2,7 +2,7 @@
 
 ADDITIONAL TRAINING; disabled until D01/D14 budget approval. GPT-2-small teacher (12layers,12heads,768width) -> random student from DistilGPT-2 configuration (6layers,12heads,768width). Never initialize from pretrained DistilGPT-2. Map teacher[1,3,5,7,9,11] to student[0..5].
 
-C0-C4 x3 explicit seeds x10k updates =15 EXTRA jobs, not part of S1's21/27 count. Shared GPT-2 data/panels,effective batch,schedule,dense cadence and checkpoint guarantees. Separate architecture-specific common batch preflight. Recommended allocation: all5 conditions on3090 to keep REL comparisons same-device. Alternative plans must respect REL-only3090 and control hardware confounding.
+C0-C4 x3 explicit seeds x10k updates =15 EXTRA optional jobs, separate from S1's seven mandatory seed0 jobs. Any shared GPT-2 data/panels require an explicit S3 protocol amendment and compatible implementation; S3 remains disabled. Effective batch,schedule,dense cadence and checkpoint guarantees are intended to match S1. Separate architecture-specific common batch preflight. Recommended allocation: all5 conditions on3090 to keep REL comparisons same-device. Alternative plans must respect REL-only3090 and control hardware confounding.
 
 ## Exact variants
 C0/C1 remain CE/logit families. S3-C2=`index_jsd_v1`: fixed native-head index, normalized probability JSD, no cosine weights or learned adapter. S3-C3=`index_probability_mse_v1`: fixed-index headwise probability MSE, intentionally different from S1 head-mean MSE. S3-C4: causal QQ/KK/VV,64 relation heads (dimension12), all6 mapped layers. Freeze S3-specific MSE/REL calibration relative to S3-C2; do not blindly reuse S1 factors.

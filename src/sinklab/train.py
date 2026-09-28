@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import hashlib
 import math
 import random
 import signal
@@ -17,7 +18,7 @@ import numpy as np
 import torch
 from tqdm import tqdm
 
-from .checkpoint import (CheckpointError, latest_full, load_checkpoint,
+from .checkpoint import (CheckpointError, latest_full, load_checkpoint, verify_checkpoint,
                          prune_rolling, save_checkpoint, writer_lock)
 from .order import UpdateOrder, microbatches
 from .provenance import canonical_json_bytes
@@ -102,19 +103,22 @@ class Trainer:
     def __init__(self, *, model: torch.nn.Module, blocks: Mapping[str, list[int]],
                  loss_fn: Callable[[torch.Tensor], tuple[torch.Tensor, Mapping[str, float]]],
                  identity: dict, run_dir: Path, device: torch.device,
-                 microbatch: int, seed: int, engineering_fixture: bool = False):
+                 microbatch: int, seed: int, engineering_fixture: bool = False,
+                 order_scheme: str = "v2-horizon-independent"):
         if (set(identity) not in (REQUIRED_IDENTITY, REQUIRED_IDENTITY | {"gpu_uuid"}) or
                 identity["seed"] != seed or identity["microbatch"] != microbatch):
             raise TrainError("immutable single-run identity is incomplete or inconsistent")
         if identity["study"] not in {"S1", "S3"} or identity["condition"] not in {f"C{i}" for i in range(7)}:
             raise TrainError("one explicit supported study/condition required")
-        if identity["condition"] == "C4" and not engineering_fixture and identity.get("device_role") != "rtx3090":
+        if identity["study"] == "S1" and not engineering_fixture and identity.get("device_role") != "rtx3090":
             # A production identity is validated by the CLI before construction.
-            raise TrainError("production C4 requires RTX 3090")
+            raise TrainError("all S1 production training requires RTX 3090")
         if not engineering_fixture and (device.type != "cuda" or identity["precision"] != "bf16"):
             raise TrainError("production training requires pinned CUDA/BF16 plan")
         if not engineering_fixture and any(p.dtype != torch.float32 for p in model.parameters() if p.requires_grad):
             raise TrainError("production student trainable parameters must remain FP32")
+        if not engineering_fixture and identity["study"] == "S1" and order_scheme != "upstream-owt-epoch-v1":
+            raise TrainError("production S1 requires pinned upstream OWT block order")
         if microbatch not in (1, 2, 4, 8, 16, 32, 64) or not blocks:
             raise TrainError("microbatch must divide 64 and block manifest must be nonempty")
         lengths = {len(v) for v in blocks.values()}
@@ -125,11 +129,14 @@ class Trainer:
         self.microbatch, self.seed = microbatch, seed
         self.fixture = engineering_fixture
         self.optimizer = make_optimizer(model)
-        self.order = UpdateOrder(list(blocks), seed=seed)
+        self.order_scheme = order_scheme
+        self.order = UpdateOrder(list(blocks), seed=seed, scheme=order_scheme)
         self.state = TrainingState()
         self.peak_lr = 5e-4
         self._started = False
         self.extension_id: str | None = None
+        self.extension_parent_sha256: str | None = None
+        self._extension_source_verified = False
 
     def _snapshot(self) -> dict:
         return {"schema_version": 1, "optimizer": self.optimizer.state_dict(),
@@ -138,6 +145,7 @@ class Trainer:
                               "next_lr": update_lr(self.state.step + 1, self.peak_lr)},
                 "rng": _rng_state(), "order": self.order.snapshot(),
                 "extension_id": self.extension_id,
+                "extension_parent_sha256": self.extension_parent_sha256,
                 "counters": vars(self.state).copy(),
                 "backend": {"deterministic_algorithms": torch.are_deterministic_algorithms_enabled(),
                             "cudnn_deterministic": torch.backends.cudnn.deterministic,
@@ -155,9 +163,17 @@ class Trainer:
                      "next_lr": update_lr(saved["counters"]["step"] + 1, self.peak_lr)}:
             raise TrainError("scheduler formula or absolute clock mismatch")
         self.optimizer.load_state_dict(saved["optimizer"])
-        self.order = UpdateOrder.resume(list(self.blocks), saved["order"])
+        self.order = UpdateOrder.resume(list(self.blocks), saved["order"],
+                                        expected_scheme=self.order_scheme)
         self.state = TrainingState(**saved["counters"])
         self.extension_id = saved["extension_id"]
+        self.extension_parent_sha256 = saved.get("extension_parent_sha256")
+        if self.extension_parent_sha256 is not None:
+            self._verify_extension_parent()
+        self._extension_source_verified = (
+            self.extension_parent_sha256 is not None or
+            (self.state.step == 10000 and path.name == "final-010000" and manifest["kind"] == "final")
+        )
         length = len(next(iter(self.blocks.values())))
         if (manifest["step"] != self.state.step or
                 self.state.input_tokens != self.state.step * 64 * length or
@@ -172,6 +188,16 @@ class Trainer:
             raise TrainError("backend determinism flags changed")
         _restore_rng(saved["rng"])
         self._started = True
+
+    def _verify_extension_parent(self) -> str:
+        anchor = self.run_dir / "checkpoints" / "final-010000"
+        manifest = verify_checkpoint(anchor, identity=self.identity)
+        if manifest["step"] != 10000 or manifest["kind"] != "final":
+            raise TrainError("extension requires protected full step-10000 checkpoint")
+        digest = hashlib.sha256((anchor / "manifest.json").read_bytes()).hexdigest()
+        if self.extension_parent_sha256 is not None and self.extension_parent_sha256 != digest:
+            raise TrainError("extension parent checkpoint changed")
+        return digest
 
     def _save(self, kind: str) -> Path:
         return save_checkpoint(self.run_dir / "checkpoints", step=self.state.step, kind=kind,
@@ -217,11 +243,15 @@ class Trainer:
         if type(stop_after) is not int or stop_after < self.state.step or (stop_after > 10000 and not extension_id):
             raise TrainError("stop-after is an absolute stop, not a schedule change; extension ID required past 10k")
         if stop_after > 10000:
-            if self.state.step < 10000:
+            if self.state.step < 10000 or not self._started or not self._extension_source_verified:
                 raise TrainError("extension must continue from the protected 10k state")
+            parent = self._verify_extension_parent()
+            if self.state.step > 10000 and self.extension_id is None:
+                raise TrainError("resumed extension is missing its lineage ID")
             if self.extension_id is not None and self.extension_id != extension_id:
                 raise TrainError("extension lineage changed on resume")
             self.extension_id = extension_id
+            self.extension_parent_sha256 = parent
         if terminal is None:
             terminal = sys.stderr.isatty()
         self.run_dir.mkdir(parents=True, exist_ok=True)
@@ -249,7 +279,10 @@ class Trainer:
                       "microbatch": self.microbatch, "accumulation": 64 // self.microbatch,
                       "effective_batch": 64, "input_tokens_per_update": 64 * len(next(iter(self.blocks.values()))),
                       "target_tokens_per_update": 64 * (len(next(iter(self.blocks.values()))) - 1),
-                      "precision": self.identity["precision"], "total_updates": 10000,
+                      "precision": self.identity["precision"], "total_updates": stop_after,
+                      "registered_horizon": 10000,
+                      "extension_id": self.extension_id,
+                      "extension_parent_sha256": self.extension_parent_sha256,
                       "checkpoint_path": str(self.run_dir / "checkpoints"),
                       "protocol_hash": self.identity["protocol_hash"], "resumed_step": self.state.step}
             _event(event_path, banner)
@@ -276,7 +309,7 @@ class Trainer:
                     self.state.elapsed_seconds += duration
                     step = self.state.step
                     row = {"event": "update", "step": step, "elapsed_seconds": self.state.elapsed_seconds,
-                           "eta_train_seconds": (10000 - step) * self.state.elapsed_seconds / step,
+                           "eta_train_seconds": max(stop_after - step, 0) * self.state.elapsed_seconds / step,
                            "input_tokens": self.state.input_tokens, "target_tokens": self.state.target_tokens,
                            "tokens_per_second": self.state.input_tokens / max(self.state.elapsed_seconds, 1e-9),
                            "loss": loss, "lr": self.optimizer.param_groups[0]["lr"],

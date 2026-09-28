@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "stage_id": "06",
-  "status": "blocked_approval_calibration_and_complete_matrix",
+  "status": "blocked_amended_s1_protocol_pending_all_3090_profiles_data_calibration_and_full_locks",
   "starting_commit": "5396f84828bd2de5eb29b6f0467eb084c1b2af8c",
   "resume_starting_commit": "aeb064f76ded84b7b1a7999371be6fd6ee7266f6",
   "implementation_milestones": [
@@ -13,10 +13,10 @@
   ],
   "task_status": {
     "06.1": "passed: all independent S1 C0-C6 and optional S3 C0-C4 configs validate strict study, architecture, variant, explicit seed and C4 device role",
-    "06.2": "implementation validated but approval blocked: explicit draft 21-run and 27-run S1 plans and disabled 15-run S3 plan; no researcher-approved plan exists",
+    "06.2": "partial: researcher approved seven mandatory seed0 C0-C6 3090 jobs and optional separate seed1/2 campaigns; explicit draft manifests validate, but final production job/approval lock remains pending",
     "06.3": "passed engineering gate: assigned-condition full-size GPT-2-large to random GPT-2-medium native, adapter, intervention and BF16 objective smokes pass on the RTX 4080 SUPER and RTX 3090; the 3090 probe uses sequence length 128 and covers C1-C4 including REL; REL-on-4080 refusal remains enforced",
-    "06.4": "partial: measured 4080 sequence-128 full-cycle capped profiles give C0=8 and C1/C2/C5/C6=4 within the 3090 REL bound 8; two-device engineering candidate is microbatch4/accumulation16, preserving effective64; complete seven-divisor matrices, approved production corpus/panels and calibration factors remain absent",
-    "06.5": "partial: full-size RTX 3090 and RTX 4080 SUPER FP32/BF16 numerical, causal evaluation/RNG neutrality and GPT-2-medium BF16 checkpoint destruction/reload/next-step replay pass; approved readiness locks and production calibration remain blocked"
+    "06.4": "blocked: all-3090 plan requires previously unmeasured C0/C5/C6 sequence-128 full-cycle profiles and complete matrix; no 3090 currently present, no common microbatch or calibration factors locked",
+    "06.5": "partial historical GPU resume/precision evidence retained; amended production artifact/environment/corpus/hardware/calibration protocol locks incomplete"
   },
   "hardware": {
     "current_gpu": "NVIDIA GeForce RTX 4080 SUPER",
@@ -226,14 +226,13 @@
   "upstream_files_changed": 0,
   "pushed": true,
   "remaining_blockers": [
-    "researcher approval of D01-D18 and the 21-versus-27 run allocation",
-    "approved protocol, artifact, environment, hardware and calibration locks",
-    "pinned production corpus, frozen evaluation/calibration panels and seed-1729 calibration initialization",
-    "legitimate 16-effective-batch C3/C4 calibration factors",
-    "complete seven-divisor profile matrices required by build_batch_plan; the measured 4x16 schedule is an engineering candidate, not a frozen lock",
-    "optional S3 remains disabled"
+    "approved complete D01-D18 protocol and production locks",
+    "actual pinned production OWT corpus/panel preparation and hashes",
+    "RTX3090 C0/C5/C6 complete sequence-128 full-cycle profiles and all-C0-C6 common batch recomputation",
+    "legitimate disjoint training-only C3/C4 calibration and C5-margin revalidation",
+    "exact synced production environment and final hardware/resource validation"
   ],
-  "next_action": "Obtain researcher approval and pinned production corpus/panels/locks; complete any required seven-divisor or final-workload validation, freeze the single measured candidate 4x16 only if approved, and run legitimate 16-effective-batch training-only C3/C4 calibration. Do not launch 10k training before these gates.",
+  "next_action": "On a verified RTX3090 host, prepare pinned OWT source/corpus/panels, complete C0-C6 128-token profiles and common schedule, then training-only calibration and full approvals/locks. No production S1 run until gates pass.",
   "resume_4080_starting_commit": "0959501af6cd4a8285bd7eb9733cdcf6651e615b",
   "resources_4080_at_summary": {
     "observed_utc": "2026-09-27T16:24:43Z",
@@ -259,5 +258,113 @@
     "Production calibration and scientific outcomes are not inferred from synthetic token IDs."
   ],
   "latest_pushed_milestone": "afebe96eb4fb5fcbee910276684ca6d5e3cf54c6",
-  "push_destination": "origin/main"
+  "push_destination": "origin/main",
+  "amendment_20260928": {
+    "starting_commit": "7667b3c5b1ee4b6a59e0494b6b4562ef354c74f0",
+    "origin_pull": "git pull --ff-only origin main: exit 0, already up to date",
+    "scope": "Stage06 protocol/data/hardware amendment only; no production training, no push",
+    "researcher_amendment_sha256": "2cce8049d3940b61ae307de87d902f5cfc8ca957524ee43befdca84b19dae01f",
+    "verified_artifact_components_sha256": "391d9082f5e3f3cdb88150d35e016be052e49985ae03bf9d74fa36b6e9095327",
+    "verified_environment_components_sha256": "cbac652bd37c3f96bf336a1de3f77b593a4f30d287292c5f0070130880531443",
+    "approved_decision_ids": [
+      "D01",
+      "D02",
+      "D07",
+      "D09",
+      "D10",
+      "D13",
+      "D18"
+    ],
+    "mandatory_s1_job_plan": "configs/s1_jobs_draft.json",
+    "mandatory_seeds": [
+      0
+    ],
+    "mandatory_jobs": 7,
+    "optional_separate_job_plans": [
+      "configs/s1_jobs_seed1_draft.json",
+      "configs/s1_jobs_seed2_draft.json"
+    ],
+    "optional_seeds": [
+      1,
+      2
+    ],
+    "production_training_gpu_role": "rtx3090",
+    "current_gpu": "NVIDIA GeForce RTX 4080 SUPER",
+    "current_gpu_uuid": "GPU-72b4b307-b613-c35e-ea32-53f4431de9ee",
+    "current_rtx3090_available": false,
+    "all_3090_common_microbatch": null,
+    "all_3090_accumulation": null,
+    "prior_two_device_4x16": "historical engineering candidate only, invalid for amended production allocation",
+    "dataset": {
+      "id": "Skylion007/openwebtext",
+      "revision": "79d93d786212f7344586290adb811d4ae6a1762c",
+      "source_split": "train",
+      "windows": {
+        "training": [
+          0,
+          400000
+        ],
+        "evaluation": [
+          400000,
+          408000
+        ],
+        "calibration": [
+          408000,
+          416000
+        ]
+      },
+      "normalization": "strip/split/join with one space",
+      "shuffle": "random.Random(seed) document indices before packing",
+      "tokenizer": "pinned GPT-2, add_special_tokens=False, post-document EOS",
+      "block_size": 128,
+      "training_order": "historical seeded epoch block permutations with exact extension prefix",
+      "production_corpus_sha256": null,
+      "frozen_panels_sha256": null
+    },
+    "tokenizer_files_sha256": "68bfbc36e7d352017e23168f34c98b3b92a18bdcb658c163dea499d8d690c580",
+    "tokenizer_config_sha256": "0daed7749b4f02b8f76240d5444551d7b08712dab4d0adb8239c56ba823bb7b4",
+    "extension": "protected full step10000 loaded before extension; explicit stable lineage; constant 10% peak LR, every500 rolling full, every100 dense on absolute clock, independent protected endpoint",
+    "environment_component_status": "versions and uv.lock hash verified; current active environment has three extra packages under uv sync --locked --dry-run, so exact production sync remains pending",
+    "production_readiness": false,
+    "scientific_coverage": "none",
+    "new_3090_profiles": 0,
+    "new_gpu_tests": 0,
+    "current_revision_test_commands": [
+      {
+        "command": ".venv\\Scripts\\python.exe -m pytest -q tests\\unit\\test_owt_compat.py tests\\unit\\test_train_resume.py tests\\unit\\test_stage06_plans.py",
+        "exit_code": 0,
+        "passed": 24,
+        "failed": 0,
+        "skipped": 0
+      },
+      {
+        "command": ".venv\\Scripts\\python.exe -m pytest -q tests\\unit tests\\integration -m 'not gpu and not network'",
+        "exit_code": 0,
+        "passed": 139,
+        "failed": 0,
+        "skipped": 0,
+        "warnings": 1
+      },
+      {
+        "command": "pinned local GPT-2 tokenizer OWT controlled fixture parity/manifest validation",
+        "exit_code": 0,
+        "passed": 1,
+        "failed": 0,
+        "skipped": 0
+      }
+    ],
+    "resolved_failures": [
+      "Initial targeted pass: 16 passed/2 failed from concurrently updated plan expectation and completed ETA assertion; tests corrected, final targeted 24 pass.",
+      "Pinned tokenizer without config.json loaded with EOS=None; fetched matching pinned config.json, recomputed file-set hash, real loader and corpus fixture pass."
+    ],
+    "remaining_blockers": [
+      "approved complete D01-D18 protocol and production locks",
+      "actual pinned production OWT corpus/panel preparation and hashes",
+      "RTX3090 C0/C5/C6 complete sequence-128 full-cycle profiles and all-C0-C6 common batch recomputation",
+      "legitimate disjoint training-only C3/C4 calibration and C5-margin revalidation",
+      "exact synced production environment and final hardware/resource validation"
+    ],
+    "milestone_commit": null,
+    "pushed": false
+  }
 }

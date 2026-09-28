@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "payload": {
+    "kind": "partial_researcher_amendment",
+    "status": "approved_for_listed_decisions_only",
+    "production_ready": false,
+    "source_attachment_sha256": "6e3d3eb4576145b7d22f439e575f2b28e5e46b73b6fe043d136f0c5898acc6a4",
+    "recorded_at_utc": "2026-09-28T00:50:34Z",
+    "approved_decision_ids": [
+      "D01",
+      "D02",
+      "D07",
+      "D09",
+      "D10",
+      "D13",
+      "D18"
+    ],
+    "mandatory_s1_conditions": [
+      "C0",
+      "C1",
+      "C2",
+      "C3",
+      "C4",
+      "C5",
+      "C6"
+    ],
+    "mandatory_training_seeds": [
+      0
+    ],
+    "optional_training_seeds": [
+      1,
+      2
+    ],
+    "training_device_role": "rtx3090",
+    "updates": 10000,
+    "extension": {
+      "start_from_protected_full_step": 10000,
+      "explicit_lineage_id": true,
+      "lr_after_step_10000": "constant_10_percent_peak",
+      "rolling_full_every_absolute_updates": 500,
+      "dense_every_absolute_updates": 100,
+      "protected_extension_endpoint": true
+    },
+    "data_recipe": "owt-upstream-gpt2-pack-v1",
+    "production_protocol_approval_complete": false
+  },
+  "sha256": "2cce8049d3940b61ae307de87d902f5cfc8ca957524ee43befdca84b19dae01f"
+}

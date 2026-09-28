@@ -31,15 +31,15 @@ Persist item scalars and structural summaries, not all vocabulary logits/attenti
 ## Primary comparisons, subject to approval
 | Question | Paired comparison at10k | Device block |
 |---|---|---|
-| Attention versus logits | C2-C1 |4080 primary,3090 replication|
-| Logits versus ordinary training | C1-C0 |4080|
-| Objective family | C3-C2,C4-C2,C4-C3 and each versusC1 |3090|
-| Remove sink target | C5-C2, contextualC1 |4080|
-| Sink-only target | C6-C2,C6-C1 |4080|
+| Attention versus logits | C2-C1 |3090, paired seed0|
+| Logits versus ordinary training | C1-C0 |3090, paired seed0|
+| Objective family | C3-C2,C4-C2,C4-C3 and each versusC1 |3090, paired seed0|
+| Remove sink target | C5-C2, contextualC1 |3090, paired seed0|
+| Sink-only target | C6-C2,C6-C1 |3090, paired seed0|
 
-All-3090 approved allocation uses the analogous same-device comparisons. Co-report primary S, deletion Delta CE and deletion self-KL; relocation is complementary and prespecified. Secondary: complete trajectories, time-normalized trapezoidal AUC, and mean8000..10000. AUC requires observed endpoints; missing intervals are explicitly flagged, not silently imputed. Show individual seeds. Every output names metric/time/scope/panel/device.
+Co-report primary S, deletion Delta CE and deletion self-KL; relocation is complementary and prespecified. Secondary: complete trajectories, time-normalized trapezoidal AUC, and mean8000..10000. AUC requires observed endpoints; missing intervals are explicitly flagged, not silently imputed. Show individual seeds whenever optional campaigns exist. Every output names metric/time/scope/panel/device.
 
-With3 seeds report per-seed values, mean/sampleSD, paired differences/sign counts. Prompts/tokens/checkpoints/hardware repeats are NOT extra training seeds. An optional paired item bootstrap (10,000 draws,95%) is conditional on the fixed trained models, not training-population uncertainty. New formal hypothesis tests require prospective power/multiplicity decisions; no posthoc pile of uncorrected p-values.
+With mandatory seed0, report each condition and paired difference descriptively. Do **not** calculate an across-seed SD, uncertainty, reproducibility statement or population inference from one seed. If optional seed1/seed2 campaigns are completed, show per-seed values and only then report appropriately labeled mean/sampleSD and paired sign counts across actual distinct seeds. Prompts/tokens/checkpoints/hardware repeats are not extra training seeds. An optional paired item bootstrap (10,000 draws,95%) is conditional on the fixed trained models, not training-population uncertainty. New formal hypothesis tests require prospective power/multiplicity decisions.
 
 No justified practical onset/equivalence margin is given by these sources. Until researcher approval, show S(t),self-KL(t),Delta CE(t) without binary functional-onset or no-function declarations. A nondetection through10k is horizon-censored, not proof that dependence never develops. Cancellation with flips/absolute effects must not be described as complete irrelevance.
 

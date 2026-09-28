@@ -1,6 +1,8 @@
 import contextlib
 import io
 import random
+import hashlib
+import shutil
 
 import numpy as np
 import pytest
@@ -9,7 +11,7 @@ import torch
 from sinklab.checkpoint import (CheckpointError, latest_full, load_checkpoint,
                                 save_checkpoint, verify_checkpoint, writer_lock)
 from sinklab.hardware import HardwareError, Profile, build_batch_plan
-from sinklab.train import Trainer, parameter_groups, update_lr
+from sinklab.train import TrainError, Trainer, parameter_groups, update_lr
 
 
 class TinyLM(torch.nn.Module):
@@ -235,6 +237,24 @@ def test_simulated_10k_trainer_clock_keeps_250_full_and_final(tmp_path):
     assert ("final", 10000) in saves
 
 
+def test_10k_full_save_precedes_failing_endpoint_evaluation(tmp_path):
+    trainer = fixture(tmp_path)
+    def fake_update():
+        trainer.state.step += 1
+        trainer.state.input_tokens += 256
+        trainer.state.target_tokens += 192
+        return 0., {"grad_norm": 0.}
+    saves = []
+    trainer._one_update = fake_update
+    trainer._save = lambda kind: saves.append((kind, trainer.state.step))
+    def fail_at_endpoint(step):
+        if step == 10000:
+            raise RuntimeError("injected endpoint evaluation failure")
+    with pytest.raises(RuntimeError, match="endpoint evaluation failure"):
+        run_silent(trainer, stop_after=10000, evaluate=fail_at_endpoint)
+    assert ("final", 10000) in saves
+
+
 def test_non_tty_banner_and_update_are_structured(tmp_path):
     import json
     trainer = fixture(tmp_path)
@@ -250,4 +270,72 @@ def test_non_tty_banner_and_update_are_structured(tmp_path):
     assert update["ce"] == pytest.approx(update["loss"], abs=1e-7)
     assert update["kd"] is None and update["attention"] is None and update["relation"] is None
     assert update["input_tokens"] == 256 and update["target_tokens"] == 192
-    assert update["eta_train_seconds"] > 0 and update["tokens_per_second"] > 0
+    assert update["eta_train_seconds"] == 0 and update["tokens_per_second"] > 0
+    assert banner["registered_horizon"] == 10000 and banner["total_updates"] == 1
+
+
+def test_protected_10k_extension_exact_resume_optimizer_rng_data_lr_and_lineage(tmp_path):
+    """A compact state at the absolute 10k clock exercises real full-state replay."""
+    base = fixture(tmp_path / "base")
+    run_silent(base, stop_after=1)
+    for _ in range(9999):
+        base.order.take_update()
+    base.state.step = 10000
+    base.state.input_tokens = 10000 * 64 * 4
+    base.state.target_tokens = 10000 * 64 * 3
+    for group in base.optimizer.param_groups:
+        group["lr"] = update_lr(10000)
+    anchor = base._save("final")
+    anchor_sha = hashlib.sha256((anchor / "manifest.json").read_bytes()).hexdigest()
+    with pytest.raises(TrainError, match="protected 10k state"):
+        run_silent(base, stop_after=10001, extension_id="approved-test-extension")
+    split_dir = tmp_path / "split"
+    shutil.copytree(anchor, split_dir / "checkpoints" / anchor.name)
+    base.resume(anchor)
+    run_silent(base, stop_after=10002, extension_id="approved-test-extension")
+    split = fixture(split_dir)
+    split.resume()
+    run_silent(split, stop_after=10001, extension_id="approved-test-extension")
+    resumed = fixture(split_dir)
+    resumed.resume()
+    run_silent(resumed, stop_after=10002, extension_id="approved-test-extension")
+    assert base.state == resumed.state or (base.state.step, base.state.input_tokens,
+        base.state.target_tokens) == (resumed.state.step, resumed.state.input_tokens,
+        resumed.state.target_tokens)
+    for left, right in zip(base.model.parameters(), resumed.model.parameters()):
+        torch.testing.assert_close(left, right, rtol=0, atol=0)
+    left_state, right_state = base.optimizer.state_dict(), resumed.optimizer.state_dict()
+    for key in left_state["state"]:
+        for field in left_state["state"][key]:
+            torch.testing.assert_close(left_state["state"][key][field],
+                                       right_state["state"][key][field], rtol=0, atol=0)
+    assert base.order.snapshot() == resumed.order.snapshot()
+    assert base.optimizer.param_groups[0]["lr"] == resumed.optimizer.param_groups[0]["lr"] == update_lr(10002)
+    assert base.extension_id == resumed.extension_id == "approved-test-extension"
+    assert base.extension_parent_sha256 == resumed.extension_parent_sha256 == anchor_sha
+    assert hashlib.sha256((anchor / "manifest.json").read_bytes()).hexdigest() == anchor_sha
+    assert (split_dir / "checkpoints" / "final-010000").is_dir()
+    assert (split_dir / "checkpoints" / "final-010002").is_dir()
+    full_state = torch.load(base.run_dir / "checkpoints" / "final-010002" / "state.pt", weights_only=True)
+    resumed_state = torch.load(split_dir / "checkpoints" / "final-010002" / "state.pt", weights_only=True)
+    assert full_state["rng"]["python"] == resumed_state["rng"]["python"]
+    assert full_state["rng"]["numpy"] == resumed_state["rng"]["numpy"]
+    torch.testing.assert_close(full_state["rng"]["torch_cpu"],
+                               resumed_state["rng"]["torch_cpu"], rtol=0, atol=0)
+    assert full_state["scheduler"] == resumed_state["scheduler"]
+    with pytest.raises(ValueError, match="lineage changed"):
+        run_silent(resumed, stop_after=10003, extension_id="different-extension")
+    observed = []
+    def cheap_update():
+        resumed.order.take_update()
+        resumed.state.step += 1
+        resumed.state.input_tokens += 256
+        resumed.state.target_tokens += 192
+        return 0., {"grad_norm": 0.}
+    resumed._one_update = cheap_update
+    run_silent(resumed, stop_after=10500, extension_id="approved-test-extension",
+               evaluate=lambda step: observed.append(step))
+    assert observed == [10100, 10200, 10300, 10400, 10500]
+    assert (split_dir / "checkpoints" / "rolling-010500").is_dir()
+    assert (split_dir / "checkpoints" / "final-010500").is_dir()
+    assert hashlib.sha256((anchor / "manifest.json").read_bytes()).hexdigest() == anchor_sha
