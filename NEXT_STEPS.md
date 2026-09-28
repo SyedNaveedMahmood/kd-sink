@@ -75,6 +75,8 @@ The old root `2a11da9bb71957a4d6b3a2f93a34bd67491dd9d21d70577a7a10858930a8943e` 
 
 **S1 C1 production launch (2026-09-28, observed 15:57 UTC):** On explicit operator instruction, one seed-0 C1 job began on NaveedPC under the D19 successor root. Its external run directory is `D:\KD-SINK-stage06-runs\s1-c1-seed0-rtx4080super`. Step-0 and step-100 evaluations completed; training resumed and reached observed update 116 with finite loss. The run remains in progress, with no completion claim or other condition launched. The early wall-clock ETC was about 5-6 hours remaining at observation; see `reports/stage06.json` and the external structured logs. Future audit must verify the protected final checkpoint and full evaluation coverage before marking C1 complete.
 
+**S1 C5 conditional queue (2026-09-28, observed 18:54 UTC):** The operator authorized one seed-0 C5 job on this NaveedPC only after C1 finishes successfully. An external single-use watcher is queued at `D:\KD-SINK-stage06-runs\launcher\queue_c5_after_c1.py`, with status in `queue-c5-after-c1.status.json`. It requires C1's normal 10,000-update result, complete finite sequential update log, checksum-verified final checkpoint with the actual NaveedPC UUID, and all registered evaluations before launching C5. Failure cancels the queue. C1 was at update 5,000; C5 had not started. No other condition is queued.
+
 ## Stage07 - S2
 Work order: [07_S2_PRETRAINING](design/e6a_v2/stages/07_S2_PRETRAINING.md).
 - [x]07.1 Immutable public checkpoint/seed inventory capability; one public step0 entry is now resolved and verified.

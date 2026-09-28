@@ -1024,5 +1024,23 @@
     "all_observed_update_losses_finite": true,
     "estimated_remaining_wall_hours": "about 5.3; use 5-6 hour range until later cadences are measured",
     "completion_evidence": null
+  },
+  "s1_c5_conditional_queue_20260928": {
+    "observed_at_utc": "2026-09-28T18:54:19Z",
+    "status": "queued_not_started",
+    "condition": "C5",
+    "seed": 0,
+    "device_role": "rtx4080super",
+    "target_gpu_uuid": "GPU-f6ff547d-b5cb-c2b8-ca56-ef87e6c18af0",
+    "protocol_root": "48c39a25f640b90a70056e3c8f7308b66b9d635876e22c56f76516a09d2c9791",
+    "target_run_dir": "D:\\KD-SINK-stage06-runs\\s1-c5-seed0-rtx4080super",
+    "external_queue_script": "D:\\KD-SINK-stage06-runs\\launcher\\queue_c5_after_c1.py",
+    "external_queue_script_sha256": "b61aa6a339b617bb859524b6b00021734cc76a888f823e6c2f34411b7af6c19b",
+    "external_status": "D:\\KD-SINK-stage06-runs\\launcher\\queue-c5-after-c1.status.json",
+    "queue_launcher_pid_at_observation": 15812,
+    "queue_worker_pid_at_observation": 30020,
+    "start_gate": "same_original_C1_worker_exits_then_normal_10000_update_return_full_sequential_finite_update_log_checksum_verified_final_checkpoint_and_complete_registered_evaluation_cadence",
+    "on_failed_gate": "cancel_without_starting_C5",
+    "c5_training_started_at_observation": false
   }
 }
