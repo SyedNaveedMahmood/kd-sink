@@ -77,6 +77,8 @@ The old root `2a11da9bb71957a4d6b3a2f93a34bd67491dd9d21d70577a7a10858930a8943e` 
 
 **S1 C5 conditional queue (2026-09-28, observed 18:54 UTC):** The operator authorized one seed-0 C5 job on this NaveedPC only after C1 finishes successfully. An external single-use watcher is queued at `D:\KD-SINK-stage06-runs\launcher\queue_c5_after_c1.py`, with status in `queue-c5-after-c1.status.json`. It requires C1's normal 10,000-update result, complete finite sequential update log, checksum-verified final checkpoint with the actual NaveedPC UUID, and all registered evaluations before launching C5. Failure cancels the queue. C1 was at update 5,000; C5 had not started. No other condition is queued.
 
+**Adrita-PC 4080 host readiness (2026-09-29 local):** The transferred ZIP matched its SHA-256 receipt and its 27 extracted files matched the committed scientific inventory. This machine's exact RTX 4080 SUPER UUID `GPU-2a5c25d0-1f73-919b-fd8b-f6f0df709aaf` passed the locked 101-package environment, five full-size GPU acceptance tests, runtime-source refusal test and D19 successor-root no-training preflight for C0/C1/C2/C5/C6; C3/C4 were refused. D19 transfers NodiPC's measured profiles, so this is a class-policy readiness result, not a per-card headroom pass. The common 4x16 schedule and same-UUID resume remain fixed. No condition was assigned or launched on Adrita-PC; NaveedPC C1 and the conditional C5 queue remain bound there. See `reports/stage06_adrita_4080_readiness.json`.
+
 ## Stage07 - S2
 Work order: [07_S2_PRETRAINING](design/e6a_v2/stages/07_S2_PRETRAINING.md).
 - [x]07.1 Immutable public checkpoint/seed inventory capability; one public step0 entry is now resolved and verified.

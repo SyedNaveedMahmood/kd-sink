@@ -1,0 +1,149 @@
+{
+  "payload": {
+    "assignments": {
+      "NaveedPC_C1_run_untouched": true,
+      "NaveedPC_C5_conditional_queue_untouched": true,
+      "specific_job_assigned_to_Adrita_PC": false
+    },
+    "calibration_run": false,
+    "captured_at_utc": "2026-09-28T19:10:12.298920+00:00",
+    "external_evidence": {
+      "artifact-inventory.json": {
+        "path": "E:\\KD-SINK-stage06-Adrita\\artifact-inventory.json",
+        "sha256": "2affb93163a6317e3a97ae74871e218904e31d7a5e683b972c5124739930d546"
+      },
+      "environment-class.json": {
+        "path": "E:\\KD-SINK-stage06-Adrita\\environment-class.json",
+        "sha256": "55945673642e4c6fcae0adaae7db8f6bc61dd5075509550de549e64aed47e1f9"
+      },
+      "extraction-evidence.json": {
+        "path": "E:\\KD-SINK-stage06-Adrita\\extraction-evidence.json",
+        "sha256": "a30ed051eaec4131b6ddefb857308a1c50d3aa3ee4e2931801d0e48bb55990e8"
+      },
+      "gpu-acceptance.json": {
+        "path": "E:\\KD-SINK-stage06-Adrita\\gpu-acceptance.json",
+        "sha256": "4878702f265f388ba0662c83d2ef8711f855619657d1916c795aa36d0151e47a"
+      },
+      "run_successor_preflight.py": {
+        "path": "E:\\KD-SINK-stage06-Adrita\\run_successor_preflight.py",
+        "sha256": "b919a8719b5200723bcab5f2611eea9b0d39d64d6458e29756bb74bcf197f08f"
+      },
+      "runtime-source-preflight.json": {
+        "path": "E:\\KD-SINK-stage06-Adrita\\runtime-source-preflight.json",
+        "sha256": "ce2941b84d4535e33a3852a46ccd78dffad1dd2eba1a8bd7c9c6d6fd7115ba98"
+      },
+      "successor-preflight.json": {
+        "path": "E:\\KD-SINK-stage06-Adrita\\successor-preflight.json",
+        "sha256": "8fa6f70af9463d98254d3833acdf6b2c57ce1e9f2dd389db136de5c98097fc91"
+      }
+    },
+    "gpu": {
+      "model": "NVIDIA GeForce RTX 4080 SUPER",
+      "nvidia_driver": "591.86",
+      "total_vram_mib": 16376,
+      "uuid": "GPU-2a5c25d0-1f73-919b-fd8b-f6f0df709aaf"
+    },
+    "gpu_acceptance": {
+      "bf16_conditions": [
+        "C0",
+        "C1",
+        "C2",
+        "C5",
+        "C6"
+      ],
+      "checkpoint_replay": true,
+      "evaluation_rng_neutral": true,
+      "failed": 0,
+      "passed": 5,
+      "skipped": 0,
+      "teacher_and_student_full_size": true
+    },
+    "kind": "stage06_adritapc_d19_4080_host_readiness_v1",
+    "machine_label": "Adrita-PC",
+    "observed_windows_hostname": "DESKTOP-GPO5752",
+    "origin_main_at_capture": "6db80843e7553f79578ed495cd7fb82b5787b3c7",
+    "policy_limits": {
+      "C3_4080": "refused",
+      "C4_4080": "refused",
+      "accumulation": 16,
+      "authority": "D19_researcher_approved_reference_profile_transfer",
+      "common_microbatch": 4,
+      "effective_sequences": 64,
+      "per_card_headroom_pass_claimed": false,
+      "per_card_headroom_profile_required": false,
+      "production_oom_action": "abort_without_retune_or_migration",
+      "same_uuid_resume_required": true
+    },
+    "production_runtime_source_commit": "6d5f43aee093008a86bf203e2443884a0069763c",
+    "protocol_root_sha256": "48c39a25f640b90a70056e3c8f7308b66b9d635876e22c56f76516a09d2c9791",
+    "regression": {
+      "clean_wheel_passed": 1,
+      "failed": 0,
+      "focused_stage06_passed": 85,
+      "full_cpu_passed": 204,
+      "gpu_acceptance_passed": 5,
+      "runtime_gpu_passed": 1,
+      "skipped": 0
+    },
+    "repo_head_before_report": "68ed5d7e7dd71d0555ed2640f492c8afe8d4542a",
+    "runtime_source_preflight": {
+      "clean_source": true,
+      "failed": 0,
+      "invalid_source_refused": true,
+      "passed": 1,
+      "refused_before_model_load": true,
+      "skipped": 0,
+      "training_started": false
+    },
+    "scientific_artifacts": {
+      "all_fields_equal_committed_inventory": true,
+      "corpus_sha256": "76dcdc819b97ecff4d3c458bdf4dbd7c1a5dc2a525541e29099e6a6ac760d700",
+      "inventory_sha256": "1a9067d7b80d6756479e0aa9344d4eb41b63c2c27448d8472554a1e8dc03da9b",
+      "panels_sha256": "03fa2adf3931f7594fae23d70e402c697ad2c771e53bdb68977b614336cc5013",
+      "seed0_initialization_sha256": "1a27890c588f317a4ae5523430f8af53c591bca29c9a78d13bf182c9c145fc09",
+      "teacher_revision": "32b71b12589c2f8d625668d2335a01cac3249519",
+      "teacher_safetensors_sha256": "5f47f3e12f91cd33b662ce7e433b6150ad5512b5884a2cee961b50e9c3bbebce"
+    },
+    "scientific_training_started_on_Adrita_PC": false,
+    "software": {
+      "capture_sha256": "33ad18dcecad76d59c46da37cbcf44edbc19153f8554473bf82b49b8c8ae933b",
+      "cuda_runtime": "12.8",
+      "cudnn": 91002,
+      "exact_reference_map": true,
+      "locked_distributions": 101,
+      "python": "3.12.3",
+      "torch": "2.10.0+cu128",
+      "transformers": "5.3.0",
+      "unexpected_distributions": {},
+      "uv_lock_sha256": "b71f143ff21a0ccdd45e995b006430399134bb1564b1210bdc70fb3c67f4c3d5"
+    },
+    "stage09_started": false,
+    "status": "production_ready_for_fresh_approved_4080_jobs_under_d19",
+    "successor_root_preflight": {
+      "actual_uuid_recorded": "GPU-2a5c25d0-1f73-919b-fd8b-f6f0df709aaf",
+      "artifact_tree_verified_in_production_entry": true,
+      "authorized_conditions": [
+        "C0",
+        "C1",
+        "C2",
+        "C5",
+        "C6"
+      ],
+      "refused_conditions": [
+        "C3",
+        "C4"
+      ],
+      "training_started": false
+    },
+    "transfer": {
+      "archive_path": "E:\\KD-SINK-stage06-Adrita\\transfer\\KD-SINK-stage06-production-transfer.zip",
+      "archive_sha256": "220e428b54ba9c1e175826d3bcc14ac04ed0e5e2dcf9a59990d546ce32299d11",
+      "artifact_root": "E:\\KD-SINK-stage06-Adrita\\artifacts\\KD-SINK-stage06-production",
+      "extracted_file_count": 27,
+      "receipt_path": "E:\\KD-SINK-stage06-Adrita\\transfer\\KD-SINK-stage06-production-transfer.sha256.txt",
+      "receipt_sha256": "e0bdb6ddc83ed2563cd9f4452efab9cb9a4ce8741103f6ce510615366e174585"
+    }
+  },
+  "schema_version": 1,
+  "sha256": "a475b47a6289e74dc1fc380ee1edb8799f7c5590b68324b25c709b3bea024859"
+}

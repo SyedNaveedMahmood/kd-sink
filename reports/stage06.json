@@ -1042,5 +1042,16 @@
     "start_gate": "same_original_C1_worker_exits_then_normal_10000_update_return_full_sequential_finite_update_log_checksum_verified_final_checkpoint_and_complete_registered_evaluation_cadence",
     "on_failed_gate": "cancel_without_starting_C5",
     "c5_training_started_at_observation": false
+  },
+  "adrita_pc_readiness_20260929": {
+    "status": "production_ready_for_fresh_approved_4080_jobs_under_d19",
+    "machine_label": "Adrita-PC",
+    "gpu_uuid": "GPU-2a5c25d0-1f73-919b-fd8b-f6f0df709aaf",
+    "protocol_root": "48c39a25f640b90a70056e3c8f7308b66b9d635876e22c56f76516a09d2c9791",
+    "runtime_source_commit": "6d5f43aee093008a86bf203e2443884a0069763c",
+    "qualification_report": "reports/stage06_adrita_4080_readiness.json",
+    "qualification_payload_sha256": "a475b47a6289e74dc1fc380ee1edb8799f7c5590b68324b25c709b3bea024859",
+    "scientific_training_started_on_adrita_pc": false,
+    "naveed_c1_and_c5_queue_unchanged": true
   }
 }
