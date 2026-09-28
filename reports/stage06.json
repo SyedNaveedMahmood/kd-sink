@@ -823,6 +823,7 @@
   },
   "final_sealing_20260928": {
     "starting_commit": "4c51d107ee59265d7c79f6654234b3bc8af92018",
+    "readiness_milestone_commit": "a5518d40a9d157c3e64fbd982a1b046b113f210c",
     "calibration_source_commit": "a29bcebc6253a5300452594bbaabe4b8e082a463",
     "researcher_approved_on_utc_date": "2026-09-28",
     "fingerprint_denominator_floor": 1e-8,
