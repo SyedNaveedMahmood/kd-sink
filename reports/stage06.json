@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "stage_id": "06",
-  "status": "blocked_pending_approved_3090_calibration_environment_and_final_locks",
+  "status": "blocked_pending_approved_3090_calibration_3090_environment_and_final_locks",
   "starting_commit": "5396f84828bd2de5eb29b6f0467eb084c1b2af8c",
   "resume_starting_commit": "aeb064f76ded84b7b1a7999371be6fd6ee7266f6",
   "implementation_milestones": [
@@ -17,7 +17,7 @@
     "06.2": "passed: approved fixed-role seed0 plan has seven unique C0-C6 condition/seed pairs and nine physical jobs, with C1/C2 same-seed 3090 bridges; focused plan tests pass",
     "06.3": "passed engineering gate: assigned-condition full-size GPT-2-large to random GPT-2-medium native, adapter, intervention and BF16 objective smokes pass on the RTX 4080 SUPER and RTX 3090; the 3090 probe uses sequence length 128 and covers C1-C4 including REL; REL-on-4080 refusal remains enforced",
     "06.4": "partial: every scheduled condition/device pair has committed real sequence-128 full-cycle profile evidence and corrected descending solver derives one common 4x16 schedule; raw C3/C4 calibration remains pending on approved RTX3090",
-    "06.5": "partial: historical GPU resume/precision smoke exists; current host lacks RTX3090, so legitimate calibration, tested two-role environment and final artifact/environment/hardware/calibration/protocol locks remain blocked"
+    "06.5": "partial: historical GPU resume/precision smoke and exact-sync RTX4080 SUPER environment evidence exist; current host lacks RTX3090, so legitimate calibration, tested 3090 environment and final artifact/environment/hardware/calibration/protocol locks remain blocked"
   },
   "hardware": {
     "current_gpu": "NVIDIA GeForce RTX 4080 SUPER",
@@ -184,7 +184,12 @@
     "transformers": "5.3.0",
     "dependency_lock": "uv.lock",
     "dependency_install": "uv sync --locked",
-    "pip_check": "passed"
+    "pip_check": "passed",
+    "rtx4080super_active_environment_exact_sync": true,
+    "rtx4080super_environment_record": "protocols/s1_environment_4080_exact_v1.json",
+    "rtx4080super_environment_sha256": "11e3bfbe07093ee0a43f4b30c95deb07d33af74f3ea6b804896e3a4eec96bdb6",
+    "rtx3090_active_environment_exact_sync": "pending_on_approved_rtx3090",
+    "final_two_role_environment_lock": null
   },
   "artifacts": {
     "teacher_revision": "32b71b12589c2f8d625668d2335a01cac3249519",
@@ -421,11 +426,11 @@
   "pushed": true,
   "remaining_blockers": [
     "approved RTX3090 C2/C3/C4 raw-gradient calibration on frozen 16x64 real OpenWebText panel, including C4/REL",
-    "tested exact RTX3090 production environment record and final two-role environment lock",
+    "reproduce the same uv.lock package set on the approved RTX3090, verify installed-distribution equality, record its OS/driver/CUDA/cuDNN/GPU UUID, then seal the final two-role environment lock",
     "final artifact, hardware and calibration locks followed by transitive protocol.lock.json and production root hash",
     "final lock/dependency verification and 3090 calibration GPU acceptance; no scientific training has run"
   ],
-  "next_action": "Push the tested device-independent source milestone; on the approved RTX3090 pull its exact commit, transfer and verify the external artifacts, run the fixed 16x64 calibration command, then seal final locks in a separate milestone. Do not launch 10k training before all gates pass.",
+  "next_action": "On the approved RTX3090 pull the pushed commit, reproduce and verify the same uv.lock package set with local hardware metadata, transfer and verify external artifacts, run the fixed 16x64 calibration command, then seal final locks. Do not launch 10k training before all gates pass.",
   "resume_4080_starting_commit": "0959501af6cd4a8285bd7eb9733cdcf6651e615b",
   "resources_4080_at_summary": {
     "observed_utc": "2026-09-27T16:24:43Z",
@@ -752,5 +757,30 @@
       "expected_result": "all committed inputs verified; refused current RTX4080 SUPER before loading models because approved RTX3090 must be CUDA device 0",
       "calibration_performed": false
     }
+  },
+  "environment_cleanup_20260928": {
+    "starting_commit": "4f14adeee6af5ef7d536b8e5e1f5223021f4c9aa",
+    "rtx4080super_status": "exact_sync_verified",
+    "before_record": "reports/stage06_4080_environment_before.json",
+    "before_record_sha256": "7fc3880bd6ad103be395c49d812fcaaa3ecdf24996060110c04d873b9de702aa",
+    "after_record": "protocols/s1_environment_4080_exact_v1.json",
+    "after_record_sha256": "11e3bfbe07093ee0a43f4b30c95deb07d33af74f3ea6b804896e3a4eec96bdb6",
+    "dependency_lock_sha256": "b71f143ff21a0ccdd45e995b006430399134bb1564b1210bdc70fb3c67f4c3d5",
+    "removed_by_uv_sync_locked": ["build==1.3.0", "pyproject-hooks==1.3.3", "wheel==0.46.3"],
+    "locked_packages_installed_on_windows": 101,
+    "bootstrap_tools_outside_lock": ["pip==24.0", "uv==0.10.12"],
+    "post_sync_dry_run": "Resolved 121 packages; checked 101 packages; would make no changes",
+    "pip_check": "passed: no broken requirements",
+    "offline_clean_wheel": {"passed": 1, "failed": 0, "skipped": 0},
+    "focused_environment_config_tests": {"passed": 20, "failed": 0, "skipped": 0},
+    "full_cpu_regression": {"passed": 150, "failed": 0, "skipped": 0, "warnings": 1},
+    "rtx3090_environment": "pending_exact_sync_and_package_equality_on_approved_3090",
+    "final_two_role_environment_lock": null,
+    "new_gpu_tests": 0,
+    "new_gpu_profiles": 0,
+    "new_calibration_runs": 0,
+    "production_training_runs": 0,
+    "production_ready": false,
+    "scientific_coverage": "none"
   }
 }
