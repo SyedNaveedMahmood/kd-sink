@@ -9,9 +9,10 @@ import pytest
 from sinklab.data import save_manifest
 from sinklab.order import UpdateOrder
 from sinklab.owt_compat import (OWTError, prepare_owt_corpus, prepare_owt_panels,
-                                upstream_normalize, validate_owt_corpus,
+                                upstream_normalize, validate_calibration_blocks_export,
+                                validate_owt_corpus,
                                 validate_owt_panels)
-from sinklab.provenance import seal_payload
+from sinklab.provenance import canonical_json_bytes, seal_payload
 from sinklab.training_entry import _require_s1_data_lock
 
 
@@ -24,6 +25,16 @@ class Tokenizer:
     def __call__(self, text, add_special_tokens=False):
         assert add_special_tokens is False
         return {"input_ids": [ord(c) % 37 + 1 for c in text]}
+
+
+class BatchedTokenizer(Tokenizer):
+    is_fast = True
+
+    def __call__(self, text, add_special_tokens=False):
+        if isinstance(text, list):
+            return {"input_ids": [super(BatchedTokenizer, self).__call__(
+                item, add_special_tokens=add_special_tokens)["input_ids"] for item in text]}
+        return super().__call__(text, add_special_tokens=add_special_tokens)
 
 
 def _fixture():
@@ -73,6 +84,14 @@ def test_upstream_document_windows_normalization_shuffle_eos_blocks_and_hash(tmp
     with pytest.raises(OWTError, match="block IDs"):
         validate_owt_corpus(seal_payload(altered), tokenizer_sha256="c" * 64,
                             expected_windows=WINDOWS)
+
+
+def test_batched_tokenization_preserves_exact_pack_and_manifest():
+    rows, one_at_a_time = _fixture()
+    batched = prepare_owt_corpus(rows, BatchedTokenizer(), seed=7,
+        dataset_revision="a" * 40, tokenizer_revision="b" * 40,
+        tokenizer_sha256="c" * 64, windows=WINDOWS, block_size=4)
+    assert batched == one_at_a_time
 
 
 def test_upstream_epoch_order_matches_reference_and_resume_preserves_suffix():
@@ -127,3 +146,27 @@ def test_production_s1_data_lock_binds_source_tokenizer_corpus_and_panels():
         bad[key] = "e" * len(bad[key])
         with pytest.raises(ValueError, match="differ"):
             _require_s1_data_lock({"data": bad}, corpus, document["sha256"], "d" * 64)
+
+
+def test_calibration_export_requires_exact_16x64_128token_masks_and_window():
+    batches = []
+    for batch_index in range(16):
+        batch = []
+        for within_batch in range(64):
+            index = batch_index * 64 + within_batch
+            ids, sources = [index % 50257] * 128, [408000 + index]
+            ident = hashlib.sha256(canonical_json_bytes({
+                "split": "calibration", "block_index": index,
+                "token_ids": ids, "source_indices": sources})).hexdigest()
+            batch.append({"id": ident, "block_index": index,
+                          "token_ids": ids, "source_indices": sources})
+        batches.append(batch)
+    payload = {"kind": "s1-calibration16x64-blocks-v1",
+               "corpus_sha256": "a" * 64, "panels_sha256": "b" * 64,
+               "dataset_revision": "c" * 40, "tokenizer_files_sha256": "d" * 64,
+               "source_window": [408000, 416000], "block_size": 128,
+               "attention_mask_rule": "all_ones_128_no_padding", "batches": batches}
+    validate_calibration_blocks_export(seal_payload(payload))
+    payload["batches"][0][0]["source_indices"] = [407999]
+    with pytest.raises(OWTError, match="ownership"):
+        validate_calibration_blocks_export(seal_payload(payload))

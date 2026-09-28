@@ -1,6 +1,6 @@
 # C0-C6: exact objective contracts
 
-These are the proposed v2 definitions (D03-D06), not a claim of exact reproduction of the named papers. One explicit condition selects one pure loss function; no condition-specific changes to initialization, corpus, optimizer, dropout, or step count.
+These are the researcher-approved v2 definitions (D03-D06), not a claim of exact reproduction of the named papers. One explicit condition selects one pure loss function; no condition-specific changes to initialization, corpus, optimizer, dropout, or step count.
 
 ## Shapes, masks, precision
 For a mapped layer, normalized pre-attention-dropout probabilities are P^T[B,Ht,Q,K] and P^S[B,Hs,Q,K]. S1 uses Ht=20, Hs=16 and Q=K=128. Valid keys satisfy k<=q and both token masks; attention-objective query rows are q>=1. Exclude padding and query 0; never include masked -infinity score entries in MSE/cosine. Average equally over valid examples, heads/relations as applicable, and mapped layers; define within-row reductions below. Compute softmax/log-softmax, normalization, divergences and loss accumulation in FP32. Teacher targets are detached.
@@ -11,7 +11,7 @@ Never reverse this map accidentally. S3 maps six student layers to teacher `[1,3
 
 CE uses logits at q=0..126 to predict input[q+1], masking invalid targets. Logit KD uses exactly the same query/target mask. Let p_T=softmax(z_T/T), p_S=softmax(z_S/T), T=2. KD = T^2 * mean_valid sum_v p_T(v)[log p_T(v)-log p_S(v)]. Apply T^2 exactly once. No top-k vocabulary approximation.
 
-Recommended common base B=0.5 CE+0.5 KD and lambda=1/9. This deliberately holds the behavioral loss fixed across C1-C6. It preserves legacy attention/base ratios but not absolute legacy gradients. Approval D05 is required.
+Approved common base B=0.5 CE+0.5 KD and lambda=1/9. This deliberately holds the behavioral loss fixed across C1-C6. It preserves legacy attention/base ratios but not absolute legacy gradients.
 
 | Code | Training objective |
 |---|---|
@@ -54,7 +54,7 @@ For each head/query form a two-outcome distribution Z=[P(0), sum_{k>=1}P(k)] = [
 
 Never renormalize a single retained sink column: it becomes one everywhere and gives a vacuous zero loss. C6 must change when sink mass changes and remain invariant to redistribution among non-sink keys at fixed sink mass. It supervises sink-vs-rest allocation; it does not identify a specific head or guarantee causal necessity/sufficiency. Full-map alignment would leak non-sink structure and is prohibited.
 
-## Proposed loss-scale calibration (D06)
+## Approved loss-scale calibration procedure (D06; constants pending 3090 measurement)
 Before production, use calibration seed 1729 and a separate training-only panel of 16 fixed effective batches; no optimizer updates or final-evaluation data. Reset the same initial student per objective, disable dropout for the calibration measurement only, and compute each raw auxiliary gradient's global L2 norm over the same student parameter set (missing gradients count as zero). Use full effective-batch gradients, not an average of microbatch gradient norms. Chunk/recompute to limit memory.
 
 For j in {MSE,REL}, set s_j=median_b(||grad JSD_soft_b|| / ||grad L_j,b||). Save raw norms, per-batch ratios, manifests, numerical settings, calibration seed and the final constants. Reject zero/nonfinite gradients; do not clamp a huge ratio without a new decision. C2,C5,C6 keep scale 1 to preserve their directly specified JSD comparisons. Use one frozen factor per objective/architecture pair, shared across production seeds, devices and checkpoints. No adaptive balancing during production.

@@ -10,7 +10,7 @@ python -m sinklab train --study S1 --condition C4 --seed 0 --protocol protocol.l
 No seed list or all-conditions default. Optional batch launching requires an explicit reviewed plan and opt-in. Tiny local smoke mode is clearly labeled engineering evidence, not a scientific run.
 
 ## Update semantics
-Teacher frozen/eval/no gradients; student train mode. Proposed precision: FP32 student/master parameters and Adam states with BF16 autocast, FP32 probability/loss reductions. Do not cast the entire optimizer/student toBF16 just to fit memory. Frozen teacher BF16 storage is allowed; precision diagnostics reload original FP32 weights. Record parameter, compute and state dtypes separately. BF16 normally requires no scaler; any scaler used must be persisted and tested.
+Teacher frozen/eval/no gradients; student train mode. Approved numerical policy: FP32 student/master parameters and Adam states with BF16 autocast, FP32 probability/loss reductions. Do not cast the entire optimizer/student toBF16 just to fit memory. Frozen teacher BF16 storage is allowed; precision diagnostics reload original FP32 weights. Record parameter, compute and state dtypes separately. BF16 normally requires no scaler; any scaler used must be persisted and tested.
 
 AdamW:lr5e-4, betas(.9,.95), eps1e-8, weight decay.1, clip norm1. Decay matrix weights, exclude biases/norm scales, record groups and avoid duplicate tied parameters. Student dropout follows approved config; teacher dropout off; auxiliary attention probabilities are before dropout.
 

@@ -24,16 +24,17 @@ class HardwareError(ValueError):
 
 DIVISORS = (64, 32, 16, 8, 4, 2, 1)
 
-# Current Stage06 evidence, not a production hardware lock. Revalidate under
-# the final workload before promoting any measured candidate to a lock.
+# Current-plan evidence status, not policy permission or a production hardware
+# lock. 3090 C0/C5/C6 are policy-allowed but unused and unmeasured; a future
+# plan assigning them needs its own measured hardware-lock amendment.
 S1_ELIGIBILITY_STATUS = {
-    "C0": {"rtx3090": "pending_3090_profile", "rtx4080super": "measured_full_cycle_candidate"},
+    "C0": {"rtx3090": "unmeasured_not_required_for_current_plan", "rtx4080super": "measured_full_cycle_candidate"},
     "C1": {"rtx3090": "measured_full_cycle_candidate", "rtx4080super": "measured_full_cycle_candidate"},
     "C2": {"rtx3090": "measured_full_cycle_candidate", "rtx4080super": "measured_full_cycle_candidate"},
     "C3": {"rtx3090": "measured_full_cycle_candidate", "rtx4080super": "pending_4080_profile"},
     "C4": {"rtx3090": "measured_full_cycle_candidate", "rtx4080super": "restricted_rel_3090_only"},
-    "C5": {"rtx3090": "pending_3090_profile", "rtx4080super": "measured_full_cycle_candidate"},
-    "C6": {"rtx3090": "pending_3090_profile", "rtx4080super": "measured_full_cycle_candidate"},
+    "C5": {"rtx3090": "unmeasured_not_required_for_current_plan", "rtx4080super": "measured_full_cycle_candidate"},
+    "C6": {"rtx3090": "unmeasured_not_required_for_current_plan", "rtx4080super": "measured_full_cycle_candidate"},
 }
 
 
@@ -53,6 +54,8 @@ class Profile:
     free_bytes: int
     total_bytes: int
     headroom_bytes: int
+    source_sha256: str | None = None
+    failure_status: str | None = None
 
 
 def _eligible(profile: Profile) -> None:
@@ -94,6 +97,8 @@ def build_batch_plan(profiles: Iterable[Profile], required: set[tuple[str, str, 
         _eligible(p)
         if production and p.evidence != "measured_gpu":
             raise HardwareError("mock evidence cannot produce a hardware lock")
+        if production and (p.total_bytes <= 0 or p.headroom_bytes != max(1_610_612_736, int(p.total_bytes * .1))):
+            raise HardwareError("profile differs from registered VRAM headroom rule")
         key = (p.condition, p.device_role, p.device_uuid)
         if key not in required:
             raise HardwareError("unexpected profile outside approved eligibility matrix")
@@ -105,8 +110,6 @@ def build_batch_plan(profiles: Iterable[Profile], required: set[tuple[str, str, 
     safe = []
     for key in sorted(required):
         rows = by_key[key]
-        if {p.microbatch for p in rows} != set(DIVISORS):
-            raise HardwareError(f"missing candidate profiles for {key}")
         candidates = [p.microbatch for p in rows if p.passed and
                       p.free_bytes >= p.headroom_bytes and
                       p.total_bytes - p.peak_reserved_bytes >= p.headroom_bytes]
@@ -114,6 +117,14 @@ def build_batch_plan(profiles: Iterable[Profile], required: set[tuple[str, str, 
             raise HardwareError(f"no safe batch for {key}")
         safe.append(max(candidates))
     common = min(safe)
+    next_larger = DIVISORS[DIVISORS.index(common) - 1] if common != DIVISORS[0] else None
+    if next_larger is not None and not any(
+            p.microbatch == next_larger and p.optimizer_allocated and
+            p.evaluation_passed and p.save_passed and
+            (p.free_bytes < p.headroom_bytes or
+             p.total_bytes - p.peak_reserved_bytes < p.headroom_bytes)
+            for rows in by_key.values() for p in rows):
+        raise HardwareError("next larger common divisor lacks measured unsafe headroom evidence")
     matrix: dict[str, dict[str, str]] = {}
     for condition, role, uuid in sorted(required):
         matrix.setdefault(condition, {})[role] = uuid
@@ -121,6 +132,8 @@ def build_batch_plan(profiles: Iterable[Profile], required: set[tuple[str, str, 
                "required": [list(x) for x in sorted(required)],
                "eligibility_matrix": matrix,
                "microbatch": common, "accumulation": 64 // common,
+               "next_larger_disproved": next_larger,
+               "proof_rule": "safe_at_or_above_common_for_each_pair_and_full_cycle_headroom_failure_at_next_larger",
                "effective_sequences": 64, "input_tokens": 8192, "shifted_targets": 8128,
                "profiles": [asdict(p) for p in profiles]}
     payload["sha256"] = payload_digest(payload)

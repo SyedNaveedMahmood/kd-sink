@@ -63,7 +63,7 @@ def calibrate_initial_gradients(
         model.eval()
         for batch in effective_batches:
             for name, loss_fn in losses.items():
-                summed = [torch.zeros_like(p, dtype=torch.float64) for p in params]
+                summed = [torch.zeros_like(p, dtype=torch.float32) for p in params]
                 denominator = 0.0
                 for microbatch in batch:
                     numerator, count = loss_fn(model, microbatch)
@@ -76,9 +76,11 @@ def calibrate_initial_gradients(
                     denominator += count
                     for result, grad in zip(summed, gradients):
                         if grad is not None:
-                            result.add_(grad.detach().double())
-                squared = sum((g / denominator).square().sum().item() for g in summed)
-                norm = squared**0.5
+                            result.add_(grad.detach().float())
+                squared = torch.zeros((), dtype=torch.float32, device=params[0].device)
+                for gradient in summed:
+                    squared += (gradient / denominator).square().sum(dtype=torch.float32)
+                norm = float(squared.sqrt().item())
                 if not (0 < norm < float("inf")):
                     raise CalibrationError(f"degenerate {name} full-batch gradient")
                 norms[name].append(norm)

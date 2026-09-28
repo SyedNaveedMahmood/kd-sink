@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "payload": {
+    "kind": "s1-researcher-final-decision-approval-v1",
+    "status": "approved_researcher_decisions_pending_measured_locks",
+    "approval_source": "user Stage06 production-readiness instruction in active conversation, 2026-09-28",
+    "decision_register_sha256": "3ffe4d15915caf7abce566be4f0ed09695a8ffb4149e25c9787b0b18e552f119",
+    "approved_decisions": {
+      "D01": "S1 mandatory C0-C6; S2/S4/S5/S6 remain separately scoped, S3 optional",
+      "D02": "Mandatory S1 seed0 C0-C6; optional seeds1 and2 as separately invoked complete campaigns; calibration seed1729 excluded",
+      "D03": "C2=`cosine_soft_jsd_v2`, teacher-to-soft-student, temperature1",
+      "D04": "C3=head-mean post-softmax probability MSE; C4=causal QQ/KK/VV,64 relation heads, all mapped layers",
+      "D05": "B=0.5CE+0.5KD shared by C1-C6; auxiliary coefficient1/9",
+      "D06": "Training-only initial-gradient calibration for C3/C4 relative to C2; C2/C5/C6 scale1",
+      "D07": "Dense64 first validation blocks; full300 first validation blocks; NLL-only2000 following validation blocks",
+      "D08": "Primary dense delete/relocate over all24 student layers and mapped24 teacher layers",
+      "D09": "Retain weights0,100,250,500,1000,2000,5000,7500,10000; rolling full saves every500 absolute updates; protect full10k and each approved extension endpoint",
+      "D10": "AdamW5e-4, betas.9/.95, eps1e-8, decay.1, clip1; warmup500; cosine to10% at10k, constant floor thereafter without schedule stretch",
+      "D11": "Student dropout.1; teacher eval; auxiliary targets before attention dropout",
+      "D12": "Standard Pythia160M/410M, training seeds1234,1,2, all verified native steps",
+      "D13": "RTX3090 eligible C0-C6; RTX4080 SUPER may train a condition after its real production-shape profile/headroom gate and approved fixed-role plan. C0/C1/C2/C5/C6 have measured 4080 candidate evidence, C3 remains pending_4080_profile, and C4/REL is3090-only",
+      "D14": "Optional S3 GPT-2-small -> random DistilGPT-2 config, C0-C4, fixed-index JSD/MSE",
+      "D15": "S4 model-local top3 EPE coordinates and specified legacy-form EPE transport at fixed checkpoints",
+      "D16": "Paired-seed descriptive estimates; no automatic binary onset or equivalence claim",
+      "D17": "S6 SST2-validation sentences/GSM8K-test questions/HumanEval prompts,100 each,max128; same-doc40-token sensitivity; optional OWT512/1024",
+      "D18": "Pinned OpenWebText single train stream: training source indices [0,400000), validation [400000,408000), disjoint training-only calibration [408000,416000); audited whitespace collapse, seeded document shuffle, GPT-2 tokens and post-document EOS, greedy128 packing; first300/following2000 validation regions"
+    },
+    "amendment_sha256": "4660503cebe710f67f508e96ebd9d6002fcd19835951e773c4fb8062e1f4a097",
+    "precedence": "sealed researcher amendments take precedence over decision register",
+    "reviewed_seed0_plan_sha256": "053fdf89147f8d26dd034978dde061a134b6f640ef61653e4e11ec8ded4f7dd9",
+    "mandatory_conditions": [
+      "C0",
+      "C1",
+      "C2",
+      "C3",
+      "C4",
+      "C5",
+      "C6"
+    ],
+    "mandatory_seeds": [
+      0
+    ],
+    "optional_seeds": [
+      1,
+      2
+    ],
+    "default_optimizer_updates": 10000,
+    "extension": "explicit protected continuation beyond 10000 updates",
+    "optional_s3_enabled": false,
+    "optional_512_1024_contexts_enabled": false,
+    "scientific_coverage": "none"
+  },
+  "sha256": "901ef13454dd07a40d90dc89d5db28b31f104897daa6907f54d2e4cc32ca2bae"
+}

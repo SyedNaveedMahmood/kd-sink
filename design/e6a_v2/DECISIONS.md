@@ -1,6 +1,6 @@
 # Decision register and freeze policy
 
-Status: partial researcher amendment approved 2026-09-28; the full protocol remains draft and production is blocked. The recorded approval source and digest are in `protocols/s1_researcher_amendment_20260928.json`. A citation can justify a proposal; it cannot establish optimal hyperparameters, available memory, or adequate power. Before production, store all approvals and measured values in a sealed protocol lock. Unresolved choices must not be filled silently.
+Status: researcher decisions D01-D18 approved 2026-09-28, with the sealed researcher amendments taking precedence. The approval record is `protocols/s1_researcher_approval_20260928.json`; the corrected amendment is `protocols/s1_researcher_amendment_20260928.json`. Production remains blocked until real data, calibration, hardware and environment evidence are sealed in the final protocol lock. Approval of a choice does not imply that a measurement or scientific run has occurred.
 
 ## Fixed requirements and observed facts
 - U01: S1 uses frozen GPT-2-large -> randomly initialized GPT-2-medium, 10,000 optimizer updates, C0-C6. Seed 0 is the mandatory single-seed campaign; seeds 1 and 2 are optional, each explicitly launched per condition. Single-seed results cannot support across-seed variance or reproducibility claims.
@@ -10,7 +10,7 @@ Status: partial researcher amendment approved 2026-09-28; the full protocol rema
 - F02: old large/medium configuration used mean-head JSD; the paper-facing medium/small path used cosine-soft AMAD-style JSD. They are not the same alignment.
 - F03: inspected `amad_js_attn_loss` has differentiable cosine-soft weights but no separately parameterized alignment module. Published Jin A2D uses a different trainable construction. TinyBERT originally matches pre-softmax scores. The requested probability-MSE and causal multilayer MiniLMv2-style recipes are explicit adaptations.
 
-## Proposed decisions requiring approval
+## Researcher-approved decisions (measured gates remain separate)
 | ID | Recommendation | Reason, alternative, or limitation |
 |---|---|---|
 | D01 (amended) | S1 mandatory C0-C6; S2/S4/S5/S6 remain separately scoped, S3 optional | The mandatory campaign consists of seven independent S1 seed0 commands, not an automatic study sweep |
@@ -34,12 +34,12 @@ Status: partial researcher amendment approved 2026-09-28; the full protocol rema
 
 ## Values that must be measured, not invented
 - M01: tested dependency versions, model/tokenizer/dataset revisions and licenses, actual artifact checksums and download availability.
-- M02: complete profile evidence for every condition/device selected by the reviewed plan, one common microbatch/accumulation, activation-checkpoint policy, measured VRAM/RAM/disk/time. RTX3090 C0/C5/C6 and RTX4080 C3 remain unmeasured; the latter is not currently eligible for a reviewed 4080 job. Existing 4080 C0/C1/C2/C5/C6 and3090 C1-C4 evidence remain valid engineering measurements but are not by themselves a final hardware lock.
+- M02: complete profile evidence for every condition/device selected by the reviewed plan, one common microbatch/accumulation, activation-checkpoint policy, measured VRAM/RAM/disk/time. All nine scheduled pairs have committed full-cycle profile evidence and the corrected solver derives common 4x16. RTX3090 C0/C5/C6 and RTX4080 C3 remain unmeasured and are not required for the current plan; any future assignment needs its own measured hardware-lock amendment, and C3 remains pending_4080_profile. Existing measured evidence is not by itself a final hardware lock.
 - M03: calibration raw losses/gradient norms and frozen MSE/REL scales; reject degenerate gradients rather than inventing a scale.
 - M04: new-teacher sink/probe preflight, numerical BF16/FP32 diagnostics, all mandatory CPU/GPU smoke and resume evidence.
 - M05: seven mandatory S1 seed0 jobs plus optional seven-job seed1/2 campaigns, optional S3/long-context scope, external checkpoint/cache budget; practical margins only if equivalence/onset claims are desired.
 
 ## Gates and deviations
-The 2026-09-28 researcher amendment resolves D01, D02, D07, D09, D10, D13 and D18 only for the stated S1 scope; other proposed choices and measured gates still require approval/verification. Production requires a complete approved protocol and valid artifact, environment, hardware and calibration locks. Unset practical margins disable binary onset/equivalence analyses; descriptive trajectories can proceed only after production gates. S3 remains disabled. Missing public checkpoints remain missing, not substituted by latest weights.
+The 2026-09-28 researcher direction approves D01-D18 as registered, with sealed amendments taking precedence. The nine physical seed-0 jobs in `configs/s1_jobs_seed0_reviewed.json` realize the seven unique conditions with C1/C2 hardware bridges. Production requires valid artifact, environment, hardware and calibration locks plus the final protocol lock. Unset practical margins disable binary onset/equivalence analyses; descriptive trajectories can proceed only after production gates. S3 remains disabled. Missing public checkpoints remain missing, not substituted by latest weights.
 
 Pilots test correctness, OOM, speed, finite gradients and whether the teacher instrument is informative on a separate calibration panel. Do NOT require a student to inherit a sink or preserve the old paper's dissociation to pass. Do not tune on final evaluation panels. A bug fix affecting scientific outputs requires a versioned amendment, list of affected runs and rerun of the complete affected paired comparison. Negative or contrary outcomes are valid results.

@@ -141,7 +141,7 @@ def test_atomic_failure_corruption_and_writer(tmp_path):
 def test_mock_common_solver_rejects_missing_and_rel_4080():
     def p(condition, role, batch, passed=True):
         return Profile(condition, role, role + "-uuid", batch, passed, "mock_cpu", True, True, True,
-                       100, 110, 1000, 1000, 100)
+                       100, 110, 1000 if passed else 0, 1000, 100)
     required = {("C1", "rtx3090", "rtx3090-uuid"), ("C2", "rtx4080super", "rtx4080super-uuid")}
     profiles = [p("C1", "rtx3090", b, b <= 16) for b in (64, 32, 16, 8, 4, 2, 1)]
     profiles += [p("C2", "rtx4080super", b, b <= 8) for b in (64, 32, 16, 8, 4, 2, 1)]

@@ -24,6 +24,31 @@ WINDOWS = {"training": (0, 400_000), "evaluation": (400_000, 408_000),
 RECIPE = "owt-upstream-gpt2-pack-v1"
 
 
+class FastLocalGPT2Tokenizer:
+    """Batch encode the pinned local GPT-2 tokenizer.json with the Rust backend."""
+
+    is_fast = True
+
+    def __init__(self, directory: str | Path):
+        from tokenizers import Tokenizer
+
+        path = Path(directory) / "tokenizer.json"
+        if not path.is_file():
+            raise OWTError("pinned local tokenizer.json is required")
+        self.backend = Tokenizer.from_file(str(path))
+        self.eos_token_id = self.backend.token_to_id("<|endoftext|>")
+        if self.eos_token_id != 50256:
+            raise OWTError("local GPT-2 EOS ID differs from the pinned token set")
+
+    def __call__(self, texts, *, add_special_tokens: bool):
+        if add_special_tokens is not False:
+            raise OWTError("OWT packing forbids added special tokens")
+        if isinstance(texts, str):
+            return {"input_ids": self.backend.encode(texts, add_special_tokens=False).ids}
+        return {"input_ids": [row.ids for row in self.backend.encode_batch(
+            texts, add_special_tokens=False)]}
+
+
 def upstream_normalize(value) -> str:
     """Historical whitespace collapse; no NFC or case conversion."""
     return "" if value is None else " ".join(str(value).strip().split())
@@ -75,24 +100,36 @@ def prepare_owt_corpus(rows: Iterable[dict], tokenizer, *, seed: int,
         order = list(range(len(texts)))
         random.Random(seed).shuffle(order)
         stream, owners, docs, skipped = [], [], [], []
-        for local_index in order:
-            text = texts[local_index]
-            if not text:
-                skipped.append(start + local_index)
-                continue
-            ids = tokenizer(text, add_special_tokens=False)["input_ids"]
-            if not isinstance(ids, list) or any(type(t) is not int or t < 0 for t in ids):
-                raise OWTError("tokenizer returned invalid IDs")
-            if not ids:
-                skipped.append(start + local_index)
-                continue
-            source_index = start + local_index
-            docs.append({"source_index": source_index,
-                         "normalized_text_sha256": hashlib.sha256(text.encode("utf-8")).hexdigest(),
-                         "token_count": len(ids)})
-            stream.extend(ids)
-            stream.append(eos)  # Historical loop appends EOS after every nonempty document.
-            owners.extend([source_index] * (len(ids) + 1))
+        for offset in range(0, len(order), 1000):
+            group = [(local_index, texts[local_index])
+                     for local_index in order[offset:offset + 1000] if texts[local_index]]
+            if group and getattr(tokenizer, "is_fast", False):
+                encoded = tokenizer([text for _, text in group],
+                                    add_special_tokens=False)["input_ids"]
+            else:
+                encoded = [tokenizer(text, add_special_tokens=False)["input_ids"]
+                           for _, text in group]
+            if len(encoded) != len(group):
+                raise OWTError("batched tokenizer output is not aligned to source documents")
+            tokenized = dict(zip((index for index, _ in group), encoded))
+            for local_index in order[offset:offset + 1000]:
+                text = texts[local_index]
+                if not text:
+                    skipped.append(start + local_index)
+                    continue
+                ids = tokenized[local_index]
+                if not isinstance(ids, list) or any(type(t) is not int or t < 0 for t in ids):
+                    raise OWTError("tokenizer returned invalid IDs")
+                if not ids:
+                    skipped.append(start + local_index)
+                    continue
+                source_index = start + local_index
+                docs.append({"source_index": source_index,
+                             "normalized_text_sha256": hashlib.sha256(text.encode("utf-8")).hexdigest(),
+                             "token_count": len(ids)})
+                stream.extend(ids)
+                stream.append(eos)  # Historical loop appends EOS after every nonempty document.
+                owners.extend([source_index] * (len(ids) + 1))
         blocks = []
         for block_index, offset in enumerate(range(0, len(stream) - block_size + 1, block_size)):
             ids = stream[offset:offset + block_size]
@@ -197,6 +234,11 @@ def prepare_owt_panels(corpus: dict, *, expected_windows: dict | None = None) ->
     payload, digest = validate_owt_corpus(
         corpus, tokenizer_sha256=corpus["payload"]["tokenizer"]["files_sha256"],
         expected_windows=expected_windows)
+    return panels_from_validated_corpus(payload, digest)
+
+
+def panels_from_validated_corpus(payload: dict, digest: str) -> dict:
+    """Freeze panels after the caller has verified the complete corpus once."""
     evaluation = [b["id"] for b in payload["partitions"]["evaluation"]["blocks"]]
     calibration = [b["id"] for b in payload["partitions"]["calibration"]["blocks"]]
     if len(evaluation) < 2300 or len(calibration) < 1024:
@@ -205,6 +247,68 @@ def prepare_owt_panels(corpus: dict, *, expected_windows: dict | None = None) ->
         "owt_dense64": evaluation[:64], "owt_full300": evaluation[:300],
         "owt_lm2000": evaluation[300:2300],
         "calibration16x64": [calibration[i:i + 64] for i in range(0, 1024, 64)]})
+
+
+def calibration_blocks_export(corpus_payload: dict, corpus_digest: str,
+                              panel_document: dict) -> dict:
+    """Export just the frozen 16x64 training-only blocks for the 3090 handoff."""
+    panel, panel_digest = verify_envelope(panel_document)
+    expected = panels_from_validated_corpus(corpus_payload, corpus_digest)["payload"]
+    if panel != expected:
+        raise OWTError("calibration export requires the exact validated frozen panels")
+    blocks = {block["id"]: block for block in corpus_payload["partitions"]["calibration"]["blocks"]}
+    batches = []
+    for ids in panel["calibration16x64"]:
+        batch = []
+        for ident in ids:
+            block = blocks[ident]
+            batch.append({"id": ident, "block_index": block["block_index"],
+                          "token_ids": block["token_ids"],
+                          "source_indices": block["source_indices"]})
+        batches.append(batch)
+    result = seal_payload({"kind": "s1-calibration16x64-blocks-v1",
+        "corpus_sha256": corpus_digest, "panels_sha256": panel_digest,
+        "dataset_revision": corpus_payload["dataset"]["revision"],
+        "tokenizer_files_sha256": corpus_payload["tokenizer"]["files_sha256"],
+        "source_window": list(WINDOWS["calibration"]),
+        "block_size": corpus_payload["block_size"],
+        "attention_mask_rule": "all_ones_128_no_padding", "batches": batches})
+    validate_calibration_blocks_export(result)
+    return result
+
+
+def validate_calibration_blocks_export(document: dict) -> tuple[dict, str]:
+    payload, digest = verify_envelope(document)
+    if (payload.get("kind") != "s1-calibration16x64-blocks-v1" or
+            payload.get("source_window") != [408_000, 416_000] or
+            payload.get("block_size") != 128 or
+            not SHA256_PATTERN.fullmatch(payload.get("corpus_sha256", "")) or
+            not SHA256_PATTERN.fullmatch(payload.get("panels_sha256", "")) or
+            not SHA256_PATTERN.fullmatch(payload.get("tokenizer_files_sha256", "")) or
+            not COMMIT_PATTERN.fullmatch(payload.get("dataset_revision", "")) or
+            payload.get("attention_mask_rule") != "all_ones_128_no_padding"):
+        raise OWTError("calibration block export has invalid source or artifact identity")
+    batches = payload.get("batches")
+    if not isinstance(batches, list) or len(batches) != 16 or any(
+            not isinstance(batch, list) or len(batch) != 64 for batch in batches):
+        raise OWTError("calibration export requires exactly 16 effective batches of 64 blocks")
+    seen = set()
+    for batch_index, batch in enumerate(batches):
+        for within_batch, block in enumerate(batch):
+            ids, sources, ident = block["token_ids"], block["source_indices"], block["id"]
+            if (not isinstance(ids, list) or len(ids) != 128 or
+                    any(type(token) is not int or not 0 <= token <= 50256 for token in ids) or
+                    not isinstance(sources, list) or not sources or
+                    any(type(index) is not int or not 408_000 <= index < 416_000 for index in sources) or
+                    sources != sorted(set(sources)) or ident in seen or
+                    type(block.get("block_index")) is not int or
+                    block["block_index"] != batch_index * 64 + within_batch):
+                raise OWTError("calibration export block, mask or source ownership invalid")
+            seen.add(ident)
+            if ident != _digest({"split": "calibration", "block_index": block["block_index"],
+                                 "token_ids": ids, "source_indices": sources}):
+                raise OWTError("calibration block identity mismatch")
+    return payload, digest
 
 
 def validate_owt_panels(document: dict, corpus: dict, *, expected_windows: dict | None = None) -> str:

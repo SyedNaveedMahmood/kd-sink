@@ -58,6 +58,13 @@ def main(argv: Sequence[str] | None = None) -> int:
     owt_panels.add_argument("--corpus", type=Path, required=True)
     owt_panels.add_argument("--tokenizer-sha256", required=True)
     owt_panels.add_argument("--out-dir", type=Path, required=True)
+    owt_panels.add_argument("--calibration-export-dir", type=Path)
+    owt_order = command.add_parser("prepare-owt-compat-order", help="freeze seed-specific upstream OWT epoch order")
+    owt_order.add_argument("--corpus", type=Path, required=True)
+    owt_order.add_argument("--tokenizer-sha256", required=True)
+    owt_order.add_argument("--seed", type=int, required=True)
+    owt_order.add_argument("--updates", type=int, default=0)
+    owt_order.add_argument("--out-dir", type=Path, required=True)
     init = command.add_parser("prepare-init", help="save one random CPU-FP32 GPT-2 state")
     init.add_argument("--config", type=Path, required=True)
     init.add_argument("--seed", type=int, required=True)
@@ -217,10 +224,11 @@ def main(argv: Sequence[str] | None = None) -> int:
             path = save_manifest(artifact, args.out_dir, "corpus")
             output = {"action": "prepared_corpus", "path": str(path), "sha256": artifact["sha256"]}
         elif args.command == "prepare-owt-compat":
-            from .data import local_tokenizer, save_manifest, tokenizer_files_hash
-            from .owt_compat import prepare_owt_corpus, validate_owt_corpus
+            from .data import save_manifest, tokenizer_files_hash
+            from .owt_compat import (FastLocalGPT2Tokenizer, prepare_owt_corpus,
+                                     validate_owt_corpus)
 
-            tokenizer = local_tokenizer(args.tokenizer_dir)
+            tokenizer = FastLocalGPT2Tokenizer(args.tokenizer_dir)
             digest = tokenizer_files_hash(args.tokenizer_dir)
             artifact = prepare_owt_corpus(_jsonl(args.input_jsonl), tokenizer, seed=args.seed,
                 dataset_revision=args.dataset_revision, tokenizer_revision=args.tokenizer_revision,
@@ -231,16 +239,40 @@ def main(argv: Sequence[str] | None = None) -> int:
                       "sha256": artifact["sha256"]}
         elif args.command == "prepare-owt-compat-panels":
             from .data import save_manifest
-            from .owt_compat import load_owt_corpus, prepare_owt_panels, validate_owt_panels
+            from .owt_compat import (calibration_blocks_export, load_owt_corpus,
+                                     panels_from_validated_corpus)
             from .provenance import seal_payload
 
-            payload, _ = load_owt_corpus(args.corpus, tokenizer_sha256=args.tokenizer_sha256)
-            corpus = seal_payload(payload)
-            artifact = prepare_owt_panels(corpus)
-            validate_owt_panels(artifact, corpus)
+            payload, corpus_digest = load_owt_corpus(args.corpus, tokenizer_sha256=args.tokenizer_sha256)
+            artifact = panels_from_validated_corpus(payload, corpus_digest)
             path = save_manifest(artifact, args.out_dir, "owt-panels")
             output = {"action": "prepared_owt_panels", "path": str(path),
                       "sha256": artifact["sha256"]}
+            if args.calibration_export_dir is not None:
+                export = calibration_blocks_export(payload, corpus_digest, artifact)
+                export_path = save_manifest(export, args.calibration_export_dir,
+                                            "calibration16x64-blocks")
+                output["calibration_export"] = str(export_path)
+                output["calibration_export_sha256"] = export["sha256"]
+        elif args.command == "prepare-owt-compat-order":
+            from .data import save_manifest
+            from .order import UpdateOrder
+            from .owt_compat import load_owt_corpus
+
+            if args.updates < 0:
+                raise ValueError("updates must be nonnegative")
+            payload, corpus_digest = load_owt_corpus(args.corpus,
+                tokenizer_sha256=args.tokenizer_sha256)
+            ids = [block["id"] for block in payload["partitions"]["training"]["blocks"]]
+            order = UpdateOrder(ids, seed=args.seed, scheme="upstream-owt-epoch-v1")
+            for _ in range(args.updates):
+                order.take_update()
+            artifact = order.snapshot()
+            path = save_manifest(artifact, args.out_dir, "owt-update-order")
+            output = {"action": "prepared_owt_order", "path": str(path),
+                      "sha256": artifact["sha256"], "corpus_sha256": corpus_digest,
+                      "scheme": "upstream-owt-epoch-v1", "seed": args.seed,
+                      "presentations": order.presentations}
         elif args.command == "prepare-init":
             from transformers import GPT2Config
             from .config import MODELS

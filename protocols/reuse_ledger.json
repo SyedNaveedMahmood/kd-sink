@@ -30,6 +30,42 @@
       ],
       "reviewer": "Codex (GPT-6), 2026-09-28",
       "milestone_commit": "d511912"
+    },
+    {
+      "source_path": [
+        "Upstream/common/datasets_loader.py",
+        "Upstream/common/corpus_providers.py",
+        "Upstream/transformation_inheritance/configs/e6a_gpt2_ce.yaml",
+        "Upstream/transformation_inheritance/configs/e6a_gpt2_large_medium_preregistration.yaml",
+        "Upstream/transformation_inheritance/E6A_GPT2_LARGE_MEDIUM_RUNBOOK.md"
+      ],
+      "source_commit_or_blob": [
+        "bd7df3dbeb5c36b6b466934baae2341d11182fe9",
+        "e707d123615e432eb966f0c405335003df681c39",
+        "c204707506d8b823c545cf7745a001f0a0975345",
+        "d6bd9574639653b2fc3031339201360db7045721",
+        "4382b4d7da60b0b57b09c7b3105341f3016bd6e1"
+      ],
+      "source_license": "No license found in the audited Upstream tree; no literal source copied. Conceptual behavior audit only. Public OpenWebText card reports CC0-1.0; pinned GPT-2 model cards report MIT.",
+      "function_or_lines": [
+        "document-prefix windows, whitespace collapse, seeded document-index shuffle, EOS-after-nonempty-document and greedy128 packing",
+        "first300 sink and following2000 validation block regions",
+        "historical 400000/8000 window sizes and same-seed block-order behavior"
+      ],
+      "destination": [
+        "src/sinklab/owt_source.py",
+        "src/sinklab/owt_compat.py",
+        "src/sinklab/stage06_artifacts.py"
+      ],
+      "reuse_type": "idea",
+      "intentional_changes": "Independently pinned immutable OpenWebText revision, added disjoint 8000-document v2 calibration window, batch-tokenized locally pinned GPT-2 files with verified 1000-real-document slow/fast parity, sealed full external corpus/panels/source ownership and immutable inventory. No Upstream runtime/test dependency.",
+      "independent_tests": [
+        "tests/unit/test_owt_compat.py",
+        "tests/unit/test_stage06_readiness.py",
+        "tests/integration/test_clean_wheel.py"
+      ],
+      "reviewer": "Codex (GPT-6), 2026-09-28",
+      "milestone_commit": "pending_tested_source_milestone"
     }
   ],
   "note": "Stage 00 borrows no source code from Upstream. Record each later reuse with source SHA, license, changes, independent tests, reviewer, and milestone commit."
