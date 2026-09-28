@@ -9,6 +9,7 @@ from __future__ import annotations
 import hashlib
 import json
 import re
+from datetime import date
 from pathlib import Path
 from typing import Any, Mapping
 
@@ -84,11 +85,22 @@ def validate_protocol_lock(document: Any) -> tuple[dict[str, Any], str]:
         if not isinstance(value, str) or not SHA256_PATTERN.fullmatch(value):
             raise LockError(f"{field} must be a SHA-256 digest")
     approval = payload["approval"]
-    if not isinstance(approval, dict) or set(approval) != {"researcher", "approved_at_utc", "approval_sha256", "decision_ids"}:
+    base_approval = {"researcher", "approved_at_utc", "approval_sha256", "decision_ids"}
+    if not isinstance(approval, dict) or set(approval) not in (
+            base_approval, base_approval | {"approved_on_utc_date"}):
         raise LockError("approval record is incomplete")
     if not isinstance(approval["researcher"], str) or not approval["researcher"].strip():
         raise LockError("researcher approval is missing")
-    if not isinstance(approval["approved_at_utc"], str) or not approval["approved_at_utc"].endswith("Z"):
+    if "approved_on_utc_date" in approval:
+        if approval["approved_at_utc"] is not None:
+            raise LockError("date-precision approval must not assert an exact UTC time")
+        value = approval["approved_on_utc_date"]
+        try:
+            if not isinstance(value, str) or date.fromisoformat(value).isoformat() != value:
+                raise ValueError
+        except ValueError as exc:
+            raise LockError("approval UTC date is invalid") from exc
+    elif not isinstance(approval["approved_at_utc"], str) or not approval["approved_at_utc"].endswith("Z"):
         raise LockError("approval UTC timestamp is missing")
     if not isinstance(approval["approval_sha256"], str) or not SHA256_PATTERN.fullmatch(approval["approval_sha256"]):
         raise LockError("approval evidence digest is missing")

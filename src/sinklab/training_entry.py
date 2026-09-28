@@ -75,9 +75,20 @@ def _require_s1_data_lock(protocol: dict, corpus: dict, corpus_hash: str,
 
 
 def run_approved_training(args) -> dict:
-    raw, protocol, plan = _read(args.config), _read(args.protocol_lock), _read(args.hardware_plan)
+    from .stage06_readiness import validate_final_lock_set
+    lock_set = validate_final_lock_set(args.protocol_lock.parent)
+    if _read(args.protocol_lock) != lock_set["protocol"]:
+        raise ValueError("requested protocol lock differs from validated production root")
+    raw, protocol, hardware_document = (_read(args.config), lock_set["protocol"],
+                                        _read(args.hardware_plan))
     spec = resolve_config(raw, seed=args.seed, protocol_lock=protocol, production=True)
     lock, _ = validate_protocol_lock(protocol)
+    hardware_payload, hardware_digest = verify_envelope(hardware_document)
+    if (hardware_document != lock_set["hardware"] or
+            hardware_digest != lock["hardware_lock_digest"] or
+            hardware_payload.get("evidence") != "measured_gpu"):
+        raise HardwareError("approved measured hardware lock required")
+    plan = hardware_payload["proof"]
     evaluation_rules = lock["protocol"].get("evaluation")
     if not isinstance(evaluation_rules, dict) or not isinstance(
         evaluation_rules.get("fingerprint_denominator_floor"), (float, int)
@@ -85,8 +96,15 @@ def run_approved_training(args) -> dict:
         raise ValueError("approved protocol must lock fingerprint denominator floor")
     if plan.get("sha256") != payload_digest({k: v for k, v in plan.items() if k != "sha256"}):
         raise HardwareError("hardware plan checksum mismatch")
-    if plan.get("evidence") != "measured_gpu" or lock["hardware_lock_digest"] != plan["sha256"]:
-        raise HardwareError("approved measured hardware lock required")
+    factors = lock["protocol"]["calibration"]
+    if spec.condition == "C3":
+        if args.mse_scale != factors["s_MSE"] or args.rel_scale is not None:
+            raise ValueError("C3 requires the locked MSE factor and no REL factor")
+    elif spec.condition == "C4":
+        if args.rel_scale != factors["s_REL"] or args.mse_scale is not None:
+            raise ValueError("C4 requires the locked REL factor and no MSE factor")
+    elif args.mse_scale is not None or args.rel_scale is not None:
+        raise ValueError("inactive objective scale must not be supplied")
     validate_eligibility_matrix(plan)
     if plan.get("microbatch") not in DIVISORS or plan.get("accumulation") != 64 // plan["microbatch"]:
         raise HardwareError("common batch schedule is malformed")
@@ -127,7 +145,7 @@ def run_approved_training(args) -> dict:
     identity = {"study": spec.study, "condition": spec.condition, "seed": spec.seed,
                 "run_id": args.run_dir.name, "protocol_hash": spec.protocol_digest,
                 "data_hash": corpus_hash, "init_hash": _read(args.initialization)["payload"]["tensor_content_sha256"],
-                "hardware_hash": plan["sha256"], "calibration_hash": lock["calibration_lock_digest"],
+                "hardware_hash": hardware_digest, "calibration_hash": lock["calibration_lock_digest"],
                 "model_hash": model_hash, "precision": "bf16", "backend": "eager",
                 "microbatch": plan["microbatch"], "device_role": role, "gpu_uuid": gpu_uuid}
     device = torch.device("cuda:0")

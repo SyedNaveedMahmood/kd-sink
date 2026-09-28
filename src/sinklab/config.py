@@ -42,14 +42,38 @@ class RunSpec:
     protocol_digest: str | None
 
 
+def production_binding_for(payload: Mapping[str, Any], device_role: str, seed: int) -> dict[str, Any]:
+    """The immutable per-job identities a final S1 config must repeat exactly."""
+    body = payload["protocol"]
+    return {
+        "seed": seed,
+        "gpu_uuid": body["hardware"]["gpu_uuids"][device_role],
+        "source_commit": payload["source_commit"],
+        "artifact_lock_digest": payload["artifact_lock_digest"],
+        "environment_lock_digest": payload["environment_lock_digest"],
+        "hardware_lock_digest": payload["hardware_lock_digest"],
+        "calibration_lock_digest": payload["calibration_lock_digest"],
+        "seed0_initialization_sha256": body["data"]["seed0_initialization_sha256"],
+        "seed0_order_sha256": body["data"]["seed0_order_sha256"],
+        "corpus_sha256": body["data"]["production_corpus_sha256"],
+        "panels_sha256": body["data"]["frozen_panels_sha256"],
+        "microbatch": body["training"]["microbatch"],
+        "accumulation": body["training"]["accumulation"],
+        "effective_batch": body["training"]["effective_sequences"],
+        "sequence_length": body["training"]["sequence_length"],
+        "optimizer_updates": body["training"]["primary_optimizer_updates"],
+    }
+
+
 def resolve_config(
     raw: Mapping[str, Any], *, seed: int | None,
     protocol_lock: Mapping[str, Any] | None = None, production: bool = False,
 ) -> RunSpec:
-    if not isinstance(raw, dict) or set(raw) != {
+    fields = {
         "schema_version", "study", "condition", "variant", "device_role",
         "teacher", "student", "protocol_digest",
-    }:
+    }
+    if not isinstance(raw, dict) or set(raw) not in (fields, fields | {"production_binding"}):
         raise ConfigError("run config has missing or unknown fields")
     if type(raw["schema_version"]) is not int or raw["schema_version"] != 1:
         raise ConfigError("unsupported run config schema version")
@@ -92,8 +116,19 @@ def resolve_config(
             raise ConfigError("device role is absent from approved protocol")
         if study == "S3" and payload["protocol"].get("optional_studies", {}).get("S3") is not True:
             raise ConfigError("S3 requires separate approval")
+        if payload["protocol"].get("production_config_binding_schema") == 1 and production:
+            try:
+                expected_binding = production_binding_for(payload, device_role, seed)
+            except (KeyError, TypeError) as exc:
+                raise ConfigError("approved production binding contract is incomplete") from exc
+            if raw.get("production_binding") != expected_binding:
+                raise ConfigError("production config binding differs from approved protocol")
+        elif "production_binding" in raw:
+            raise ConfigError("production binding requires its final production validator")
     elif production:
         raise ConfigError("production requires a verified approved protocol lock")
+    elif "production_binding" in raw:
+        raise ConfigError("production binding requires an approved protocol lock")
     if production and digest is None:
         raise ConfigError("production requires a pinned protocol digest")
     return RunSpec(study, condition, variant, seed, device_role, digest)

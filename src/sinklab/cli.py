@@ -34,6 +34,8 @@ def main(argv: Sequence[str] | None = None) -> int:
     jobs = command.add_parser("validate-job-plan", help="inspect explicit jobs; never launch")
     jobs.add_argument("--plan", type=Path, required=True)
     jobs.add_argument("--config-root", type=Path, required=True)
+    jobs.add_argument("--protocol-lock", type=Path)
+    jobs.add_argument("--production", action="store_true")
     one_job = command.add_parser("inspect-job", help="inspect one named job; never launch")
     one_job.add_argument("--plan", type=Path, required=True)
     one_job.add_argument("--config-root", type=Path, required=True)
@@ -203,10 +205,24 @@ def main(argv: Sequence[str] | None = None) -> int:
             output = run_approved_training(args) if args.command == "train" else run_profile_candidate(args)
         elif args.command == "validate-job-plan":
             from .job_plan import validate_job_plan
-            output = validate_job_plan(_json(args.plan), args.config_root)
+            lock = _json(args.protocol_lock) if args.protocol_lock else None
+            if args.production:
+                from .stage06_readiness import validate_final_lock_set
+                if args.protocol_lock is None:
+                    raise ConfigError("production plan requires --protocol-lock")
+                validated = validate_final_lock_set(args.protocol_lock.parent)
+                if lock != validated["protocol"]:
+                    raise ConfigError("requested protocol lock differs from validated production root")
+            output = validate_job_plan(_json(args.plan), args.config_root,
+                                       protocol_lock=lock, production=args.production)
         elif args.command == "validate":
             raw = _json(args.config)
             lock = _json(args.protocol_lock) if args.protocol_lock else None
+            if args.production and args.protocol_lock is not None:
+                from .stage06_readiness import validate_final_lock_set
+                validated = validate_final_lock_set(args.protocol_lock.parent)
+                if lock != validated["protocol"]:
+                    raise ConfigError("requested protocol lock differs from validated production root")
             spec = resolve_config(raw, seed=args.seed, protocol_lock=lock, production=args.production)
             output = {"study": spec.study, "condition": spec.condition, "variant": spec.variant,
                 "seed": spec.seed, "device_role": spec.device_role,

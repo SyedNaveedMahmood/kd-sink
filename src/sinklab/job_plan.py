@@ -15,13 +15,17 @@ class JobPlanError(ValueError):
     pass
 
 
-def validate_job_plan(plan: Mapping[str, Any], config_root: str | Path) -> dict[str, Any]:
+def validate_job_plan(plan: Mapping[str, Any], config_root: str | Path, *,
+                      protocol_lock: Mapping[str, Any] | None = None,
+                      production: bool = False) -> dict[str, Any]:
     """Check every named job; validation never launches a job or supplies a seed."""
     required_fields = {"schema_version", "status", "study", "jobs", "optional_s3_enabled"}
     if not isinstance(plan, dict) or not required_fields <= set(plan) or set(plan) - required_fields - {"hardware_confounds"}:
         raise JobPlanError("job plan has missing or unknown fields")
     if plan["schema_version"] != 1 or plan["status"] not in {"draft", "approved"}:
         raise JobPlanError("unsupported plan version or status")
+    if production and (plan["status"] != "approved" or protocol_lock is None):
+        raise JobPlanError("production plan requires approved status and final protocol lock")
     study = plan["study"]
     if study not in {"S1", "S3"} or type(plan["optional_s3_enabled"]) is not bool:
         raise JobPlanError("unsupported study or optional-study flag")
@@ -42,7 +46,8 @@ def validate_job_plan(plan: Mapping[str, Any], config_root: str | Path) -> dict[
             raise JobPlanError("config must be a JSON file inside config root")
         try:
             raw = json.loads(path.read_text(encoding="utf-8"), object_pairs_hook=_no_duplicate_keys)
-            spec = resolve_config(raw, seed=row["seed"])
+            spec = resolve_config(raw, seed=row["seed"],
+                                  protocol_lock=protocol_lock, production=production)
         except (OSError, ValueError, TypeError, ConfigError) as exc:
             raise JobPlanError(f"invalid job config: {exc}") from exc
         if spec.study != study or row["run_id"] != f"{study.lower()}-{spec.condition.lower()}-seed{spec.seed}-{spec.device_role}":
@@ -80,7 +85,7 @@ def validate_job_plan(plan: Mapping[str, Any], config_root: str | Path) -> dict[
     return {"study": study, "status": plan["status"], "physical_runs": len(seen),
             "unique_condition_seed_pairs": sum(len(value) for value in per_condition.values()),
             "seeds": sorted(seeds), "hardware_confounds": sorted(confounded) if study == "S1" else [],
-            "launchable": False}
+            "launchable": production}
 
 
 def inspect_job(plan: Mapping[str, Any], config_root: str | Path, run_id: str) -> dict[str, Any]:

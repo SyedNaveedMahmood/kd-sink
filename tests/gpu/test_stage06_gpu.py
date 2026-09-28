@@ -22,26 +22,39 @@ from sinklab.checkpoint import (latest_full, load_checkpoint, save_checkpoint,
 
 
 TEACHER_REVISION = "32b71b12589c2f8d625668d2335a01cac3249519"
+TEACHER_WEIGHTS_SHA256 = "5f47f3e12f91cd33b662ce7e433b6150ad5512b5884a2cee961b50e9c3bbebce"
+TEACHER_CONFIG_SHA256 = "7fccdcfd6622055342a734c663ee0b61ff4fd697f42467595df0bf4448c8c170"
 
 
 @pytest.fixture(scope="session")
-def full_size_pair(selected_cuda, gpu_evidence):
+def full_size_pair(selected_cuda, gpu_evidence, request):
     evidence, _ = gpu_evidence
-    cached = try_to_load_from_cache("openai-community/gpt2-large", "config.json", revision=TEACHER_REVISION)
-    if not isinstance(cached, str) or not Path(cached).is_file() or not (Path(cached).parent / "model.safetensors").is_file():
-        evidence["status"] = "blocked_missing_pinned_teacher"
-        pytest.skip("pinned GPT-2-large teacher is absent from local cache")
+    explicit = request.config.getoption("--teacher-dir")
+    if explicit:
+        teacher_dir = Path(explicit).resolve()
+        if not (teacher_dir / "config.json").is_file() or not (teacher_dir / "model.safetensors").is_file():
+            pytest.fail("explicit pinned teacher directory is incomplete")
+        if hashlib.sha256((teacher_dir / "config.json").read_bytes()).hexdigest() != TEACHER_CONFIG_SHA256:
+            pytest.fail("explicit teacher config differs from pinned production artifact")
+    else:
+        cached = try_to_load_from_cache("openai-community/gpt2-large", "config.json", revision=TEACHER_REVISION)
+        if not isinstance(cached, str) or not Path(cached).is_file() or not (Path(cached).parent / "model.safetensors").is_file():
+            evidence["status"] = "blocked_missing_pinned_teacher"
+            pytest.skip("pinned GPT-2-large teacher is absent from local cache")
+        teacher_dir = Path(cached).parent
+    digest = hashlib.sha256()
+    with (teacher_dir / "model.safetensors").open("rb") as stream:
+        for chunk in iter(lambda: stream.read(16 * 1024 * 1024), b""):
+            digest.update(chunk)
+    if digest.hexdigest() != TEACHER_WEIGHTS_SHA256:
+        pytest.fail("teacher weights differ from pinned production artifact")
     torch.manual_seed(1729)
-    teacher = GPT2LMHeadModel.from_pretrained(str(Path(cached).parent), local_files_only=True,
+    teacher = GPT2LMHeadModel.from_pretrained(str(teacher_dir), local_files_only=True,
                                                attn_implementation="eager").to(selected_cuda).eval()
     student_config = GPT2Config(n_layer=24, n_head=16, n_embd=1024, _attn_implementation="eager")
     student = GPT2LMHeadModel(student_config).to(selected_cuda).eval()
     teacher.requires_grad_(False)
     evidence["teacher_revision"] = TEACHER_REVISION
-    digest = hashlib.sha256()
-    with (Path(cached).parent / "model.safetensors").open("rb") as stream:
-        for chunk in iter(lambda: stream.read(16 * 1024 * 1024), b""):
-            digest.update(chunk)
     evidence["teacher_safetensors_sha256"] = digest.hexdigest()
     evidence["student_initialization"] = "random_from_config_seed1729"
     evidence["teacher_parameters"] = sum(p.numel() for p in teacher.parameters())

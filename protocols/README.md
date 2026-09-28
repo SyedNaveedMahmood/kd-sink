@@ -53,6 +53,32 @@ Its 101 installed lock-managed package names and versions equal the sealed
 `b71f143ff21a0ccdd45e995b006430399134bb1564b1210bdc70fb3c67f4c3d5`;
 the capture utility checks the LF-normalized Windows checkout against the
 committed lock bytes before sealing. `pip` and `uv` are recorded separately as
-bootstrap tools. The 3090 record does not itself make Stage 06 production-ready:
-the prepared external artifacts, measured C3/C4 calibration and transitive
-production locks remain required.
+bootstrap tools. At capture time this record alone did not make Stage 06
+production-ready: external artifacts, measured C3/C4 calibration and transitive
+production locks were separate gates.
+
+## Restored production inputs and measured component locks
+
+The 4080 transfer ZIP and sidecar receipt matched SHA-256
+`220e428b54ba9c1e175826d3bcc14ac04ed0e5e2dcf9a59990d546ce32299d11`.
+Its 27-file scientific tree was restored at the external
+`E:\KD-SINK-stage06-production` root. The repository inventory validator
+recomputed all content and scientific metadata; every field matched the
+committed inventory except the expected absolute-root relocation from F: to E:.
+The approved RTX3090 calibration ran from immutable source commit
+`a29bcebc6253a5300452594bbaabe4b8e082a463` and produced external sealed
+raw evidence SHA-256 `ddce66f76c43be3406f672cd2d0b4fd79fb35257ba28355caee72520e4932165`.
+It measured 16 positive finite norms per term and median factors
+`s_MSE=68.00580071126464`, `s_REL=0.120179255876581`.
+
+The canonical measured components are `artifact.lock.json`,
+`environment.lock.json`, `hardware.lock.json` and `calibration.lock.json`.
+They bind the real inventory, both exact-role environments, reviewed measured
+4x16 plan and raw calibration respectively. They do **not** authorize a run by
+themselves. `protocol.lock.json` remains absent until the researcher gives an
+exact positive `fingerprint_denominator_floor` for the guarded S_I/S ratio.
+The current approval records give a UTC approval date, not an exact UTC time;
+the final validator records date precision explicitly rather than inventing a
+timestamp. Once that last value is approved, the final protocol root and all
+nine production configs can be sealed and validated without rerunning profiles
+or calibration. Scientific training coverage remains none.

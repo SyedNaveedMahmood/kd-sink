@@ -13,6 +13,8 @@ import transformers
 def pytest_addoption(parser):
     parser.addoption("--device-role", choices=("rtx3090", "rtx4080super"), required=True)
     parser.addoption("--evidence-out", default=None)
+    parser.addoption("--teacher-dir", default=None,
+                     help="explicit locally verified pinned GPT-2-large teacher directory")
 
 
 @pytest.fixture(scope="session")
