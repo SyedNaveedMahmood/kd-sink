@@ -847,6 +847,7 @@
     "environment_lock_sha256": "0266e734fa97357ed0609e722c8d492284b34a06f726ce37b7301e703a370025",
     "hardware_lock_sha256": "c284abebf7b9915053c282d57555a1a28cf9ad8250f3c402a3f313207eaae138",
     "calibration_lock_sha256": "fa031af3de63832e054b89539d3867c2904c9b592b1e7a8b3e4ca3e3676c532f",
+    "measured_components_milestone_commit": "97ef8b076c9ef0ee8811bcb0daebabef3e4468d7",
     "approved_fingerprint_denominator_floor": null,
     "protocol_root_sha256": null,
     "gpu_readiness_acceptance": {"passed": 5, "failed": 0, "skipped": 0,
