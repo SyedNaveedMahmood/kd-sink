@@ -10,7 +10,7 @@ import torch
 
 from sinklab.checkpoint import (CheckpointError, latest_full, load_checkpoint,
                                 save_checkpoint, verify_checkpoint, writer_lock)
-from sinklab.hardware import HardwareError, Profile, build_batch_plan
+from sinklab.hardware import HardwareError, Profile, build_batch_plan, validate_eligibility_matrix
 from sinklab.train import TrainError, Trainer, parameter_groups, update_lr
 
 
@@ -147,6 +147,11 @@ def test_mock_common_solver_rejects_missing_and_rel_4080():
     profiles += [p("C2", "rtx4080super", b, b <= 8) for b in (64, 32, 16, 8, 4, 2, 1)]
     plan = build_batch_plan(profiles, required, production=False)
     assert (plan["microbatch"], plan["accumulation"], plan["evidence"]) == (8, 8, "mock_cpu")
+    assert plan["eligibility_matrix"] == {"C1": {"rtx3090": "rtx3090-uuid"},
+                                          "C2": {"rtx4080super": "rtx4080super-uuid"}}
+    validate_eligibility_matrix(plan)
+    with pytest.raises(HardwareError, match="disagrees"):
+        validate_eligibility_matrix({**plan, "eligibility_matrix": {"C1": {"rtx3090": "wrong"}}})
     with pytest.raises(HardwareError, match="mock evidence"):
         build_batch_plan(profiles, required, production=True)
     with pytest.raises(HardwareError, match="missing"):

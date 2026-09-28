@@ -110,9 +110,8 @@ class Trainer:
             raise TrainError("immutable single-run identity is incomplete or inconsistent")
         if identity["study"] not in {"S1", "S3"} or identity["condition"] not in {f"C{i}" for i in range(7)}:
             raise TrainError("one explicit supported study/condition required")
-        if identity["study"] == "S1" and not engineering_fixture and identity.get("device_role") != "rtx3090":
-            # A production identity is validated by the CLI before construction.
-            raise TrainError("all S1 production training requires RTX 3090")
+        if identity["condition"] == "C4" and not engineering_fixture and identity.get("device_role") != "rtx3090":
+            raise TrainError("production C4 requires RTX 3090")
         if not engineering_fixture and (device.type != "cuda" or identity["precision"] != "bf16"):
             raise TrainError("production training requires pinned CUDA/BF16 plan")
         if not engineering_fixture and any(p.dtype != torch.float32 for p in model.parameters() if p.requires_grad):

@@ -7,6 +7,7 @@ from pathlib import Path
 from typing import Any, Mapping
 
 from .config import ConfigError, resolve_config
+from .hardware import S1_ELIGIBILITY_STATUS
 from .provenance import _no_duplicate_keys
 
 
@@ -16,7 +17,8 @@ class JobPlanError(ValueError):
 
 def validate_job_plan(plan: Mapping[str, Any], config_root: str | Path) -> dict[str, Any]:
     """Check every named job; validation never launches a job or supplies a seed."""
-    if not isinstance(plan, dict) or set(plan) != {"schema_version", "status", "study", "jobs", "optional_s3_enabled"}:
+    required_fields = {"schema_version", "status", "study", "jobs", "optional_s3_enabled"}
+    if not isinstance(plan, dict) or not required_fields <= set(plan) or set(plan) - required_fields - {"hardware_confounds"}:
         raise JobPlanError("job plan has missing or unknown fields")
     if plan["schema_version"] != 1 or plan["status"] not in {"draft", "approved"}:
         raise JobPlanError("unsupported plan version or status")
@@ -31,6 +33,7 @@ def validate_job_plan(plan: Mapping[str, Any], config_root: str | Path) -> dict[
     root = Path(config_root).resolve()
     seen: set[tuple[str, int, str]] = set()
     per_condition: dict[str, set[int]] = {}
+    roles_by_pair: dict[tuple[str, int], set[str]] = {}
     for row in jobs:
         if not isinstance(row, dict) or set(row) != {"run_id", "config", "seed"}:
             raise JobPlanError("job must name one run_id, config and seed")
@@ -49,6 +52,7 @@ def validate_job_plan(plan: Mapping[str, Any], config_root: str | Path) -> dict[
             raise JobPlanError("duplicate physical run")
         seen.add(key)
         per_condition.setdefault(spec.condition, set()).add(spec.seed)
+        roles_by_pair.setdefault((spec.condition, spec.seed), set()).add(spec.device_role)
     expected = {f"C{i}" for i in range(7 if study == "S1" else 5)}
     if set(per_condition) != expected:
         raise JobPlanError("condition coverage is incomplete")
@@ -56,15 +60,27 @@ def validate_job_plan(plan: Mapping[str, Any], config_root: str | Path) -> dict[
     if not seeds or any(value != seeds for value in per_condition.values()):
         raise JobPlanError("conditions do not share the same explicit seed set")
     if study == "S1":
-        if not seeds <= {0, 1, 2} or len(seen) != 7 * len(seeds):
+        if not seeds <= {0, 1, 2}:
             raise JobPlanError("S1 plan requires complete C0-C6 for each explicitly listed seed")
-        if any(role != "rtx3090" for _, _, role in seen):
-            raise JobPlanError("S1 primary and optional training runs require RTX 3090")
+        if any(condition == "C4" and role != "rtx3090" for condition, _, role in seen):
+            raise JobPlanError("C4 REL requires RTX 3090")
+        if any(S1_ELIGIBILITY_STATUS[condition][role] == "pending_4080_profile"
+               for condition, _, role in seen):
+            raise JobPlanError("C3 is pending_4080_profile")
+        comparisons = (("C1", "C0"), ("C2", "C1"), ("C3", "C2"),
+                       ("C4", "C2"), ("C4", "C3"), ("C3", "C1"),
+                       ("C5", "C2"), ("C6", "C2"), ("C6", "C1"))
+        confounded = {f"{a}-{b}-seed{seed}" for seed in seeds for a, b in comparisons
+                      if not roles_by_pair[(a, seed)] & roles_by_pair[(b, seed)]}
+        declared = plan.get("hardware_confounds", [])
+        if not isinstance(declared, list) or any(not isinstance(x, str) for x in declared) or set(declared) != confounded or len(declared) != len(confounded):
+            raise JobPlanError("cross-device primary comparisons require an explicit bridge/replica or exact hardware_confounds declaration")
     elif len(seen) != 15 or any(role != "rtx3090" for _, _, role in seen):
         raise JobPlanError("optional S3 plan must contain 15 explicit 3090 runs")
     return {"study": study, "status": plan["status"], "physical_runs": len(seen),
             "unique_condition_seed_pairs": sum(len(value) for value in per_condition.values()),
-            "seeds": sorted(seeds), "launchable": False}
+            "seeds": sorted(seeds), "hardware_confounds": sorted(confounded) if study == "S1" else [],
+            "launchable": False}
 
 
 def inspect_job(plan: Mapping[str, Any], config_root: str | Path, run_id: str) -> dict[str, Any]:

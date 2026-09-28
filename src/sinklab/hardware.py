@@ -24,6 +24,18 @@ class HardwareError(ValueError):
 
 DIVISORS = (64, 32, 16, 8, 4, 2, 1)
 
+# Current Stage06 evidence, not a production hardware lock. Revalidate under
+# the final workload before promoting any measured candidate to a lock.
+S1_ELIGIBILITY_STATUS = {
+    "C0": {"rtx3090": "pending_3090_profile", "rtx4080super": "measured_full_cycle_candidate"},
+    "C1": {"rtx3090": "measured_full_cycle_candidate", "rtx4080super": "measured_full_cycle_candidate"},
+    "C2": {"rtx3090": "measured_full_cycle_candidate", "rtx4080super": "measured_full_cycle_candidate"},
+    "C3": {"rtx3090": "measured_full_cycle_candidate", "rtx4080super": "pending_4080_profile"},
+    "C4": {"rtx3090": "measured_full_cycle_candidate", "rtx4080super": "restricted_rel_3090_only"},
+    "C5": {"rtx3090": "pending_3090_profile", "rtx4080super": "measured_full_cycle_candidate"},
+    "C6": {"rtx3090": "pending_3090_profile", "rtx4080super": "measured_full_cycle_candidate"},
+}
+
 
 @dataclass(frozen=True)
 class Profile:
@@ -50,6 +62,26 @@ def _eligible(profile: Profile) -> None:
         raise HardwareError("invalid profile identity or batch")
     if profile.passed and not (profile.optimizer_allocated and profile.evaluation_passed and profile.save_passed):
         raise HardwareError("forward-only profile cannot pass")
+
+
+def validate_eligibility_matrix(plan: dict) -> None:
+    """Require an exact condition/role/UUID matrix in a reviewed hardware plan."""
+    required = plan.get("required")
+    if not isinstance(required, list) or not required:
+        raise HardwareError("hardware plan requires condition/device/UUID entries")
+    matrix: dict[str, dict[str, str]] = {}
+    for row in required:
+        if (not isinstance(row, list) or len(row) != 3 or
+                any(not isinstance(value, str) or not value for value in row)):
+            raise HardwareError("invalid condition/device/UUID entry")
+        condition, role, uuid = row
+        if condition == "C4" and role != "rtx3090":
+            raise HardwareError("C4 REL is restricted to RTX 3090")
+        if role in matrix.setdefault(condition, {}):
+            raise HardwareError("duplicate condition/device eligibility")
+        matrix[condition][role] = uuid
+    if plan.get("eligibility_matrix") != matrix:
+        raise HardwareError("condition/device/UUID eligibility matrix disagrees with required profiles")
 
 
 def build_batch_plan(profiles: Iterable[Profile], required: set[tuple[str, str, str]],
@@ -82,12 +114,17 @@ def build_batch_plan(profiles: Iterable[Profile], required: set[tuple[str, str, 
             raise HardwareError(f"no safe batch for {key}")
         safe.append(max(candidates))
     common = min(safe)
+    matrix: dict[str, dict[str, str]] = {}
+    for condition, role, uuid in sorted(required):
+        matrix.setdefault(condition, {})[role] = uuid
     payload = {"schema_version": 1, "evidence": "measured_gpu" if production else "mock_cpu",
                "required": [list(x) for x in sorted(required)],
+               "eligibility_matrix": matrix,
                "microbatch": common, "accumulation": 64 // common,
                "effective_sequences": 64, "input_tokens": 8192, "shifted_targets": 8128,
                "profiles": [asdict(p) for p in profiles]}
     payload["sha256"] = payload_digest(payload)
+    validate_eligibility_matrix(payload)
     return payload
 
 

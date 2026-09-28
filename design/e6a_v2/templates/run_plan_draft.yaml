@@ -1,27 +1,37 @@
-schema_version: 1
+﻿schema_version: 1
 status: draft
 approved_plan: null
-# Template only. Never interpret this as an executable default sweep.
-blocks:
-  mandatory:
-    device_role: rtx3090
-    conditions: [C0, C1, C2, C3, C4, C5, C6]
-    explicitly_planned_seeds: [0]
-  optional_seed1:
-    device_role: rtx3090
-    conditions: [C0, C1, C2, C3, C4, C5, C6]
-    explicitly_planned_seeds: [1]
-    enabled: false
-  optional_seed2:
-    device_role: rtx3090
-    conditions: [C0, C1, C2, C3, C4, C5, C6]
-    explicitly_planned_seeds: [2]
-    enabled: false
-mandatory_s1_physical_runs: 7
-physical_s1_runs_with_both_optional_seeds: 21
-shared_conditions_are_hardware_replicas: []
-shared_replicas_are_new_training_seeds: false
+# Template only. Every production job needs one fixed role and an approved measured lock.
+mandatory_unique_condition_seed_pairs: 7
+mandatory_seed: 0
+optional_seeds: [1, 2]
+candidate_plans:
+  all_3090:
+    device_roles:
+      rtx3090: [C0, C1, C2, C3, C4, C5, C6]
+    physical_seed0_jobs: 7
+    pending_profiles: [C0/rtx3090, C5/rtx3090, C6/rtx3090]
+  mixed_with_bridges:
+    device_roles:
+      rtx4080super: [C0, C1, C2, C5, C6]
+      rtx3090: [C1, C2, C3, C4]
+    explicit_bridges: [C1/rtx3090, C2/rtx3090]
+    physical_seed0_jobs: 9
+    pending_final_lock: true
+current_evidence_status:
+  C0: {rtx3090: pending_3090_profile, rtx4080super: measured_full_cycle_candidate}
+  C1: {rtx3090: measured_full_cycle_candidate, rtx4080super: measured_full_cycle_candidate}
+  C2: {rtx3090: measured_full_cycle_candidate, rtx4080super: measured_full_cycle_candidate}
+  C3: {rtx3090: measured_full_cycle_candidate, rtx4080super: pending_4080_profile}
+  C4: {rtx3090: measured_full_cycle_candidate, rtx4080super: restricted_rel_3090_only}
+  C5: {rtx3090: pending_3090_profile, rtx4080super: measured_full_cycle_candidate}
+  C6: {rtx3090: pending_3090_profile, rtx4080super: measured_full_cycle_candidate}
+final_condition_device_uuid_eligibility_matrix: null
 common_hardware_lock: null
+no_midrun_device_migration: true
+no_midrun_batch_retuning: true
+cross_role_comparisons_require: explicit_bridge_or_reported_hardware_confound
+shared_replicas_are_new_training_seeds: false
 optional_s3_runs: 15
 optional_s3_enabled: false
 launch_requires_explicit_operator_opt_in: true

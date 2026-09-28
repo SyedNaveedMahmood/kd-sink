@@ -1,13 +1,15 @@
-# S1 RTX 3090 execution and memory contract
+# S1 condition/device execution and memory contract
 
 Upstream's historical13.8GiB optimizer microstep [UP1] does not establish memory for the rewritten REL objective, FP32 master states or dense evaluator. No new hardware fit or wallclock measurement is supplied here.
 
-## Approved S1 device role and campaign
+## Corrected S1 eligibility policy and campaign
 
-The 2026-09-28 amendment assigns **all seven mandatory S1 C0-C6 seed0 jobs to the RTX3090 24GB**. Optional complete seed1 and seed2 campaigns add seven independent jobs each, also on3090, only when separately invoked. The RTX4080 SUPER may run engineering, evaluation, or other approved non-S1-production work. Earlier two-device 4x16 profiling is retained as historical engineering evidence; it does not define the amended production plan. S3 remains optional and its REL production/profile role is3090.
+The corrected 2026-09-28 amendment requires **seven unique C0-C6 seed0 jobs**, each with a fixed device role in a reviewed plan. RTX3090 is policy-eligible for all seven; RTX4080 SUPER may run a condition only after real sequence-128 production-shape full-cycle/headroom evidence and a final lock. Existing 4080 evidence covers C0/C1/C2/C5/C6. C3 is `pending_4080_profile` and must not be assigned there yet. C4/REL remains3090-only. Optional complete seed1 and seed2 campaigns each add seven unique condition/seed jobs, separately invoked. No mid-run GPU migration or automatic retuning. S3 remains optional and its REL role is3090.
+
+An all-3090 seven-job seed0 draft and a mixed nine-physical-job draft with C1/C2 3090 bridges are examples, not approved launch plans. Primary cross-condition contrasts should use the same device where practical. If a necessary contrast crosses roles, the reviewed plan must name an explicit bridge/replica or record that hardware confound. Replicas are not independent training seeds. The final hardware lock contains a condition/device/UUID eligibility matrix; its approved entries are backed by complete measured profiles.
 
 ## Profile once, freeze a COMMON batch
-Independent jobs must not independently select different paired schedules. First profile **all C0-C6 on the actual RTX3090** using actual model sizes, context128, precision, optimizer and feature capture. The prior3090 C1=16 and C2/C3/C4=8 safe maxima are partial historical evidence; C0/C5/C6 are unmeasured there. No common production microbatch or accumulation is locked.
+Independent jobs must not independently select different paired schedules. Profile every condition/device actually selected by the reviewed plan using actual model sizes, context128, precision, optimizer and feature capture. Prior3090 C1=16 and C2/C3/C4=8 safe maxima leave C0/C5/C6 unmeasured there. The 4080 full-cycle candidate maxima within the earlier bound are C0=8 and C1/C2/C5/C6=4; C3 has no 4080 profile. The prior two-device4x16 result remains an engineering candidate, not a final production lock. No common production microbatch or accumulation is locked.
 
 Try divisors of64 largest-first:64,32,16,8,4,2,1. Each candidate runs in a fresh isolated subprocess to avoid OOM allocator contamination. Complete warmup and at least two optimizer updates so Adam states exist; include scheduled evaluation with actual resident-model policy and a checkpoint serialization pass. Synchronize; record allocated/reserved peaks, free/total VRAM, other device processes, host RAM and walltime. Retain failed-candidate evidence. Forward-only fit is insufficient.
 

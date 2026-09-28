@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "stage_id": "06",
-  "status": "blocked_amended_s1_protocol_pending_all_3090_profiles_data_calibration_and_full_locks",
+  "status": "blocked_corrected_hardware_policy_pending_reviewed_plan_profiles_data_calibration_and_locks",
   "starting_commit": "5396f84828bd2de5eb29b6f0467eb084c1b2af8c",
   "resume_starting_commit": "aeb064f76ded84b7b1a7999371be6fd6ee7266f6",
   "implementation_milestones": [
@@ -13,10 +13,10 @@
   ],
   "task_status": {
     "06.1": "passed: all independent S1 C0-C6 and optional S3 C0-C4 configs validate strict study, architecture, variant, explicit seed and C4 device role",
-    "06.2": "partial: researcher approved seven mandatory seed0 C0-C6 3090 jobs and optional separate seed1/2 campaigns; explicit draft manifests validate, but final production job/approval lock remains pending",
+    "06.2": "partial: seven unique seed0 conditions and optional separate seed1/2 campaigns are approved in scope; all-3090 seven-job and mixed nine-physical-job bridged draft manifests validate, but fixed-role production plan and lock remain unapproved",
     "06.3": "passed engineering gate: assigned-condition full-size GPT-2-large to random GPT-2-medium native, adapter, intervention and BF16 objective smokes pass on the RTX 4080 SUPER and RTX 3090; the 3090 probe uses sequence length 128 and covers C1-C4 including REL; REL-on-4080 refusal remains enforced",
-    "06.4": "blocked: all-3090 plan requires previously unmeasured C0/C5/C6 sequence-128 full-cycle profiles and complete matrix; no 3090 currently present, no common microbatch or calibration factors locked",
-    "06.5": "partial historical GPU resume/precision evidence retained; amended production artifact/environment/corpus/hardware/calibration protocol locks incomplete"
+    "06.4": "blocked: selected condition/device pairs need complete real sequence-128 profiling and one common schedule; RTX3090 C0/C5/C6 and RTX4080 C3 remain unmeasured, with C3 forbidden from 4080 draft assignment until qualified",
+    "06.5": "partial historical GPU resume/precision evidence retained; corrected measured condition/device/UUID hardware matrix, production corpus, calibration and full locks remain open"
   },
   "hardware": {
     "current_gpu": "NVIDIA GeForce RTX 4080 SUPER",
@@ -26,7 +26,38 @@
     "cuda_driver_api": "13.1",
     "prior_evidence_gpu": "NVIDIA GeForce RTX 3090",
     "prior_evidence_uuid": "GPU-a21766e4-bb31-9b79-5e8f-e58021e9708e",
-    "prior_evidence_vram_mib": 24576
+    "prior_evidence_vram_mib": 24576,
+    "current_policy_eligibility_status": {
+      "C0": {
+        "rtx3090": "pending_3090_profile",
+        "rtx4080super": "measured_full_cycle_candidate"
+      },
+      "C1": {
+        "rtx3090": "measured_full_cycle_candidate",
+        "rtx4080super": "measured_full_cycle_candidate"
+      },
+      "C2": {
+        "rtx3090": "measured_full_cycle_candidate",
+        "rtx4080super": "measured_full_cycle_candidate"
+      },
+      "C3": {
+        "rtx3090": "measured_full_cycle_candidate",
+        "rtx4080super": "pending_4080_profile"
+      },
+      "C4": {
+        "rtx3090": "measured_full_cycle_candidate",
+        "rtx4080super": "restricted_rel_3090_only"
+      },
+      "C5": {
+        "rtx3090": "pending_3090_profile",
+        "rtx4080super": "measured_full_cycle_candidate"
+      },
+      "C6": {
+        "rtx3090": "pending_3090_profile",
+        "rtx4080super": "measured_full_cycle_candidate"
+      }
+    },
+    "current_policy_matrix_note": "RTX3090 allowed C0-C6 subject to selected-pair profile/headroom; RTX4080 allowed after measured gate for C0/C1/C2/C3/C5/C6, but C3 currently pending_4080_profile; C4 restricted to RTX3090."
   },
   "environment": {
     "os": "Windows 11 WDDM",
@@ -226,13 +257,13 @@
   "upstream_files_changed": 0,
   "pushed": true,
   "remaining_blockers": [
-    "approved complete D01-D18 protocol and production locks",
-    "actual pinned production OWT corpus/panel preparation and hashes",
-    "RTX3090 C0/C5/C6 complete sequence-128 full-cycle profiles and all-C0-C6 common batch recomputation",
-    "legitimate disjoint training-only C3/C4 calibration and C5-margin revalidation",
-    "exact synced production environment and final hardware/resource validation"
+    "reviewed fixed-role S1 run plan and complete remaining D01-D18 production approvals",
+    "production OWT corpus/panels and hashes",
+    "complete profiles/headroom for every selected condition/device, including 3090 C0/C5/C6 if chosen and real 4080 C3 before any C3 4080 assignment",
+    "one common measured batch schedule and condition/device/UUID eligibility matrix in final hardware lock",
+    "legitimate C3/C4 training-only calibration, C5 margin revalidation and exact production environment lock"
   ],
-  "next_action": "On a verified RTX3090 host, prepare pinned OWT source/corpus/panels, complete C0-C6 128-token profiles and common schedule, then training-only calibration and full approvals/locks. No production S1 run until gates pass.",
+  "next_action": "Choose and review fixed-role S1 plan; preserve existing measured 3090/4080 evidence, complete only selected missing production-shape profiles, freeze common schedule/matrix and calibration after production corpus/panels. Do not launch production training until full locks pass.",
   "resume_4080_starting_commit": "0959501af6cd4a8285bd7eb9733cdcf6651e615b",
   "resources_4080_at_summary": {
     "observed_utc": "2026-09-27T16:24:43Z",
@@ -365,6 +396,112 @@
       "exact synced production environment and final hardware/resource validation"
     ],
     "milestone_commit": "d511912",
-    "pushed": false
+    "pushed": false,
+    "superseded_hardware_interpretation": true,
+    "corrected_by_sha256": "4660503cebe710f67f508e96ebd9d6002fcd19835951e773c4fb8062e1f4a097"
+  },
+  "hardware_policy_correction_20260928": {
+    "starting_commit": "f31e3c421563d11a0ef72d8095b1659dd53da570",
+    "prior_amendment_sha256": "2cce8049d3940b61ae307de87d902f5cfc8ca957524ee43befdca84b19dae01f",
+    "corrected_amendment_sha256": "4660503cebe710f67f508e96ebd9d6002fcd19835951e773c4fb8062e1f4a097",
+    "correction_scope": "D13 hardware interpretation only; mandatory C0-C6 seed0, optional seeds1/2, 10k, OWT and protected continuation unchanged",
+    "condition_device_evidence_status": {
+      "C0": {
+        "rtx3090": "pending_3090_profile",
+        "rtx4080super": "measured_full_cycle_candidate"
+      },
+      "C1": {
+        "rtx3090": "measured_full_cycle_candidate",
+        "rtx4080super": "measured_full_cycle_candidate"
+      },
+      "C2": {
+        "rtx3090": "measured_full_cycle_candidate",
+        "rtx4080super": "measured_full_cycle_candidate"
+      },
+      "C3": {
+        "rtx3090": "measured_full_cycle_candidate",
+        "rtx4080super": "pending_4080_profile"
+      },
+      "C4": {
+        "rtx3090": "measured_full_cycle_candidate",
+        "rtx4080super": "restricted_rel_3090_only"
+      },
+      "C5": {
+        "rtx3090": "pending_3090_profile",
+        "rtx4080super": "measured_full_cycle_candidate"
+      },
+      "C6": {
+        "rtx3090": "pending_3090_profile",
+        "rtx4080super": "measured_full_cycle_candidate"
+      }
+    },
+    "policy_eligible_roles": {
+      "rtx3090": [
+        "C0",
+        "C1",
+        "C2",
+        "C3",
+        "C4",
+        "C5",
+        "C6"
+      ],
+      "rtx4080super": [
+        "C0",
+        "C1",
+        "C2",
+        "C3",
+        "C5",
+        "C6"
+      ]
+    },
+    "c3_4080": "pending_4080_profile; no 4080 assignment until real sequence-128 full-cycle profile passes headroom",
+    "c4_4080": "restricted_rel_3090_only",
+    "candidate_run_plans": {
+      "all3090": "configs/s1_jobs_draft.json",
+      "mixed_bridged": "configs/s1_jobs_mixed_bridged_draft.json"
+    },
+    "mixed_plan_bridge_replicas": [
+      "C1/rtx3090",
+      "C2/rtx3090"
+    ],
+    "primary_comparison_policy": "same-device where practical; cross-role comparison requires explicit bridge/replica or reported hardware confound",
+    "fixed_device_role_per_job": true,
+    "midrun_device_migration": false,
+    "automatic_midrun_batch_retuning": false,
+    "final_hardware_lock_requires_condition_device_uuid_matrix": true,
+    "new_gpu_profiles": 0,
+    "new_gpu_tests": 0,
+    "production_ready": false,
+    "scientific_coverage": "none",
+    "tests": [
+      {
+        "command": ".venv\\Scripts\\python.exe -m pytest -q tests\\unit\\test_stage06_plans.py tests\\unit\\test_train_resume.py tests\\unit\\test_config.py",
+        "exit_code": 0,
+        "passed": 33,
+        "failed": 0,
+        "skipped": 0
+      },
+      {
+        "command": ".venv\\Scripts\\python.exe -m pytest -q tests\\unit tests\\integration -m 'not gpu and not network'",
+        "exit_code": 0,
+        "passed": 140,
+        "failed": 0,
+        "skipped": 0,
+        "warnings": 1
+      },
+      {
+        "command": "sealed amendment verification; non-hardware payload parity against HEAD; five job plan validations; YAML parse",
+        "exit_code": 0,
+        "passed": 1
+      },
+      {
+        "command": "git diff --check and Upstream path check",
+        "exit_code": 0,
+        "passed": 1
+      }
+    ],
+    "milestone_commit": null,
+    "pushed": false,
+    "command_correction": "First focused test command named nonexistent tests/unit/test_provenance.py and exited1 with no tests run; corrected to tests/unit/test_config.py, final focused suite passed33."
   }
 }

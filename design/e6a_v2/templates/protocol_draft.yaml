@@ -111,7 +111,9 @@ checkpointing:
   active_rolling_generations: 2
   protect_final_full_resume: true
 hardware:
-  recommended_plan: all_s1_on_rtx3090_seed0_seven_jobs
+  reviewed_plan: null
+  candidate_plans: [all_3090_seed0_seven_physical, mixed_seed0_nine_physical_with_c1_c2_3090_bridges]
+  eligibility_matrix_lock: null
   common_microbatch: null
   accumulation: null
   rel_device_role: rtx3090

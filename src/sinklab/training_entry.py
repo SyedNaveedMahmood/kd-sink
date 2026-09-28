@@ -17,7 +17,7 @@ from .config import MODELS, resolve_config
 from .data import load_corpus
 from .panels import validate_owt_panels
 from .owt_compat import load_owt_corpus, validate_owt_panels as validate_upstream_owt_panels, RECIPE
-from .hardware import DIVISORS, HardwareError, measure_candidate
+from .hardware import DIVISORS, HardwareError, measure_candidate, validate_eligibility_matrix
 from .initialization import load_initialization
 from .models import GPT2Adapter, ModelShape
 from .provenance import canonical_json_bytes, payload_digest, validate_protocol_lock, verify_envelope
@@ -87,14 +87,16 @@ def run_approved_training(args) -> dict:
         raise HardwareError("hardware plan checksum mismatch")
     if plan.get("evidence") != "measured_gpu" or lock["hardware_lock_digest"] != plan["sha256"]:
         raise HardwareError("approved measured hardware lock required")
+    validate_eligibility_matrix(plan)
     if plan.get("microbatch") not in DIVISORS or plan.get("accumulation") != 64 // plan["microbatch"]:
         raise HardwareError("common batch schedule is malformed")
     gpu_name, gpu_uuid = _gpu_identity()
     role = "rtx3090" if "3090" in gpu_name else "rtx4080super" if "4080 SUPER" in gpu_name.upper() else None
-    if role != spec.device_role or [spec.condition, role, gpu_uuid] not in plan["required"]:
+    if (role != spec.device_role or [spec.condition, role, gpu_uuid] not in plan["required"] or
+            plan.get("eligibility_matrix", {}).get(spec.condition, {}).get(role) != gpu_uuid):
         raise HardwareError("actual GPU name/UUID is absent from approved eligibility")
-    if spec.study == "S1" and role != "rtx3090":
-        raise HardwareError("all S1 production training is restricted to RTX 3090")
+    if spec.condition == "C4" and role != "rtx3090":
+        raise HardwareError("C4 production is restricted to RTX 3090")
     config = GPT2Config(**_read(args.student_config))
     expected = MODELS[spec.study][1]
     if (config.n_layer, config.n_head, config.n_embd) != (expected["layers"], expected["heads"], expected["width"]):

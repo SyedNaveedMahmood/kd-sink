@@ -31,13 +31,13 @@ Persist item scalars and structural summaries, not all vocabulary logits/attenti
 ## Primary comparisons, subject to approval
 | Question | Paired comparison at10k | Device block |
 |---|---|---|
-| Attention versus logits | C2-C1 |3090, paired seed0|
-| Logits versus ordinary training | C1-C0 |3090, paired seed0|
-| Objective family | C3-C2,C4-C2,C4-C3 and each versusC1 |3090, paired seed0|
-| Remove sink target | C5-C2, contextualC1 |3090, paired seed0|
-| Sink-only target | C6-C2,C6-C1 |3090, paired seed0|
+| Attention versus logits | C2-C1 |same-device paired seed0 block|
+| Logits versus ordinary training | C1-C0 |same-device paired seed0 block|
+| Objective family | C3-C2,C4-C2,C4-C3 and each versusC1 |3090 same-device block while C3 4080 is pending|
+| Remove sink target | C5-C2, contextualC1 |same-device paired seed0 block|
+| Sink-only target | C6-C2,C6-C1 |same-device paired seed0 block|
 
-Co-report primary S, deletion Delta CE and deletion self-KL; relocation is complementary and prespecified. Secondary: complete trajectories, time-normalized trapezoidal AUC, and mean8000..10000. AUC requires observed endpoints; missing intervals are explicitly flagged, not silently imputed. Show individual seeds whenever optional campaigns exist. Every output names metric/time/scope/panel/device.
+Prefer same-device primary comparisons. If fixed role assignments make a comparison cross-device, include an explicit bridge/replica in the reviewed plan or label the hardware confound in the result; a replica is not a new seed. Co-report primary S, deletion Delta CE and deletion self-KL; relocation is complementary and prespecified. Secondary: complete trajectories, time-normalized trapezoidal AUC, and mean8000..10000. AUC requires observed endpoints; missing intervals are explicitly flagged, not silently imputed. Show individual seeds whenever optional campaigns exist. Every output names metric/time/scope/panel/device.
 
 With mandatory seed0, report each condition and paired difference descriptively. Do **not** calculate an across-seed SD, uncertainty, reproducibility statement or population inference from one seed. If optional seed1/seed2 campaigns are completed, show per-seed values and only then report appropriately labeled mean/sampleSD and paired sign counts across actual distinct seeds. Prompts/tokens/checkpoints/hardware repeats are not extra training seeds. An optional paired item bootstrap (10,000 draws,95%) is conditional on the fixed trained models, not training-population uncertainty. New formal hypothesis tests require prospective power/multiplicity decisions.
 

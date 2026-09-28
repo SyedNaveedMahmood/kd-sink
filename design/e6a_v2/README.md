@@ -1,6 +1,6 @@
 # E6A v2 design pack
 
-Status: partially amended research protocol, **not yet a fully approved preregistration or production experiment**. The 2026-09-28 S1 researcher amendment resolves the single-seed campaign, 3090 allocation, OpenWebText recipe and exact extension semantics. Stage06 remains blocked on production data, complete3090 profiling, calibration and locks.
+Status: partially amended research protocol, **not yet a fully approved preregistration or production experiment**. The corrected 2026-09-28 S1 researcher amendment resolves the single-seed campaign, condition/device eligibility policy, OpenWebText recipe and exact extension semantics. Stage06 remains blocked on production data, selected-role profiling, calibration and locks.
 
 ## Study map
 | Study | Question | New training? |
@@ -12,7 +12,7 @@ Status: partially amended research protocol, **not yet a fully approved preregis
 | S5 | What does full, excluded-sink, and sink-only supervision transfer? | No; reuse S1 C1/C2/C5/C6 |
 | S6 | Are findings robust across text domains and context lengths? | No; reuse retained states |
 
-S1's mandatory campaign has **seven physical RTX3090 jobs**, one per C0-C6 at seed0. Optional seed1/seed2 campaigns add seven jobs each and require separate launches. Single-seed results cannot establish across-seed variance or reproducibility. S3 adds15 runs only if explicitly approved. S2 remains evaluation-only. See [hardware](HARDWARE_AND_EXECUTION.md) for the production device and batch gate.
+S1's mandatory campaign has **seven unique C0-C6 seed0 jobs**, each assigned a fixed approved GPU role; bridge replicas can raise the physical-job count. Optional seed1/seed2 campaigns add seven unique jobs each and require separate launches. Single-seed results cannot establish across-seed variance or reproducibility. S3 adds15 runs only if explicitly approved. S2 remains evaluation-only. See [hardware](HARDWARE_AND_EXECUTION.md) for the eligibility and batch gates.
 
 ## Read in this order
 1. [Decisions and approval gates](DECISIONS.md), [source audit](SOURCES_AND_UPSTREAM_AUDIT.md).
