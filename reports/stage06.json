@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "stage_id": "06",
-  "status": "production_ready",
+  "status": "blocked_pending_runtime_source_provenance_fix",
   "starting_commit": "5396f84828bd2de5eb29b6f0467eb084c1b2af8c",
   "resume_starting_commit": "aeb064f76ded84b7b1a7999371be6fd6ee7266f6",
   "implementation_milestones": [
@@ -17,7 +17,7 @@
     "06.2": "passed: approved fixed-role seed0 plan has seven unique C0-C6 condition/seed pairs and nine physical jobs, with C1/C2 same-seed 3090 bridges; focused plan tests pass",
     "06.3": "passed engineering gate: assigned-condition full-size GPT-2-large to random GPT-2-medium native, adapter, intervention and BF16 objective smokes pass on the RTX 4080 SUPER and RTX 3090; the 3090 probe uses sequence length 128 and covers C1-C4 including REL; REL-on-4080 refusal remains enforced",
     "06.4": "complete: every scheduled pair has committed sequence-128 full-cycle evidence, the reviewed common plan is 4x16, and approved RTX3090 C2/C3/C4 16-batch calibration passed",
-    "06.5": "complete: full RTX3090 GPU acceptance and exact-sync evidence for both approved roles pass; four measured component locks, approved fingerprint denominator floor, transitive protocol root and all nine production configs validate"
+    "06.5": "blocked: measured GPU/environment evidence remains valid, but the old production root binds the calibration-era source rather than runnable production code; runtime source guard and resealing are pending"
   },
   "hardware": {
     "current_gpu": "NVIDIA GeForce RTX 3090",
@@ -435,11 +435,26 @@
   "upstream_files_changed": 0,
   "pushed": true,
   "remaining_blockers": [
-    "researcher approval of an exact positive fingerprint denominator floor; the registered evaluator requires one and no approved value was found",
-    "final protocol.lock.json and production root hash, followed by nine bound production configs and transitive validation",
-    "final lock/config regression and clean pushed readiness milestone; no scientific training has run"
+    "old production root 2a11da9bb71957a4d6b3a2f93a34bd67491dd9d21d70577a7a10858930a8943e is superseded_nonlaunchable_due_to_runtime_source_provenance_defect",
+    "freeze and verify a distinct production runtime source milestone, then reseal the protocol root and all nine configs",
+    "reverify the external F: artifact inventory, freeze the runtime source milestone, and reseal the root and nine configs"
   ],
-  "next_action": "Obtain the researcher's exact positive fingerprint denominator floor, seal the transitive protocol root and nine production configs, run final validation, then commit and push. Do not launch 10k training before all gates pass.",
+  "next_action": "Finish source guard tests and push immutable source milestone; reverify original F: artifacts; reseal and validate the root/configs. Do not launch S1 training.",
+  "runtime_source_repair_20260928": {
+    "starting_commit": "dceba4976c06399cffabdd50e80c41c94137a5e6",
+    "old_root_sha256": "2a11da9bb71957a4d6b3a2f93a34bd67491dd9d21d70577a7a10858930a8943e",
+    "old_root_status": "superseded_nonlaunchable_due_to_runtime_source_provenance_defect",
+    "calibration_source_commit": "a29bcebc6253a5300452594bbaabe4b8e082a463",
+    "calibration_result_sha256": "ddce66f76c43be3406f672cd2d0b4fd79fb35257ba28355caee72520e4932165",
+    "calibration_local_copy_provenance": "byte-deterministically reconstructed on F: from sealed committed protocols/calibration.lock.json using the original stage06_calibration_entry schema and canonical serialization; no new measurement",
+    "calibration_local_copy": "F:\\KD-SINK-stage06-production\\calibration-result\\s1-calibration-ddce66f76c43be3406f672cd2d0b4fd79fb35257ba28355caee72520e4932165.json",
+    "calibration_local_copy_verified": true,
+    "execution_critical_path_set_version": 1,
+    "execution_critical_paths": ["src/sinklab", "pyproject.toml", "uv.lock"],
+    "production_runtime_source_commit": null,
+    "new_root_sha256": null,
+    "scientific_coverage": "none"
+  },
   "resume_4080_starting_commit": "0959501af6cd4a8285bd7eb9733cdcf6651e615b",
   "resources_4080_at_summary": {
     "observed_utc": "2026-09-27T16:24:43Z",

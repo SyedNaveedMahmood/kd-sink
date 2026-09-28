@@ -74,12 +74,25 @@ def validate_protocol_lock(document: Any) -> tuple[dict[str, Any], str]:
         "environment_lock_digest", "hardware_lock_digest",
         "calibration_lock_digest", "protocol",
     }
-    if set(payload) != required:
+    runtime_fields = {"production_runtime_source_commit", "calibration_source_commit",
+                      "execution_critical_path_set_version"}
+    if set(payload) not in (required, required | runtime_fields):
         raise LockError("protocol lock has missing or unknown fields")
     if payload["status"] != "approved" or payload["production_ready"] is not True:
         raise LockError("production requires an approved protocol")
     if not isinstance(payload["source_commit"], str) or not COMMIT_PATTERN.fullmatch(payload["source_commit"]):
         raise LockError("source_commit must be an immutable full commit ID")
+    if runtime_fields <= set(payload):
+        runtime = payload["production_runtime_source_commit"]
+        calibration = payload["calibration_source_commit"]
+        if (not isinstance(runtime, str) or not COMMIT_PATTERN.fullmatch(runtime) or
+                payload["source_commit"] != runtime):
+            raise LockError("production runtime source binding is invalid")
+        if not isinstance(calibration, str) or not COMMIT_PATTERN.fullmatch(calibration):
+            raise LockError("calibration source binding is invalid")
+        if type(payload["execution_critical_path_set_version"]) is not int or (
+                payload["execution_critical_path_set_version"] != 1):
+            raise LockError("execution-critical path-set version is unsupported")
     for field in ("artifact_lock_digest", "environment_lock_digest", "hardware_lock_digest", "calibration_lock_digest"):
         value = payload[field]
         if not isinstance(value, str) or not SHA256_PATTERN.fullmatch(value):

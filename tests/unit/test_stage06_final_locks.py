@@ -10,7 +10,8 @@ import pytest
 from sinklab.config import ConfigError, production_binding_for, resolve_config
 from sinklab.metrics import fingerprint
 from sinklab.provenance import LockError, seal_payload, validate_protocol_lock, verify_envelope
-from sinklab.stage06_readiness import (ReadinessError, SOURCE_COMMIT,
+from sinklab.stage06_readiness import (CALIBRATION_SOURCE_COMMIT, SUPERSEDED_PROTOCOL_ROOT,
+                                       ReadinessError,
                                        build_production_configs, build_protocol_lock,
                                        validate_calibration_result, validate_final_lock_set,
                                        validate_production_configs, write_lock_set,
@@ -21,9 +22,16 @@ ROOT = Path(__file__).resolve().parents[2]
 
 
 def test_approved_stage06_root_uses_pretraining_fingerprint_guard():
+    current = json.loads((ROOT / "protocols/protocol.lock.json").read_text(encoding="utf-8"))
+    if current["sha256"] == SUPERSEDED_PROTOCOL_ROOT:
+        with pytest.raises(ReadinessError, match="superseded"):
+            validate_final_lock_set(ROOT / "protocols")
+        return
     documents = validate_final_lock_set(ROOT / "protocols")
     protocol = documents["protocol"]
-    assert protocol["sha256"] == "2a11da9bb71957a4d6b3a2f93a34bd67491dd9d21d70577a7a10858930a8943e"
+    assert protocol["sha256"] != SUPERSEDED_PROTOCOL_ROOT
+    assert protocol["payload"]["calibration_source_commit"] == CALIBRATION_SOURCE_COMMIT
+    assert protocol["payload"]["production_runtime_source_commit"] != CALIBRATION_SOURCE_COMMIT
     floor = protocol["payload"]["protocol"]["evaluation"]["fingerprint_denominator_floor"]
     assert floor == 1e-8
     below = fingerprint(0.5e-8, 0.2, denominator_floor=floor)
@@ -61,7 +69,7 @@ def test_measured_component_locks_bind_real_inputs_without_claiming_root():
     assert matrix["C3"]["rtx4080super"]["measured_production_eligible"] is False
     assert matrix["C0"]["rtx3090"]["scheduled_in_current_plan"] is False
     assert locks["hardware"]["proof"]["microbatch"] == 4
-    assert locks["calibration"]["source_commit"] == SOURCE_COMMIT
+    assert locks["calibration"]["source_commit"] == CALIBRATION_SOURCE_COMMIT
     assert all(len(v) == 16 for v in locks["calibration"]["raw_norms"].values())
     assert locks["calibration"]["factors"] == {
         "mse": 68.00580071126464, "rel": 0.120179255876581}
@@ -77,7 +85,7 @@ def _calibration_fixture():
     environment = _payload("protocols/s1_environment_3090_exact_v1.json")
     result = {
         "kind": "s1-c3-c4-raw-gradient-calibration-v1",
-        "status": "measured_on_approved_rtx3090", "source_commit": SOURCE_COMMIT,
+        "status": "measured_on_approved_rtx3090", "source_commit": CALIBRATION_SOURCE_COMMIT,
         "gpu": {"name": environment["gpu"]["model"],
                 "uuid": environment["gpu"]["uuid"],
                 "driver": environment["gpu"]["nvidia_driver"]},
@@ -131,7 +139,7 @@ def test_date_precision_approval_does_not_fabricate_utc_time():
     payload = {"status": "approved", "production_ready": True, "study": "S1",
                "condition_variants": {"C3": "head_mean_probability_mse_v1"},
                "allowed_device_roles": {"C3": ["rtx3090"]},
-               "source_commit": SOURCE_COMMIT, "approval": approval,
+               "source_commit": CALIBRATION_SOURCE_COMMIT, "approval": approval,
                "artifact_lock_digest": "b" * 64,
                "environment_lock_digest": "c" * 64,
                "hardware_lock_digest": "d" * 64,
@@ -149,7 +157,10 @@ def test_production_config_binds_uuid_data_batch_locks_and_seed():
     payload = {"status": "approved", "production_ready": True, "study": "S1",
                "condition_variants": {"C3": "head_mean_probability_mse_v1"},
                "allowed_device_roles": {"C3": ["rtx3090"]},
-               "source_commit": SOURCE_COMMIT,
+               "source_commit": "f" * 40,
+               "production_runtime_source_commit": "f" * 40,
+               "calibration_source_commit": CALIBRATION_SOURCE_COMMIT,
+               "execution_critical_path_set_version": 1,
                "approval": {"researcher": "fixture", "approved_at_utc": "2026-09-28T00:00:00Z",
                             "approval_sha256": "a" * 64,
                             "decision_ids": [f"D{i:02d}" for i in range(1, 19)]},
@@ -157,7 +168,7 @@ def test_production_config_binds_uuid_data_batch_locks_and_seed():
                "environment_lock_digest": "c" * 64,
                "hardware_lock_digest": "d" * 64,
                "calibration_lock_digest": "e" * 64,
-               "protocol": {"production_config_binding_schema": 1,
+               "protocol": {"production_config_binding_schema": 2,
                             "teacher": {"layers": 36, "heads": 20, "width": 1280},
                             "student": {"layers": 24, "heads": 16, "width": 1024,
                                         "initialization": "random_from_config"},
@@ -216,7 +227,8 @@ def test_full_transitive_root_and_nine_configs_with_fixture_floor_only(tmp_path)
                                    .read_text(encoding="utf-8"))
                   for name in ("artifact", "environment", "hardware", "calibration")}
     protocol = build_protocol_lock(tmp_path, components,
-                                   fingerprint_denominator_floor=1.0)
+                                   fingerprint_denominator_floor=1.0,
+                                   production_runtime_source_commit="f" * 40)
     configs, plan = build_production_configs(tmp_path, protocol)
     write_lock_set(tmp_path / "protocols", {**components, "protocol": protocol})
     write_production_configs(tmp_path, configs, plan)

@@ -12,12 +12,14 @@ from pathlib import Path
 from .config import MODELS, S1_VARIANTS, production_binding_for, resolve_config
 from .hardware import Profile, build_batch_plan, validate_eligibility_matrix
 from .owt_compat import RECIPE
-from .provenance import (_no_duplicate_keys, canonical_json_bytes, payload_digest,
+from .provenance import (COMMIT_PATTERN, _no_duplicate_keys, canonical_json_bytes, payload_digest,
                          seal_payload, validate_protocol_lock, verify_envelope)
+from .runtime_provenance import EXECUTION_CRITICAL_PATH_SET_VERSION
 from .stage06_evidence import build_reviewed_seed0_candidate
 
 
-SOURCE_COMMIT = "a29bcebc6253a5300452594bbaabe4b8e082a463"
+CALIBRATION_SOURCE_COMMIT = "a29bcebc6253a5300452594bbaabe4b8e082a463"
+SUPERSEDED_PROTOCOL_ROOT = "2a11da9bb71957a4d6b3a2f93a34bd67491dd9d21d70577a7a10858930a8943e"
 GPU_UUIDS = {
     "rtx4080super": "GPU-72b4b307-b613-c35e-ea32-53f4431de9ee",
     "rtx3090": "GPU-a21766e4-bb31-9b79-5e8f-e58021e9708e",
@@ -52,7 +54,7 @@ def validate_calibration_result(result: dict, inventory: dict, candidate: dict,
     """Recompute every registered ratio and median before accepting factors."""
     _require(result.get("kind") == "s1-c3-c4-raw-gradient-calibration-v1" and
              result.get("status") == "measured_on_approved_rtx3090" and
-             result.get("source_commit") == SOURCE_COMMIT,
+             result.get("source_commit") == CALIBRATION_SOURCE_COMMIT,
              "calibration identity/source commit differs from approved handoff")
     gpu = result.get("gpu", {})
     _require(gpu == {"name": environment["gpu"]["model"],
@@ -183,7 +185,7 @@ def build_component_locks(repo: Path, calibration_result: Path,
         "unmeasured_not_required_for_current_plan": candidate["unmeasured_not_required_for_current_plan"],
         "c4_4080_status": "prohibited"})
     calibration = seal_payload({"kind": "s1-production-calibration-lock-v1",
-        "raw_result_sha256": result_digest, "source_commit": SOURCE_COMMIT,
+        "raw_result_sha256": result_digest, "source_commit": CALIBRATION_SOURCE_COMMIT,
         "seed": 1729, "gpu": result["gpu"],
         "environment_manifest_sha256": digest3090, "environment": result["environment"],
         "input_hashes": {k: v for k, v in result.items() if k.endswith("sha256")},
@@ -195,12 +197,17 @@ def build_component_locks(repo: Path, calibration_result: Path,
 
 
 def build_protocol_lock(repo: Path, components: dict[str, dict],
-                        *, fingerprint_denominator_floor: float) -> dict:
+                        *, fingerprint_denominator_floor: float,
+                        production_runtime_source_commit: str) -> dict:
     """Seal the production root only with an explicitly approved metric floor."""
     _require(type(fingerprint_denominator_floor) in (int, float) and
              math.isfinite(fingerprint_denominator_floor) and
              fingerprint_denominator_floor > 0,
              "positive approved fingerprint denominator floor required")
+    _require(isinstance(production_runtime_source_commit, str) and
+             COMMIT_PATTERN.fullmatch(production_runtime_source_commit) is not None and
+             production_runtime_source_commit != CALIBRATION_SOURCE_COMMIT,
+             "distinct full production runtime source commit required")
     _require(set(components) == {"artifact", "environment", "hardware", "calibration"},
              "all four measured component locks required")
     artifact, environment, hardware, calibration = (
@@ -222,7 +229,7 @@ def build_protocol_lock(repo: Path, components: dict[str, dict],
     teacher_layers = [(s + 1) * 36 // 24 - (0 if (s + 1) * 36 % 24 else 1)
                       for s in range(24)]
     protocol = {
-        "production_config_binding_schema": 1,
+        "production_config_binding_schema": 2,
         "teacher": teacher, "student": student,
         "teacher_layers_for_student": teacher_layers,
         "data": {"recipe": RECIPE,
@@ -286,7 +293,9 @@ def build_protocol_lock(repo: Path, components: dict[str, dict],
                      "condition_device_eligibility": hardware["condition_device_eligibility"],
                      "c4_4080_prohibited": True},
         "calibration": {"lock_sha256": components["calibration"]["sha256"],
-                        "source_commit": SOURCE_COMMIT, "seed": 1729,
+                        "source_commit": CALIBRATION_SOURCE_COMMIT,
+                        "calibration_source_commit": CALIBRATION_SOURCE_COMMIT,
+                        "seed": 1729,
                         "result_sha256": calibration["raw_result_sha256"],
                         "s_MSE": calibration["factors"]["mse"],
                         "s_REL": calibration["factors"]["rel"],
@@ -301,7 +310,10 @@ def build_protocol_lock(repo: Path, components: dict[str, dict],
     document = seal_payload({
         "status": "approved", "production_ready": True, "study": "S1",
         "condition_variants": S1_VARIANTS, "allowed_device_roles": allowed,
-        "source_commit": SOURCE_COMMIT,
+        "source_commit": production_runtime_source_commit,
+        "production_runtime_source_commit": production_runtime_source_commit,
+        "calibration_source_commit": CALIBRATION_SOURCE_COMMIT,
+        "execution_critical_path_set_version": EXECUTION_CRITICAL_PATH_SET_VERSION,
         "approval": {"researcher": "user-provided researcher decisions; identity not asserted",
                      "approved_at_utc": None, "approved_on_utc_date": "2026-09-28",
                      "approval_sha256": approval_digest,
@@ -331,15 +343,29 @@ def write_component_locks(directory: Path, documents: dict[str, dict]) -> None:
         path.write_bytes(canonical_json_bytes(documents[name]) + b"\n")
 
 
-def write_lock_set(directory: Path, documents: dict[str, dict]) -> None:
+def write_lock_set(directory: Path, documents: dict[str, dict],
+                   *, supersede_root_sha256: str | None = None) -> None:
     """Write the protocol root after verifying all measured component locks."""
     _require(set(documents) == set(LOCK_NAMES), "complete five-lock set required")
     write_component_locks(directory, {name: documents[name] for name in LOCK_NAMES[:-1]})
     target = Path(directory) / "protocol.lock.json"
     verify_envelope(documents["protocol"])
     if target.exists():
-        _require(_read(target) == documents["protocol"],
+        previous = _read(target)
+        if previous == documents["protocol"]:
+            return
+        _require(supersede_root_sha256 == SUPERSEDED_PROTOCOL_ROOT and
+                 previous.get("sha256") == SUPERSEDED_PROTOCOL_ROOT,
                  "existing protocol lock differs; refuse overwrite")
+        verify_envelope(previous)
+        historical = directory / "superseded" / f"s1-protocol-{SUPERSEDED_PROTOCOL_ROOT}.json"
+        historical.parent.mkdir(parents=True, exist_ok=True)
+        if historical.exists():
+            _require(_read(historical) == previous,
+                     "superseded historical protocol differs; refuse overwrite")
+        else:
+            historical.write_bytes(canonical_json_bytes(previous) + b"\n")
+        target.write_bytes(canonical_json_bytes(documents["protocol"]) + b"\n")
     else:
         target.write_bytes(canonical_json_bytes(documents["protocol"]) + b"\n")
 
@@ -350,6 +376,13 @@ def validate_final_lock_set(directory: Path) -> dict[str, dict]:
     documents = {name: _read(directory / f"{name}.lock.json") for name in LOCK_NAMES}
     payloads = {name: verify_envelope(document)[0] for name, document in documents.items()}
     protocol, _ = validate_protocol_lock(documents["protocol"])
+    _require(protocol.get("production_runtime_source_commit") == protocol.get("source_commit") and
+             protocol.get("calibration_source_commit") == CALIBRATION_SOURCE_COMMIT and
+             protocol.get("execution_critical_path_set_version") == EXECUTION_CRITICAL_PATH_SET_VERSION and
+             protocol["protocol"].get("production_config_binding_schema") == 2 and
+             protocol["protocol"].get("calibration", {}).get("calibration_source_commit") ==
+             CALIBRATION_SOURCE_COMMIT,
+             "old production root is superseded: runtime source provenance binding is absent")
     _require(all(protocol[f"{name}_lock_digest"] == documents[name]["sha256"]
                  for name in ("artifact", "environment", "hardware", "calibration")),
              "protocol root has a stale transitive lock digest")
@@ -391,11 +424,11 @@ def validate_final_lock_set(directory: Path) -> dict[str, dict]:
     validate_eligibility_matrix(proof)
     _require(environment["uv_lock_sha256"] == LOCK_SHA256 and
              environment["lock_managed_maps_equal"] is True and
-             calibration["source_commit"] == SOURCE_COMMIT and
+             calibration["source_commit"] == CALIBRATION_SOURCE_COMMIT and
              calibration["environment_manifest_sha256"] == environment["rtx3090_manifest_sha256"] and
              calibration["input_hashes"]["corpus_sha256"] == artifact["corpus"]["payload_sha256"] and
              calibration["input_hashes"]["frozen_panels_sha256"] == artifact["panels"]["payload_sha256"] and
-             protocol["source_commit"] == SOURCE_COMMIT and
+             protocol["production_runtime_source_commit"] != CALIBRATION_SOURCE_COMMIT and
              protocol["approval"]["approval_sha256"] == approval_digest and
              protocol["protocol"]["researcher_amendment_sha256"] == amendment_digest and
              approval["amendment_sha256"] == amendment_digest and
@@ -429,8 +462,9 @@ def build_production_configs(repo: Path, protocol_document: dict) -> tuple[dict[
     """Derive exactly the reviewed nine seed-0 configs; do not launch them."""
     protocol, root_digest = validate_protocol_lock(protocol_document)
     _require(root_digest == protocol_document["sha256"] and
-             protocol["source_commit"] == SOURCE_COMMIT and
-             protocol["protocol"].get("production_config_binding_schema") == 1,
+             protocol.get("source_commit") == protocol.get("production_runtime_source_commit") and
+             protocol.get("calibration_source_commit") == CALIBRATION_SOURCE_COMMIT and
+             protocol["protocol"].get("production_config_binding_schema") == 2,
              "final S1 protocol binding schema is absent")
     reviewed = _read(Path(repo) / "configs/s1_jobs_seed0_reviewed.json")
     _require(payload_digest(reviewed) == protocol["protocol"]["run_plan"]["reviewed_plan_sha256"] and
@@ -456,15 +490,23 @@ def build_production_configs(repo: Path, protocol_document: dict) -> tuple[dict[
     return configs, plan
 
 
-def write_production_configs(repo: Path, configs: dict[str, dict], plan: dict) -> None:
+def write_production_configs(repo: Path, configs: dict[str, dict], plan: dict,
+                             *, supersede_root_sha256: str | None = None) -> None:
     root = Path(repo) / "configs"
     paths = {name: root / name for name in configs}
     plan_path = root / "production/s1_jobs_seed0.json"
     _require(len(paths) == 9, "exactly nine production configs required")
     for name, path in paths.items():
         if path.exists():
-            _require(_read(path) == configs[name],
+            previous = _read(path)
+            if previous == configs[name]:
+                continue
+            _require(supersede_root_sha256 == SUPERSEDED_PROTOCOL_ROOT and
+                     previous.get("protocol_digest") == SUPERSEDED_PROTOCOL_ROOT and
+                     previous.get("production_binding", {}).get("source_commit") ==
+                     CALIBRATION_SOURCE_COMMIT,
                      f"existing production config {name} differs; refuse overwrite")
+            path.write_bytes(canonical_json_bytes(configs[name]) + b"\n")
             continue
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_bytes(canonical_json_bytes(configs[name]) + b"\n")

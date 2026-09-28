@@ -48,7 +48,8 @@ def production_binding_for(payload: Mapping[str, Any], device_role: str, seed: i
     return {
         "seed": seed,
         "gpu_uuid": body["hardware"]["gpu_uuids"][device_role],
-        "source_commit": payload["source_commit"],
+        "production_runtime_source_commit": payload["production_runtime_source_commit"],
+        "execution_critical_path_set_version": payload["execution_critical_path_set_version"],
         "artifact_lock_digest": payload["artifact_lock_digest"],
         "environment_lock_digest": payload["environment_lock_digest"],
         "hardware_lock_digest": payload["hardware_lock_digest"],
@@ -116,7 +117,7 @@ def resolve_config(
             raise ConfigError("device role is absent from approved protocol")
         if study == "S3" and payload["protocol"].get("optional_studies", {}).get("S3") is not True:
             raise ConfigError("S3 requires separate approval")
-        if payload["protocol"].get("production_config_binding_schema") == 1 and production:
+        if payload["protocol"].get("production_config_binding_schema") == 2 and production:
             try:
                 expected_binding = production_binding_for(payload, device_role, seed)
             except (KeyError, TypeError) as exc:

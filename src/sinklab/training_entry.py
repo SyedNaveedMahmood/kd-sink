@@ -76,6 +76,7 @@ def _require_s1_data_lock(protocol: dict, corpus: dict, corpus_hash: str,
 
 def run_approved_training(args) -> dict:
     from .stage06_readiness import validate_final_lock_set
+    from .runtime_provenance import validate_runtime_source
     lock_set = validate_final_lock_set(args.protocol_lock.parent)
     if _read(args.protocol_lock) != lock_set["protocol"]:
         raise ValueError("requested protocol lock differs from validated production root")
@@ -83,6 +84,10 @@ def run_approved_training(args) -> dict:
                                         _read(args.hardware_plan))
     spec = resolve_config(raw, seed=args.seed, protocol_lock=protocol, production=True)
     lock, _ = validate_protocol_lock(protocol)
+    validate_runtime_source(Path(__file__).resolve().parents[2],
+                            lock["production_runtime_source_commit"],
+                            lock["execution_critical_path_set_version"],
+                            loaded_package_dir=Path(__file__).resolve().parent)
     hardware_payload, hardware_digest = verify_envelope(hardware_document)
     if (hardware_document != lock_set["hardware"] or
             hardware_digest != lock["hardware_lock_digest"] or
