@@ -43,3 +43,16 @@ approved RTX 3090, reproduce the same `uv.lock`, verify equality of the
 lock-managed installed-distribution inventory, and record its OS, NVIDIA
 driver, CUDA/cuDNN versions and GPU UUID before sealing that lock. Scientific
 Python package versions must match across roles; hardware metadata may differ.
+
+## RTX 3090 exact environment evidence
+
+`s1_environment_3090_exact_v1.json` records the approved device UUID
+`GPU-a21766e4-bb31-9b79-5e8f-e58021e9708e` and a no-change locked sync.
+Its 101 installed lock-managed package names and versions equal the sealed
+4080 record exactly. The approved `uv.lock` SHA-256 is
+`b71f143ff21a0ccdd45e995b006430399134bb1564b1210bdc70fb3c67f4c3d5`;
+the capture utility checks the LF-normalized Windows checkout against the
+committed lock bytes before sealing. `pip` and `uv` are recorded separately as
+bootstrap tools. The 3090 record does not itself make Stage 06 production-ready:
+the prepared external artifacts, measured C3/C4 calibration and transitive
+production locks remain required.

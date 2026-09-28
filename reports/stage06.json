@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "stage_id": "06",
-  "status": "blocked_pending_approved_3090_calibration_3090_environment_and_final_locks",
+  "status": "blocked_pending_external_artifact_tree_calibration_and_final_locks",
   "starting_commit": "5396f84828bd2de5eb29b6f0467eb084c1b2af8c",
   "resume_starting_commit": "aeb064f76ded84b7b1a7999371be6fd6ee7266f6",
   "implementation_milestones": [
@@ -17,12 +17,12 @@
     "06.2": "passed: approved fixed-role seed0 plan has seven unique C0-C6 condition/seed pairs and nine physical jobs, with C1/C2 same-seed 3090 bridges; focused plan tests pass",
     "06.3": "passed engineering gate: assigned-condition full-size GPT-2-large to random GPT-2-medium native, adapter, intervention and BF16 objective smokes pass on the RTX 4080 SUPER and RTX 3090; the 3090 probe uses sequence length 128 and covers C1-C4 including REL; REL-on-4080 refusal remains enforced",
     "06.4": "partial: every scheduled condition/device pair has committed real sequence-128 full-cycle profile evidence and corrected descending solver derives one common 4x16 schedule; raw C3/C4 calibration remains pending on approved RTX3090",
-    "06.5": "partial: historical GPU resume/precision smoke and exact-sync RTX4080 SUPER environment evidence exist; current host lacks RTX3090, so legitimate calibration, tested 3090 environment and final artifact/environment/hardware/calibration/protocol locks remain blocked"
+    "06.5": "partial: historical GPU resume/precision smoke and exact-sync evidence for both approved GPU roles exist; final artifact/environment/hardware/calibration/protocol locks remain blocked on external artifact availability and calibration"
   },
   "hardware": {
-    "current_gpu": "NVIDIA GeForce RTX 4080 SUPER",
-    "current_uuid": "GPU-72b4b307-b613-c35e-ea32-53f4431de9ee",
-    "current_vram_mib": 16376,
+    "current_gpu": "NVIDIA GeForce RTX 3090",
+    "current_uuid": "GPU-a21766e4-bb31-9b79-5e8f-e58021e9708e",
+    "current_vram_mib": 24576,
     "driver": "591.86",
     "cuda_driver_api": "13.1",
     "prior_evidence_gpu": "NVIDIA GeForce RTX 3090",
@@ -188,7 +188,10 @@
     "rtx4080super_active_environment_exact_sync": true,
     "rtx4080super_environment_record": "protocols/s1_environment_4080_exact_v1.json",
     "rtx4080super_environment_sha256": "11e3bfbe07093ee0a43f4b30c95deb07d33af74f3ea6b804896e3a4eec96bdb6",
-    "rtx3090_active_environment_exact_sync": "pending_on_approved_rtx3090",
+    "rtx3090_active_environment_exact_sync": true,
+    "rtx3090_environment_record": "protocols/s1_environment_3090_exact_v1.json",
+    "rtx3090_environment_sha256": "9f0344265d543c229306aa4a281f6577846e81d09625cfb400e38e49234ee908",
+    "rtx3090_lock_managed_distribution_map_equal_4080": true,
     "final_two_role_environment_lock": null
   },
   "artifacts": {
@@ -426,11 +429,11 @@
   "pushed": true,
   "remaining_blockers": [
     "approved RTX3090 C2/C3/C4 raw-gradient calibration on frozen 16x64 real OpenWebText panel, including C4/REL",
-    "reproduce the same uv.lock package set on the approved RTX3090, verify installed-distribution equality, record its OS/driver/CUDA/cuDNN/GPU UUID, then seal the final two-role environment lock",
+    "make the already-prepared external production artifact tree available on the approved RTX3090; the recorded F: drive is not mounted on the current host",
     "final artifact, hardware and calibration locks followed by transitive protocol.lock.json and production root hash",
     "final lock/dependency verification and 3090 calibration GPU acceptance; no scientific training has run"
   ],
-  "next_action": "On the approved RTX3090 pull the pushed commit, reproduce and verify the same uv.lock package set with local hardware metadata, transfer and verify external artifacts, run the fixed 16x64 calibration command, then seal final locks. Do not launch 10k training before all gates pass.",
+  "next_action": "Provide the actual local path to the already-prepared external production artifact tree, verify its pinned bytes, run the fixed 16x64 calibration from a clean pushed source milestone, then seal final locks. Do not launch 10k training before all gates pass.",
   "resume_4080_starting_commit": "0959501af6cd4a8285bd7eb9733cdcf6651e615b",
   "resources_4080_at_summary": {
     "observed_utc": "2026-09-27T16:24:43Z",
@@ -783,5 +786,33 @@
     "production_ready": false,
     "scientific_coverage": "none",
     "tested_environment_milestone_commit": "de20b74080d9d4f82580a505a6fd631ee1ce2267"
+  },
+  "rtx3090_exact_environment_20260928": {
+    "starting_commit": "9dda2efef8f5e2111cf0745f37a68f39c1cf6576",
+    "approved_gpu_model": "NVIDIA GeForce RTX 3090",
+    "approved_gpu_uuid": "GPU-a21766e4-bb31-9b79-5e8f-e58021e9708e",
+    "driver": "591.86",
+    "vram_mib": 24576,
+    "environment_record": "protocols/s1_environment_3090_exact_v1.json",
+    "environment_sha256": "9f0344265d543c229306aa4a281f6577846e81d09625cfb400e38e49234ee908",
+    "uv_lock_sha256": "b71f143ff21a0ccdd45e995b006430399134bb1564b1210bdc70fb3c67f4c3d5",
+    "lock_managed_distribution_count": 101,
+    "lock_managed_distribution_map_equal_4080": true,
+    "python": "3.12.3",
+    "torch": "2.10.0+cu128",
+    "cuda_runtime": "12.8",
+    "cudnn": 91002,
+    "transformers": "5.3.0",
+    "os": "Windows 11 10.0.26200",
+    "uv_locked_dry_run": "Would make no changes",
+    "pip_check": "passed: no broken requirements",
+    "focused_environment_tests": {"passed": 3, "failed": 0, "skipped": 0},
+    "full_cpu_regression": {"passed": 153, "failed": 0, "skipped": 0, "warnings": 1},
+    "offline_clean_wheel": {"passed": 1, "failed": 0, "skipped": 0},
+    "external_production_artifact_root_on_current_host": null,
+    "calibration_performed": false,
+    "production_training_runs": 0,
+    "production_ready": false,
+    "scientific_coverage": "none"
   }
 }

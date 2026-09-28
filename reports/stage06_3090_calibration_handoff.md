@@ -1,9 +1,9 @@
 # Stage 06 RTX 3090 calibration handoff
 
-The current host has only an RTX 4080 SUPER. Stage 06 remains blocked; this handoff does not report measured C3/C4 factors or a final production lock. The tested source milestone is `aef95f328fe052c0b0e79502823b05b66d8dc70e`; the attribution commit that follows it changes records only. On the approved RTX 3090 (`GPU-a21766e4-bb31-9b79-5e8f-e58021e9708e`), pull the exact pushed `origin/main` that contains this source milestone, copy the external `F:\KD-SINK-stage06-production` tree to one local artifact root, and install the locked environment with `uv sync --locked` (or `python -m uv sync --locked` if uv is installed as a module). Keep the checkout clean. Then invoke:
+Historical handoff: the original tested source milestone was `aef95f328fe052c0b0e79502823b05b66d8dc70e` on the RTX 4080 SUPER, followed by record-only attribution commits. The current checkout began at `9dda2efef8f5e2111cf0745f37a68f39c1cf6576` on the approved RTX 3090 (`GPU-a21766e4-bb31-9b79-5e8f-e58021e9708e`). Its exact locked environment is now sealed in `protocols/s1_environment_3090_exact_v1.json` and the 101 lock-managed distributions equal the 4080 evidence. Stage 06 remains blocked because the prepared external `F:\KD-SINK-stage06-production` tree is not mounted or otherwise present on this host; no measured C3/C4 factors or final production lock exist. Make that existing tree available at an actual local absolute path, verify it against the committed inventory, and use the clean pushed environment/source milestone as calibration provenance. Then invoke:
 
 ```powershell
-.\scripts\stage06_3090_calibration.ps1 -ArtifactRoot 'F:\KD-SINK-stage06-production'
+.\scripts\stage06_3090_calibration.ps1 -ArtifactRoot '<actual-local-production-artifact-root>'
 ```
 
 The script uses the checked-out commit as calibration code provenance, validates the committed artifact inventory and fixed nine-job batch proof, checks the pinned teacher/config/initialization hashes, requires the approved 3090 UUID as CUDA device 0, and writes raw 16-batch norm/ratio/factor evidence under the external `calibration-result` directory. It performs no optimizer updates and does not start production training. If the artifact tree is placed elsewhere, pass that absolute path to `-ArtifactRoot`.

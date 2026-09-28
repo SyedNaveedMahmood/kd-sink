@@ -15,11 +15,18 @@ from pathlib import Path
 import torch
 import transformers
 
-from sinklab.provenance import seal_payload
+from sinklab.provenance import seal_payload, verify_envelope
 
 
 ROOT = Path(__file__).resolve().parents[1]
 BOOTSTRAP_TOOLS = {"pip", "uv"}
+APPROVED_DEVICES = {
+    "rtx4080super": ("NVIDIA GeForce RTX 4080 SUPER",
+                     "GPU-72b4b307-b613-c35e-ea32-53f4431de9ee"),
+    "rtx3090": ("NVIDIA GeForce RTX 3090",
+                "GPU-a21766e4-bb31-9b79-5e8f-e58021e9708e"),
+}
+LOCK_SHA256 = "b71f143ff21a0ccdd45e995b006430399134bb1564b1210bdc70fb3c67f4c3d5"
 
 
 def _run(*args: str) -> dict:
@@ -32,13 +39,46 @@ def _name(value: str) -> str:
     return re.sub(r"[-_.]+", "-", value).lower()
 
 
+def verify_gpu_identity(fields: list[str], role: str, expected_model: str | None,
+                        expected_uuid: str | None) -> None:
+    approved_model, approved_uuid = APPROVED_DEVICES[role]
+    if role == "rtx3090" and (expected_model is None or expected_uuid is None):
+        raise RuntimeError("3090 capture requires explicit expected model and UUID")
+    if (expected_model is not None and expected_model != approved_model or
+            expected_uuid is not None and expected_uuid != approved_uuid):
+        raise RuntimeError("requested GPU identity differs from approved device role")
+    if len(fields) != 4 or fields[:2] != [approved_model, approved_uuid]:
+        raise RuntimeError(f"unexpected GPU identity for {role}: {fields}")
+
+
+def verify_locked_distribution_equality(current: dict[str, str], reference: dict) -> None:
+    payload, _ = verify_envelope(reference)
+    if payload["dependency_lock_sha256"] != LOCK_SHA256:
+        raise RuntimeError("4080 reference uses a different dependency lock")
+    if current != payload["installed_locked_distributions"]:
+        missing = sorted(set(payload["installed_locked_distributions"]) - set(current))
+        extra = sorted(set(current) - set(payload["installed_locked_distributions"]))
+        changed = sorted(name for name in set(current) & set(payload["installed_locked_distributions"])
+                         if current[name] != payload["installed_locked_distributions"][name])
+        raise RuntimeError(f"3090/4080 lock-managed distribution map differs: "
+                           f"missing={missing}, extra={extra}, changed={changed}")
+
+
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--phase", choices=("before", "after"), required=True)
     parser.add_argument("--out", type=Path, required=True)
+    parser.add_argument("--device-role", choices=tuple(APPROVED_DEVICES), default="rtx4080super")
+    parser.add_argument("--expected-model")
+    parser.add_argument("--expected-uuid")
     args = parser.parse_args()
 
-    lock_bytes = (ROOT / "uv.lock").read_bytes()
+    # Git's Windows checkout can convert the committed LF lock to CRLF. The
+    # lock authority is the committed file; accept only that line-ending change.
+    lock_bytes = (ROOT / "uv.lock").read_bytes().replace(b"\r\n", b"\n")
+    committed_lock = subprocess.check_output(["git", "show", "HEAD:uv.lock"], cwd=ROOT)
+    if lock_bytes != committed_lock or hashlib.sha256(lock_bytes).hexdigest() != LOCK_SHA256:
+        raise RuntimeError("working dependency lock differs from approved committed uv.lock")
     lock = {_name(row["name"]): row["version"]
             for row in tomllib.loads(lock_bytes.decode("utf-8"))["package"]}
     installed = {_name(row.metadata["Name"]): row.version
@@ -71,11 +111,16 @@ def main() -> None:
     if len(gpu_lines) != 1:
         raise RuntimeError(f"expected one production GPU, found {gpu_lines}")
     gpu_fields = [field.strip() for field in gpu_lines[0].split(",")]
-    if len(gpu_fields) != 4 or gpu_fields[0] != "NVIDIA GeForce RTX 4080 SUPER":
-        raise RuntimeError(f"unexpected GPU identity: {gpu_fields}")
+    verify_gpu_identity(gpu_fields, args.device_role, args.expected_model, args.expected_uuid)
+    installed_locked = dict(sorted((name, version) for name, version
+                                    in installed.items() if name in lock))
+    if args.phase == "after" and args.device_role == "rtx3090":
+        reference = json.loads((ROOT / "protocols/s1_environment_4080_exact_v1.json")
+                               .read_text(encoding="utf-8"))
+        verify_locked_distribution_equality(installed_locked, reference)
 
     payload = {
-        "kind": "stage06_rtx4080super_exact_environment_evidence",
+        "kind": f"stage06_{args.device_role}_exact_environment_evidence",
         "phase": args.phase,
         "captured_at_utc": datetime.now(timezone.utc).isoformat(),
         "source_commit": source["stdout"].strip(),
@@ -84,8 +129,7 @@ def main() -> None:
         "dependency_lock_sha256": hashlib.sha256(lock_bytes).hexdigest(),
         "locked_package_count_all_platforms": len(lock),
         "installed_distribution_count_including_bootstrap_and_extras": len(installed),
-        "installed_locked_distributions": dict(sorted((name, version) for name, version
-                                                       in installed.items() if name in lock)),
+        "installed_locked_distributions": installed_locked,
         "lock_entries_not_installed_on_this_platform": dict(sorted((name, version)
                                                          for name, version in lock.items()
                                                          if name not in installed)),
@@ -113,11 +157,15 @@ def main() -> None:
                 "nvidia_driver": gpu_fields[3]},
     }
     if args.phase == "after":
-        payload["role_status"] = "rtx4080super_exact_sync_verified"
-        payload["remaining_environment_task"] = (
-            "Reproduce exact same uv.lock environment on approved RTX 3090; "
-            "verify installed-distribution equality; record 3090 OS, driver, "
-            "CUDA, cuDNN and GPU UUID.")
+        payload["role_status"] = f"{args.device_role}_exact_sync_verified"
+        if args.device_role == "rtx4080super":
+            payload["remaining_environment_task"] = (
+                "Reproduce exact same uv.lock environment on approved RTX 3090; "
+                "verify installed-distribution equality; record 3090 OS, driver, "
+                "CUDA, cuDNN and GPU UUID.")
+        else:
+            payload["lock_managed_distributions_equal_4080"] = True
+            payload["reference_4080_environment_sha256"] = reference["sha256"]
     document = {"schema_version": 1, **seal_payload(payload)}
     args.out.parent.mkdir(parents=True, exist_ok=True)
     args.out.write_text(json.dumps(document, ensure_ascii=False, indent=2) + "\n",
