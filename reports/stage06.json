@@ -781,6 +781,7 @@
     "new_calibration_runs": 0,
     "production_training_runs": 0,
     "production_ready": false,
-    "scientific_coverage": "none"
+    "scientific_coverage": "none",
+    "tested_environment_milestone_commit": "de20b74080d9d4f82580a505a6fd631ee1ce2267"
   }
 }
