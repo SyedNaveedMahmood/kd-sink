@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "stage_id": "06",
-  "status": "production_ready",
+  "status": "d19_class_amendment_pending_new_runtime_source_and_successor_root",
   "starting_commit": "5396f84828bd2de5eb29b6f0467eb084c1b2af8c",
   "resume_starting_commit": "aeb064f76ded84b7b1a7999371be6fd6ee7266f6",
   "implementation_milestones": [
@@ -433,9 +433,9 @@
   ],
   "scientific_coverage": "none; approved calibration is a training-side measurement, not an S1/S3 production training result",
   "upstream_files_changed": 0,
-  "pushed": true,
-  "remaining_blockers": [],
-  "next_action": "Operator may launch individually reviewed S1 seed-0 production jobs under the new root; no scientific run has yet started. Do not count readiness as scientific coverage.",
+  "pushed": false,
+  "remaining_blockers": ["D19 source milestone and successor root not yet sealed; Git author name/email unset"],
+  "next_action": "Commit and push tested D19 runtime source with genuine author identity, then seal and validate a prospective successor root. Do not launch scientific training in this task.",
   "runtime_source_repair_20260928": {
     "starting_commit": "dceba4976c06399cffabdd50e80c41c94137a5e6",
     "old_root_sha256": "2a11da9bb71957a4d6b3a2f93a34bd67491dd9d21d70577a7a10858930a8943e",
@@ -943,5 +943,23 @@
     "production_training_runs": 0,
     "production_ready": false,
     "scientific_coverage": "none"
+  },
+  "d19_4080_class_amendment_20260928": {
+    "status": "researcher_approved_source_tested_successor_pending",
+    "decision_path": "protocols/s1_researcher_amendment_d19_4080_class_20260928.json",
+    "decision_sha256": "c879d73cd25fd00d042235c9722618dd518edfdb2c2e90b42503657db8ab0294",
+    "reference_measured_machine": "NodiPC",
+    "reference_uuid": "GPU-72b4b307-b613-c35e-ea32-53f4431de9ee",
+    "reference_allowed_4080_conditions": ["C0", "C1", "C2", "C5", "C6"],
+    "nonreference_observed_machine": "NaveedPC",
+    "nonreference_report_sha256": "49affd9fa752618628ab4b263c787c396886856b02356c90c1dd7d184ea4d908",
+    "naveed_c2_mb4_former_headroom_status": "failed_by_96025804_free_bytes",
+    "naveed_c5_mb4_former_headroom_status": "failed_by_228498636_free_bytes",
+    "production_authorization_basis": "researcher_approved_reference_profile_transfer_not_independent_per_card_pass",
+    "common_schedule": {"microbatch": 4, "accumulation": 16},
+    "predecessor_root": "910961fcc53edaed0df48e3139dbb7ca2e058bf7480b67dab27bae0bcd90f26f",
+    "new_runtime_source_commit": null,
+    "successor_root": null,
+    "scientific_training_started_in_this_amendment": false
   }
 }

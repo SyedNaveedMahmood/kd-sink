@@ -13,8 +13,10 @@ from sinklab.provenance import LockError, seal_payload, validate_protocol_lock, 
 from sinklab.stage06_readiness import (CALIBRATION_SOURCE_COMMIT, SUPERSEDED_PROTOCOL_ROOT,
                                        ReadinessError,
                                        build_production_configs, build_protocol_lock,
+                                       build_successor_component_locks,
                                        validate_calibration_result, validate_final_lock_set,
                                        validate_production_configs, write_lock_set,
+                                       write_successor_lock_set,
                                        write_production_configs)
 
 
@@ -55,9 +57,12 @@ def test_measured_component_locks_bind_real_inputs_without_claiming_root():
         "calibration": "fa031af3de63832e054b89539d3867c2904c9b592b1e7a8b3e4ca3e3676c532f",
     }
     locks = {}
+    current = json.loads((ROOT / "protocols/protocol.lock.json").read_text(encoding="utf-8"))
     for name, digest in expected.items():
-        locks[name], observed = verify_envelope(json.loads((
-            ROOT / "protocols" / f"{name}.lock.json").read_text(encoding="utf-8")))
+        path = ROOT / "protocols" / f"{name}.lock.json"
+        if current["sha256"] != "910961fcc53edaed0df48e3139dbb7ca2e058bf7480b67dab27bae0bcd90f26f" and name in ("environment", "hardware"):
+            path = ROOT / "protocols/superseded" / f"s1-{name}-{digest}.json"
+        locks[name], observed = verify_envelope(json.loads(path.read_text(encoding="utf-8")))
         assert observed == digest
     inventory = _payload("reports/stage06_production_artifact_inventory.json")
     assert locks["artifact"]["corpus"] == inventory["corpus"]
@@ -210,27 +215,41 @@ def test_full_transitive_root_and_nine_configs_with_fixture_floor_only(tmp_path)
     # 1.0 is an isolated test fixture, not a proposed or sealed study value.
     relative = ["uv.lock", "reports/stage06_production_artifact_inventory.json",
                 "reports/stage06_reviewed_batch_candidate.json",
+                "reports/stage06_second_4080_qualification.json",
                 "reports/stage06_3090_profile_evidence.json",
                 "reports/stage06_4080_profile_evidence.json",
                 "protocols/s1_environment_4080_exact_v1.json",
                 "protocols/s1_environment_3090_exact_v1.json",
                 "protocols/s1_researcher_approval_20260928.json",
                 "protocols/s1_researcher_amendment_20260928.json",
+                "protocols/s1_researcher_amendment_d19_4080_class_20260928.json",
+                "protocols/artifact.lock.json", "protocols/environment.lock.json",
+                "protocols/hardware.lock.json", "protocols/calibration.lock.json",
+                "protocols/protocol.lock.json",
                 "configs/s1_jobs_seed0_reviewed.json"]
     reviewed = json.loads((ROOT / "configs/s1_jobs_seed0_reviewed.json").read_text())
     relative += [f"configs/{job['config']}" for job in reviewed["jobs"]]
     for name in relative:
         target = tmp_path / name
         target.parent.mkdir(parents=True, exist_ok=True)
-        shutil.copy2(ROOT / name, target)
-    components = {name: json.loads((ROOT / "protocols" / f"{name}.lock.json")
-                                   .read_text(encoding="utf-8"))
-                  for name in ("artifact", "environment", "hardware", "calibration")}
+        source = ROOT / name
+        current_root = json.loads((ROOT / "protocols/protocol.lock.json").read_text())["sha256"]
+        if current_root != "910961fcc53edaed0df48e3139dbb7ca2e058bf7480b67dab27bae0bcd90f26f" and name in (
+                "protocols/environment.lock.json", "protocols/hardware.lock.json",
+                "protocols/protocol.lock.json"):
+            old = {"protocols/environment.lock.json": "0266e734fa97357ed0609e722c8d492284b34a06f726ce37b7301e703a370025",
+                   "protocols/hardware.lock.json": "c284abebf7b9915053c282d57555a1a28cf9ad8250f3c402a3f313207eaae138"}
+            source = (ROOT / "protocols/superseded" / f"s1-{Path(name).stem.split('.')[0]}-{old[name]}.json"
+                      if name in old else ROOT / "protocols/superseded" /
+                      "s1-protocol-910961fcc53edaed0df48e3139dbb7ca2e058bf7480b67dab27bae0bcd90f26f.json")
+        shutil.copy2(source, target)
+    components = build_successor_component_locks(tmp_path)
     protocol = build_protocol_lock(tmp_path, components,
                                    fingerprint_denominator_floor=1.0,
                                    production_runtime_source_commit="f" * 40)
     configs, plan = build_production_configs(tmp_path, protocol)
-    write_lock_set(tmp_path / "protocols", {**components, "protocol": protocol})
+    write_successor_lock_set(tmp_path / "protocols", {**components, "protocol": protocol})
+    write_successor_lock_set(tmp_path / "protocols", {**components, "protocol": protocol})
     write_production_configs(tmp_path, configs, plan)
     assert validate_final_lock_set(tmp_path / "protocols")["protocol"] == protocol
     assert validate_production_configs(tmp_path, protocol)["physical_runs"] == 9

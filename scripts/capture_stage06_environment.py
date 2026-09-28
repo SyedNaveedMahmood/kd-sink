@@ -40,8 +40,24 @@ def _name(value: str) -> str:
 
 
 def verify_gpu_identity(fields: list[str], role: str, expected_model: str | None,
-                        expected_uuid: str | None) -> None:
+                        expected_uuid: str | None, *,
+                        second_4080_qualification: bool = False,
+                        class_environment: bool = False) -> None:
     approved_model, approved_uuid = APPROVED_DEVICES[role]
+    if class_environment:
+        if (role != "rtx4080super" or len(fields) != 4 or
+                fields[0] != approved_model or not fields[1] or
+                (expected_model is not None and expected_model != fields[0]) or
+                (expected_uuid is not None and expected_uuid != fields[1])):
+            raise RuntimeError("4080 class environment requires exact model and actual UUID")
+        return
+    if second_4080_qualification:
+        if role != "rtx4080super" or expected_model != approved_model or not expected_uuid or (
+                expected_uuid == approved_uuid):
+            raise RuntimeError("second 4080 qualification requires its distinct explicit UUID and model")
+        if len(fields) != 4 or fields[:2] != [expected_model, expected_uuid]:
+            raise RuntimeError(f"unexpected second 4080 GPU identity: {fields}")
+        return
     if role == "rtx3090" and (expected_model is None or expected_uuid is None):
         raise RuntimeError("3090 capture requires explicit expected model and UUID")
     if (expected_model is not None and expected_model != approved_model or
@@ -71,7 +87,13 @@ def main() -> None:
     parser.add_argument("--device-role", choices=tuple(APPROVED_DEVICES), default="rtx4080super")
     parser.add_argument("--expected-model")
     parser.add_argument("--expected-uuid")
+    parser.add_argument("--second-4080-qualification", action="store_true",
+                        help="capture a distinct 4080 UUID as qualification evidence only")
+    parser.add_argument("--4080-class-environment", action="store_true", dest="class_4080_environment",
+                        help="capture exact-model class host software; no per-card profile claim")
     args = parser.parse_args()
+    if args.second_4080_qualification and args.class_4080_environment:
+        parser.error("choose one 4080 capture policy")
 
     # Git's Windows checkout can convert the committed LF lock to CRLF. The
     # lock authority is the committed file; accept only that line-ending change.
@@ -111,16 +133,24 @@ def main() -> None:
     if len(gpu_lines) != 1:
         raise RuntimeError(f"expected one production GPU, found {gpu_lines}")
     gpu_fields = [field.strip() for field in gpu_lines[0].split(",")]
-    verify_gpu_identity(gpu_fields, args.device_role, args.expected_model, args.expected_uuid)
+    verify_gpu_identity(gpu_fields, args.device_role, args.expected_model, args.expected_uuid,
+                        second_4080_qualification=args.second_4080_qualification,
+                        class_environment=args.class_4080_environment)
     installed_locked = dict(sorted((name, version) for name, version
                                     in installed.items() if name in lock))
-    if args.phase == "after" and args.device_role == "rtx3090":
+    if args.phase == "after" and (args.device_role == "rtx3090" or
+                                  args.second_4080_qualification or
+                                  args.class_4080_environment):
         reference = json.loads((ROOT / "protocols/s1_environment_4080_exact_v1.json")
                                .read_text(encoding="utf-8"))
         verify_locked_distribution_equality(installed_locked, reference)
 
     payload = {
-        "kind": f"stage06_{args.device_role}_exact_environment_evidence",
+        "kind": ("stage06_rtx4080super_class_environment_v1"
+                 if args.class_4080_environment else
+                 "stage06_second_rtx4080super_exact_environment_qualification_v1"
+                 if args.second_4080_qualification else
+                 f"stage06_{args.device_role}_exact_environment_evidence"),
         "phase": args.phase,
         "captured_at_utc": datetime.now(timezone.utc).isoformat(),
         "source_commit": source["stdout"].strip(),
@@ -156,9 +186,18 @@ def main() -> None:
                 "total_vram_mib": int(gpu_fields[2].split()[0]),
                 "nvidia_driver": gpu_fields[3]},
     }
+    if args.class_4080_environment:
+        payload["hardware_class_transfer_only"] = True
+    if args.second_4080_qualification:
+        payload["second_4080_qualification_only"] = True
     if args.phase == "after":
-        payload["role_status"] = f"{args.device_role}_exact_sync_verified"
-        if args.device_role == "rtx4080super":
+        payload["role_status"] = ("rtx4080super_class_software_exact_sync_verified"
+                                  if args.class_4080_environment else
+                                  "second_rtx4080super_exact_sync_verified"
+                                  if args.second_4080_qualification else
+                                  f"{args.device_role}_exact_sync_verified")
+        if args.device_role == "rtx4080super" and not (
+                args.second_4080_qualification or args.class_4080_environment):
             payload["remaining_environment_task"] = (
                 "Reproduce exact same uv.lock environment on approved RTX 3090; "
                 "verify installed-distribution equality; record 3090 OS, driver, "

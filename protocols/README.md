@@ -142,3 +142,21 @@ measured component lock digests stayed unchanged. The nine regenerated
 configs bind the new root and runtime milestone; production validation of
 each config and the nine-job plan passed. Stage 06 is production-ready with
 S1 scientific coverage still none.
+
+## D19 prospective RTX 4080 SUPER class transfer
+
+The 2026-09-28 researcher amendment
+`s1_researcher_amendment_d19_4080_class_20260928.json` prospectively transfers
+NodiPC's measured C0/C1/C2/C5/C6 RTX 4080 SUPER reference qualification to
+exact-model peers. It preserves the separate NaveedPC report: C2/C5 finished
+the microbatch-4 cycle but missed the former free-VRAM headroom criterion by
+96,025,804/228,498,636 bytes. Their production permission derives from D19,
+not an independent pass. Future hosts must match the locked software and
+scientific artifacts. Fresh runs record the actual GPU UUID; checkpoint
+resume refuses a different UUID. The successor hardware and environment
+locks will retain the measured reference proof, add the D19 transfer policy,
+and name predecessor root
+`910961fcc53edaed0df48e3139dbb7ca2e058bf7480b67dab27bae0bcd90f26f`.
+The new runtime source must be committed and pushed before successor sealing.
+Until that occurs, the historical root remains the only committed root, and
+this amended checkout cannot pass its execution-critical source guard.

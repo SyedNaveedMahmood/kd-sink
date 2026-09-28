@@ -112,6 +112,9 @@ class Trainer:
             raise TrainError("one explicit supported study/condition required")
         if identity["condition"] == "C4" and not engineering_fixture and identity.get("device_role") != "rtx3090":
             raise TrainError("production C4 requires RTX 3090")
+        if not engineering_fixture and (not isinstance(identity.get("gpu_uuid"), str) or
+                                        not identity["gpu_uuid"].strip()):
+            raise TrainError("production run identity requires the actual physical GPU UUID")
         if not engineering_fixture and (device.type != "cuda" or identity["precision"] != "bf16"):
             raise TrainError("production training requires pinned CUDA/BF16 plan")
         if not engineering_fixture and any(p.dtype != torch.float32 for p in model.parameters() if p.requires_grad):

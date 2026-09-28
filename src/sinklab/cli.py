@@ -97,6 +97,10 @@ def main(argv: Sequence[str] | None = None) -> int:
     train.add_argument("--extension-id")
     train.add_argument("--mse-scale", type=float)
     train.add_argument("--rel-scale", type=float)
+    preflight = command.add_parser("preflight-production", help="validate one production job on this GPU; never train")
+    for flag in ("config", "protocol-lock", "hardware-plan", "artifact-root"):
+        preflight.add_argument(f"--{flag}", type=Path, required=True)
+    preflight.add_argument("--seed", type=int, required=True)
     profile = command.add_parser("profile-candidate", help="one isolated real CUDA batch candidate")
     for flag in ("config", "corpus", "panels", "student-config", "initialization",
                  "teacher-dir", "profile-dir", "output"):
@@ -200,9 +204,12 @@ def main(argv: Sequence[str] | None = None) -> int:
         elif args.command == "inspect-job":
             from .job_plan import inspect_job
             output = inspect_job(_json(args.plan), args.config_root, args.run_id)
-        elif args.command in {"train", "profile-candidate"}:
-            from .training_entry import run_approved_training, run_profile_candidate
-            output = run_approved_training(args) if args.command == "train" else run_profile_candidate(args)
+        elif args.command in {"train", "profile-candidate", "preflight-production"}:
+            from .training_entry import (preflight_approved_training, run_approved_training,
+                                         run_profile_candidate)
+            output = (run_approved_training(args) if args.command == "train" else
+                      run_profile_candidate(args) if args.command == "profile-candidate" else
+                      preflight_approved_training(args))
         elif args.command == "validate-job-plan":
             from .job_plan import validate_job_plan
             lock = _json(args.protocol_lock) if args.protocol_lock else None

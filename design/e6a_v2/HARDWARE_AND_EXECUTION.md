@@ -1,5 +1,9 @@
 # S1 condition/device execution and memory contract
 
+## D19 prospective RTX 4080 SUPER hardware-class amendment
+
+The researcher-approved D19 decision supersedes the **per-physical-4080-UUID** headroom qualification gate for fresh production jobs. NodiPC's exact `NVIDIA GeForce RTX 4080 SUPER` reference profiles authorize C0/C1/C2/C5/C6 on exact-model peers, including NaveedPC and Adrita-PC, after the same software, artifact, numerical, protocol and runtime-source checks. The reference proof and common microbatch 4 × accumulation 16 remain unchanged. A new host's UUID is recorded at launch; checkpoint identity requires the same UUID at resume. This policy accepts Windows/WDDM available-memory variation as operational risk. NaveedPC C2/C5 completed at microbatch 4 but missed the former free-VRAM threshold by 96,025,804/228,498,636 bytes; those results are preserved as failed per-card engineering evidence. An actual OOM aborts without batch/context/schedule adjustment or migration. C3 remains unavailable on 4080 and C4 prohibited. RTX 3090 roles and exact UUID remain unchanged. The successor root is prospective; earlier C0 work remains under its original root.
+
 Upstream's historical13.8GiB optimizer microstep [UP1] does not establish memory for the rewritten REL objective, FP32 master states or dense evaluator. No new hardware fit or wallclock measurement is supplied here.
 
 ## Corrected S1 eligibility policy and campaign

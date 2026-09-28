@@ -45,9 +45,23 @@ class RunSpec:
 def production_binding_for(payload: Mapping[str, Any], device_role: str, seed: int) -> dict[str, Any]:
     """The immutable per-job identities a final S1 config must repeat exactly."""
     body = payload["protocol"]
+    schema = body.get("production_config_binding_schema")
+    if schema == 3 and device_role == "rtx4080super":
+        hardware_binding = body["hardware"]["hardware_classes"][device_role]
+        identity = {"hardware_binding": {
+            "policy": "researcher_approved_reference_profile_transfer",
+            "class": device_role,
+            "model": hardware_binding["model"],
+            "reference_uuid": hardware_binding["reference_uuid"],
+            "actual_uuid": "runtime_recorded",
+        }}
+    elif schema in (2, 3):
+        identity = {"gpu_uuid": body["hardware"]["gpu_uuids"][device_role]}
+    else:
+        raise KeyError("unsupported production binding schema")
     return {
         "seed": seed,
-        "gpu_uuid": body["hardware"]["gpu_uuids"][device_role],
+        **identity,
         "production_runtime_source_commit": payload["production_runtime_source_commit"],
         "execution_critical_path_set_version": payload["execution_critical_path_set_version"],
         "artifact_lock_digest": payload["artifact_lock_digest"],
@@ -117,7 +131,7 @@ def resolve_config(
             raise ConfigError("device role is absent from approved protocol")
         if study == "S3" and payload["protocol"].get("optional_studies", {}).get("S3") is not True:
             raise ConfigError("S3 requires separate approval")
-        if payload["protocol"].get("production_config_binding_schema") == 2 and production:
+        if payload["protocol"].get("production_config_binding_schema") in (2, 3) and production:
             try:
                 expected_binding = production_binding_for(payload, device_role, seed)
             except (KeyError, TypeError) as exc:

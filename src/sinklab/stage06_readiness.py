@@ -10,6 +10,7 @@ import subprocess
 from pathlib import Path
 
 from .config import MODELS, S1_VARIANTS, production_binding_for, resolve_config
+from .hardware import RTX4080_SUPER_MODEL
 from .hardware import Profile, build_batch_plan, validate_eligibility_matrix
 from .owt_compat import RECIPE
 from .provenance import (COMMIT_PATTERN, _no_duplicate_keys, canonical_json_bytes, payload_digest,
@@ -20,6 +21,8 @@ from .stage06_evidence import build_reviewed_seed0_candidate
 
 CALIBRATION_SOURCE_COMMIT = "a29bcebc6253a5300452594bbaabe4b8e082a463"
 SUPERSEDED_PROTOCOL_ROOT = "2a11da9bb71957a4d6b3a2f93a34bd67491dd9d21d70577a7a10858930a8943e"
+PREDECESSOR_PROTOCOL_ROOT = "910961fcc53edaed0df48e3139dbb7ca2e058bf7480b67dab27bae0bcd90f26f"
+D19_PATH = "protocols/s1_researcher_amendment_d19_4080_class_20260928.json"
 GPU_UUIDS = {
     "rtx4080super": "GPU-72b4b307-b613-c35e-ea32-53f4431de9ee",
     "rtx3090": "GPU-a21766e4-bb31-9b79-5e8f-e58021e9708e",
@@ -47,6 +50,89 @@ def _require(condition: bool, message: str) -> None:
 
 def _committed_sha(path: Path) -> str:
     return hashlib.sha256(path.read_bytes().replace(b"\r\n", b"\n")).hexdigest()
+
+
+def _d19(repo: Path) -> tuple[dict, str]:
+    decision, digest = _sealed(Path(repo) / D19_PATH)
+    observed, observed_digest = _sealed(Path(repo) / "reports/stage06_second_4080_qualification.json")
+    candidate, _ = _sealed(Path(repo) / "reports/stage06_reviewed_batch_candidate.json")
+    attempts = {(p["condition"], p["microbatch"]): p for p in observed["profiles"]["attempts"]}
+    _require(decision.get("decision_id") == "D19" and
+             decision.get("status") == "approved_prospective_hardware_policy" and
+             decision.get("predecessor_production_root") == PREDECESSOR_PROTOCOL_ROOT and
+             decision.get("reference_model") == RTX4080_SUPER_MODEL and
+             decision.get("reference_uuid") == GPU_UUIDS["rtx4080super"] and
+             decision.get("reference_profile_report_sha256") ==
+             candidate["source_report_sha256"]["rtx4080super"] and
+             decision.get("naveed_observed_profile_report_sha256") == observed_digest and
+             decision.get("known_equivalent_machine_uuids", {}).get("NaveedPC") ==
+             "GPU-f6ff547d-b5cb-c2b8-ca56-ef87e6c18af0" and
+             decision.get("allowed_4080_conditions") == ["C0", "C1", "C2", "C5", "C6"] and
+             decision.get("transfer_policy") == "researcher_approved_reference_profile_transfer" and
+             decision.get("per_card_headroom_profile_required") is False and
+             decision.get("common_schedule") == {"microbatch": 4, "accumulation": 16,
+                                                 "effective_sequences": 64} and
+             decision.get("c3_4080_status") == "not_approved_pending_reference_profile" and
+             decision.get("c4_4080_status") == "prohibited" and
+             decision.get("resume_uuid_policy") == "same_physical_uuid_only" and
+             observed["hardware_qualification"] == "not_qualified_same_4080_capability_class" and
+             all(attempts[(condition, 4)]["status"] == "complete_unsafe" and
+                 attempts[(condition, 4)]["free_margin_bytes"] == -deficit
+                 for condition, deficit in (("C2", 96025804), ("C5", 228498636))),
+             "D19 or preserved nonreference measurements differ from researcher decision")
+    return decision, digest
+
+
+def build_successor_component_locks(repo: Path) -> dict[str, dict]:
+    """Carry forward measured locks and add only the prospective D19 policy."""
+    repo = Path(repo)
+    protocol_dir = repo / "protocols"
+    old = {}
+    for name in LOCK_NAMES[:-1]:
+        path = protocol_dir / f"{name}.lock.json"
+        current = _read(path)
+        if name in ("environment", "hardware") and "predecessor_lock_sha256" in current["payload"]:
+            predecessor_digest = current["payload"]["predecessor_lock_sha256"]
+            path = protocol_dir / "superseded" / f"s1-{name}-{predecessor_digest}.json"
+        old[name] = _read(path)
+    for document in old.values():
+        verify_envelope(document)
+    d19, d19_digest = _d19(repo)
+    reference = old["hardware"]["payload"]
+    _require(reference["gpu_uuids"] == GPU_UUIDS and
+             reference["proof"]["microbatch"] == 4 and
+             reference["proof"]["accumulation"] == 16,
+             "predecessor reference hardware proof differs")
+    hardware_class = {
+        "policy": d19["transfer_policy"], "model": RTX4080_SUPER_MODEL,
+        "reference_uuid": GPU_UUIDS["rtx4080super"],
+        "known_equivalent_uuids": d19["known_equivalent_machine_uuids"],
+        "allowed_conditions": d19["allowed_4080_conditions"],
+        "actual_uuid": "runtime_recorded", "resume_uuid": "same_physical_uuid_only",
+        "per_card_headroom_profile_required": False,
+        "microbatch": 4, "accumulation": 16,
+    }
+    environment = dict(old["environment"]["payload"])
+    devices = {role: dict(value) for role, value in environment["devices"].items()}
+    reference_gpu = dict(devices["rtx4080super"]["gpu"])
+    reference_gpu["reference_uuid"] = reference_gpu.pop("uuid")
+    devices["rtx4080super"]["gpu"] = reference_gpu
+    environment["devices"] = devices
+    environment.update(kind="s1-production-two-role-environment-lock-v2",
+                       rtx4080super_environment_policy="exact_locked_software_reference_environment_independent_of_gpu_uuid",
+                       rtx4080super_reference_uuid=GPU_UUIDS["rtx4080super"],
+                       predecessor_lock_sha256=old["environment"]["sha256"])
+    hardware = dict(reference)
+    hardware.update(kind="s1-production-hardware-lock-v2",
+                    evidence="measured_reference_plus_researcher_transfer",
+                    predecessor_lock_sha256=old["hardware"]["sha256"],
+                    predecessor_protocol_root=PREDECESSOR_PROTOCOL_ROOT,
+                    d19_researcher_amendment_sha256=d19_digest,
+                    nonreference_observed_profile_sha256=d19["naveed_observed_profile_report_sha256"],
+                    nonreference_profile_interpretation=d19["measurement_interpretation"],
+                    hardware_classes={"rtx4080super": hardware_class})
+    return {"artifact": old["artifact"], "environment": seal_payload(environment),
+            "hardware": seal_payload(hardware), "calibration": old["calibration"]}
 
 
 def validate_calibration_result(result: dict, inventory: dict, candidate: dict,
@@ -215,12 +301,17 @@ def build_protocol_lock(repo: Path, components: dict[str, dict],
         ("artifact", "environment", "hardware", "calibration"))
     approval, approval_digest = _sealed(Path(repo) / "protocols/s1_researcher_approval_20260928.json")
     _, amendment_digest = _sealed(Path(repo) / "protocols/s1_researcher_amendment_20260928.json")
+    d19, d19_digest = _d19(Path(repo))
     plan = _read(Path(repo) / "configs/s1_jobs_seed0_reviewed.json")
     _require(approval["amendment_sha256"] == amendment_digest and
              approval["reviewed_seed0_plan_sha256"] == payload_digest(plan) and
              approval["mandatory_seeds"] == [0] and approval["optional_seeds"] == [1, 2] and
              approval["default_optimizer_updates"] == 10000 and
-             hardware["reviewed_plan_sha256"] == payload_digest(plan),
+             hardware["reviewed_plan_sha256"] == payload_digest(plan) and
+             hardware.get("d19_researcher_amendment_sha256") == d19_digest and
+             hardware.get("predecessor_protocol_root") == PREDECESSOR_PROTOCOL_ROOT and
+             hardware.get("hardware_classes", {}).get("rtx4080super", {}).get("reference_uuid") ==
+             d19["reference_uuid"],
              "researcher approval or reviewed job plan changed")
     allowed = {condition: sorted(role for role in GPU_UUIDS
                   if hardware["condition_device_eligibility"][condition][role]["scheduled_in_current_plan"])
@@ -229,7 +320,7 @@ def build_protocol_lock(repo: Path, components: dict[str, dict],
     teacher_layers = [(s + 1) * 36 // 24 - (0 if (s + 1) * 36 % 24 else 1)
                       for s in range(24)]
     protocol = {
-        "production_config_binding_schema": 2,
+        "production_config_binding_schema": 3,
         "teacher": teacher, "student": student,
         "teacher_layers_for_student": teacher_layers,
         "data": {"recipe": RECIPE,
@@ -288,6 +379,7 @@ def build_protocol_lock(repo: Path, components: dict[str, dict],
                           "active_rolling_generations": 2,
                           "protect_final_full_resume": True},
         "hardware": {"gpu_uuids": GPU_UUIDS,
+                     "hardware_classes": hardware["hardware_classes"],
                      "reviewed_plan_sha256": hardware["reviewed_plan_sha256"],
                      "candidate_sha256": hardware["candidate_sha256"],
                      "condition_device_eligibility": hardware["condition_device_eligibility"],
@@ -305,6 +397,8 @@ def build_protocol_lock(repo: Path, components: dict[str, dict],
                      "unique_condition_seed_pairs": 7,
                      "bridge_conditions": ["C1", "C2"]},
         "researcher_amendment_sha256": amendment_digest,
+        "d19_researcher_amendment_sha256": d19_digest,
+        "predecessor_protocol_root_sha256": PREDECESSOR_PROTOCOL_ROOT,
         "optional_studies": {"S3": False, "S6_long_context": False},
     }
     document = seal_payload({
@@ -317,7 +411,8 @@ def build_protocol_lock(repo: Path, components: dict[str, dict],
         "approval": {"researcher": "user-provided researcher decisions; identity not asserted",
                      "approved_at_utc": None, "approved_on_utc_date": "2026-09-28",
                      "approval_sha256": approval_digest,
-                     "decision_ids": sorted(approval["approved_decisions"])},
+                     "d19_sha256": d19_digest,
+                     "decision_ids": sorted(approval["approved_decisions"]) + ["D19"]},
         "artifact_lock_digest": components["artifact"]["sha256"],
         "environment_lock_digest": components["environment"]["sha256"],
         "hardware_lock_digest": components["hardware"]["sha256"],
@@ -326,6 +421,21 @@ def build_protocol_lock(repo: Path, components: dict[str, dict],
     })
     validate_protocol_lock(document)
     return document
+
+
+def validate_scientific_unchanged(predecessor: dict, successor: dict) -> None:
+    """D19 may change hardware authorization, never S1 numerical inputs."""
+    old, _ = validate_protocol_lock(predecessor)
+    new, _ = validate_protocol_lock(successor)
+    fixed = ("teacher", "student", "teacher_layers_for_student", "data", "training",
+             "objectives", "evaluation", "checkpointing", "calibration", "run_plan",
+             "optional_studies", "researcher_amendment_sha256")
+    _require(all(old["protocol"][key] == new["protocol"][key] for key in fixed) and
+             old["condition_variants"] == new["condition_variants"] and
+             old["allowed_device_roles"] == new["allowed_device_roles"] and
+             old["artifact_lock_digest"] == new["artifact_lock_digest"] and
+             old["calibration_lock_digest"] == new["calibration_lock_digest"],
+             "D19 successor changes a scientific field or condition assignment")
 
 
 def write_component_locks(directory: Path, documents: dict[str, dict]) -> None:
@@ -370,6 +480,46 @@ def write_lock_set(directory: Path, documents: dict[str, dict],
         target.write_bytes(canonical_json_bytes(documents["protocol"]) + b"\n")
 
 
+def write_successor_lock_set(directory: Path, documents: dict[str, dict]) -> None:
+    """Archive the exact predecessor locks before replacing only policy locks."""
+    directory = Path(directory)
+    _require(set(documents) == set(LOCK_NAMES), "complete successor lock set required")
+    current = {name: _read(directory / f"{name}.lock.json") for name in LOCK_NAMES}
+    if current == documents:
+        return
+    previous = dict(current)
+    for name in ("environment", "hardware"):
+        if current[name] == documents[name]:
+            digest = documents[name]["payload"]["predecessor_lock_sha256"]
+            previous[name] = _read(directory / "superseded" / f"s1-{name}-{digest}.json")
+    if current["protocol"] == documents["protocol"]:
+        previous["protocol"] = _read(directory / "superseded" /
+                                     f"s1-protocol-{PREDECESSOR_PROTOCOL_ROOT}.json")
+    for document in (*previous.values(), *documents.values()):
+        verify_envelope(document)
+    _require(previous["protocol"]["sha256"] == PREDECESSOR_PROTOCOL_ROOT and
+             documents["protocol"]["payload"]["protocol"].get("predecessor_protocol_root_sha256") ==
+             PREDECESSOR_PROTOCOL_ROOT and
+             previous["artifact"] == documents["artifact"] and
+             previous["calibration"] == documents["calibration"] and
+             documents["environment"]["payload"]["predecessor_lock_sha256"] ==
+             previous["environment"]["sha256"] and
+             documents["hardware"]["payload"]["predecessor_lock_sha256"] ==
+             previous["hardware"]["sha256"],
+             "successor lock set does not preserve exact predecessor inputs")
+    historical = directory / "superseded"
+    historical.mkdir(parents=True, exist_ok=True)
+    for name in ("environment", "hardware", "protocol"):
+        destination = (historical / f"s1-protocol-{PREDECESSOR_PROTOCOL_ROOT}.json" if name == "protocol"
+                       else historical / f"s1-{name}-{previous[name]['sha256']}.json")
+        if destination.exists():
+            _require(_read(destination) == previous[name], "historical lock differs; refuse overwrite")
+        else:
+            destination.write_bytes(canonical_json_bytes(previous[name]) + b"\n")
+    for name in ("environment", "hardware", "protocol"):
+        (directory / f"{name}.lock.json").write_bytes(canonical_json_bytes(documents[name]) + b"\n")
+
+
 def validate_final_lock_set(directory: Path) -> dict[str, dict]:
     """Check a lock directory's canonical envelopes and transitive identities."""
     directory = Path(directory)
@@ -379,7 +529,7 @@ def validate_final_lock_set(directory: Path) -> dict[str, dict]:
     _require(protocol.get("production_runtime_source_commit") == protocol.get("source_commit") and
              protocol.get("calibration_source_commit") == CALIBRATION_SOURCE_COMMIT and
              protocol.get("execution_critical_path_set_version") == EXECUTION_CRITICAL_PATH_SET_VERSION and
-             protocol["protocol"].get("production_config_binding_schema") == 2 and
+             protocol["protocol"].get("production_config_binding_schema") in (2, 3) and
              protocol["protocol"].get("calibration", {}).get("calibration_source_commit") ==
              CALIBRATION_SOURCE_COMMIT,
              "old production root is superseded: runtime source provenance binding is absent")
@@ -402,10 +552,22 @@ def validate_final_lock_set(directory: Path) -> dict[str, dict]:
              "artifact lock differs from committed real inventory")
     env_records = {role: _sealed(repo / f"protocols/s1_environment_{'4080' if role == 'rtx4080super' else '3090'}_exact_v1.json")
                    for role in GPU_UUIDS}
+    class_binding = protocol["protocol"]["production_config_binding_schema"] == 3
+    expected_devices = {}
+    for role, (record, _) in env_records.items():
+        gpu = dict(record["gpu"])
+        if class_binding and role == "rtx4080super":
+            gpu["reference_uuid"] = gpu.pop("uuid")
+        expected_devices[role] = {
+            "gpu": gpu, "os": record["os"], "python": record["python"],
+            "torch": record["torch"], "cuda_runtime": record["torch_cuda_runtime"],
+            "cudnn": record["cudnn_version"], "transformers": record["transformers"]}
     _require(environment["rtx4080super_manifest_sha256"] == env_records["rtx4080super"][1] and
              environment["rtx3090_manifest_sha256"] == env_records["rtx3090"][1] and
              environment["lock_managed_distributions"] == env_records["rtx4080super"][0]["installed_locked_distributions"] ==
              env_records["rtx3090"][0]["installed_locked_distributions"] and
+             environment["numerical_policy"] == env_records["rtx4080super"][0]["numerical_policy"] and
+             environment["devices"] == expected_devices and
              _committed_sha(repo / "uv.lock") == LOCK_SHA256,
              "environment lock differs from both exact-role manifests or uv.lock")
     proof = hardware["proof"]
@@ -455,6 +617,36 @@ def validate_final_lock_set(directory: Path) -> dict[str, dict]:
              math.isfinite(protocol["protocol"]["evaluation"]["fingerprint_denominator_floor"]) and
              protocol["protocol"]["evaluation"]["fingerprint_denominator_floor"] > 0,
              "approved metric floor is absent")
+    if protocol["protocol"]["production_config_binding_schema"] == 3:
+        d19, d19_digest = _d19(repo)
+        class_policy = hardware.get("hardware_classes", {}).get("rtx4080super")
+        _require(protocol["approval"].get("d19_sha256") == d19_digest and
+                 protocol["protocol"].get("d19_researcher_amendment_sha256") == d19_digest and
+                 protocol["protocol"].get("predecessor_protocol_root_sha256") ==
+                 PREDECESSOR_PROTOCOL_ROOT and
+                 hardware.get("d19_researcher_amendment_sha256") == d19_digest and
+                 hardware.get("predecessor_protocol_root") == PREDECESSOR_PROTOCOL_ROOT and
+                 hardware.get("evidence") == "measured_reference_plus_researcher_transfer" and
+                 hardware.get("nonreference_observed_profile_sha256") ==
+                 d19["naveed_observed_profile_report_sha256"] and
+                 class_policy == protocol["protocol"]["hardware"].get("hardware_classes", {}).get("rtx4080super") and
+                 class_policy.get("policy") == d19["transfer_policy"] and
+                 class_policy.get("model") == RTX4080_SUPER_MODEL and
+                 class_policy.get("reference_uuid") == GPU_UUIDS["rtx4080super"] and
+                 class_policy.get("known_equivalent_uuids") == d19["known_equivalent_machine_uuids"] and
+                 class_policy.get("allowed_conditions") == d19["allowed_4080_conditions"] and
+                 class_policy.get("actual_uuid") == "runtime_recorded" and
+                 class_policy.get("resume_uuid") == "same_physical_uuid_only" and
+                 environment.get("rtx4080super_environment_policy") ==
+                 "exact_locked_software_reference_environment_independent_of_gpu_uuid" and
+                 hardware["proof"] == candidate["proof"],
+                 "D19 reference transfer or preserved measured proof differs")
+        predecessor = directory / "superseded" / f"s1-protocol-{PREDECESSOR_PROTOCOL_ROOT}.json"
+        _require(predecessor.exists(), "historical predecessor production root is missing")
+        historical = _read(predecessor)
+        _require(verify_envelope(historical)[1] == PREDECESSOR_PROTOCOL_ROOT and
+                 historical["payload"]["protocol"]["production_config_binding_schema"] == 2,
+                 "historical predecessor production root differs")
     return documents
 
 
@@ -464,7 +656,7 @@ def build_production_configs(repo: Path, protocol_document: dict) -> tuple[dict[
     _require(root_digest == protocol_document["sha256"] and
              protocol.get("source_commit") == protocol.get("production_runtime_source_commit") and
              protocol.get("calibration_source_commit") == CALIBRATION_SOURCE_COMMIT and
-             protocol["protocol"].get("production_config_binding_schema") == 2,
+             protocol["protocol"].get("production_config_binding_schema") in (2, 3),
              "final S1 protocol binding schema is absent")
     reviewed = _read(Path(repo) / "configs/s1_jobs_seed0_reviewed.json")
     _require(payload_digest(reviewed) == protocol["protocol"]["run_plan"]["reviewed_plan_sha256"] and
@@ -501,11 +693,21 @@ def write_production_configs(repo: Path, configs: dict[str, dict], plan: dict,
             previous = _read(path)
             if previous == configs[name]:
                 continue
-            _require(supersede_root_sha256 == SUPERSEDED_PROTOCOL_ROOT and
-                     previous.get("protocol_digest") == SUPERSEDED_PROTOCOL_ROOT and
-                     previous.get("production_binding", {}).get("source_commit") ==
-                     CALIBRATION_SOURCE_COMMIT,
+            _require((supersede_root_sha256 == SUPERSEDED_PROTOCOL_ROOT and
+                      previous.get("protocol_digest") == SUPERSEDED_PROTOCOL_ROOT and
+                      previous.get("production_binding", {}).get("source_commit") ==
+                      CALIBRATION_SOURCE_COMMIT) or
+                     (supersede_root_sha256 == PREDECESSOR_PROTOCOL_ROOT and
+                      previous.get("protocol_digest") == PREDECESSOR_PROTOCOL_ROOT),
                      f"existing production config {name} differs; refuse overwrite")
+            if supersede_root_sha256 == PREDECESSOR_PROTOCOL_ROOT:
+                historical = root / "superseded" / "s1" / Path(name).name
+                historical.parent.mkdir(parents=True, exist_ok=True)
+                if historical.exists():
+                    _require(_read(historical) == previous,
+                             f"historical config {name} differs; refuse overwrite")
+                else:
+                    historical.write_bytes(canonical_json_bytes(previous) + b"\n")
             path.write_bytes(canonical_json_bytes(configs[name]) + b"\n")
             continue
         path.parent.mkdir(parents=True, exist_ok=True)

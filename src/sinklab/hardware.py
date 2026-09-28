@@ -23,6 +23,8 @@ class HardwareError(ValueError):
 
 
 DIVISORS = (64, 32, 16, 8, 4, 2, 1)
+RTX4080_SUPER_MODEL = "NVIDIA GeForce RTX 4080 SUPER"
+RTX3090_MODEL = "NVIDIA GeForce RTX 3090"
 
 # Current-plan evidence status, not policy permission or a production hardware
 # lock. 3090 C0/C5/C6 are policy-allowed but unused and unmeasured; a future
@@ -36,6 +38,40 @@ S1_ELIGIBILITY_STATUS = {
     "C5": {"rtx3090": "unmeasured_not_required_for_current_plan", "rtx4080super": "measured_full_cycle_candidate"},
     "C6": {"rtx3090": "unmeasured_not_required_for_current_plan", "rtx4080super": "measured_full_cycle_candidate"},
 }
+
+
+def authorize_production_device(protocol: dict, hardware: dict, *, condition: str,
+                                device_role: str, gpu_name: str, gpu_uuid: str) -> dict:
+    """Authorize a fresh job by exact class/model, then return its physical identity.
+
+    The measured batch proof still names the reference 4080 UUID. D19 transfers
+    that proof to exact-model peers; it does not change the proof or resume rule.
+    """
+    if not isinstance(gpu_uuid, str) or not gpu_uuid.strip():
+        raise HardwareError("actual GPU UUID is required")
+    if device_role not in protocol.get("allowed_device_roles", {}).get(condition, []):
+        raise HardwareError("condition/device role is absent from approved protocol")
+    if device_role == "rtx4080super":
+        class_policy = hardware.get("hardware_classes", {}).get(device_role)
+        if (not isinstance(class_policy, dict) or
+                class_policy.get("policy") != "researcher_approved_reference_profile_transfer" or
+                class_policy.get("model") != RTX4080_SUPER_MODEL or
+                class_policy.get("allowed_conditions") != ["C0", "C1", "C2", "C5", "C6"] or
+                class_policy.get("reference_uuid") != hardware.get("gpu_uuids", {}).get(device_role) or
+                protocol.get("protocol", {}).get("hardware", {}).get("hardware_classes", {}).get(device_role)
+                != class_policy):
+            raise HardwareError("RTX4080 SUPER class policy differs from sealed reference")
+        if condition not in class_policy["allowed_conditions"] or gpu_name != RTX4080_SUPER_MODEL:
+            raise HardwareError("actual GPU is outside approved RTX4080 SUPER class")
+    elif device_role == "rtx3090":
+        if (gpu_name != RTX3090_MODEL or
+                gpu_uuid != hardware.get("gpu_uuids", {}).get(device_role) or
+                gpu_uuid != protocol.get("protocol", {}).get("hardware", {}).get("gpu_uuids", {}).get(device_role)):
+            raise HardwareError("actual GPU differs from exact RTX3090 binding")
+    else:
+        raise HardwareError("unsupported production device role")
+    return {"device_role": device_role, "gpu_name": gpu_name, "gpu_uuid": gpu_uuid,
+            "condition": condition}
 
 
 @dataclass(frozen=True)

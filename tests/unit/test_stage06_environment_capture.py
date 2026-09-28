@@ -41,6 +41,42 @@ def test_3090_capture_requires_explicit_approved_model_and_uuid():
                             "rtx3090", fields[0], fields[1])
 
 
+def test_second_4080_capture_requires_distinct_explicit_uuid_without_changing_first_gate():
+    first = ["NVIDIA GeForce RTX 4080 SUPER",
+             "GPU-72b4b307-b613-c35e-ea32-53f4431de9ee", "16376 MiB", "591.86"]
+    second = [first[0], "GPU-f6ff547d-b5cb-c2b8-ca56-ef87e6c18af0", *first[2:]]
+    verify_gpu_identity(second, "rtx4080super", second[0], second[1],
+                        second_4080_qualification=True)
+    with pytest.raises(RuntimeError, match="unexpected GPU identity"):
+        verify_gpu_identity(second, "rtx4080super", None, None)
+    with pytest.raises(RuntimeError, match="distinct explicit UUID"):
+        verify_gpu_identity(first, "rtx4080super", first[0], first[1],
+                            second_4080_qualification=True)
+    with pytest.raises(RuntimeError, match="distinct explicit UUID"):
+        verify_gpu_identity(second, "rtx4080super", None, second[1],
+                            second_4080_qualification=True)
+    with pytest.raises(RuntimeError, match="unexpected second 4080 GPU identity"):
+        verify_gpu_identity(first, "rtx4080super", second[0], second[1],
+                            second_4080_qualification=True)
+    with pytest.raises(RuntimeError, match="distinct explicit UUID"):
+        verify_gpu_identity(second, "rtx3090", second[0], second[1],
+                            second_4080_qualification=True)
+
+
+def test_class_environment_accepts_unseen_exact_model_and_records_uuid():
+    peer = ["NVIDIA GeForce RTX 4080 SUPER",
+            "GPU-11111111-2222-3333-4444-555555555555", "16376 MiB", "591.86"]
+    verify_gpu_identity(peer, "rtx4080super", None, None, class_environment=True)
+    with pytest.raises(RuntimeError, match="exact model"):
+        verify_gpu_identity(["NVIDIA GeForce RTX 4080", *peer[1:]],
+                            "rtx4080super", None, None, class_environment=True)
+    with pytest.raises(RuntimeError, match="actual UUID"):
+        verify_gpu_identity([peer[0], "", *peer[2:]],
+                            "rtx4080super", None, None, class_environment=True)
+    with pytest.raises(RuntimeError, match="exact model"):
+        verify_gpu_identity(peer, "rtx3090", None, None, class_environment=True)
+
+
 def test_lock_managed_distribution_map_requires_exact_4080_equality():
     payload, _ = verify_envelope(REFERENCE)
     installed = payload["installed_locked_distributions"]

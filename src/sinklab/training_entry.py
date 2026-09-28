@@ -3,9 +3,11 @@
 from __future__ import annotations
 
 import hashlib
+import importlib.metadata
 import json
 import math
 import subprocess
+import sys
 import time
 from dataclasses import asdict
 from pathlib import Path
@@ -17,7 +19,8 @@ from .config import MODELS, resolve_config
 from .data import load_corpus
 from .panels import validate_owt_panels
 from .owt_compat import load_owt_corpus, validate_owt_panels as validate_upstream_owt_panels, RECIPE
-from .hardware import DIVISORS, HardwareError, measure_candidate, validate_eligibility_matrix
+from .hardware import (DIVISORS, HardwareError, authorize_production_device,
+                       measure_candidate, validate_eligibility_matrix)
 from .initialization import load_initialization
 from .models import GPT2Adapter, ModelShape
 from .provenance import canonical_json_bytes, payload_digest, validate_protocol_lock, verify_envelope
@@ -31,14 +34,103 @@ def _read(path: Path) -> dict:
 
 
 def _gpu_identity() -> tuple[str, str]:
+    gpu = _gpu_metadata()
+    return gpu["name"], gpu["uuid"]
+
+
+def _gpu_metadata() -> dict:
     if not torch.cuda.is_available():
         raise HardwareError("approved training requires a CUDA GPU")
-    result = subprocess.run(["nvidia-smi", "--query-gpu=name,uuid", "--format=csv,noheader"],
+    result = subprocess.run(["nvidia-smi", "--query-gpu=name,uuid,memory.total,driver_version",
+                             "--format=csv,noheader"],
                             capture_output=True, text=True, check=True)
-    first = result.stdout.splitlines()[0].split(", ", 1)
-    if len(first) != 2:
-        raise HardwareError("GPU name/UUID query failed")
-    return first[0], first[1]
+    lines = [line for line in result.stdout.splitlines() if line.strip()]
+    fields = [part.strip() for part in lines[0].split(",")] if len(lines) == 1 else []
+    if len(fields) != 4 or not fields[1]:
+        raise HardwareError("one GPU with name/UUID/VRAM/driver is required")
+    return {"name": fields[0], "uuid": fields[1], "vram_mib": int(fields[2].split()[0]),
+            "driver": fields[3]}
+
+
+def _check_runtime_environment(environment: dict, role: str, gpu: dict) -> None:
+    import transformers
+    expected = environment["devices"][role]
+    installed = {row.metadata["Name"].lower().replace("_", "-"): row.version
+                 for row in importlib.metadata.distributions()}
+    locked = environment["lock_managed_distributions"]
+    if (any(installed.get(name) != version for name, version in locked.items()) or
+            set(installed) - set(locked) - {"pip", "uv"} or
+            sys.version != expected["python"] or torch.__version__ != expected["torch"] or
+            torch.version.cuda != expected["cuda_runtime"] or
+            torch.backends.cudnn.version() != expected["cudnn"] or
+            transformers.__version__ != expected["transformers"] or
+            gpu["driver"] != expected["gpu"]["nvidia_driver"] or
+            gpu["vram_mib"] != expected["gpu"]["total_vram_mib"]):
+        raise HardwareError("actual software, numerical environment or GPU capacity differs from lock")
+
+
+def preflight_approved_training(args) -> dict:
+    """Validate a single prospective run without constructing models or training."""
+    from .stage06_readiness import validate_final_lock_set
+    from .runtime_provenance import validate_runtime_source
+    lock_set = validate_final_lock_set(args.protocol_lock.parent)
+    if _read(args.protocol_lock) != lock_set["protocol"]:
+        raise ValueError("requested protocol lock differs from validated production root")
+    raw, protocol, hardware_document = (_read(args.config), lock_set["protocol"],
+                                        _read(args.hardware_plan))
+    spec = resolve_config(raw, seed=args.seed, protocol_lock=protocol, production=True)
+    lock, _ = validate_protocol_lock(protocol)
+    source = validate_runtime_source(Path(__file__).resolve().parents[2],
+                                     lock["production_runtime_source_commit"],
+                                     lock["execution_critical_path_set_version"],
+                                     loaded_package_dir=Path(__file__).resolve().parent)
+    hardware, hardware_digest = verify_envelope(hardware_document)
+    if (hardware_document != lock_set["hardware"] or
+            hardware_digest != lock["hardware_lock_digest"] or
+            hardware.get("evidence") != "measured_reference_plus_researcher_transfer"):
+        raise HardwareError("approved reference-plus-transfer hardware lock required")
+    plan = hardware["proof"]
+    validate_eligibility_matrix(plan)
+    if (plan.get("sha256") != payload_digest({k: v for k, v in plan.items() if k != "sha256"}) or
+            (plan.get("microbatch"), plan.get("accumulation")) != (4, 16)):
+        raise HardwareError("common batch schedule or reference proof changed")
+    gpu = _gpu_metadata()
+    identity = authorize_production_device(lock, hardware, condition=spec.condition,
+                                           device_role=spec.device_role,
+                                           gpu_name=gpu["name"], gpu_uuid=gpu["uuid"])
+    environment, _ = verify_envelope(lock_set["environment"])
+    _check_runtime_environment(environment, spec.device_role, gpu)
+    result = {**identity, "gpu_driver": gpu["driver"], "gpu_vram_mib": gpu["vram_mib"],
+              "protocol_sha256": protocol["sha256"], "hardware_sha256": hardware_digest,
+              "runtime_source": source, "training_started": False}
+    artifact_root = getattr(args, "artifact_root", None)
+    if artifact_root is None and hasattr(args, "corpus"):
+        artifact_root = args.corpus.resolve().parents[1]
+    if artifact_root is not None:
+        from .stage06_artifacts import build_inventory
+        artifact_root = Path(artifact_root).resolve()
+        repo_root = Path(__file__).resolve().parents[2]
+        if any(artifact_root.is_relative_to(repo_root / name)
+               for name in ("Upstream", "upstream")):
+            raise ValueError("production artifacts cannot depend on reference-only Upstream")
+        if hasattr(args, "corpus"):
+            expected = {"corpus": next((artifact_root / "corpus").glob("owt-corpus-*.json"), None),
+                        "panels": next((artifact_root / "panels").glob("owt-panels-*.json"), None),
+                        "student_config": artifact_root / "student-config/config.json",
+                        "teacher_dir": artifact_root / "teacher"}
+            if spec.seed == 0:
+                expected["initialization"] = next((artifact_root / "initialization/seed0").glob("init-seed0-*.json"), None)
+            if any(value is None or Path(getattr(args, key)).resolve() != value.resolve()
+                   for key, value in expected.items()):
+                raise ValueError("training inputs must use one verified production artifact root")
+        inventory, _ = verify_envelope(build_inventory(artifact_root, repo_root))
+        committed, _ = verify_envelope(_read(Path(__file__).resolve().parents[2] /
+                                              "reports/stage06_production_artifact_inventory.json"))
+        if {k: v for k, v in inventory.items() if k != "observed_external_root"} != {
+                k: v for k, v in committed.items() if k != "observed_external_root"}:
+            raise ValueError("production scientific artifact inventory differs from lock")
+        result["scientific_artifacts_verified"] = True
+    return result
 
 
 def _teacher_map(study: str) -> tuple[int, ...]:
@@ -75,25 +167,14 @@ def _require_s1_data_lock(protocol: dict, corpus: dict, corpus_hash: str,
 
 
 def run_approved_training(args) -> dict:
+    preflight = preflight_approved_training(args)
     from .stage06_readiness import validate_final_lock_set
-    from .runtime_provenance import validate_runtime_source
     lock_set = validate_final_lock_set(args.protocol_lock.parent)
-    if _read(args.protocol_lock) != lock_set["protocol"]:
-        raise ValueError("requested protocol lock differs from validated production root")
-    raw, protocol, hardware_document = (_read(args.config), lock_set["protocol"],
-                                        _read(args.hardware_plan))
+    raw, protocol = _read(args.config), lock_set["protocol"]
     spec = resolve_config(raw, seed=args.seed, protocol_lock=protocol, production=True)
     lock, _ = validate_protocol_lock(protocol)
-    validate_runtime_source(Path(__file__).resolve().parents[2],
-                            lock["production_runtime_source_commit"],
-                            lock["execution_critical_path_set_version"],
-                            loaded_package_dir=Path(__file__).resolve().parent)
-    hardware_payload, hardware_digest = verify_envelope(hardware_document)
-    if (hardware_document != lock_set["hardware"] or
-            hardware_digest != lock["hardware_lock_digest"] or
-            hardware_payload.get("evidence") != "measured_gpu"):
-        raise HardwareError("approved measured hardware lock required")
-    plan = hardware_payload["proof"]
+    hardware_digest = preflight["hardware_sha256"]
+    plan = lock_set["hardware"]["payload"]["proof"]
     evaluation_rules = lock["protocol"].get("evaluation")
     if not isinstance(evaluation_rules, dict) or not isinstance(
         evaluation_rules.get("fingerprint_denominator_floor"), (float, int)
@@ -110,14 +191,7 @@ def run_approved_training(args) -> dict:
             raise ValueError("C4 requires the locked REL factor and no MSE factor")
     elif args.mse_scale is not None or args.rel_scale is not None:
         raise ValueError("inactive objective scale must not be supplied")
-    validate_eligibility_matrix(plan)
-    if plan.get("microbatch") not in DIVISORS or plan.get("accumulation") != 64 // plan["microbatch"]:
-        raise HardwareError("common batch schedule is malformed")
-    gpu_name, gpu_uuid = _gpu_identity()
-    role = "rtx3090" if "3090" in gpu_name else "rtx4080super" if "4080 SUPER" in gpu_name.upper() else None
-    if (role != spec.device_role or [spec.condition, role, gpu_uuid] not in plan["required"] or
-            plan.get("eligibility_matrix", {}).get(spec.condition, {}).get(role) != gpu_uuid):
-        raise HardwareError("actual GPU name/UUID is absent from approved eligibility")
+    role, gpu_uuid = preflight["device_role"], preflight["gpu_uuid"]
     if spec.condition == "C4" and role != "rtx3090":
         raise HardwareError("C4 production is restricted to RTX 3090")
     config = GPT2Config(**_read(args.student_config))
@@ -232,8 +306,11 @@ def run_profile_candidate(args) -> dict:
     teacher.model.cuda().eval().requires_grad_(False)
     student.model.cuda()
     corpus_doc = _read(args.corpus)
-    corpus, corpus_hash = load_corpus(args.corpus,
-                                     tokenizer_sha256=corpus_doc["payload"]["tokenizer"]["files_sha256"])
+    tokenizer_hash = corpus_doc["payload"]["tokenizer"]["files_sha256"]
+    if spec.study == "S1":
+        corpus, corpus_hash = load_owt_corpus(args.corpus, tokenizer_sha256=tokenizer_hash)
+    else:
+        corpus, corpus_hash = load_corpus(args.corpus, tokenizer_sha256=tokenizer_hash)
     blocks = {b["id"]: b["token_ids"] for partition in corpus["partitions"].values()
               for b in partition["blocks"]}
     panel, _ = verify_envelope(_read(args.panels))

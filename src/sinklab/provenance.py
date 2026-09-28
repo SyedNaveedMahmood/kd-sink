@@ -99,8 +99,9 @@ def validate_protocol_lock(document: Any) -> tuple[dict[str, Any], str]:
             raise LockError(f"{field} must be a SHA-256 digest")
     approval = payload["approval"]
     base_approval = {"researcher", "approved_at_utc", "approval_sha256", "decision_ids"}
+    d19_approval = base_approval | {"approved_on_utc_date", "d19_sha256"}
     if not isinstance(approval, dict) or set(approval) not in (
-            base_approval, base_approval | {"approved_on_utc_date"}):
+            base_approval, base_approval | {"approved_on_utc_date"}, d19_approval):
         raise LockError("approval record is incomplete")
     if not isinstance(approval["researcher"], str) or not approval["researcher"].strip():
         raise LockError("researcher approval is missing")
@@ -117,13 +118,21 @@ def validate_protocol_lock(document: Any) -> tuple[dict[str, Any], str]:
         raise LockError("approval UTC timestamp is missing")
     if not isinstance(approval["approval_sha256"], str) or not SHA256_PATTERN.fullmatch(approval["approval_sha256"]):
         raise LockError("approval evidence digest is missing")
-    required_decisions = {f"D{number:02d}" for number in range(1, 19)}
+    class_binding = (isinstance(payload.get("protocol"), dict) and
+                     payload["protocol"].get("production_config_binding_schema") == 3)
+    required_decisions = {f"D{number:02d}" for number in range(1, 20 if class_binding else 19)}
+    if class_binding and (set(approval) != d19_approval or
+                          not isinstance(approval["d19_sha256"], str) or
+                          not SHA256_PATTERN.fullmatch(approval["d19_sha256"]) or
+                          approval["d19_sha256"] != payload["protocol"].get("d19_researcher_amendment_sha256")):
+        raise LockError("D19 class-transfer approval digest is missing")
     decision_ids = approval["decision_ids"]
     if (not isinstance(decision_ids, list) or
             not all(isinstance(item, str) for item in decision_ids) or
             len(decision_ids) != len(required_decisions) or
             set(decision_ids) != required_decisions):
-        raise LockError("approval must cover D01-D18 exactly once")
+        raise LockError("approval must cover D01-D19 exactly once" if class_binding else
+                        "approval must cover D01-D18 exactly once")
     if not isinstance(payload["protocol"], dict) or not payload["protocol"]:
         raise LockError("approved protocol body is missing")
     if not isinstance(payload["condition_variants"], dict) or not payload["condition_variants"]:
