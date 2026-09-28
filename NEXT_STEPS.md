@@ -79,6 +79,8 @@ The old root `2a11da9bb71957a4d6b3a2f93a34bd67491dd9d21d70577a7a10858930a8943e` 
 
 **Adrita-PC 4080 host readiness (2026-09-29 local):** The transferred ZIP matched its SHA-256 receipt and its 27 extracted files matched the committed scientific inventory. This machine's exact RTX 4080 SUPER UUID `GPU-2a5c25d0-1f73-919b-fd8b-f6f0df709aaf` passed the locked 101-package environment, five full-size GPU acceptance tests, runtime-source refusal test and D19 successor-root no-training preflight for C0/C1/C2/C5/C6; C3/C4 were refused. D19 transfers NodiPC's measured profiles, so this is a class-policy readiness result, not a per-card headroom pass. The common 4x16 schedule and same-UUID resume remain fixed. No condition was assigned or launched on Adrita-PC; NaveedPC C1 and the conditional C5 queue remain bound there. See `reports/stage06_adrita_4080_readiness.json`.
 
+**S1 C6 production launch (2026-09-28, observed 19:46 UTC):** On explicit operator instruction, one C6 seed-0 10,000-update job started on Adrita-PC under the D19 successor root. Its external run directory is `E:\KD-SINK-stage06-runs\s1-c6-seed0-rtx4080super`. Step-0 dense64/full300 student and teacher plus LM2000 completed. Step-100 dense64/full300 student and teacher completed; training resumed and reached observed update 123 with finite loss and steady GPU memory. The job is running, with no completion claim. See `reports/stage06.json` and external structured logs. Audit the protected final checkpoint and required evaluation coverage after the job finishes.
+
 ## Stage07 - S2
 Work order: [07_S2_PRETRAINING](design/e6a_v2/stages/07_S2_PRETRAINING.md).
 - [x]07.1 Immutable public checkpoint/seed inventory capability; one public step0 entry is now resolved and verified.

@@ -1053,5 +1053,32 @@
     "qualification_payload_sha256": "a475b47a6289e74dc1fc380ee1edb8799f7c5590b68324b25c709b3bea024859",
     "scientific_training_started_on_adrita_pc": false,
     "naveed_c1_and_c5_queue_unchanged": true
+  },
+  "s1_c6_adrita_launch_20260928": {
+    "observed_at_utc": "2026-09-28T19:46:15Z",
+    "status": "running_not_completed",
+    "condition": "C6",
+    "seed": 0,
+    "run_id": "s1-c6-seed0-rtx4080super",
+    "run_dir": "E:\\KD-SINK-stage06-runs\\s1-c6-seed0-rtx4080super",
+    "stdout_log": "E:\\KD-SINK-stage06-runs\\launcher\\c6-seed0.stdout.log",
+    "stderr_log": "E:\\KD-SINK-stage06-runs\\launcher\\c6-seed0.stderr.log",
+    "launcher_pid_at_observation": 43960,
+    "worker_pid_at_observation": 42244,
+    "gpu_uuid": "GPU-2a5c25d0-1f73-919b-fd8b-f6f0df709aaf",
+    "protocol_root": "48c39a25f640b90a70056e3c8f7308b66b9d635876e22c56f76516a09d2c9791",
+    "runtime_source_commit": "6d5f43aee093008a86bf203e2443884a0069763c",
+    "microbatch": 4,
+    "accumulation": 16,
+    "registered_updates": 10000,
+    "last_observed_update": 123,
+    "last_observed_loss": 6.226094990968704,
+    "observed_first_100_training_seconds": 279.65911259985296,
+    "step_0_evaluations": "dense64_student_teacher_full300_student_teacher_lm2000_complete",
+    "step_100_evaluations": "dense64_student_teacher_full300_student_teacher_complete",
+    "all_observed_update_losses_and_grad_norms_finite": true,
+    "all_observed_update_steps_sequential": true,
+    "all_observed_token_counts_correct": true,
+    "completion_evidence": null
   }
 }
