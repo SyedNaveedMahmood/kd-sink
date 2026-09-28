@@ -29,7 +29,7 @@
         "tests/unit/test_train_resume.py"
       ],
       "reviewer": "Codex (GPT-6), 2026-09-28",
-      "milestone_commit": null
+      "milestone_commit": "d511912"
     }
   ],
   "note": "Stage 00 borrows no source code from Upstream. Record each later reuse with source SHA, license, changes, independent tests, reviewer, and milestone commit."

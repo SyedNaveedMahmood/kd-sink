@@ -364,7 +364,7 @@
       "legitimate disjoint training-only C3/C4 calibration and C5-margin revalidation",
       "exact synced production environment and final hardware/resource validation"
     ],
-    "milestone_commit": null,
+    "milestone_commit": "d511912",
     "pushed": false
   }
 }
