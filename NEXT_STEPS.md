@@ -71,13 +71,13 @@ Stage06 status: BLOCKED. Assigned-condition full-size smoke, causal evaluation, 
 
 ## Stage07 - S2
 Work order: [07_S2_PRETRAINING](design/e6a_v2/stages/07_S2_PRETRAINING.md).
-- [x]07.1 Immutable public checkpoint/seed inventory capability; actual public entries remain unresolved.
+- [x]07.1 Immutable public checkpoint/seed inventory capability; one public step0 entry is now resolved and verified.
 - [x]07.2 Single Pythia-checkpoint evaluator/manifests on local CPU fixtures.
 - [x]07.3 Opt-in trajectories,bounded cache/download,resume on local CPU fixtures.
-- [ ]07.4 Local tests and approved real network/GPU evidence.
-- [ ] Stage07 evidence reviewed and milestone committed.
+- [x]07.4 Local tests and approved real network/GPU evidence.
+- [x] Stage07 capability evidence reviewed and milestone committed; S2 scientific coverage remains absent.
 
-Stage07 status: CPU capability implemented and tested. Actual public checkpoint availability, measured download/storage budget and real network/GPU smoke are blocked pending explicit operator scope; no full S2 trajectory or scientific coverage exists. See `reports/stage07.json`. Stage06 production-readiness status remains BLOCKED.
+Stage07 status: external capability acceptance COMPLETE using one immutable public Pythia-160m step0 checkpoint on the RTX 4080 SUPER. Its hashes, tokenizer, native rotary/masks, evaluator, restoration, resume and storage were measured. Full checkpoint coverage and the full-trajectory storage/download budget still require approval and measurement; no S2 scientific trajectory or coverage exists. See `reports/stage07.json`. Stage06 production-readiness status remains BLOCKED.
 
 ## Stage08 - S4/S5/S6
 Work order: [08_S4_S5_S6](design/e6a_v2/stages/08_S4_S5_S6.md).
@@ -87,7 +87,7 @@ Work order: [08_S4_S5_S6](design/e6a_v2/stages/08_S4_S5_S6.md).
 - [x]08.4 Study tests,new-teacher checks and approvedGPU smoke (RTX 4080 SUPER engineering qualification; S5 analysis has no GPU kernel).
 - [x] Stage08 capability evidence reviewed and milestone committed; scientific coverage remains absent.
 
-Stage08 status: capability and external qualification COMPLETE on the RTX 4080 SUPER using a pinned GPT-2-large teacher and a frozen engineering calibration panel. All ten fixed S4 probes responded at the predeclared numerical reporting floor; that observation is not a scientific transfer claim. Paired 40/128-token S6 GPU smoke passed on agent-authored engineering inputs. S5 remains read-only with no production C1/C2/C5/C6 records; none were fabricated. Optional 512/1024 contexts remain disabled. No S4/S5/S6 scientific coverage exists. See `reports/stage08.json`. Stage06 and Stage07 blocks remain unchanged; Stage09 has not started.
+Stage08 status: capability and external qualification COMPLETE on the RTX 4080 SUPER using a pinned GPT-2-large teacher and a frozen engineering calibration panel. All ten fixed S4 probes responded at the predeclared numerical reporting floor; that observation is not a scientific transfer claim. Paired 40/128-token S6 GPU smoke passed on agent-authored engineering inputs. S5 remains read-only with no production C1/C2/C5/C6 records; none were fabricated. Optional 512/1024 contexts remain disabled. No S4/S5/S6 scientific coverage exists. See `reports/stage08.json`. Stage06 remains BLOCKED; Stage07 external capability acceptance is complete without scientific coverage. Stage09 has not started.
 
 ## Stage09 - Analysis and release
 Work order: [09_ANALYSIS_RELEASE](design/e6a_v2/stages/09_ANALYSIS_RELEASE.md).
