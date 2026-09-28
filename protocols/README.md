@@ -154,9 +154,16 @@ the microbatch-4 cycle but missed the former free-VRAM headroom criterion by
 not an independent pass. Future hosts must match the locked software and
 scientific artifacts. Fresh runs record the actual GPU UUID; checkpoint
 resume refuses a different UUID. The successor hardware and environment
-locks will retain the measured reference proof, add the D19 transfer policy,
+locks retain the measured reference proof, add the D19 transfer policy,
 and name predecessor root
 `910961fcc53edaed0df48e3139dbb7ca2e058bf7480b67dab27bae0bcd90f26f`.
-The new runtime source must be committed and pushed before successor sealing.
-Until that occurs, the historical root remains the only committed root, and
-this amended checkout cannot pass its execution-critical source guard.
+The tested runtime source milestone `6d5f43aee093008a86bf203e2443884a0069763c`
+was committed and pushed before sealing. The successor hardware lock is
+`e7e76acf4421b553ed94689e218da674a8d57cbd66405271583fdff41354f80b`,
+and the successor production root is
+`48c39a25f640b90a70056e3c8f7308b66b9d635876e22c56f76516a09d2c9791`.
+Nine regenerated seed-0 configs use class binding for RTX4080 SUPER and exact
+UUID binding for RTX3090. The nine-job plan still has seven unique condition
+and seed pairs. A real NaveedPC read-only preflight authorized C1, C2 and C5
+under D19 and verified the external scientific artifact tree for C1; the
+successor root refused C3 and C4 on that 4080. No scientific training began.

@@ -3,6 +3,9 @@
 from argparse import Namespace
 from pathlib import Path
 
+import pytest
+
+from sinklab.hardware import HardwareError, authorize_production_device
 from sinklab.stage06_readiness import validate_final_lock_set
 from sinklab.training_entry import preflight_approved_training
 
@@ -29,5 +32,25 @@ def test_naveed_successor_c1_c2_c5_preflight(selected_cuda, gpu_evidence):
     assert results["C1"]["artifacts_verified"] is True
     gpu_evidence[0]["measurements"]["successor_root_preflight"] = {
         "root": locks["protocol"]["sha256"], "conditions": results,
+        "training_started": False,
+    }
+
+
+def test_naveed_successor_c3_c4_refused(selected_cuda, gpu_evidence):
+    locks = validate_final_lock_set(ROOT / "protocols")
+    protocol = locks["protocol"]["payload"]
+    hardware = locks["hardware"]["payload"]
+    actual_uuid = "GPU-f6ff547d-b5cb-c2b8-ca56-ef87e6c18af0"
+    assert any(actual_uuid in row for row in gpu_evidence[0]["nvidia_smi"])
+    refused = {}
+    for condition in ("C3", "C4"):
+        with pytest.raises(HardwareError, match="condition/device role"):
+            authorize_production_device(protocol, hardware, condition=condition,
+                                        device_role="rtx4080super",
+                                        gpu_name="NVIDIA GeForce RTX 4080 SUPER",
+                                        gpu_uuid=actual_uuid)
+        refused[condition] = True
+    gpu_evidence[0]["measurements"]["successor_root_refusal"] = {
+        "root": locks["protocol"]["sha256"], "conditions": refused,
         "training_started": False,
     }

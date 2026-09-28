@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "stage_id": "06",
-  "status": "d19_class_amendment_pending_new_runtime_source_and_successor_root",
+  "status": "production_ready_under_d19_4080_class_transfer",
   "starting_commit": "5396f84828bd2de5eb29b6f0467eb084c1b2af8c",
   "resume_starting_commit": "aeb064f76ded84b7b1a7999371be6fd6ee7266f6",
   "implementation_milestones": [
@@ -433,9 +433,9 @@
   ],
   "scientific_coverage": "none; approved calibration is a training-side measurement, not an S1/S3 production training result",
   "upstream_files_changed": 0,
-  "pushed": false,
-  "remaining_blockers": ["D19 source milestone and successor root not yet sealed; Git author name/email unset"],
-  "next_action": "Commit and push tested D19 runtime source with genuine author identity, then seal and validate a prospective successor root. Do not launch scientific training in this task.",
+  "pushed": true,
+  "remaining_blockers": [],
+  "next_action": "Only an explicitly operator-launched single S1 condition/seed production job may proceed; preserve its actual start GPU UUID for same-UUID resume. No production training was launched during D19 sealing.",
   "runtime_source_repair_20260928": {
     "starting_commit": "dceba4976c06399cffabdd50e80c41c94137a5e6",
     "old_root_sha256": "2a11da9bb71957a4d6b3a2f93a34bd67491dd9d21d70577a7a10858930a8943e",
@@ -498,7 +498,7 @@
     "C2/C5/C6 microbatch8 were terminated after real VRAM free fell below margin; no complete-cycle pass is claimed for them.",
     "Production calibration and scientific outcomes are not inferred from synthetic token IDs."
   ],
-  "latest_pushed_milestone": "afebe96eb4fb5fcbee910276684ca6d5e3cf54c6",
+  "latest_pushed_milestone": "6d5f43aee093008a86bf203e2443884a0069763c",
   "push_destination": "origin/main",
   "amendment_20260928": {
     "starting_commit": "7667b3c5b1ee4b6a59e0494b6b4562ef354c74f0",
@@ -945,7 +945,7 @@
     "scientific_coverage": "none"
   },
   "d19_4080_class_amendment_20260928": {
-    "status": "researcher_approved_source_tested_successor_pending",
+    "status": "researcher_approved_source_pushed_successor_sealed_and_preflight_passed",
     "decision_path": "protocols/s1_researcher_amendment_d19_4080_class_20260928.json",
     "decision_sha256": "c879d73cd25fd00d042235c9722618dd518edfdb2c2e90b42503657db8ab0294",
     "reference_measured_machine": "NodiPC",
@@ -958,8 +958,47 @@
     "production_authorization_basis": "researcher_approved_reference_profile_transfer_not_independent_per_card_pass",
     "common_schedule": {"microbatch": 4, "accumulation": 16},
     "predecessor_root": "910961fcc53edaed0df48e3139dbb7ca2e058bf7480b67dab27bae0bcd90f26f",
-    "new_runtime_source_commit": null,
-    "successor_root": null,
+    "new_runtime_source_commit": "6d5f43aee093008a86bf203e2443884a0069763c",
+    "source_milestone_pushed_to_origin_main": true,
+    "successor_environment_lock_sha256": "7cc28883dea319bd5f76ba8f5f2759be5a519df23d9f2bea63ae2353e548884b",
+    "successor_hardware_lock_sha256": "e7e76acf4421b553ed94689e218da674a8d57cbd66405271583fdff41354f80b",
+    "successor_root": "48c39a25f640b90a70056e3c8f7308b66b9d635876e22c56f76516a09d2c9791",
+    "production_config_sha256_lf": {
+      "c0_rtx4080super": "1fdf282f79a5de2e33a91e26bf49a700f83f94cce994a9260ccfff4022d309db",
+      "c1_rtx3090": "422bc82fccc04363660b90cd9a543a3677c8de3deb3c7e0609251d29922111b2",
+      "c1_rtx4080super": "1a5f2f57e67828a334c56df7d1fa30dff739962428c47358c23669a69dbd1898",
+      "c2_rtx3090": "b74d26b730171001104a318c3bb412ab2cd214ac5aa7958bf38494f7c3c83fbc",
+      "c2_rtx4080super": "710e5c844dcb2b9e0d3aecd68d01e9ccbf9f300890fa7ce1c4bee458c4948ef8",
+      "c3_rtx3090": "e92b04250d4fe7150be17f1e9e0d53f9f7c6b89c93dbd7c8b74463425372b062",
+      "c4_rtx3090": "7c397dc330e170256b3298f320ce0b9cfdaa0c4d29aa4cc48ae46af2e242eb91",
+      "c5_rtx4080super": "d015921e6fc7aae69a0666157d3c3eec6c7896b5c21ea402c7329ce58ccff561",
+      "c6_rtx4080super": "f61c6c85db897205afad011efa5d18efe00b3992ec88191c2ee6f8f1329d82bb"
+    },
+    "seed0_plan_validation": {"physical_jobs": 9, "unique_condition_seed_pairs": 7, "launchable": true, "hardware_confounds": []},
+    "focused_cpu_tests": {"passed": 85, "failed": 0, "skipped": 0},
+    "full_cpu_tests": {"passed": 204, "failed": 0, "skipped": 0, "warnings": 1},
+    "clean_wheel_tests": {"passed": 1, "failed": 0, "skipped": 0},
+    "source_milestone_naveedpc_gpu_tests": {"passed": 6, "failed": 0, "skipped": 0},
+    "successor_naveedpc_gpu_preflight_tests": {"passed": 2, "failed": 0, "skipped": 0},
+    "pip_check": "passed",
+    "uv_sync_locked_dry_run": "Would make no changes",
+    "git_diff_check": "passed",
+    "upstream_changed_files": 0,
+    "real_naveedpc_successor_preflight": {
+      "evidence": "D:\\KD-SINK-stage06-second4080\\evidence\\d19-successor-preflight.json",
+      "evidence_sha256": "18a0aab22817bc232ad649d572b150a9b50822e0fad24b85865cf352ff097330",
+      "c3_c4_refusal_evidence": "D:\\KD-SINK-stage06-second4080\\evidence\\d19-successor-refusal.json",
+      "c3_c4_refusal_evidence_sha256": "6ff982bf596ff337c0f3fe848d9d08e209cd9695285ea01bd27e1112915f7749",
+      "gpu_uuid": "GPU-f6ff547d-b5cb-c2b8-ca56-ef87e6c18af0",
+      "gpu_model": "NVIDIA GeForce RTX 4080 SUPER",
+      "c1": "authorized_with_external_artifact_tree_verified",
+      "c2": "authorized_under_d19_with_former_headroom_failure_preserved",
+      "c5": "authorized_under_d19_with_former_headroom_failure_preserved",
+      "c3": "refused_on_rtx4080super",
+      "c4": "refused_on_rtx4080super",
+      "training_started": false
+    },
+    "predecessor_c0_historical_binding": "preserved_without_local_completion_claim",
     "scientific_training_started_in_this_amendment": false
   }
 }
