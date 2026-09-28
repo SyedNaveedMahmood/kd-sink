@@ -1000,5 +1000,29 @@
     },
     "predecessor_c0_historical_binding": "preserved_without_local_completion_claim",
     "scientific_training_started_in_this_amendment": false
+  },
+  "s1_c1_production_launch_20260928": {
+    "observed_at_utc": "2026-09-28T15:57:12Z",
+    "status": "running_not_completed",
+    "condition": "C1",
+    "seed": 0,
+    "run_id": "s1-c1-seed0-rtx4080super",
+    "run_dir": "D:\\KD-SINK-stage06-runs\\s1-c1-seed0-rtx4080super",
+    "stdout_log": "D:\\KD-SINK-stage06-runs\\launcher\\c1-seed0.stdout.log",
+    "stderr_log": "D:\\KD-SINK-stage06-runs\\launcher\\c1-seed0.stderr.log",
+    "launcher_pid_at_observation": 5100,
+    "worker_pid_at_observation": 12956,
+    "gpu_uuid": "GPU-f6ff547d-b5cb-c2b8-ca56-ef87e6c18af0",
+    "protocol_root": "48c39a25f640b90a70056e3c8f7308b66b9d635876e22c56f76516a09d2c9791",
+    "microbatch": 4,
+    "accumulation": 16,
+    "registered_updates": 10000,
+    "last_observed_update": 116,
+    "last_observed_loss": 6.356741905212402,
+    "observed_first_100_training_seconds": 142.91981070007023,
+    "step_0_and_100_evaluations": "complete",
+    "all_observed_update_losses_finite": true,
+    "estimated_remaining_wall_hours": "about 5.3; use 5-6 hour range until later cadences are measured",
+    "completion_evidence": null
   }
 }
