@@ -167,3 +167,7 @@ UUID binding for RTX3090. The nine-job plan still has seven unique condition
 and seed pairs. A real NaveedPC read-only preflight authorized C1, C2 and C5
 under D19 and verified the external scientific artifact tree for C1; the
 successor root refused C3 and C4 on that 4080. No scientific training began.
+
+## D20 C3/4080 successor (2026-09-29)
+
+The approved D20 decision is `s1_researcher_amendment_d20_c3_4080_20260929.json` (payload SHA `15f9cab8d2d691f14aca3b249b0a5d1458626c59c38ff47ce338f68ad9a532f5`), bound to the committed C3 qualification report (payload SHA `9b608a1a8da5af520435cd34dd45548ea29f3d85cf67977d1245276979bcb703`). The current prospective root `fd5199ae6f90985ce8c87539f3e76b6d810c5420ccb2d0f6d6ee300a27cef5f4` descends from exact D19 root `48c39a25f640b90a70056e3c8f7308b66b9d635876e22c56f76516a09d2c9791`; runtime source `028f919569db9db1721ef4e7074bdce3209d1808` includes only provenance/readiness authorization changes, with scientific training/evaluation code unchanged. Hardware lock `fc410cd3d01505d0cd7b9ffdda98caaf070bfd2524ca7ac7841a0c78e60aa593` retains the old common proof and adds measured C3 reference evidence. D19 locks/configs are archived under `protocols/superseded/` and `configs/superseded/d19/` for existing runs and the preapproved NaveedPC C5 queue. C4 remains 3090-only. The reviewed plan reports the `C4-C3-seed0` cross-device confound.

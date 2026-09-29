@@ -227,12 +227,14 @@ def test_full_transitive_root_and_nine_configs_with_fixture_floor_only(tmp_path)
                 "protocols/hardware.lock.json", "protocols/calibration.lock.json",
                 "protocols/protocol.lock.json",
                 "configs/s1_jobs_seed0_reviewed.json"]
-    reviewed = json.loads((ROOT / "configs/s1_jobs_seed0_reviewed.json").read_text())
+    reviewed = json.loads((ROOT / "configs/superseded/d19/s1_jobs_seed0_reviewed.json").read_text())
     relative += [f"configs/{job['config']}" for job in reviewed["jobs"]]
     for name in relative:
         target = tmp_path / name
         target.parent.mkdir(parents=True, exist_ok=True)
         source = ROOT / name
+        if name == "configs/s1_jobs_seed0_reviewed.json":
+            source = ROOT / "configs/superseded/d19/s1_jobs_seed0_reviewed.json"
         current_root = json.loads((ROOT / "protocols/protocol.lock.json").read_text())["sha256"]
         if current_root != "910961fcc53edaed0df48e3139dbb7ca2e058bf7480b67dab27bae0bcd90f26f" and name in (
                 "protocols/environment.lock.json", "protocols/hardware.lock.json",

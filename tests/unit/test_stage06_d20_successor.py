@@ -26,6 +26,10 @@ LOCKS = ("artifact", "environment", "hardware", "calibration", "protocol")
 def d20():
     old = {name: json.loads((ROOT / "protocols" / f"{name}.lock.json").read_text())
            for name in LOCKS}
+    old["protocol"] = json.loads((ROOT / "protocols/superseded" /
+        f"s1-protocol-{D19_PROTOCOL_ROOT}.json").read_text())
+    old["hardware"] = json.loads((ROOT / "protocols/superseded" /
+        f"s1-hardware-{old['protocol']['payload']['hardware_lock_digest']}.json").read_text())
     docs, plan = build_d20_lock_set(ROOT, old, "f" * 40)
     configs, production_plan = build_production_configs(
         ROOT, docs["protocol"], reviewed_plan=plan)

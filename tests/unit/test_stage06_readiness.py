@@ -21,7 +21,7 @@ def _candidate():
     return build_reviewed_seed0_candidate(
         ROOT / "reports/stage06_3090_profile_evidence.json",
         ROOT / "reports/stage06_4080_profile_evidence.json",
-        ROOT / "configs/s1_jobs_seed0_reviewed.json", ROOT / "configs")
+        ROOT / "configs/superseded/d19/s1_jobs_seed0_reviewed.json", ROOT / "configs")
 
 
 def _profile(condition, role, batch, safe):
@@ -91,7 +91,7 @@ def test_committed_profile_hashes_accept_lf_or_crlf_worktrees(tmp_path):
         target.write_bytes(source.read_bytes().replace(b"\r\n", b"\n"))
         paths.append(target)
     alternate = build_reviewed_seed0_candidate(
-        paths[0], paths[1], ROOT / "configs/s1_jobs_seed0_reviewed.json", ROOT / "configs")
+        paths[0], paths[1], ROOT / "configs/superseded/d19/s1_jobs_seed0_reviewed.json", ROOT / "configs")
     assert alternate == _candidate()
 
 
@@ -112,7 +112,7 @@ def test_researcher_approval_covers_registered_d01_d18_and_sealed_amendment():
         if match:
             choices[match.group(1)] = match.group(2).strip()
     assert approval["approved_decisions"] == choices
-    plan = json.loads((ROOT / "configs/s1_jobs_seed0_reviewed.json").read_text())
+    plan = json.loads((ROOT / "configs/superseded/d19/s1_jobs_seed0_reviewed.json").read_text())
     assert approval["reviewed_seed0_plan_sha256"] == payload_digest(plan)
     assert approval["mandatory_seeds"] == [0] and approval["optional_seeds"] == [1, 2]
     assert approval["default_optimizer_updates"] == 10000

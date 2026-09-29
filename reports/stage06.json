@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "stage_id": "06",
-  "status": "production_ready_under_d19_4080_class_transfer",
+  "status": "production_ready_under_d20_c3_4080_successor",
   "starting_commit": "5396f84828bd2de5eb29b6f0467eb084c1b2af8c",
   "resume_starting_commit": "aeb064f76ded84b7b1a7999371be6fd6ee7266f6",
   "implementation_milestones": [
@@ -259,7 +259,10 @@
     "full_size_checkpoint_next_loss": 9.506715774536133,
     "full_size_checkpoint_resumed_next_loss": 9.506715774536133,
     "full_size_checkpoint_model_optimizer_rng_equal": true,
-    "calibration_factors": {"s_MSE": 68.00580071126464, "s_REL": 0.120179255876581},
+    "calibration_factors": {
+      "s_MSE": 68.00580071126464,
+      "s_REL": 0.120179255876581
+    },
     "production_10k_runs": 0,
     "rtx4080_profile_path": "reports/stage06_4080_profile_evidence.json",
     "rtx4080_profile_sha256": "7834d8638b5d15444e4a50c63c62c269f8b24f71942f604f525c3c8069c91748",
@@ -446,7 +449,11 @@
     "calibration_local_copy": "F:\\KD-SINK-stage06-production\\calibration-result\\s1-calibration-ddce66f76c43be3406f672cd2d0b4fd79fb35257ba28355caee72520e4932165.json",
     "calibration_local_copy_verified": true,
     "execution_critical_path_set_version": 1,
-    "execution_critical_paths": ["src/sinklab", "pyproject.toml", "uv.lock"],
+    "execution_critical_paths": [
+      "src/sinklab",
+      "pyproject.toml",
+      "uv.lock"
+    ],
     "production_runtime_source_commit": "00b70dbd727e090c2f79ff48236b3b4ad9cfd136",
     "new_root_sha256": "910961fcc53edaed0df48e3139dbb7ca2e058bf7480b67dab27bae0bcd90f26f",
     "authoritative_root": true,
@@ -465,11 +472,38 @@
       "c5_rtx4080super": "a1af630ada37db31a51eb8d0c8bf83d3bcf2beb3006d5e832afbba19d5ae0c89",
       "c6_rtx4080super": "ff1bef0a8d4062d791da6c53dcd59ab1e032e398cfcfe65a9f40fb658786bf70"
     },
-    "validated_nine_job_plan": {"physical_runs": 9, "unique_condition_seed_pairs": 7, "seeds": [0], "hardware_confounds": [], "launchable": true},
-    "focused_cpu_tests": {"passed": 53, "failed": 0, "skipped": 0},
-    "full_cpu_regression": {"passed": 172, "failed": 0, "skipped": 0, "warnings": 1},
-    "gpu_4080_preflight": {"passed": 1, "failed": 0, "skipped": 0, "evidence": "F:\\KD-SINK-stage06-4080\\evidence\\stage06-runtime-preflight.json", "training_started": false},
-    "offline_clean_wheel": {"passed": 1, "failed": 0, "skipped": 0},
+    "validated_nine_job_plan": {
+      "physical_runs": 9,
+      "unique_condition_seed_pairs": 7,
+      "seeds": [
+        0
+      ],
+      "hardware_confounds": [],
+      "launchable": true
+    },
+    "focused_cpu_tests": {
+      "passed": 53,
+      "failed": 0,
+      "skipped": 0
+    },
+    "full_cpu_regression": {
+      "passed": 172,
+      "failed": 0,
+      "skipped": 0,
+      "warnings": 1
+    },
+    "gpu_4080_preflight": {
+      "passed": 1,
+      "failed": 0,
+      "skipped": 0,
+      "evidence": "F:\\KD-SINK-stage06-4080\\evidence\\stage06-runtime-preflight.json",
+      "training_started": false
+    },
+    "offline_clean_wheel": {
+      "passed": 1,
+      "failed": 0,
+      "skipped": 0
+    },
     "production_training_runs": 0,
     "production_ready": true,
     "scientific_coverage": "none"
@@ -809,14 +843,34 @@
     "after_record": "protocols/s1_environment_4080_exact_v1.json",
     "after_record_sha256": "11e3bfbe07093ee0a43f4b30c95deb07d33af74f3ea6b804896e3a4eec96bdb6",
     "dependency_lock_sha256": "b71f143ff21a0ccdd45e995b006430399134bb1564b1210bdc70fb3c67f4c3d5",
-    "removed_by_uv_sync_locked": ["build==1.3.0", "pyproject-hooks==1.3.3", "wheel==0.46.3"],
+    "removed_by_uv_sync_locked": [
+      "build==1.3.0",
+      "pyproject-hooks==1.3.3",
+      "wheel==0.46.3"
+    ],
     "locked_packages_installed_on_windows": 101,
-    "bootstrap_tools_outside_lock": ["pip==24.0", "uv==0.10.12"],
+    "bootstrap_tools_outside_lock": [
+      "pip==24.0",
+      "uv==0.10.12"
+    ],
     "post_sync_dry_run": "Resolved 121 packages; checked 101 packages; would make no changes",
     "pip_check": "passed: no broken requirements",
-    "offline_clean_wheel": {"passed": 1, "failed": 0, "skipped": 0},
-    "focused_environment_config_tests": {"passed": 20, "failed": 0, "skipped": 0},
-    "full_cpu_regression": {"passed": 150, "failed": 0, "skipped": 0, "warnings": 1},
+    "offline_clean_wheel": {
+      "passed": 1,
+      "failed": 0,
+      "skipped": 0
+    },
+    "focused_environment_config_tests": {
+      "passed": 20,
+      "failed": 0,
+      "skipped": 0
+    },
+    "full_cpu_regression": {
+      "passed": 150,
+      "failed": 0,
+      "skipped": 0,
+      "warnings": 1
+    },
     "rtx3090_environment": "pending_exact_sync_and_package_equality_on_approved_3090",
     "final_two_role_environment_lock": null,
     "new_gpu_tests": 0,
@@ -846,9 +900,22 @@
     "os": "Windows 11 10.0.26200",
     "uv_locked_dry_run": "Would make no changes",
     "pip_check": "passed: no broken requirements",
-    "focused_environment_tests": {"passed": 3, "failed": 0, "skipped": 0},
-    "full_cpu_regression": {"passed": 153, "failed": 0, "skipped": 0, "warnings": 1},
-    "offline_clean_wheel": {"passed": 1, "failed": 0, "skipped": 0},
+    "focused_environment_tests": {
+      "passed": 3,
+      "failed": 0,
+      "skipped": 0
+    },
+    "full_cpu_regression": {
+      "passed": 153,
+      "failed": 0,
+      "skipped": 0,
+      "warnings": 1
+    },
+    "offline_clean_wheel": {
+      "passed": 1,
+      "failed": 0,
+      "skipped": 0
+    },
     "external_production_artifact_root_on_current_host": null,
     "calibration_performed": false,
     "production_training_runs": 0,
@@ -860,7 +927,7 @@
     "readiness_milestone_commit": "a5518d40a9d157c3e64fbd982a1b046b113f210c",
     "calibration_source_commit": "a29bcebc6253a5300452594bbaabe4b8e082a463",
     "researcher_approved_on_utc_date": "2026-09-28",
-    "fingerprint_denominator_floor": 1e-8,
+    "fingerprint_denominator_floor": 1e-08,
     "fingerprint_floor_interpretation": "Numerical denominator guard for reported S_I/S only, not an effect-size threshold. If abs(baseline_sink) < 1e-8, ratio unavailable; retain baseline sink, probed sink and absolute sink difference. Approved before S1 production training and frozen independently of results.",
     "component_lock_sha256": {
       "artifact": "2e721e9726e666cb8dc08a9b7d606a6d6ff99b434011b40fe2cf41f8eb315ccd",
@@ -884,11 +951,27 @@
     "production_plan": "configs/production/s1_jobs_seed0.json",
     "physical_jobs": 9,
     "unique_condition_seed_pairs": 7,
-    "per_config_production_validation": {"passed": 9, "failed": 0},
+    "per_config_production_validation": {
+      "passed": 9,
+      "failed": 0
+    },
     "transitive_plan_validation": "passed",
-    "focused_tests": {"passed": 51, "failed": 0, "skipped": 0},
-    "full_cpu_regression": {"passed": 160, "failed": 0, "skipped": 0, "warnings": 1},
-    "offline_clean_wheel": {"passed": 1, "failed": 0, "skipped": 0},
+    "focused_tests": {
+      "passed": 51,
+      "failed": 0,
+      "skipped": 0
+    },
+    "full_cpu_regression": {
+      "passed": 160,
+      "failed": 0,
+      "skipped": 0,
+      "warnings": 1
+    },
+    "offline_clean_wheel": {
+      "passed": 1,
+      "failed": 0,
+      "skipped": 0
+    },
     "pip_check": "passed",
     "uv_sync_locked_dry_run": "Would make no changes",
     "rtx3090_gpu_readiness": "reused committed 5-pass pinned-teacher evidence; not rerun",
@@ -917,13 +1000,98 @@
     "calibration_wall_seconds": 198.9692297,
     "calibration_effective_batches": 16,
     "raw_norms": {
-      "jsd": [0.051398079842329025, 0.05287271738052368, 0.04964606091380119, 0.05248868092894554, 0.05361134931445122, 0.05144544318318367, 0.05320872738957405, 0.05077148601412773, 0.052236463874578476, 0.04951729625463486, 0.05321166664361954, 0.051935940980911255, 0.05105561763048172, 0.051051873713731766, 0.05215707793831825, 0.052350956946611404],
-      "mse": [0.0007557728094980121, 0.0007837794255465269, 0.0007444208022207022, 0.0007686965982429683, 0.0007920836796984076, 0.0007592900656163692, 0.0007813775446265936, 0.0007405654178000987, 0.0007739202119410038, 0.0007319938740693033, 0.0007776550482958555, 0.0007700049900449812, 0.0007496937760151923, 0.0007417885935865343, 0.0007646175217814744, 0.0007698184926994145],
-      "rel": [0.41773054003715515, 0.4194762408733368, 0.425962895154953, 0.43718191981315613, 0.4432498514652252, 0.40922197699546814, 0.44757598638534546, 0.4262318015098572, 0.4342288076877594, 0.42599040269851685, 0.44162705540657043, 0.44675058126449585, 0.40489503741264343, 0.41137781739234924, 0.4626637101173401, 0.4386586546897888]
+      "jsd": [
+        0.051398079842329025,
+        0.05287271738052368,
+        0.04964606091380119,
+        0.05248868092894554,
+        0.05361134931445122,
+        0.05144544318318367,
+        0.05320872738957405,
+        0.05077148601412773,
+        0.052236463874578476,
+        0.04951729625463486,
+        0.05321166664361954,
+        0.051935940980911255,
+        0.05105561763048172,
+        0.051051873713731766,
+        0.05215707793831825,
+        0.052350956946611404
+      ],
+      "mse": [
+        0.0007557728094980121,
+        0.0007837794255465269,
+        0.0007444208022207022,
+        0.0007686965982429683,
+        0.0007920836796984076,
+        0.0007592900656163692,
+        0.0007813775446265936,
+        0.0007405654178000987,
+        0.0007739202119410038,
+        0.0007319938740693033,
+        0.0007776550482958555,
+        0.0007700049900449812,
+        0.0007496937760151923,
+        0.0007417885935865343,
+        0.0007646175217814744,
+        0.0007698184926994145
+      ],
+      "rel": [
+        0.41773054003715515,
+        0.4194762408733368,
+        0.425962895154953,
+        0.43718191981315613,
+        0.4432498514652252,
+        0.40922197699546814,
+        0.44757598638534546,
+        0.4262318015098572,
+        0.4342288076877594,
+        0.42599040269851685,
+        0.44162705540657043,
+        0.44675058126449585,
+        0.40489503741264343,
+        0.41137781739234924,
+        0.4626637101173401,
+        0.4386586546897888
+      ]
     },
     "ratios": {
-      "jsd_over_mse": [68.0073154212413, 67.45866969352468, 66.69085652322002, 68.28270223768443, 67.6839463917047, 67.75466387989916, 68.09605389287397, 68.55773277254558, 67.49592925550894, 67.64714570541159, 68.42579722233782, 67.44883689374184, 68.1019627798632, 68.82267286815087, 68.21329155104637, 68.00428600128798],
-      "jsd_over_rel": [0.12304123092785461, 0.12604460569791578, 0.11655020068295242, 0.12006141734172877, 0.12095063120096104, 0.1257152500970235, 0.11888199771236925, 0.11911707628168043, 0.12029709441143323, 0.11624040340101131, 0.12049005148616143, 0.11625265452125491, 0.12609593329850832, 0.12409972428105265, 0.11273215685122624, 0.11934326699568489]
+      "jsd_over_mse": [
+        68.0073154212413,
+        67.45866969352468,
+        66.69085652322002,
+        68.28270223768443,
+        67.6839463917047,
+        67.75466387989916,
+        68.09605389287397,
+        68.55773277254558,
+        67.49592925550894,
+        67.64714570541159,
+        68.42579722233782,
+        67.44883689374184,
+        68.1019627798632,
+        68.82267286815087,
+        68.21329155104637,
+        68.00428600128798
+      ],
+      "jsd_over_rel": [
+        0.12304123092785461,
+        0.12604460569791578,
+        0.11655020068295242,
+        0.12006141734172877,
+        0.12095063120096104,
+        0.1257152500970235,
+        0.11888199771236925,
+        0.11911707628168043,
+        0.12029709441143323,
+        0.11624040340101131,
+        0.12049005148616143,
+        0.11625265452125491,
+        0.12609593329850832,
+        0.12409972428105265,
+        0.11273215685122624,
+        0.11934326699568489
+      ]
     },
     "s_MSE": 68.00580071126464,
     "s_REL": 0.120179255876581,
@@ -934,12 +1102,25 @@
     "measured_components_milestone_commit": "97ef8b076c9ef0ee8811bcb0daebabef3e4468d7",
     "approved_fingerprint_denominator_floor": null,
     "protocol_root_sha256": null,
-    "gpu_readiness_acceptance": {"passed": 5, "failed": 0, "skipped": 0,
+    "gpu_readiness_acceptance": {
+      "passed": 5,
+      "failed": 0,
+      "skipped": 0,
       "teacher_source": "hash-verified restored production tree",
       "evidence": "E:\\KD-SINK-stage06-3090\\evidence\\stage06_final_gpu_acceptance_pinned.json",
-      "evidence_file_sha256": "395af835413cd13d0b0fc19dd47df129e4fa738eb013b44f7d81dee90d4a0610"},
-    "full_cpu_regression": {"passed": 159, "failed": 0, "skipped": 0, "warnings": 1},
-    "offline_clean_wheel": {"passed": 1, "failed": 0, "skipped": 0},
+      "evidence_file_sha256": "395af835413cd13d0b0fc19dd47df129e4fa738eb013b44f7d81dee90d4a0610"
+    },
+    "full_cpu_regression": {
+      "passed": 159,
+      "failed": 0,
+      "skipped": 0,
+      "warnings": 1
+    },
+    "offline_clean_wheel": {
+      "passed": 1,
+      "failed": 0,
+      "skipped": 0
+    },
     "production_training_runs": 0,
     "production_ready": false,
     "scientific_coverage": "none"
@@ -950,13 +1131,22 @@
     "decision_sha256": "c879d73cd25fd00d042235c9722618dd518edfdb2c2e90b42503657db8ab0294",
     "reference_measured_machine": "NodiPC",
     "reference_uuid": "GPU-72b4b307-b613-c35e-ea32-53f4431de9ee",
-    "reference_allowed_4080_conditions": ["C0", "C1", "C2", "C5", "C6"],
+    "reference_allowed_4080_conditions": [
+      "C0",
+      "C1",
+      "C2",
+      "C5",
+      "C6"
+    ],
     "nonreference_observed_machine": "NaveedPC",
     "nonreference_report_sha256": "49affd9fa752618628ab4b263c787c396886856b02356c90c1dd7d184ea4d908",
     "naveed_c2_mb4_former_headroom_status": "failed_by_96025804_free_bytes",
     "naveed_c5_mb4_former_headroom_status": "failed_by_228498636_free_bytes",
     "production_authorization_basis": "researcher_approved_reference_profile_transfer_not_independent_per_card_pass",
-    "common_schedule": {"microbatch": 4, "accumulation": 16},
+    "common_schedule": {
+      "microbatch": 4,
+      "accumulation": 16
+    },
     "predecessor_root": "910961fcc53edaed0df48e3139dbb7ca2e058bf7480b67dab27bae0bcd90f26f",
     "new_runtime_source_commit": "6d5f43aee093008a86bf203e2443884a0069763c",
     "source_milestone_pushed_to_origin_main": true,
@@ -974,12 +1164,38 @@
       "c5_rtx4080super": "d015921e6fc7aae69a0666157d3c3eec6c7896b5c21ea402c7329ce58ccff561",
       "c6_rtx4080super": "f61c6c85db897205afad011efa5d18efe00b3992ec88191c2ee6f8f1329d82bb"
     },
-    "seed0_plan_validation": {"physical_jobs": 9, "unique_condition_seed_pairs": 7, "launchable": true, "hardware_confounds": []},
-    "focused_cpu_tests": {"passed": 85, "failed": 0, "skipped": 0},
-    "full_cpu_tests": {"passed": 204, "failed": 0, "skipped": 0, "warnings": 1},
-    "clean_wheel_tests": {"passed": 1, "failed": 0, "skipped": 0},
-    "source_milestone_naveedpc_gpu_tests": {"passed": 6, "failed": 0, "skipped": 0},
-    "successor_naveedpc_gpu_preflight_tests": {"passed": 2, "failed": 0, "skipped": 0},
+    "seed0_plan_validation": {
+      "physical_jobs": 9,
+      "unique_condition_seed_pairs": 7,
+      "launchable": true,
+      "hardware_confounds": []
+    },
+    "focused_cpu_tests": {
+      "passed": 85,
+      "failed": 0,
+      "skipped": 0
+    },
+    "full_cpu_tests": {
+      "passed": 204,
+      "failed": 0,
+      "skipped": 0,
+      "warnings": 1
+    },
+    "clean_wheel_tests": {
+      "passed": 1,
+      "failed": 0,
+      "skipped": 0
+    },
+    "source_milestone_naveedpc_gpu_tests": {
+      "passed": 6,
+      "failed": 0,
+      "skipped": 0
+    },
+    "successor_naveedpc_gpu_preflight_tests": {
+      "passed": 2,
+      "failed": 0,
+      "skipped": 0
+    },
     "pip_check": "passed",
     "uv_sync_locked_dry_run": "Would make no changes",
     "git_diff_check": "passed",
@@ -1042,5 +1258,36 @@
     "start_gate": "same_original_C1_worker_exits_then_normal_10000_update_return_full_sequential_finite_update_log_checksum_verified_final_checkpoint_and_complete_registered_evaluation_cadence",
     "on_failed_gate": "cancel_without_starting_C5",
     "c5_training_started_at_observation": false
+  },
+  "d20_c3_4080_successor_20260929": {
+    "status": "sealed_prelaunch",
+    "predecessor_root": "48c39a25f640b90a70056e3c8f7308b66b9d635876e22c56f76516a09d2c9791",
+    "runtime_source_commit": "028f919569db9db1721ef4e7074bdce3209d1808",
+    "hardware_lock_sha256": "fc410cd3d01505d0cd7b9ffdda98caaf070bfd2524ca7ac7841a0c78e60aa593",
+    "protocol_root_sha256": "fd5199ae6f90985ce8c87539f3e76b6d810c5420ccb2d0f6d6ee300a27cef5f4",
+    "d20_amendment_sha256": "15f9cab8d2d691f14aca3b249b0a5d1458626c59c38ff47ce338f68ad9a532f5",
+    "qualification_sha256": "9b608a1a8da5af520435cd34dd45548ea29f3d85cf67977d1245276979bcb703",
+    "c3_production_config_file_sha256": "38dbeebd10938624983a93c2d22922dc3fd8315e705453147261b9dba5d86d30",
+    "qualified_reference_uuid": "GPU-72b4b307-b613-c35e-ea32-53f4431de9ee",
+    "mb8_headroom_passed": false,
+    "mb4_headroom_passed": true,
+    "common_microbatch": 4,
+    "accumulation": 16,
+    "physical_jobs": 9,
+    "unique_condition_seed_pairs": 7,
+    "hardware_confounds": [
+      "C4-C3-seed0"
+    ],
+    "c4_4080_prohibited": true,
+    "d19_existing_runs_and_c5_queue_preserved": true,
+    "d20_scientific_coverage": "none_until_run_evidence_verifies",
+    "post_seal_cpu_tests": {
+      "passed": 227,
+      "failed": 0,
+      "skipped": 0
+    },
+    "post_seal_clean_wheel_passed": 1,
+    "post_seal_preflight": "pending_pushed_commit",
+    "scientific_training_started_by_amendment": false
   }
 }

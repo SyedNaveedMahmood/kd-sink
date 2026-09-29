@@ -37,3 +37,7 @@ Distinguish training-only ETA from total ETA including measured evaluation/save 
 
 ## Budget gate
 Measure a representative100-update engineering pilot including dense evaluation and full save. Extrapolate separately by objective with uncertainty; REL/evaluation may dominate. Estimate the seven mandatory jobs, optional seven-job seed1/seed2 campaigns, optional15-run S3, Pythia downloads, retained-weight/full-resume disk and RAM. Do not assert the old5-6-hour figure applies. Feasibility is not conditioned on reproducing the desired dissociation.
+
+## D20 prospective C3 RTX 4080 SUPER amendment (2026-09-29)
+
+D19 remains the historical class policy for C0/C1/C2/C5/C6, with C3 pending and C4 prohibited. D20's sealed NodiPC reference evidence `9b608a1a8da5af520435cd34dd45548ea29f3d85cf67977d1245276979bcb703` records C3 mb8 failing the preregistered headroom rule and mb4 passing the full production-shape cycle at the unchanged 4 ? 16 schedule. D20 decision `15f9cab8d2d691f14aca3b249b0a5d1458626c59c38ff47ce338f68ad9a532f5` prospectively adds C3 to the exact-model RTX 4080 SUPER class. C4 remains RTX 3090-only. The new nine-job plan assigns C3 to the 4080 class and removes it from the prospective 3090 plan; C3/3090 measured engineering evidence remains valid. `C4-C3-seed0` is explicitly a cross-device hardware confound. Existing D19 runs and the preapproved C5 queue retain their original root and physical UUID identities; no pull or rebinding is required during those jobs.
