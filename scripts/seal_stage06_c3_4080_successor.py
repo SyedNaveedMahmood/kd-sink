@@ -31,16 +31,33 @@ def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--repo", type=Path, default=Path(__file__).resolve().parents[1])
     parser.add_argument("--production-runtime-source-commit", required=True)
+    parser.add_argument("--replace-unlaunched-d20-root")
+    parser.add_argument("--c3-run-dir", type=Path)
     args = parser.parse_args()
     repo = args.repo.resolve()
     validate_runtime_source(repo, args.production_runtime_source_commit,
                             EXECUTION_CRITICAL_PATH_SET_VERSION,
                             loaded_package_dir=repo / "src/sinklab")
     locks = repo / "protocols"
-    old = validate_final_lock_set(locks)
-    if old["protocol"]["sha256"] != D19_PROTOCOL_ROOT:
-        parser.error("D20 sealer requires the exact current D19 root")
-    new, reviewed = build_d20_lock_set(repo, old, args.production_runtime_source_commit)
+    current = validate_final_lock_set(locks)
+    current_root = current["protocol"]["sha256"]
+    if current_root == D19_PROTOCOL_ROOT:
+        predecessor = current
+        archive_name = "d19"
+    elif current_root == args.replace_unlaunched_d20_root and args.c3_run_dir is not None:
+        if args.c3_run_dir.exists() and any(args.c3_run_dir.iterdir()):
+            parser.error("cannot replace D20 after a C3 run directory has started")
+        old_protocol = _read(locks / "superseded" / f"s1-protocol-{D19_PROTOCOL_ROOT}.json")
+        old_hardware = _read(locks / "superseded" /
+                             f"s1-hardware-{old_protocol['payload']['hardware_lock_digest']}.json")
+        predecessor = {**{name: current[name] for name in
+                          ("artifact", "environment", "calibration")},
+                       "hardware": old_hardware, "protocol": old_protocol}
+        archive_name = "d20-preflight-failed"
+    else:
+        parser.error("D20 sealer requires exact D19 or an explicit unlaunched D20 replacement")
+    new, reviewed = build_d20_lock_set(repo, predecessor,
+                                       args.production_runtime_source_commit)
     configs, production_plan = build_production_configs(
         repo, new["protocol"], reviewed_plan=reviewed)
     if len(configs) != 9 or len(production_plan["jobs"]) != 9:
@@ -50,15 +67,17 @@ def main() -> None:
 
     # Every historical document is checked before any authoritative path changes.
     history = locks / "superseded"
-    _write_or_verify(history / f"s1-protocol-{D19_PROTOCOL_ROOT}.json", old["protocol"])
-    _write_or_verify(history / f"s1-hardware-{old['hardware']['sha256']}.json", old["hardware"])
+    _write_or_verify(history / f"s1-protocol-{current_root}.json", current["protocol"])
+    _write_or_verify(history / f"s1-hardware-{current['hardware']['sha256']}.json", current["hardware"])
     old_plan = _read(repo / "configs/production/s1_jobs_seed0.json")
     old_reviewed = _read(repo / "configs/s1_jobs_seed0_reviewed.json")
-    _write_or_verify(repo / "configs/superseded/d19/s1_jobs_seed0.json", old_plan)
-    _write_or_verify(repo / "configs/superseded/d19/s1_jobs_seed0_reviewed.json", old_reviewed)
+    _write_or_verify(repo / "configs/superseded" / archive_name / "s1_jobs_seed0.json", old_plan)
+    _write_or_verify(repo / "configs/superseded" / archive_name /
+                     "s1_jobs_seed0_reviewed.json", old_reviewed)
     for row in old_plan["jobs"]:
         path = repo / "configs" / row["config"]
-        _write_or_verify(repo / "configs/superseded/d19" / row["config"], _read(path))
+        _write_or_verify(repo / "configs/superseded" / archive_name /
+                         row["config"], _read(path))
 
     (repo / "configs/s1_jobs_seed0_reviewed.json").write_bytes(canonical_json_bytes(reviewed) + b"\n")
     for name in ("hardware", "protocol"):
@@ -75,6 +94,7 @@ def main() -> None:
     validated = validate_final_lock_set(locks)
     summary = validate_production_configs(repo, validated["protocol"])
     print(json.dumps({"predecessor_root": D19_PROTOCOL_ROOT,
+                      "replaced_unlaunched_root": current_root if archive_name != "d19" else None,
                       "successor_root": new["protocol"]["sha256"],
                       "hardware_lock_sha256": new["hardware"]["sha256"],
                       "job_plan": summary}, sort_keys=True))

@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "stage_id": "06",
-  "status": "production_ready_under_d20_c3_4080_successor",
+  "status": "blocked_pending_d20_artifact_plan_provenance_reseal",
   "starting_commit": "5396f84828bd2de5eb29b6f0467eb084c1b2af8c",
   "resume_starting_commit": "aeb064f76ded84b7b1a7999371be6fd6ee7266f6",
   "implementation_milestones": [
@@ -1260,7 +1260,7 @@
     "c5_training_started_at_observation": false
   },
   "d20_c3_4080_successor_20260929": {
-    "status": "sealed_prelaunch",
+    "status": "superseded_nonlaunchable_due_to_artifact_approval_plan_reference_defect",
     "predecessor_root": "48c39a25f640b90a70056e3c8f7308b66b9d635876e22c56f76516a09d2c9791",
     "runtime_source_commit": "028f919569db9db1721ef4e7074bdce3209d1808",
     "hardware_lock_sha256": "fc410cd3d01505d0cd7b9ffdda98caaf070bfd2524ca7ac7841a0c78e60aa593",
@@ -1287,7 +1287,7 @@
       "skipped": 0
     },
     "post_seal_clean_wheel_passed": 1,
-    "post_seal_preflight": "pending_pushed_commit",
+    "post_seal_preflight": "failed_before_training: approved plan changed after researcher decision approval",
     "scientific_training_started_by_amendment": false
   }
 }

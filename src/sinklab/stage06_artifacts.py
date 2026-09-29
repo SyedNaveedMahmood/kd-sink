@@ -45,6 +45,19 @@ def _init_record(metadata: Path, config: GPT2Config, seed: int) -> dict:
             "weights_bytes": weights.stat().st_size}
 
 
+def approved_artifact_plan_digest(repo: Path, approval: dict) -> str:
+    """Bind artifacts to the plan approved when they were prepared."""
+    repo = Path(repo)
+    approved_plan = repo / "configs/superseded/d19/s1_jobs_seed0_reviewed.json"
+    if not approved_plan.exists():
+        approved_plan = repo / "configs/s1_jobs_seed0_reviewed.json"
+    plan = json.loads(approved_plan.read_text(encoding="utf-8"))
+    digest = payload_digest(plan)
+    if approval["reviewed_seed0_plan_sha256"] != digest:
+        raise ValueError("approved artifact plan differs from researcher decision approval")
+    return digest
+
+
 def build_inventory(root: Path, repo: Path) -> dict:
     root, repo = Path(root), Path(repo)
     partial, partial_digest = verify_envelope(json.loads((
@@ -106,15 +119,13 @@ def build_inventory(root: Path, repo: Path) -> dict:
             "packed_blocks": len(part["blocks"]), "dropped_tail_tokens": len(part["tail_token_ids"]),
             "source_window_sha256": part["source_window_sha256"],
             "stream_sha256": part["stream_sha256"]}
-    plan = json.loads((repo / "configs/s1_jobs_seed0_reviewed.json").read_text(encoding="utf-8"))
-    if approval["reviewed_seed0_plan_sha256"] != payload_digest(plan):
-        raise ValueError("approved plan changed after researcher decision approval")
+    approved_plan_sha256 = approved_artifact_plan_digest(repo, approval)
     return seal_payload({"kind": "stage06-production-artifact-inventory-v1",
         "status": "real_artifacts_verified_pending_3090_calibration_and_final_locks",
         "observed_external_root": str(root),
         "researcher_approval_sha256": approval_digest,
         "artifact_partial_sha256": partial_digest,
-        "reviewed_plan_sha256": payload_digest(plan),
+        "reviewed_plan_sha256": approved_plan_sha256,
         "dataset": {"id": source_record["dataset_id"], "revision": source_record["revision"],
             "configuration": source_record["configuration"], "split": "train",
             "license": "cc0-1.0", "windows": source_record["windows"],

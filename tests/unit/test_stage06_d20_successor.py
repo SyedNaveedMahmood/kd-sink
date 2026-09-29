@@ -7,6 +7,7 @@ from pathlib import Path
 import pytest
 
 from sinklab.checkpoint import CheckpointError, save_checkpoint, verify_checkpoint
+from sinklab.stage06_artifacts import approved_artifact_plan_digest
 from sinklab.config import resolve_config
 from sinklab.hardware import HardwareError, authorize_production_device
 from sinklab.provenance import LockError, canonical_json_bytes, validate_protocol_lock
@@ -129,6 +130,25 @@ def test_d20_missing_or_altered_evidence_refused(tmp_path):
     raw.unlink()
     with pytest.raises(FileNotFoundError):
         _d20(tmp_path)
+
+
+def test_artifact_inventory_keeps_original_approved_plan_after_d20(tmp_path):
+    from sinklab.provenance import payload_digest
+    original = {"jobs": ["historically-approved"]}
+    prospective = {"jobs": ["D20"]}
+    current = tmp_path / "configs/s1_jobs_seed0_reviewed.json"
+    current.parent.mkdir(parents=True)
+    current.write_text(json.dumps(original), encoding="utf-8")
+    approval = {"reviewed_seed0_plan_sha256": payload_digest(original)}
+    assert approved_artifact_plan_digest(tmp_path, approval) == payload_digest(original)
+    archive = tmp_path / "configs/superseded/d19/s1_jobs_seed0_reviewed.json"
+    archive.parent.mkdir(parents=True)
+    archive.write_text(json.dumps(original), encoding="utf-8")
+    current.write_text(json.dumps(prospective), encoding="utf-8")
+    assert approved_artifact_plan_digest(tmp_path, approval) == payload_digest(original)
+    archive.write_text(json.dumps(prospective), encoding="utf-8")
+    with pytest.raises(ValueError, match="approved artifact plan"):
+        approved_artifact_plan_digest(tmp_path, approval)
 
 
 def test_d20_forged_approval_and_predecessor_refused(d20):
