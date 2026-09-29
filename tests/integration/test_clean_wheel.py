@@ -28,6 +28,7 @@ def test_offline_wheel_without_reference_tree(tmp_path):
     assert not any(path.is_symlink() for path in isolated.rglob("*"))
 
     env = os.environ.copy()
+    env.pop("PYTHONPATH", None)
     env.update(PIP_NO_INDEX="1", UV_OFFLINE="1", HF_HUB_OFFLINE="1")
     _run([sys.executable, "-m", "pip", "wheel", ".", "--no-build-isolation",
           "--no-deps", "--wheel-dir", str(tmp_path / "dist")],

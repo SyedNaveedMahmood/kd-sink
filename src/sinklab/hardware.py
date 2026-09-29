@@ -53,10 +53,13 @@ def authorize_production_device(protocol: dict, hardware: dict, *, condition: st
         raise HardwareError("condition/device role is absent from approved protocol")
     if device_role == "rtx4080super":
         class_policy = hardware.get("hardware_classes", {}).get(device_role)
+        d20 = "d20_researcher_amendment_sha256" in protocol.get("protocol", {})
+        expected_conditions = (["C0", "C1", "C2", "C3", "C5", "C6"] if d20 else
+                               ["C0", "C1", "C2", "C5", "C6"])
         if (not isinstance(class_policy, dict) or
                 class_policy.get("policy") != "researcher_approved_reference_profile_transfer" or
                 class_policy.get("model") != RTX4080_SUPER_MODEL or
-                class_policy.get("allowed_conditions") != ["C0", "C1", "C2", "C5", "C6"] or
+                class_policy.get("allowed_conditions") != expected_conditions or
                 class_policy.get("reference_uuid") != hardware.get("gpu_uuids", {}).get(device_role) or
                 protocol.get("protocol", {}).get("hardware", {}).get("hardware_classes", {}).get(device_role)
                 != class_policy):

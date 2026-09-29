@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import hashlib
+import copy
 import json
 import math
 import statistics
@@ -22,7 +23,10 @@ from .stage06_evidence import build_reviewed_seed0_candidate
 CALIBRATION_SOURCE_COMMIT = "a29bcebc6253a5300452594bbaabe4b8e082a463"
 SUPERSEDED_PROTOCOL_ROOT = "2a11da9bb71957a4d6b3a2f93a34bd67491dd9d21d70577a7a10858930a8943e"
 PREDECESSOR_PROTOCOL_ROOT = "910961fcc53edaed0df48e3139dbb7ca2e058bf7480b67dab27bae0bcd90f26f"
+D19_PROTOCOL_ROOT = "48c39a25f640b90a70056e3c8f7308b66b9d635876e22c56f76516a09d2c9791"
 D19_PATH = "protocols/s1_researcher_amendment_d19_4080_class_20260928.json"
+D20_PATH = "protocols/s1_researcher_amendment_d20_c3_4080_20260929.json"
+D20_EVIDENCE_PATH = "reports/stage06_c3_4080_qualification.json"
 GPU_UUIDS = {
     "rtx4080super": "GPU-72b4b307-b613-c35e-ea32-53f4431de9ee",
     "rtx3090": "GPU-a21766e4-bb31-9b79-5e8f-e58021e9708e",
@@ -83,6 +87,88 @@ def _d19(repo: Path) -> tuple[dict, str]:
     return decision, digest
 
 
+def _d20(repo: Path) -> tuple[dict, str, dict, str]:
+    """Verify the fixed C3 evidence and D20's exact prospective decision."""
+    repo = Path(repo)
+    d19, d19_digest = _d19(repo)
+    evidence, evidence_digest = _sealed(repo / D20_EVIDENCE_PATH)
+    profiles = evidence.get("profiles", {})
+    _require(set(profiles) == {"mb8", "mb4"}, "D20 needs both real C3 profiles")
+    for mb in (8, 4):
+        row = profiles[f"mb{mb}"]
+        expected_path = f"reports/stage06_c3_4080_mb{mb}_raw.json"
+        raw = (repo / expected_path).read_bytes()
+        _require(row.get("raw_file") == expected_path and
+                 row.get("raw_file_sha256") == hashlib.sha256(raw).hexdigest() and
+                 row.get("profile") == json.loads(raw)["profile"],
+                 f"D20 mb{mb} raw profile differs from committed evidence")
+        profile = row["profile"]
+        _require(profile["condition"] == "C3" and profile["device_role"] == "rtx4080super" and
+                 profile["device_uuid"] == GPU_UUIDS["rtx4080super"] and
+                 profile["microbatch"] == mb and profile["evidence"] == "measured_gpu" and
+                 profile["optimizer_allocated"] is True and profile["evaluation_passed"] is True and
+                 profile["save_passed"] is True and profile["failure_status"] is None and
+                 profile["total_bytes"] == evidence["total_vram_bytes"] and
+                 profile["headroom_bytes"] == max(1610612736, int(profile["total_bytes"] * .1)),
+                 f"D20 mb{mb} lacks the registered production-shape cycle")
+        safe = (profile["free_bytes"] >= profile["headroom_bytes"] and
+                profile["total_bytes"] - profile["peak_reserved_bytes"] >= profile["headroom_bytes"])
+        _require(profile["passed"] is safe and safe is (mb == 4),
+                 f"D20 mb{mb} headroom verdict changed")
+    artifact, _ = _sealed(repo / "protocols/artifact.lock.json")
+    required_hashes = {"corpus": artifact["corpus"]["payload_sha256"],
+                       "panels": artifact["panels"]["payload_sha256"],
+                       "initialization": artifact["training_initialization"]["tensor_content_sha256"],
+                       "order": artifact["order_seed0"]["payload_sha256"],
+                       "teacher_weights": artifact["teacher"]["weights_sha256"],
+                       "tokenizer": artifact["tokenizer"]["files_sha256"]}
+    inventory, inventory_digest = _sealed(repo / "reports/stage06_production_artifact_inventory.json")
+    environment = _read(repo / "protocols/environment.lock.json")
+    _require(evidence.get("kind") == "s1-c3-rtx4080super-reference-qualification-v1" and
+             evidence.get("status") == "qualified_at_registered_mb4_accum16" and
+             evidence.get("gpu_model") == RTX4080_SUPER_MODEL and
+             evidence.get("gpu_uuid") == GPU_UUIDS["rtx4080super"] and
+             evidence.get("environment_lock_sha256") == environment["sha256"] and
+             evidence.get("artifact_inventory_sha256") == inventory_digest and
+             evidence.get("scientific_hashes") == required_hashes and
+             evidence.get("condition") == "C3" and
+             evidence.get("variant") == S1_VARIANTS["C3"] and
+             evidence.get("mse_scale") == 68.00580071126464 and
+             (evidence.get("microbatch"), evidence.get("accumulation"),
+              evidence.get("effective_batch")) == (4, 16, 64) and
+             evidence.get("mb4_checkpoint") == {
+                 "path_kind": "external_engineering_profile", "step": 3,
+                 "verified_load": True, "condition": "C3",
+                 "gpu_uuid": GPU_UUIDS["rtx4080super"]},
+             "D20 qualification differs from committed scientific artifacts or environment")
+    decision, digest = _sealed(repo / D20_PATH)
+    _require(decision.get("kind") == "s1-d20-c3-rtx4080super-successor-amendment-v1" and
+             decision.get("decision_id") == "D20" and
+             decision.get("status") == "approved_prospective_hardware_policy" and
+             decision.get("predecessor_production_root") == D19_PROTOCOL_ROOT and
+             decision.get("d19_amendment_sha256") == d19_digest and
+             decision.get("reference_qualification_sha256") == evidence_digest and
+             decision.get("reference_model") == RTX4080_SUPER_MODEL and
+             decision.get("reference_uuid") == GPU_UUIDS["rtx4080super"] and
+             decision.get("allowed_4080_conditions") == ["C0", "C1", "C2", "C3", "C5", "C6"] and
+             decision.get("c4_4080_status") == "prohibited" and
+             decision.get("c3_variant") == S1_VARIANTS["C3"] and
+             decision.get("s_MSE") == 68.00580071126464 and
+             decision.get("common_schedule") == d19["common_schedule"] and
+             decision.get("mb8_headroom_passed") is False and
+             decision.get("mb4_headroom_passed") is True and
+             decision.get("transfer_policy") == d19["transfer_policy"] and
+             decision.get("resume_uuid_policy") == d19["resume_uuid_policy"] and
+             decision.get("per_card_headroom_profile_required") is False and
+             decision.get("existing_d19_jobs") ==
+             "existing_runs_and_preapproved_C5_queue_retain_D19_root_and_identity" and
+             decision.get("prospective_only") is True and
+             decision.get("recalibration") is False and
+             decision.get("scientific_artifact_change") is False,
+             "D20 amendment differs from measured reference or D19 transfer policy")
+    return decision, digest, evidence, evidence_digest
+
+
 def build_successor_component_locks(repo: Path) -> dict[str, dict]:
     """Carry forward measured locks and add only the prospective D19 policy."""
     repo = Path(repo)
@@ -133,6 +219,92 @@ def build_successor_component_locks(repo: Path) -> dict[str, dict]:
                     hardware_classes={"rtx4080super": hardware_class})
     return {"artifact": old["artifact"], "environment": seal_payload(environment),
             "hardware": seal_payload(hardware), "calibration": old["calibration"]}
+
+
+def d20_reviewed_plan(d19_protocol: dict) -> dict:
+    """Change precisely the unstarted C3 assignment, retaining nine physical jobs."""
+    old, digest = validate_protocol_lock(d19_protocol)
+    _require(digest == D19_PROTOCOL_ROOT, "D20 requires the exact D19 predecessor")
+    jobs = copy.deepcopy(old["protocol"]["run_plan"]["jobs"])
+    matches = [row for row in jobs if row["run_id"] == "s1-c3-seed0-rtx3090"]
+    _require(len(jobs) == 9 and len(matches) == 1, "D19 nine-job plan differs")
+    matches[0]["run_id"] = "s1-c3-seed0-rtx4080super"
+    matches[0]["config"] = "s1/c3_rtx4080super.json"
+    return {"schema_version": 1, "status": "approved", "study": "S1", "jobs": jobs,
+            "optional_s3_enabled": False, "hardware_confounds": []}
+
+
+def build_d20_lock_set(repo: Path, predecessor: dict[str, dict],
+                       production_runtime_source_commit: str) -> tuple[dict[str, dict], dict]:
+    """Derive D20 from the exact D19 lock set and one committed C3 measurement."""
+    repo = Path(repo)
+    _require(set(predecessor) == set(LOCK_NAMES) and
+             all(verify_envelope(doc)[1] == doc["sha256"] for doc in predecessor.values()),
+             "D20 predecessor lock set is incomplete")
+    old, old_root = validate_protocol_lock(predecessor["protocol"])
+    _require(old_root == D19_PROTOCOL_ROOT and
+             all(old[f"{name}_lock_digest"] == predecessor[name]["sha256"]
+                 for name in LOCK_NAMES[:-1]),
+             "D20 predecessor is not the exact D19 transitive root")
+    _d19(repo)
+    d20, d20_digest, _, evidence_digest = _d20(repo)
+    plan = d20_reviewed_plan(predecessor["protocol"])
+    hardware = copy.deepcopy(predecessor["hardware"]["payload"])
+    _require(hardware["hardware_classes"]["rtx4080super"]["allowed_conditions"] ==
+             ["C0", "C1", "C2", "C5", "C6"] and
+             hardware["condition_device_eligibility"]["C3"]["rtx4080super"]
+             ["measured_production_eligible"] is False,
+             "D19 C3 was already relabeled")
+    hardware.update(kind="s1-production-hardware-lock-v3",
+                    predecessor_lock_sha256=predecessor["hardware"]["sha256"],
+                    predecessor_protocol_root=D19_PROTOCOL_ROOT,
+                    d20_researcher_amendment_sha256=d20_digest,
+                    c3_4080_qualification_sha256=evidence_digest,
+                    reviewed_plan_sha256=payload_digest(plan),
+                    reviewed_jobs=plan["jobs"])
+    hardware["hardware_classes"]["rtx4080super"]["allowed_conditions"] = d20["allowed_4080_conditions"]
+    hardware["condition_device_eligibility"]["C3"]["rtx3090"].update(
+        current_plan_status="measured_not_scheduled", scheduled_in_current_plan=False)
+    hardware["condition_device_eligibility"]["C3"]["rtx4080super"].update(
+        current_plan_status="measured_scheduled", future_gate=None,
+        measured_production_eligible=True, scheduled_in_current_plan=True)
+    hardware["unmeasured_not_required_for_current_plan"] = [
+        pair for pair in hardware["unmeasured_not_required_for_current_plan"]
+        if pair != ["C3", "rtx4080super"]]
+    hardware_document = seal_payload(hardware)
+    current = copy.deepcopy(old)
+    current["source_commit"] = production_runtime_source_commit
+    current["production_runtime_source_commit"] = production_runtime_source_commit
+    current["hardware_lock_digest"] = hardware_document["sha256"]
+    current["allowed_device_roles"]["C3"] = ["rtx4080super"]
+    current["approval"].update(approved_on_utc_date=d20["approved_on_utc_date"],
+                               d20_sha256=d20_digest,
+                               decision_ids=[*old["approval"]["decision_ids"], "D20"])
+    body = current["protocol"]
+    body["predecessor_protocol_root_sha256"] = D19_PROTOCOL_ROOT
+    body["d20_researcher_amendment_sha256"] = d20_digest
+    body["c3_4080_qualification_sha256"] = evidence_digest
+    body["amendment_chain"] = [
+        {"decision_id": "D19", "root_sha256": D19_PROTOCOL_ROOT,
+         "amendment_sha256": old["approval"]["d19_sha256"]},
+        {"decision_id": "D20", "predecessor_root_sha256": D19_PROTOCOL_ROOT,
+         "amendment_sha256": d20_digest}]
+    body["hardware"].update(
+        hardware_classes=hardware["hardware_classes"],
+        condition_device_eligibility=hardware["condition_device_eligibility"],
+        reviewed_plan_sha256=payload_digest(plan))
+    body["run_plan"].update(reviewed_plan_sha256=payload_digest(plan), jobs=plan["jobs"])
+    protocol_document = seal_payload(current)
+    validate_protocol_lock(protocol_document)
+    _require(current["protocol"]["objectives"]["s_MSE"] == d20["s_MSE"] and
+             all(current["protocol"][key] == old["protocol"][key] for key in
+                 ("teacher", "student", "teacher_layers_for_student", "data", "training",
+                  "objectives", "evaluation", "checkpointing", "calibration",
+                  "optional_studies", "researcher_amendment_sha256")),
+             "D20 changed a scientific field or frozen C3 scale")
+    return {**{name: predecessor[name] for name in
+               ("artifact", "environment", "calibration")},
+            "hardware": hardware_document, "protocol": protocol_document}, plan
 
 
 def validate_calibration_result(result: dict, inventory: dict, candidate: dict,
@@ -526,6 +698,24 @@ def validate_final_lock_set(directory: Path) -> dict[str, dict]:
     documents = {name: _read(directory / f"{name}.lock.json") for name in LOCK_NAMES}
     payloads = {name: verify_envelope(document)[0] for name, document in documents.items()}
     protocol, _ = validate_protocol_lock(documents["protocol"])
+    if "d20_researcher_amendment_sha256" in protocol["protocol"]:
+        historical = directory / "superseded"
+        old_protocol = _read(historical / f"s1-protocol-{D19_PROTOCOL_ROOT}.json")
+        old_payload, old_root = validate_protocol_lock(old_protocol)
+        _require(old_root == D19_PROTOCOL_ROOT and
+                 old_payload["protocol"].get("d20_researcher_amendment_sha256") is None,
+                 "D20 historical D19 root differs")
+        old_hardware = _read(historical / f"s1-hardware-{old_payload['hardware_lock_digest']}.json")
+        predecessor = {**{name: documents[name] for name in
+                         ("artifact", "environment", "calibration")},
+                       "hardware": old_hardware, "protocol": old_protocol}
+        expected, plan = build_d20_lock_set(directory.parent, predecessor,
+                                             protocol["production_runtime_source_commit"])
+        _require(documents == expected and
+                 _read(directory.parent / "configs/s1_jobs_seed0_reviewed.json") == plan,
+                 "D20 successor differs from the exact D19 root, measured C3 evidence or reviewed plan")
+        validate_eligibility_matrix(old_hardware["payload"]["proof"])
+        return documents
     _require(protocol.get("production_runtime_source_commit") == protocol.get("source_commit") and
              protocol.get("calibration_source_commit") == CALIBRATION_SOURCE_COMMIT and
              protocol.get("execution_critical_path_set_version") == EXECUTION_CRITICAL_PATH_SET_VERSION and
@@ -650,7 +840,8 @@ def validate_final_lock_set(directory: Path) -> dict[str, dict]:
     return documents
 
 
-def build_production_configs(repo: Path, protocol_document: dict) -> tuple[dict[str, dict], dict]:
+def build_production_configs(repo: Path, protocol_document: dict,
+                             *, reviewed_plan: dict | None = None) -> tuple[dict[str, dict], dict]:
     """Derive exactly the reviewed nine seed-0 configs; do not launch them."""
     protocol, root_digest = validate_protocol_lock(protocol_document)
     _require(root_digest == protocol_document["sha256"] and
@@ -658,7 +849,8 @@ def build_production_configs(repo: Path, protocol_document: dict) -> tuple[dict[
              protocol.get("calibration_source_commit") == CALIBRATION_SOURCE_COMMIT and
              protocol["protocol"].get("production_config_binding_schema") in (2, 3),
              "final S1 protocol binding schema is absent")
-    reviewed = _read(Path(repo) / "configs/s1_jobs_seed0_reviewed.json")
+    reviewed = (reviewed_plan if reviewed_plan is not None else
+                _read(Path(repo) / "configs/s1_jobs_seed0_reviewed.json"))
     _require(payload_digest(reviewed) == protocol["protocol"]["run_plan"]["reviewed_plan_sha256"] and
              len(reviewed["jobs"]) == 9,
              "reviewed nine-job plan differs from protocol root")

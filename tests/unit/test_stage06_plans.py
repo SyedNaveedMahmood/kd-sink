@@ -26,7 +26,7 @@ def test_every_independent_config_is_strict(study):
         altered = {**raw, "student": {**raw["student"], "heads": 13}}
         with pytest.raises(ConfigError, match="dimensions"):
             resolve_config(altered, seed=0)
-        assert len(list((ROOT / study.lower()).glob("*.json"))) == (12 if study == "S1" else 5)
+        assert len(list((ROOT / study.lower()).glob("*.json"))) == (13 if study == "S1" else 5)
 
 
 def test_rel_on_4080_is_refused():

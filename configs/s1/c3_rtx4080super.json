@@ -1,0 +1,1 @@
+{"condition":"C3","device_role":"rtx4080super","protocol_digest":null,"schema_version":1,"student":{"heads":16,"initialization":"random_from_config","layers":24,"width":1024},"study":"S1","teacher":{"heads":20,"layers":36,"width":1280},"variant":"head_mean_probability_mse_v1"}
