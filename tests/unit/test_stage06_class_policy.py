@@ -26,10 +26,15 @@ ALLOWED = ("C0", "C1", "C2", "C5", "C6")
 
 @pytest.fixture(scope="module")
 def successor():
-    components = build_successor_component_locks(ROOT)
-    protocol = build_protocol_lock(ROOT, components, fingerprint_denominator_floor=1e-8,
-                                   production_runtime_source_commit="f" * 40)
-    configs, plan = build_production_configs(ROOT, protocol)
+    # D19 remains testable from its exact archived root after D20 becomes current.
+    protocol = json.loads((ROOT / "protocols/superseded/s1-protocol-48c39a25f640b90a70056e3c8f7308b66b9d635876e22c56f76516a09d2c9791.json").read_text())
+    hardware = json.loads((ROOT / "protocols/superseded" /
+        f"s1-hardware-{protocol['payload']['hardware_lock_digest']}.json").read_text())
+    components = {"hardware": hardware, "environment": json.loads((ROOT / "protocols/environment.lock.json").read_text())}
+    archive = ROOT / "configs/superseded/d19"
+    plan = json.loads((archive / "s1_jobs_seed0.json").read_text())
+    configs = {row["config"]: json.loads((archive / row["config"]).read_text())
+               for row in plan["jobs"]}
     return components, protocol, configs, plan
 
 

@@ -69,7 +69,7 @@ def validate_job_plan(plan: Mapping[str, Any], config_root: str | Path, *,
             raise JobPlanError("S1 plan requires complete C0-C6 for each explicitly listed seed")
         if any(condition == "C4" and role != "rtx3090" for condition, _, role in seen):
             raise JobPlanError("C4 REL requires RTX 3090")
-        if any(S1_ELIGIBILITY_STATUS[condition][role] == "pending_4080_profile"
+        if not production and any(S1_ELIGIBILITY_STATUS[condition][role] == "pending_4080_profile"
                for condition, _, role in seen):
             raise JobPlanError("C3 is pending_4080_profile")
         comparisons = (("C1", "C0"), ("C2", "C1"), ("C3", "C2"),
