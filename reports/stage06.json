@@ -1260,7 +1260,7 @@
     "c5_training_started_at_observation": false
   },
   "d20_c3_4080_successor_20260929": {
-    "status": "c3_running_after_verified_same_run_replay",
+    "status": "c3_interrupted_after_update_2571_pending_host_stability",
     "predecessor_root": "48c39a25f640b90a70056e3c8f7308b66b9d635876e22c56f76516a09d2c9791",
     "runtime_source_commit": "56260519be5e31790a7ed7abc078e2a285c0cf18",
     "hardware_lock_sha256": "fc410cd3d01505d0cd7b9ffdda98caaf070bfd2524ca7ac7841a0c78e60aa593",
@@ -1319,7 +1319,7 @@
       "interrupted_log_archive": "F:\\KD-SINK-stage06-ops\\interrupted\\s1-c3-seed0-rtx4080super-20260929T060115Z\\train.attempt1.jsonl",
       "last_verified_full_checkpoint_step": 0,
       "same_run_resume_started_utc": "2026-09-29T06:31:22.7849083Z",
-      "resume_status": "running_after_exact_replay_of_all_106_interrupted_updates",
+      "resume_status": "interrupted_after_update_2571; further_resume_held_for_host_stability",
       "resume_worker_pid_at_observation": 8224,
       "resume_observed_utc": "2026-09-29T06:51:11.4441524Z",
       "replayed_updates_compared": 106,
@@ -1340,6 +1340,25 @@
       "last_observed_loss_after_resume": 6.792196303606033,
       "last_observed_gradient_norm_after_resume": 0.4375899136066437,
       "estimated_remaining_training_hours_excluding_evaluation_and_checkpoint_pauses": 5.97,
+      "latest_observed_update": 2571,
+      "latest_observed_loss": 3.5376938432455063,
+      "latest_observed_gradient_norm": 0.476356565952301,
+      "latest_train_log_sha256": "a7f7efed0f8b485f77f86aa3e1dce3864e7830053c6bda668d30f3e426543e47",
+      "latest_train_log_sequential_updates": 2571,
+      "latest_train_log_nonfinite_updates": 0,
+      "latest_verified_full_checkpoint_step": 2500,
+      "uncheckpointed_updates_after_latest_full_checkpoint": 71,
+      "step_2500_dense64_student_teacher": "complete",
+      "host_reboot_events_local_20260929": [
+        "15:04:20",
+        "16:03:02",
+        "16:20:23"
+      ],
+      "last_train_log_write_utc": "2026-09-29T09:01:15.3921935Z",
+      "writer_lock_pid": 8224,
+      "writer_lock_pid_alive_at_audit": false,
+      "normal_completion_record": false,
+      "next_resume": "hold_until_nodipc_host_stability_is_investigated; resume_same_run_from_verified_rolling_002500_only",
       "completion_evidence": null
     }
   }

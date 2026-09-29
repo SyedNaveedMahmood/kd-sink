@@ -83,6 +83,8 @@ The old root `2a11da9bb71957a4d6b3a2f93a34bd67491dd9d21d70577a7a10858930a8943e` 
 
 **S1 C3 NodiPC launch (2026-09-29):** The one authorized seed-0 C3 run started under the corrected D20 root in `F:\KD-SINK-stage06-runs\s1-c3-seed0-rtx4080super`. Step-0 and step-100 evaluations completed, and updates 1-106 had finite loss and gradient norms. Windows then rebooted unexpectedly with no recorded training exception or bugcheck code. The original log and stale writer lock were archived under `F:\KD-SINK-stage06-ops\interrupted\`; the step-0 full checkpoint passed checksum and identity verification. The same run resumed from step 0 and replayed all 106 updates with zero mismatches in loss components, gradient norm, learning rate, and token counters; it then advanced to observed update 111. No C3 completion claim is made. The D19 C1 run and preapproved C5 queue on NaveedPC retain their original root and identity.
 
+**S1 C3 interruption audit (2026-09-29):** The resumed C3 worker later stopped after update 2,571 during another period of unexpected NodiPC reboots. Updates 1-2,571 are sequential and finite, and step-2,500 dense64 student/teacher evaluations completed. `rolling-002500` passed full checksum and exact D20/UUID identity verification; the 71 later updates were not checkpointed. No normal completion record exists. Further same-run resume is held while the repeated host resets are investigated. Preserve the current log, checkpoints and stale writer lock as interruption evidence; do not mark C3 complete or start another condition.
+
 ## Stage07 - S2
 Work order: [07_S2_PRETRAINING](design/e6a_v2/stages/07_S2_PRETRAINING.md).
 - [x]07.1 Immutable public checkpoint/seed inventory capability; one public step0 entry is now resolved and verified.
