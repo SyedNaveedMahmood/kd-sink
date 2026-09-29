@@ -81,6 +81,8 @@ The old root `2a11da9bb71957a4d6b3a2f93a34bd67491dd9d21d70577a7a10858930a8943e` 
 
 **D20 first root superseded:** `fd5199ae6f90985ce8c87539f3e76b6d810c5420ccb2d0f6d6ee300a27cef5f4` is archived and nonlaunchable because its preflight used the new plan for the original artifact approval. The corrected inventory reproduces the original sealed digest; replacement root `fccf4c14bc691e550c6304f4955b72037efb8d042b3e51afb70367920fff0552` passed real NodiPC C3 preflight with artifacts/source/environment verified and `training_started=false`; C4 was refused. The single C3 launch is now authorized.
 
+**S1 C3 NodiPC launch (2026-09-29):** The one authorized seed-0 C3 run started under the corrected D20 root in `F:\KD-SINK-stage06-runs\s1-c3-seed0-rtx4080super`. Step-0 and step-100 evaluations completed, and updates 1-106 had finite loss and gradient norms. Windows then rebooted unexpectedly with no recorded training exception or bugcheck code. The original log and stale writer lock were archived under `F:\KD-SINK-stage06-ops\interrupted\`; the step-0 full checkpoint passed checksum and identity verification. The same run resumed from step 0 and replayed all 106 updates with zero mismatches in loss components, gradient norm, learning rate, and token counters; it then advanced to observed update 111. No C3 completion claim is made. The D19 C1 run and preapproved C5 queue on NaveedPC retain their original root and identity.
+
 ## Stage07 - S2
 Work order: [07_S2_PRETRAINING](design/e6a_v2/stages/07_S2_PRETRAINING.md).
 - [x]07.1 Immutable public checkpoint/seed inventory capability; one public step0 entry is now resolved and verified.

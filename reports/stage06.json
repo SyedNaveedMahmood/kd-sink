@@ -1260,7 +1260,7 @@
     "c5_training_started_at_observation": false
   },
   "d20_c3_4080_successor_20260929": {
-    "status": "production_ready_preflight_passed_c3_launch_pending",
+    "status": "c3_running_after_verified_same_run_replay",
     "predecessor_root": "48c39a25f640b90a70056e3c8f7308b66b9d635876e22c56f76516a09d2c9791",
     "runtime_source_commit": "56260519be5e31790a7ed7abc078e2a285c0cf18",
     "hardware_lock_sha256": "fc410cd3d01505d0cd7b9ffdda98caaf070bfd2524ca7ac7841a0c78e60aa593",
@@ -1297,12 +1297,50 @@
       "scientific_artifacts_verified": true,
       "training_started": false
     },
-    "scientific_training_started_by_amendment": false,
+    "scientific_training_started_by_amendment": true,
     "superseded_unlaunched_first_root": "fd5199ae6f90985ce8c87539f3e76b6d810c5420ccb2d0f6d6ee300a27cef5f4",
     "first_root_status": "superseded_nonlaunchable_due_to_artifact_approval_plan_reference_defect",
     "artifact_inventory_reverified_sha256": "e4f515d26b0dbe1100ba97dc80c67eb224f7e7dc170c848a98123c0e19cc748f",
     "c4_nodipc_refusal": "preflight exit 2: actual GPU differs from exact RTX3090 binding",
     "c3_target_run_dir_absent_before_launch": true,
-    "other_s1_train_processes_before_launch": 0
+    "other_s1_train_processes_before_launch": 0,
+    "s1_c3_launch_20260929": {
+      "launch_commit": "7d86aa8b43b8b172873fc10b3e128ad5b5ea0163",
+      "started_utc": "2026-09-29T05:33:10.2241179Z",
+      "run_dir": "F:\\KD-SINK-stage06-runs\\s1-c3-seed0-rtx4080super",
+      "gpu_uuid": "GPU-72b4b307-b613-c35e-ea32-53f4431de9ee",
+      "step_0_evaluation": "all_required_student_and_teacher_aggregates_complete",
+      "step_100_evaluation": "all_required_student_and_teacher_aggregates_complete",
+      "first_optimizer_update_observed": true,
+      "last_update_before_interruption": 106,
+      "observed_update_losses_and_gradient_norms_finite": true,
+      "interruption": "unexpected_windows_reboot_kernel_power_41_eventlog_6008_no_bugcheck_code",
+      "interrupted_log_sha256": "b7aa35440a8a09b7ca53520f78eacbd97c3d6de6d50248d22775d93f4abb5b41",
+      "interrupted_log_archive": "F:\\KD-SINK-stage06-ops\\interrupted\\s1-c3-seed0-rtx4080super-20260929T060115Z\\train.attempt1.jsonl",
+      "last_verified_full_checkpoint_step": 0,
+      "same_run_resume_started_utc": "2026-09-29T06:31:22.7849083Z",
+      "resume_status": "running_after_exact_replay_of_all_106_interrupted_updates",
+      "resume_worker_pid_at_observation": 8224,
+      "resume_observed_utc": "2026-09-29T06:51:11.4441524Z",
+      "replayed_updates_compared": 106,
+      "replay_scientific_fields": [
+        "step",
+        "loss",
+        "ce",
+        "kd",
+        "attention",
+        "relation",
+        "grad_norm",
+        "lr",
+        "input_tokens",
+        "target_tokens"
+      ],
+      "replay_scientific_field_mismatches": 0,
+      "last_observed_update_after_resume": 111,
+      "last_observed_loss_after_resume": 6.792196303606033,
+      "last_observed_gradient_norm_after_resume": 0.4375899136066437,
+      "estimated_remaining_training_hours_excluding_evaluation_and_checkpoint_pauses": 5.97,
+      "completion_evidence": null
+    }
   }
 }
