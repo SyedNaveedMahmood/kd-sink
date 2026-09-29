@@ -81,6 +81,8 @@ The old root `2a11da9bb71957a4d6b3a2f93a34bd67491dd9d21d70577a7a10858930a8943e` 
 
 **S1 C6 production launch (2026-09-28, observed 19:46 UTC):** On explicit operator instruction, one C6 seed-0 10,000-update job started on Adrita-PC under the D19 successor root. Its external run directory is `E:\KD-SINK-stage06-runs\s1-c6-seed0-rtx4080super`. Step-0 dense64/full300 student and teacher plus LM2000 completed. Step-100 dense64/full300 student and teacher completed; training resumed and reached observed update 123 with finite loss and steady GPU memory. The job is running, with no completion claim. See `reports/stage06.json` and external structured logs. Audit the protected final checkpoint and required evaluation coverage after the job finishes.
 
+**S1 C6 completion audit (2026-09-29, 06:15 UTC):** Adrita-PC C6 seed0 finished normally at 10,000 optimizer updates. All update losses and gradient norms were finite; cumulative counts are 81,920,000 input tokens and 81,280,000 shifted targets. All 222 required student/teacher evaluation completion events across 112 panel/step pairs are present, including the final LM2000 endpoint. The protected `final-010000` full checkpoint passed content-hash verification and contains optimizer, scheduler, RNG, data-order and exact counters. This verifies one C6 physical job, not completion of the wider S1 campaign. See `reports/stage06.json` and the external run directory.
+
 ## Stage07 - S2
 Work order: [07_S2_PRETRAINING](design/e6a_v2/stages/07_S2_PRETRAINING.md).
 - [x]07.1 Immutable public checkpoint/seed inventory capability; one public step0 entry is now resolved and verified.
