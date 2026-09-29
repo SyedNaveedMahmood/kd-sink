@@ -231,7 +231,7 @@ def d20_reviewed_plan(d19_protocol: dict) -> dict:
     matches[0]["run_id"] = "s1-c3-seed0-rtx4080super"
     matches[0]["config"] = "s1/c3_rtx4080super.json"
     return {"schema_version": 1, "status": "approved", "study": "S1", "jobs": jobs,
-            "optional_s3_enabled": False, "hardware_confounds": []}
+            "optional_s3_enabled": False, "hardware_confounds": ["C4-C3-seed0"]}
 
 
 def build_d20_lock_set(repo: Path, predecessor: dict[str, dict],
@@ -916,8 +916,10 @@ def validate_production_configs(repo: Path, protocol_document: dict) -> dict:
     root = Path(repo) / "configs"
     plan = _read(root / "production/s1_jobs_seed0.json")
     result = validate_job_plan(plan, root, protocol_lock=protocol_document, production=True)
+    d20 = "d20_researcher_amendment_sha256" in protocol_document["payload"]["protocol"]
+    expected_confounds = ["C4-C3-seed0"] if d20 else []
     _require(result["physical_runs"] == 9 and result["unique_condition_seed_pairs"] == 7 and
-             result["seeds"] == [0] and not result["hardware_confounds"] and
+             result["seeds"] == [0] and result["hardware_confounds"] == expected_confounds and
              result["launchable"] is True,
              "production nine-job plan does not validate")
     return result

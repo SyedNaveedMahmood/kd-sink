@@ -49,6 +49,7 @@ def test_d20_exact_predecessor_science_and_nine_job_assignment(d20):
     assert after["protocol"]["training"]["microbatch"] == 4
     assert after["protocol"]["training"]["accumulation"] == 16
     assert len(plan["jobs"]) == len(production["jobs"]) == len(configs) == 9
+    assert plan["hardware_confounds"] == production["hardware_confounds"] == ["C4-C3-seed0"]
     assert len({(row["run_id"].split("-")[1], row["seed"]) for row in plan["jobs"]}) == 7
     assert "s1-c3-seed0-rtx4080super" in [row["run_id"] for row in plan["jobs"]]
     assert "s1-c3-seed0-rtx3090" not in [row["run_id"] for row in plan["jobs"]]
