@@ -61,8 +61,11 @@ def main() -> None:
     config = GPT2Config(**_read(source_root / "student-config/config.json"))
     rows = {}
     for seed in (1, 2):
-        init = next((root / f"initialization/seed{seed}").glob(
+        init_files = list((root / f"initialization/seed{seed}").glob(
             f"init-seed{seed}-*.json"))
+        if len(init_files) != 1:
+            parser.error(f"seed {seed} requires one initialization")
+        init = init_files[0]
         init_payload, _ = verify_envelope(_read(init))
         if init_payload["seed"] != seed:
             parser.error(f"seed {seed} initialization metadata mismatch")
