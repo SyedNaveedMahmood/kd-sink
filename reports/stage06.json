@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "stage_id": "06",
-  "status": "d20_successor_sealed_pending_real_nodipc_preflight",
+  "status": "production_ready_under_d20_c3_4080_successor",
   "starting_commit": "5396f84828bd2de5eb29b6f0467eb084c1b2af8c",
   "resume_starting_commit": "aeb064f76ded84b7b1a7999371be6fd6ee7266f6",
   "implementation_milestones": [
@@ -1260,7 +1260,7 @@
     "c5_training_started_at_observation": false
   },
   "d20_c3_4080_successor_20260929": {
-    "status": "sealed_pending_real_nodipc_preflight",
+    "status": "production_ready_preflight_passed_c3_launch_pending",
     "predecessor_root": "48c39a25f640b90a70056e3c8f7308b66b9d635876e22c56f76516a09d2c9791",
     "runtime_source_commit": "56260519be5e31790a7ed7abc078e2a285c0cf18",
     "hardware_lock_sha256": "fc410cd3d01505d0cd7b9ffdda98caaf070bfd2524ca7ac7841a0c78e60aa593",
@@ -1287,10 +1287,22 @@
       "skipped": 0
     },
     "post_seal_clean_wheel_passed": 1,
-    "post_seal_preflight": "pending_pushed_replacement_commit",
+    "post_seal_preflight": {
+      "condition": "C3",
+      "gpu_name": "NVIDIA GeForce RTX 4080 SUPER",
+      "gpu_uuid": "GPU-72b4b307-b613-c35e-ea32-53f4431de9ee",
+      "protocol_sha256": "fccf4c14bc691e550c6304f4955b72037efb8d042b3e51afb70367920fff0552",
+      "hardware_sha256": "fc410cd3d01505d0cd7b9ffdda98caaf070bfd2524ca7ac7841a0c78e60aa593",
+      "runtime_source_commit": "56260519be5e31790a7ed7abc078e2a285c0cf18",
+      "scientific_artifacts_verified": true,
+      "training_started": false
+    },
     "scientific_training_started_by_amendment": false,
     "superseded_unlaunched_first_root": "fd5199ae6f90985ce8c87539f3e76b6d810c5420ccb2d0f6d6ee300a27cef5f4",
     "first_root_status": "superseded_nonlaunchable_due_to_artifact_approval_plan_reference_defect",
-    "artifact_inventory_reverified_sha256": "e4f515d26b0dbe1100ba97dc80c67eb224f7e7dc170c848a98123c0e19cc748f"
+    "artifact_inventory_reverified_sha256": "e4f515d26b0dbe1100ba97dc80c67eb224f7e7dc170c848a98123c0e19cc748f",
+    "c4_nodipc_refusal": "preflight exit 2: actual GPU differs from exact RTX3090 binding",
+    "c3_target_run_dir_absent_before_launch": true,
+    "other_s1_train_processes_before_launch": 0
   }
 }
