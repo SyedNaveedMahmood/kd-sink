@@ -1387,6 +1387,30 @@
       "seed1_seed2_started": false
     }
   },
+  "s1_c5_resume_20260930": {
+    "observed_at_utc": "2026-09-30T07:49:06Z",
+    "status": "resumed_from_verified_step_8000_and_running",
+    "interruption": "unexpected_Windows_restart_without_clean_shutdown",
+    "precrash_last_valid_update": 8070,
+    "precrash_last_loss": 2.904671370983124,
+    "precrash_log_archive": "D:\\KD-SINK-stage06-runs\\s1-c5-seed0-rtx4080super\\train.precrash-through-8070.jsonl",
+    "precrash_log_sha256": "ff5b6e61f7189cd071b4b5e2400dd9d03acc903364f36ecfb08ed9dde28ba9f7",
+    "resume_checkpoint": "D:\\KD-SINK-stage06-runs\\s1-c5-seed0-rtx4080super\\checkpoints\\rolling-008000",
+    "resume_checkpoint_verification": "passed_content_hashes_identity_protocol_condition_seed_and_same_physical_GPU_UUID",
+    "replayed_updates": "8001_through_8070",
+    "resume_launcher_pid_at_observation": 15048,
+    "resume_worker_pid_at_observation": 2940,
+    "last_observed_resumed_update": 8148,
+    "last_observed_resumed_loss": 2.8068206757307053,
+    "all_observed_resumed_losses_finite": true,
+    "observed_train_only_eta_seconds": 7138.940635352419,
+    "estimated_completion": "approximately 2026-09-30T10:20Z_to_10:40Z (16:20_to_16:40 Asia/Dhaka), including evaluation and checkpoint allowance",
+    "gpu_uuid": "GPU-f6ff547d-b5cb-c2b8-ca56-ef87e6c18af0",
+    "protocol_root": "48c39a25f640b90a70056e3c8f7308b66b9d635876e22c56f76516a09d2c9791",
+    "microbatch": 4,
+    "accumulation": 16,
+    "completion_evidence": null
+  },
   "d21_optional_c3_seed_replications": {
     "status": "sealed_pending_sequential_launch",
     "predecessor_d20_root_sha256": "fccf4c14bc691e550c6304f4955b72037efb8d042b3e51afb70367920fff0552",

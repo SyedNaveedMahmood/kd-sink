@@ -132,5 +132,9 @@ The researcher authorized C3-only seeds 1 and 2 and separate OpenWebText repacki
 
 The external queue status and run records determine actual launches; a prepared or armed queue is not scientific coverage.
 
+## S1 C5 interruption and resume (2026-09-30, observed 07:49 UTC)
+
+The earlier C1 gate completed successfully and launched C5 on NaveedPC. C5 reached update 8,070, then an unexpected Windows restart interrupted it without an OOM or traceback. The original log is preserved byte-for-byte as `train.precrash-through-8070.jsonl`. The checksum-verified rolling step-8,000 checkpoint retained the same C5/seed/root/physical-GPU identity. On explicit operator request, the same lineage resumed from step 8,000 with unchanged microbatch 4 and accumulation 16. At the latest health sample it reached update 8,148 with finite loss and no runtime error. Completion remains unproven; the practical ETC was 16:20-16:40 Asia/Dhaka on 2026-09-30.
+
 ## D21 optional C3-only replications (2026-09-30T03:10:59Z)
 D20 C3 seed0 final coverage verified. D21 successor root 95a3607791fab3911916bcab407f7d10dab3576f197ebe7b606c2f9e3ac8ab15 seals separately packed seed1/2 C3 artifacts, unchanged C3 science and two explicit single-seed jobs. The external one-shot queue launches seed1 only after seal push; seed2 requires verified seed1 completion. No other S1 condition is queued. Scientific completion remains per run.
