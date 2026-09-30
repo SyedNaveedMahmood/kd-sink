@@ -126,8 +126,11 @@ Work order: [09_ANALYSIS_RELEASE](design/e6a_v2/stages/09_ANALYSIS_RELEASE.md).
 The researcher authorized C3-only seeds 1 and 2 and separate OpenWebText repacking/panels per seed. This supersedes D02's complete-campaign default for these two optional C3 jobs only. The D20 seed-0 C3 process resumed from verified step 2,500, completed update 10,000, and passed final-checkpoint, sequential-update, and 222-aggregate verification. Unexpected host resets remain a risk for later jobs.
 
 - [x] Add tested D21 source support for exact per-seed provenance and a fail-closed one-shot queue.
-- [ ] Prepare and verify the two real seed-specific corpus/panel/order artifact sets when host memory is available.
+- [x] Prepare and verify the two real seed-specific corpus/panel/order artifact sets when host memory is available.
 - [ ] Seal and push the prospective D21 root, validate both real 4080 preflights, then arm seed-1 after verified seed-0 completion.
 - [ ] Launch seed-2 only after seed-1 final checkpoint and required evaluation coverage verify.
 
 The external queue status and run records determine actual launches; a prepared or armed queue is not scientific coverage.
+
+## D21 optional C3-only replications (2026-09-30T03:10:59Z)
+D20 C3 seed0 final coverage verified. D21 successor root 95a3607791fab3911916bcab407f7d10dab3576f197ebe7b606c2f9e3ac8ab15 seals separately packed seed1/2 C3 artifacts, unchanged C3 science and two explicit single-seed jobs. The external one-shot queue launches seed1 only after seal push; seed2 requires verified seed1 completion. No other S1 condition is queued. Scientific completion remains per run.

@@ -74,3 +74,21 @@ def test_queue_requires_final_state_all_updates_and_complete_evaluations(tmp_pat
         QUEUE._verify_complete(run, seed=1, root_sha="a" * 64)
     with pytest.raises(ValueError, match="checkpoint"):
         QUEUE._verify_complete(run, seed=1, root_sha="c" * 64)
+
+
+def test_sequential_launcher_builds_one_explicit_c3_seed_without_rel_scale(tmp_path):
+    spec = importlib.util.spec_from_file_location(
+        "d21_sequential_launcher", ROOT / "scripts/launch_stage06_c3_seed12_sequential.py")
+    assert spec and spec.loader
+    launcher = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(launcher)
+    inputs = {name: tmp_path / name for name in
+              ("corpus", "panels", "student_config", "initialization", "teacher_dir")}
+    command = launcher._train_command("python", 1, tmp_path / "run", inputs)
+    assert command[command.index("--seed") + 1] == "1"
+    assert command[command.index("--stop-after") + 1] == "10000"
+    assert command[command.index("--mse-scale") + 1] == QUEUE.MSE_SCALE
+    assert "--rel-scale" not in command
+    assert "c3_seed1_rtx4080super.json" in command[command.index("--config") + 1]
+    with pytest.raises(ValueError, match="only C3 seeds"):
+        launcher._train_command("python", 0, tmp_path / "run", inputs)

@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "stage_id": "06",
-  "status": "production_ready_under_d20_c3_4080_successor",
+  "status": "production_ready_under_d21_c3_seed12_successor",
   "starting_commit": "5396f84828bd2de5eb29b6f0467eb084c1b2af8c",
   "resume_starting_commit": "aeb064f76ded84b7b1a7999371be6fd6ee7266f6",
   "implementation_milestones": [
@@ -434,7 +434,7 @@
     "First full CPU regression: 112 passed/1 failed because exact uv sync does not install the undeclared python-build frontend. The offline wheel test now uses the already-installed pip PEP 517 frontend with no build isolation/dependencies; the same no-Upstream wheel/install assertions pass.",
     "The first synthetic shape-fixture command failed at Python parse time because of a mismatched closing bracket; syntax was corrected and the same preparation command exited 0. No GPU profile was run before that correction."
   ],
-  "scientific_coverage": "none; approved calibration is a training-side measurement, not an S1/S3 production training result",
+  "scientific_coverage": "C3 seed0 final-010000 and evaluation coverage verified by D21 queue; other S1 run coverage is not asserted here",
   "upstream_files_changed": 0,
   "pushed": true,
   "remaining_blockers": [],
@@ -1363,9 +1363,9 @@
     }
   },
   "d21_c3_seed12_preparation": {
-    "status": "seed0_verified_artifacts_pending",
+    "status": "seed0_complete_artifacts_verified",
     "predecessor_d20_root_sha256": "fccf4c14bc691e550c6304f4955b72037efb8d042b3e51afb70367920fff0552",
-    "runtime_source_milestone": "cd4447bf99b9c5fa3a4a6531496bc1f269378124",
+    "runtime_source_milestone": "9f15fb3dc26a0beb5b4492cc7f34df5c9918e27b",
     "condition": "C3",
     "optional_seeds": [
       1,
@@ -1386,5 +1386,27 @@
       "train_command_result": "single_run_stopped_at_10000",
       "seed1_seed2_started": false
     }
+  },
+  "d21_optional_c3_seed_replications": {
+    "status": "sealed_pending_sequential_launch",
+    "predecessor_d20_root_sha256": "fccf4c14bc691e550c6304f4955b72037efb8d042b3e51afb70367920fff0552",
+    "successor_root_sha256": "95a3607791fab3911916bcab407f7d10dab3576f197ebe7b606c2f9e3ac8ab15",
+    "runtime_source_commit": "9f15fb3dc26a0beb5b4492cc7f34df5c9918e27b",
+    "amendment_sha256": "a501d46bef924e95f2f95e8580b1fc98dc1be04d04a7582b93fa96b652ffef30",
+    "evidence_sha256": "95e5d563138b15dae66bf2cce9a112a8c08d00fb32a19ab5bf3b2337814658c7",
+    "seed0_final": {
+      "seed": 0,
+      "updates": 10000,
+      "aggregate_count": 222,
+      "final_manifest_sha256": "7d629c59a650724ae4122686b5c57ce408a141e15bb7848e04a84e6311a3d122"
+    },
+    "seeds": [
+      1,
+      2
+    ],
+    "condition": "C3",
+    "separate_seed_packing_and_panels": true,
+    "automatic_condition_sweep": false,
+    "new_training_started_at_seal": false
   }
 }

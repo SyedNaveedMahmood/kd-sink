@@ -202,7 +202,7 @@ def _record_seal(repo: Path, source: str, root: str, seed0: dict) -> None:
     if "d21_c3_seed12_preparation" in report:
         report["d21_c3_seed12_preparation"].update(
             status="seed0_complete_artifacts_verified",
-            production_launch_armed=True)
+            production_launch_armed=False)
     report["d21_optional_c3_seed_replications"] = {
         "status": "sealed_pending_sequential_launch",
         "predecessor_d20_root_sha256": D20_ROOT,
@@ -236,15 +236,15 @@ def _record_seal(repo: Path, source: str, root: str, seed0: dict) -> None:
         "- Full CPU unit/integration and standalone clean-wheel tests, pip check, "
         "active uv locked dry-run, diff check, source guard, real RTX4080 preflights "
         "for seeds1/2 passed before seal commit. Exact commands and output are in "
-        "the external D21 queue command log. No seed1/2 run had started at this entry. "
+        "the Stage06 journal and preflight console evidence. No seed1/2 run had started at this entry. "
         "Next: push the seal, then launch seed1; launch seed2 only after seed1 final "
         "checkpoint and evaluation coverage verify.\n")
     for name in ("IMPLEMENTATION_NOTES_BY_CLAUDE_CORE.md",
                  "IMPLEMENTATION_NOTES_BY_CLAUDE_S1.md"):
-        with (repo / "implementation_notes" / name).open("a", encoding="utf-8") as stream:
+        with (repo / "implementation_notes" / name).open("a", encoding="utf-8", newline="\n") as stream:
             stream.write(note)
     next_path = repo / "NEXT_STEPS.md"
-    with next_path.open("a", encoding="utf-8") as stream:
+    with next_path.open("a", encoding="utf-8", newline="\n") as stream:
         stream.write(
             f"\n## D21 optional C3-only replications ({timestamp})\n"
             f"D20 C3 seed0 final coverage verified. D21 successor root {root} seals "

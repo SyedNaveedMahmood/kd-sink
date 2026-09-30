@@ -42,6 +42,10 @@ def _write_once(path: Path, document: dict) -> None:
     path.write_bytes(content)
 
 
+def _matches_canonical_file(path: Path, document: dict) -> bool:
+    return path.read_bytes() == canonical_json_bytes(document) + b"\n"
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--repo", type=Path, default=Path(__file__).resolve().parents[1])
@@ -95,7 +99,7 @@ def main() -> None:
         expected_order = UpdateOrder(ids, seed=seed, scheme="upstream-owt-epoch-v1").snapshot()
         order_hash = expected_order["sha256"]
         order_path = root / f"order/seed{seed}" / f"owt-update-order-{order_hash}.json"
-        if _read(order_path) != expected_order:
+        if not _matches_canonical_file(order_path, expected_order):
             parser.error(f"seed {seed} order differs from packed corpus")
         rows[str(seed)] = {
             "corpus_sha256": corpus_hash, "corpus_file_sha256": _sha(corpus_path),

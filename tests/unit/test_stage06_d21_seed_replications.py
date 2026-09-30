@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import copy
 import hashlib
+import importlib.util
 import json
 from pathlib import Path
 from types import SimpleNamespace
@@ -22,6 +23,19 @@ from sinklab.training_entry import (_check_seed_replication_artifacts,
 
 REPO = Path(__file__).resolve().parents[2]
 SOURCE_SHA = "d36784aaf0521f6e96d40d603e0361744397b23df90dc505e29b0b9cf18360eb"
+
+
+def test_order_evidence_compares_canonical_file_not_python_tuple_shape(tmp_path):
+    script = REPO / "scripts/seal_stage06_c3_seed12_evidence.py"
+    module_spec = importlib.util.spec_from_file_location("d21_evidence_sealer", script)
+    assert module_spec and module_spec.loader
+    module = importlib.util.module_from_spec(module_spec)
+    module_spec.loader.exec_module(module)
+    expected = seal_payload({"rng_state": (1, (2, 3))})
+    path = tmp_path / "order.json"
+    path.write_bytes(canonical_json_bytes(expected) + b"\n")
+    assert json.loads(path.read_text()) != expected
+    assert module._matches_canonical_file(path, expected)
 
 
 def _read(path: Path) -> dict:
