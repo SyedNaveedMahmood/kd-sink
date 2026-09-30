@@ -1361,5 +1361,30 @@
       "next_resume": "hold_until_nodipc_host_stability_is_investigated; resume_same_run_from_verified_rolling_002500_only",
       "completion_evidence": null
     }
+  },
+  "d21_c3_seed12_preparation": {
+    "status": "seed0_verified_artifacts_pending",
+    "predecessor_d20_root_sha256": "fccf4c14bc691e550c6304f4955b72037efb8d042b3e51afb70367920fff0552",
+    "runtime_source_milestone": "cd4447bf99b9c5fa3a4a6531496bc1f269378124",
+    "condition": "C3",
+    "optional_seeds": [
+      1,
+      2
+    ],
+    "per_seed_owt_repacking_and_panels": true,
+    "seed1_initialization_tensor_sha256": "f387f849ffaf65651b01144e620e454252196e7071c7c3d3036edb99778f9fde",
+    "seed2_initialization_tensor_sha256": "04c8100428af9f14af179a8857b270fc369a25856a2fd2644d4b18f3a005ccc7",
+    "production_launch_armed": false,
+    "scientific_coverage": "none_for_seed1_seed2",
+    "seed0_completion_audit": {
+      "run_dir": "F:\\KD-SINK-stage06-runs\\s1-c3-seed0-rtx4080super",
+      "protocol_root_sha256": "fccf4c14bc691e550c6304f4955b72037efb8d042b3e51afb70367920fff0552",
+      "final_checkpoint_step": 10000,
+      "sequential_finite_updates": 10000,
+      "complete_evaluation_aggregates": 222,
+      "final_manifest_sha256": "7d629c59a650724ae4122686b5c57ce408a141e15bb7848e04a84e6311a3d122",
+      "train_command_result": "single_run_stopped_at_10000",
+      "seed1_seed2_started": false
+    }
   }
 }

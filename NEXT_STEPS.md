@@ -120,3 +120,14 @@ Work order: [09_ANALYSIS_RELEASE](design/e6a_v2/stages/09_ANALYSIS_RELEASE.md).
 - [ ] Operator explicitly launches each approved study/condition/seed.
 - [ ] Actual completed coverage audited before paper claims.
 - [ ] Separate authorization obtained before eventual Upstream deletion.
+
+## Prospective D21 C3-only seed replications (2026-09-29)
+
+The researcher authorized C3-only seeds 1 and 2 and separate OpenWebText repacking/panels per seed. This supersedes D02's complete-campaign default for these two optional C3 jobs only. The D20 seed-0 C3 process resumed from verified step 2,500, completed update 10,000, and passed final-checkpoint, sequential-update, and 222-aggregate verification. Unexpected host resets remain a risk for later jobs.
+
+- [x] Add tested D21 source support for exact per-seed provenance and a fail-closed one-shot queue.
+- [ ] Prepare and verify the two real seed-specific corpus/panel/order artifact sets when host memory is available.
+- [ ] Seal and push the prospective D21 root, validate both real 4080 preflights, then arm seed-1 after verified seed-0 completion.
+- [ ] Launch seed-2 only after seed-1 final checkpoint and required evaluation coverage verify.
+
+The external queue status and run records determine actual launches; a prepared or armed queue is not scientific coverage.

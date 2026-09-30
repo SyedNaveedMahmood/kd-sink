@@ -199,6 +199,10 @@ def _record_seal(repo: Path, source: str, root: str, seed0: dict) -> None:
     report_path = repo / "reports/stage06.json"
     report = _json(report_path)
     report["status"] = "production_ready_under_d21_c3_seed12_successor"
+    if "d21_c3_seed12_preparation" in report:
+        report["d21_c3_seed12_preparation"].update(
+            status="seed0_complete_artifacts_verified",
+            production_launch_armed=True)
     report["d21_optional_c3_seed_replications"] = {
         "status": "sealed_pending_sequential_launch",
         "predecessor_d20_root_sha256": D20_ROOT,
@@ -215,8 +219,7 @@ def _record_seal(repo: Path, source: str, root: str, seed0: dict) -> None:
     report["scientific_coverage"] = (
         "C3 seed0 final-010000 and evaluation coverage verified by D21 queue; "
         "other S1 run coverage is not asserted here")
-    report_path.write_text(json.dumps(report, indent=2, ensure_ascii=False) + "\n",
-                           encoding="utf-8")
+    report_path.write_bytes((json.dumps(report, indent=2, ensure_ascii=False) + "\n").encode("utf-8"))
     note = (
         f"\n## {timestamp} - Codex (GPT-6) - Prospective D21 C3-only seed queue sealed\n\n"
         f"- D20 C3 seed0 completed: verified 10,000 sequential finite updates, "
@@ -271,6 +274,7 @@ def main() -> None:
     repo, production, replicas, ops = (
         path.resolve() for path in
         (args.repo, args.production_root, args.replication_root, args.ops_root))
+    sys.path.insert(0, str(repo / "src"))
     state_path, command_log = ops / "queue-status.json", ops / "commands.log"
     status = {"seed0_worker_running": _worker_running(
         args.seed0_worker_pid, args.seed0_worker_created),
@@ -390,6 +394,7 @@ def main() -> None:
                 _verify_complete(args.seed1_run_dir, seed=1, root_sha=root)
             if run.exists() and any(run.iterdir()):
                 raise RuntimeError(f"optional run directory occupied: {run}")
+            run.parent.mkdir(parents=True, exist_ok=True)
             if shutil.disk_usage(run.parent).free < 35 * 1024**3:
                 raise RuntimeError("insufficient free storage for fresh C3 run")
             _gpu()
