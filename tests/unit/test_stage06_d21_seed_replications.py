@@ -143,7 +143,7 @@ def test_external_replication_files_must_match_committed_bytes(tmp_path):
     documents = {
         "corpus": (f"corpus/seed{seed}/owt-corpus-{row['corpus_sha256']}.json", b"corpus"),
         "panels": (f"panels/seed{seed}/owt-panels-{row['panels_sha256']}.json", b"panels"),
-        "order": (f"order/seed{seed}/update-order-{row['order_sha256']}.json",
+        "order": (f"order/seed{seed}/owt-update-order-{row['order_sha256']}.json",
                   canonical_json_bytes(order_document) + b"\n"),
         "initialization": (f"initialization/seed{seed}/init-seed{seed}-{row['initialization_sha256']}.json",
                            canonical_json_bytes(seal_payload({

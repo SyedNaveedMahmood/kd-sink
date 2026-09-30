@@ -325,7 +325,7 @@ def main() -> None:
                       "--corpus", str(corpus), "--tokenizer-sha256", TOKENIZER_SHA,
                       "--out-dir", str(panels_dir)],
                      cwd=repo, env=env, log=command_log)
-            if not list(order_dir.glob("update-order-*.json")):
+            if not list(order_dir.glob("owt-update-order-*.json")):
                 _cmd([python, "-u", "-m", "sinklab", "prepare-owt-compat-order",
                       "--corpus", str(corpus), "--tokenizer-sha256", TOKENIZER_SHA,
                       "--seed", str(seed), "--updates", "0", "--out-dir", str(order_dir)],

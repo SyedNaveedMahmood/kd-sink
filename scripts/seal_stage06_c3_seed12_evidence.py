@@ -94,7 +94,7 @@ def main() -> None:
         ids = [block["id"] for block in corpus["partitions"]["training"]["blocks"]]
         expected_order = UpdateOrder(ids, seed=seed, scheme="upstream-owt-epoch-v1").snapshot()
         order_hash = expected_order["sha256"]
-        order_path = root / f"order/seed{seed}" / f"update-order-{order_hash}.json"
+        order_path = root / f"order/seed{seed}" / f"owt-update-order-{order_hash}.json"
         if _read(order_path) != expected_order:
             parser.error(f"seed {seed} order differs from packed corpus")
         rows[str(seed)] = {
