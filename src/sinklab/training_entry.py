@@ -41,6 +41,13 @@ def _file_sha256(path: Path) -> str:
     return digest.hexdigest()
 
 
+def _replication_root_from_corpus(path: Path, seed: int) -> Path:
+    corpus = path.resolve()
+    if corpus.parent.name != f"seed{seed}" or corpus.parents[1].name != "corpus":
+        raise ValueError("optional seed corpus must be under corpus/seed<seed>")
+    return corpus.parents[2]
+
+
 def _check_seed_replication_artifacts(repo: Path, root: Path, lock: dict,
                                       spec, args) -> None:
     """Verify the exact externally stored files bound by the D21 root."""
@@ -187,7 +194,7 @@ def preflight_approved_training(args) -> dict:
                 raise ValueError("optional C3 seed requires D21 production protocol")
             replication_root = getattr(args, "replication_root", None)
             if replication_root is None and hasattr(args, "corpus"):
-                replication_root = args.corpus.resolve().parents[1]
+                replication_root = _replication_root_from_corpus(args.corpus, spec.seed)
             if replication_root is None:
                 raise ValueError("optional seed preflight requires --replication-root")
             _check_seed_replication_artifacts(repo_root, Path(replication_root).resolve(),

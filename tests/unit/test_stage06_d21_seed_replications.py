@@ -16,7 +16,8 @@ from sinklab.stage06_readiness import (
     D20_PROTOCOL_ROOT, ReadinessError, build_d21_lock_set,
 )
 from sinklab import stage06_readiness
-from sinklab.training_entry import _check_seed_replication_artifacts, _require_s1_data_lock
+from sinklab.training_entry import (_check_seed_replication_artifacts,
+                                    _replication_root_from_corpus, _require_s1_data_lock)
 
 
 REPO = Path(__file__).resolve().parents[2]
@@ -172,3 +173,10 @@ def test_external_replication_files_must_match_committed_bytes(tmp_path):
     with pytest.raises(ValueError, match="differs from D21"):
         _check_seed_replication_artifacts(repo, root, lock,
                                           SimpleNamespace(seed=seed), args)
+
+
+def test_train_derives_replication_root_from_seed_corpus(tmp_path):
+    corpus = tmp_path / "corpus/seed1/owt-corpus-a.json"
+    assert _replication_root_from_corpus(corpus, 1) == tmp_path
+    with pytest.raises(ValueError, match="corpus/seed"):
+        _replication_root_from_corpus(corpus, 2)
