@@ -100,6 +100,7 @@ def main(argv: Sequence[str] | None = None) -> int:
     preflight = command.add_parser("preflight-production", help="validate one production job on this GPU; never train")
     for flag in ("config", "protocol-lock", "hardware-plan", "artifact-root"):
         preflight.add_argument(f"--{flag}", type=Path, required=True)
+    preflight.add_argument("--replication-root", type=Path)
     preflight.add_argument("--seed", type=int, required=True)
     profile = command.add_parser("profile-candidate", help="one isolated real CUDA batch candidate")
     for flag in ("config", "corpus", "panels", "student-config", "initialization",

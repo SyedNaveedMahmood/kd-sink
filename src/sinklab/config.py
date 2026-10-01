@@ -46,7 +46,9 @@ def production_binding_for(payload: Mapping[str, Any], device_role: str, seed: i
     """The immutable per-job identities a final S1 config must repeat exactly."""
     body = payload["protocol"]
     schema = body.get("production_config_binding_schema")
-    if schema == 3 and device_role == "rtx4080super":
+    if ((schema in (3, 4, 5) and device_role == "rtx4080super") or
+            (schema == 6 and device_role == "rtx4080super") or
+            (schema == 6 and device_role == "rtx3090" and seed in (1, 2))):
         hardware_binding = body["hardware"]["hardware_classes"][device_role]
         identity = {"hardware_binding": {
             "policy": "researcher_approved_reference_profile_transfer",
@@ -55,10 +57,26 @@ def production_binding_for(payload: Mapping[str, Any], device_role: str, seed: i
             "reference_uuid": hardware_binding["reference_uuid"],
             "actual_uuid": "runtime_recorded",
         }}
-    elif schema in (2, 3):
+    elif schema in (2, 3, 4, 5, 6):
         identity = {"gpu_uuid": body["hardware"]["gpu_uuids"][device_role]}
     else:
         raise KeyError("unsupported production binding schema")
+    if schema in (4, 5, 6) and seed in (1, 2):
+        replica = body["seed_replications"][str(seed)]
+        data_binding = {
+            "initialization_sha256": replica["initialization_sha256"],
+            "order_sha256": replica["order_sha256"],
+            "corpus_sha256": replica["corpus_sha256"],
+            "panels_sha256": replica["panels_sha256"],
+            "replication_evidence_sha256": body["seed_replications_sha256"],
+        }
+    else:
+        data_binding = {
+            "seed0_initialization_sha256": body["data"]["seed0_initialization_sha256"],
+            "seed0_order_sha256": body["data"]["seed0_order_sha256"],
+            "corpus_sha256": body["data"]["production_corpus_sha256"],
+            "panels_sha256": body["data"]["frozen_panels_sha256"],
+        }
     return {
         "seed": seed,
         **identity,
@@ -68,10 +86,7 @@ def production_binding_for(payload: Mapping[str, Any], device_role: str, seed: i
         "environment_lock_digest": payload["environment_lock_digest"],
         "hardware_lock_digest": payload["hardware_lock_digest"],
         "calibration_lock_digest": payload["calibration_lock_digest"],
-        "seed0_initialization_sha256": body["data"]["seed0_initialization_sha256"],
-        "seed0_order_sha256": body["data"]["seed0_order_sha256"],
-        "corpus_sha256": body["data"]["production_corpus_sha256"],
-        "panels_sha256": body["data"]["frozen_panels_sha256"],
+        **data_binding,
         "microbatch": body["training"]["microbatch"],
         "accumulation": body["training"]["accumulation"],
         "effective_batch": body["training"]["effective_sequences"],
@@ -129,9 +144,21 @@ def resolve_config(
             raise ConfigError("model contract differs from approved protocol")
         if device_role not in payload["allowed_device_roles"].get(condition, []):
             raise ConfigError("device role is absent from approved protocol")
+        schema = payload["protocol"].get("production_config_binding_schema")
+        if schema == 4 and seed != 0 and (
+                condition != "C3" or device_role != "rtx4080super" or seed not in (1, 2)):
+            raise ConfigError("D21 optional replication authorizes only C3 seeds 1 and 2 on RTX4080 SUPER")
+        if schema == 5 and seed != 0 and (
+                condition not in ("C0", "C2") or device_role != "rtx4080super" or seed not in (1, 2)):
+            raise ConfigError("D22 optional replication authorizes only C0/C2 seeds 1 and 2 on RTX4080 SUPER")
+        if schema == 6 and seed != 0 and (
+                seed not in (1, 2) or condition not in payload["protocol"].get(
+                    "optional_seed_conditions", []) or device_role != payload["protocol"].get(
+                        "optional_seed_device_roles", {}).get(condition)):
+            raise ConfigError("D23 optional seeds require their approved condition/device role")
         if study == "S3" and payload["protocol"].get("optional_studies", {}).get("S3") is not True:
             raise ConfigError("S3 requires separate approval")
-        if payload["protocol"].get("production_config_binding_schema") in (2, 3) and production:
+        if payload["protocol"].get("production_config_binding_schema") in (2, 3, 4, 5, 6) and production:
             try:
                 expected_binding = production_binding_for(payload, device_role, seed)
             except (KeyError, TypeError) as exc:

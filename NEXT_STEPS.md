@@ -95,6 +95,10 @@ The old root `2a11da9bb71957a4d6b3a2f93a34bd67491dd9d21d70577a7a10858930a8943e` 
 
 **Adrita-PC C5/C6 seed0 transfer archives (2026-10-01):** Created independent ZIP64 archives outside Git at `E:\KD-SINK-transfer`. Each archive contains the complete source run directory, a file-level `TRANSFER_SHA256SUMS.txt`, and a `TRANSFER_MANIFEST.json`; each adjacent `.sha256` sidecar matches the finished ZIP. C5 preserves D20 root `fccf4c14bc691e550c6304f4955b72037efb8d042b3e51afb70367920fff0552` and C6 preserves its original D19 root `48c39a25f640b90a70056e3c8f7308b66b9d635876e22c56f76516a09d2c9791`. Both source/archive counts and uncompressed byte totals match; CRC, internal SHA list, and final-010000 checks passed. See the per-run archive receipts in `reports/stage06.json`.
 
+**S1 C3 NodiPC launch (2026-09-29):** The one authorized seed-0 C3 run started under the corrected D20 root in `F:\KD-SINK-stage06-runs\s1-c3-seed0-rtx4080super`. Step-0 and step-100 evaluations completed, and updates 1-106 had finite loss and gradient norms. Windows then rebooted unexpectedly with no recorded training exception or bugcheck code. The original log and stale writer lock were archived under `F:\KD-SINK-stage06-ops\interrupted\`; the step-0 full checkpoint passed checksum and identity verification. The same run resumed from step 0 and replayed all 106 updates with zero mismatches in loss components, gradient norm, learning rate, and token counters; it then advanced to observed update 111. No C3 completion claim is made. The D19 C1 run and preapproved C5 queue on NaveedPC retain their original root and identity.
+
+**S1 C3 interruption audit (2026-09-29):** The resumed C3 worker later stopped after update 2,571 during another period of unexpected NodiPC reboots. Updates 1-2,571 are sequential and finite, and step-2,500 dense64 student/teacher evaluations completed. `rolling-002500` passed full checksum and exact D20/UUID identity verification; the 71 later updates were not checkpointed. No normal completion record exists. Further same-run resume is held while the repeated host resets are investigated. Preserve the current log, checkpoints and stale writer lock as interruption evidence; do not mark C3 complete or start another condition.
+
 ## Stage07 - S2
 Work order: [07_S2_PRETRAINING](design/e6a_v2/stages/07_S2_PRETRAINING.md).
 - [x]07.1 Immutable public checkpoint/seed inventory capability; one public step0 entry is now resolved and verified.
@@ -130,3 +134,54 @@ Work order: [09_ANALYSIS_RELEASE](design/e6a_v2/stages/09_ANALYSIS_RELEASE.md).
 - [ ] Operator explicitly launches each approved study/condition/seed.
 - [ ] Actual completed coverage audited before paper claims.
 - [ ] Separate authorization obtained before eventual Upstream deletion.
+
+## Prospective D21 C3-only seed replications (2026-09-29)
+
+The researcher authorized C3-only seeds 1 and 2 and separate OpenWebText repacking/panels per seed. This supersedes D02's complete-campaign default for these two optional C3 jobs only. The D20 seed-0 C3 process resumed from verified step 2,500, completed update 10,000, and passed final-checkpoint, sequential-update, and 222-aggregate verification. Unexpected host resets remain a risk for later jobs.
+
+- [x] Add tested D21 source support for exact per-seed provenance and a fail-closed one-shot queue.
+- [x] Prepare and verify the two real seed-specific corpus/panel/order artifact sets when host memory is available.
+- [ ] Seal and push the prospective D21 root, validate both real 4080 preflights, then arm seed-1 after verified seed-0 completion.
+- [ ] Launch seed-2 only after seed-1 final checkpoint and required evaluation coverage verify.
+
+The external queue status and run records determine actual launches; a prepared or armed queue is not scientific coverage.
+
+## Prospective D22 C0/C2 seed replications (2026-10-01)
+
+The researcher authorized four optional RTX 4080 SUPER jobs: C0 seed 1, C2
+seed 1, C0 seed 2, and C2 seed 2. C0 and C2 share the same sealed artifacts
+within each seed; seed 1 and seed 2 retain their separate D21 repacks/panels.
+
+- [x] Add focused D22 source validation without changing objective/trainer/model/evaluator behavior.
+- [x] Seal and push the D22 runtime source milestone.
+- [x] Seal the exact D21 successor and generate four root-bound configs.
+- [x] Pass all four real NodiPC production preflights with training disabled.
+- [ ] Complete the external fail-closed serial queue and verify each final checkpoint, 10,000 updates, and 222 evaluation aggregates.
+
+Queue order is C0 seed 1, C2 seed 1, C0 seed 2, C2 seed 2. A failed job or
+storage/GPU/provenance gate stops later jobs. Queue state and run artifacts,
+rather than this checklist, establish scientific completion.
+
+## D23 optional seed replications across C0-C6 (2026-10-01)
+
+- [x] Add the prospective all-condition seed1/2 amendment without rewriting D21/D22.
+- [x] Push runtime-source milestone `9cb1815d44c3b2f42ddd508e5f9c71cc2ea274ec`.
+- [x] Seal D23 root `7b12e5a637c3a8b6ebe66d4bedbd202077fc7960bc98a443babf8bf68de8d8a7`, preserve the seed0 nine-job plan, and validate fourteen explicit optional configs.
+- [x] Verify all local seed1/2 artifact hashes and pass both real C4/3090 preflights without starting training.
+- [x] Pass focused (106) and full CPU (255) regressions, offline clean-wheel, lock/package checks, and validate both job plans.
+- [ ] Commit/push the validated D23 successor and start only the serialized C4 seed1 then seed2 queue.
+- [ ] Audit each completed run's final checkpoint, 10,000 updates, and all 222 registered evaluation aggregates before claiming scientific coverage.
+
+The optional plan assigns C0/C1/C2/C3/C5/C6 to the RTX4080 SUPER primary role
+and C4 to the RTX3090. It adds no C1/C2 hardware bridge jobs. Optional C4
+seed1/2 accepts an exact-model RTX3090 with the locked 24,576 MiB software
+environment, records its actual UUID, and resumes only on that UUID; seed0
+remains tied to its reference UUID. No seed1/2 condition other than C4 is
+scheduled by the current AbdullahPC queue. Stage09 remains out of scope.
+
+## S1 C5 interruption and resume (2026-09-30, observed 07:49 UTC)
+
+The earlier C1 gate completed successfully and launched C5 on NaveedPC. C5 reached update 8,070, then an unexpected Windows restart interrupted it without an OOM or traceback. The original log is preserved byte-for-byte as `train.precrash-through-8070.jsonl`. The checksum-verified rolling step-8,000 checkpoint retained the same C5/seed/root/physical-GPU identity. On explicit operator request, the same lineage resumed from step 8,000 with unchanged microbatch 4 and accumulation 16. At the latest health sample it reached update 8,148 with finite loss and no runtime error. Completion remains unproven; the practical ETC was 16:20-16:40 Asia/Dhaka on 2026-09-30.
+
+## D21 optional C3-only replications (2026-09-30T03:10:59Z)
+D20 C3 seed0 final coverage verified. D21 successor root 95a3607791fab3911916bcab407f7d10dab3576f197ebe7b606c2f9e3ac8ab15 seals separately packed seed1/2 C3 artifacts, unchanged C3 science and two explicit single-seed jobs. The external one-shot queue launches seed1 only after seal push; seed2 requires verified seed1 completion. No other S1 condition is queued. Scientific completion remains per run.

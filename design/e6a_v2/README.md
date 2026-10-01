@@ -14,6 +14,8 @@ Status: partially amended research protocol, **not yet a fully approved preregis
 
 S1's mandatory campaign has **seven unique C0-C6 seed0 jobs**, each assigned a fixed approved GPU role; bridge replicas can raise the physical-job count. Optional seed1/seed2 campaigns add seven unique jobs each and require separate launches. Single-seed results cannot establish across-seed variance or reproducibility. S3 adds15 runs only if explicitly approved. S2 remains evaluation-only. See [hardware](HARDWARE_AND_EXECUTION.md) for the eligibility and batch gates.
 
+The later D21 researcher direction prospectively permits **C3-only** seed-1/2 replications with separately repacked corpus and panels for each seed. It leaves the mandatory seed-0 campaign and existing run identities intact. These optional C3 records do not form complete seven-condition seed campaigns, and separate evaluation panels do not support direct item-level pairing across seeds. See D21 in [decisions](DECISIONS.md).
+
 ## Read in this order
 1. [Decisions and approval gates](DECISIONS.md), [source audit](SOURCES_AND_UPSTREAM_AUDIT.md).
 2. [Objectives](OBJECTIVES.md), [data/provenance](DATA_AND_PROVENANCE.md), [models/interventions](MODEL_AND_INTERVENTION_CONTRACTS.md).

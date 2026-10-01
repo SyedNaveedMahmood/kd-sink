@@ -173,3 +173,28 @@ successor root refused C3 and C4 on that 4080. No scientific training began.
 The approved D20 decision is `s1_researcher_amendment_d20_c3_4080_20260929.json` (payload SHA `15f9cab8d2d691f14aca3b249b0a5d1458626c59c38ff47ce338f68ad9a532f5`), bound to the committed C3 qualification report (payload SHA `9b608a1a8da5af520435cd34dd45548ea29f3d85cf67977d1245276979bcb703`). The current prospective root `fd5199ae6f90985ce8c87539f3e76b6d810c5420ccb2d0f6d6ee300a27cef5f4` descends from exact D19 root `48c39a25f640b90a70056e3c8f7308b66b9d635876e22c56f76516a09d2c9791`; runtime source `028f919569db9db1721ef4e7074bdce3209d1808` includes only provenance/readiness authorization changes, with scientific training/evaluation code unchanged. Hardware lock `fc410cd3d01505d0cd7b9ffdda98caaf070bfd2524ca7ac7841a0c78e60aa593` retains the old common proof and adds measured C3 reference evidence. D19 locks/configs are archived under `protocols/superseded/` and `configs/superseded/d19/` for existing runs and the preapproved NaveedPC C5 queue. C4 remains 3090-only. The reviewed plan reports the `C4-C3-seed0` cross-device confound.
 
 The first D20 root `fd5199ae6f90985ce8c87539f3e76b6d810c5420ccb2d0f6d6ee300a27cef5f4` is archived but nonlaunchable: real preflight exposed an artifact-approval plan-reference defect before training. Corrected source milestone `56260519be5e31790a7ed7abc078e2a285c0cf18` binds artifact inventory to its original approved plan and reproduces the same sealed inventory digest. Replacement root `fccf4c14bc691e550c6304f4955b72037efb8d042b3e51afb70367920fff0552` is authoritative after its own validation; the D20 hardware lock and scientific artifact/calibration/environment locks are unchanged.
+
+## D22 C0/C2 optional seed replications (2026-10-01)
+
+D22 prospectively authorizes exactly C0 and C2 seeds 1 and 2 on the RTX 4080
+SUPER class. Each seed reuses its own D21-sealed corpus, panels, order, and
+CPU-FP32 initialization across C0 and C2, preserving within-seed pairing. The
+completed C3 seed 1/2 runs retain D21 root
+`95a3607791fab3911916bcab407f7d10dab3576f197ebe7b606c2f9e3ac8ab15`.
+The D22 runtime source is `e7473ee253194e6b89cccbb530d22c4df4d522a3`,
+the amendment digest is
+`0541cb72569d13a0d6b39f28d7f4c037e3d0f3b81f9c08577e5ea4e9fb4586ad`,
+and the successor root is
+`fc263c1843f01afda21d8697cbc8617a91033f92482da25c485118acf8bb20b6`.
+Artifact, environment, hardware, and calibration lock digests remain unchanged.
+All four NodiPC preflights verified the exact GPU, source, production artifact
+inventory, and seed-specific artifacts without starting training. Each queued
+trainer command remains an explicit single-condition, single-seed command.
+
+## D23 all-condition optional seed replications (2026-10-01)
+
+The prospective D23 amendment (`s1_researcher_amendment_d23_all_conditions_seed12_20261001.json`, SHA-256 `e2e4d7f98069185a4669261ddb6f8455410ee07ddb322e0cd4cbd08d3bc8d789`) extends optional seeds 1 and 2 to C0-C6. It preserves D21/D22 history, seed0, all objective variants and scales, the 10,000-update horizon, the 4x16 schedule, and the D21-sealed per-seed corpus/panels/order/initialization. The fourteen single-run configs are in `configs/production/s1_seed12_jobs.json`; this is a plan only, not a sweep launcher.
+
+The current production runtime source milestone is `9cb1815d44c3b2f42ddd508e5f9c71cc2ea274ec`; D23 production root is `7b12e5a637c3a8b6ebe66d4bedbd202077fc7960bc98a443babf8bf68de8d8a7`. Artifact (`2e721e...`), environment (`7cc288...`) and calibration (`fa031a...`) locks are unchanged. The successor hardware lock (`edab38c79e19c7fe82841644db512a5318c469dd23609b8f3f24d9e92c1503e7`) adds an explicit prospective RTX3090 class policy for optional seed1/2 C4 only. It retains the measured reference profile and requires exact RTX3090 model, locked software/driver/24,576 MiB environment, recording the actual UUID, and same-UUID resume. Seed0 stays pinned to the reference UUID. C4 remains prohibited on RTX4080 SUPER. For seed1/2, C0/C1/C2/C3/C5/C6 use the RTX4080 SUPER primary role; C1/C2 hardware bridges are not added.
+
+For a C3 run pass `--mse-scale 68.00580071126464`; for a C4 run pass `--rel-scale 0.120179255876581` and do not pass `--mse-scale`. Other conditions take neither scale. The repository's explicit config/plan validators bind each run to its seed-specific artifacts and D23 root. The requested AbdullahPC C4 seed1/2 jobs use the fail-closed serial launcher `scripts/launch_stage06_c4_seed12_queue.py`; seed2 waits for successful seed1 completion and full registered evaluation coverage. Neither training job is scientific coverage merely because it is configured or queued. Current queue/preflight state is recorded in `reports/stage06.json`.

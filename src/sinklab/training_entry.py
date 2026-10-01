@@ -33,6 +33,63 @@ def _read(path: Path) -> dict:
     return json.loads(path.read_text(encoding="utf-8"))
 
 
+def _file_sha256(path: Path) -> str:
+    digest = hashlib.sha256()
+    with path.open("rb") as stream:
+        for chunk in iter(lambda: stream.read(8 * 1024 * 1024), b""):
+            digest.update(chunk)
+    return digest.hexdigest()
+
+
+def _replication_root_from_corpus(path: Path, seed: int) -> Path:
+    corpus = path.resolve()
+    if corpus.parent.name != f"seed{seed}" or corpus.parents[1].name != "corpus":
+        raise ValueError("optional seed corpus must be under corpus/seed<seed>")
+    return corpus.parents[2]
+
+
+def _check_seed_replication_artifacts(repo: Path, root: Path, lock: dict,
+                                      spec, args) -> None:
+    """Verify the exact externally stored files bound by the D21/D22 roots."""
+    from .stage06_readiness import D21_EVIDENCE_PATH
+    evidence, evidence_sha = verify_envelope(_read(repo / D21_EVIDENCE_PATH))
+    body = lock["protocol"]
+    if evidence_sha != body["seed_replications_sha256"]:
+        raise ValueError("seed replication evidence differs from the protocol")
+    row = evidence["seeds"][str(spec.seed)]
+    names = {
+        "corpus": (f"corpus/seed{spec.seed}", f"owt-corpus-{row['corpus_sha256']}.json",
+                   "corpus_file_sha256"),
+        "panels": (f"panels/seed{spec.seed}", f"owt-panels-{row['panels_sha256']}.json",
+                   "panels_file_sha256"),
+        "order": (f"order/seed{spec.seed}", f"owt-update-order-{row['order_sha256']}.json",
+                  "order_file_sha256"),
+        "initialization": (f"initialization/seed{spec.seed}",
+                           f"init-seed{spec.seed}-{row['initialization_sha256']}.json",
+                           "initialization_metadata_file_sha256"),
+        "weights": (f"initialization/seed{spec.seed}",
+                    f"init-seed{spec.seed}-{row['initialization_sha256']}.safetensors",
+                    "initialization_weights_file_sha256"),
+    }
+    if any(root.is_relative_to(repo / name) for name in ("Upstream", "upstream")):
+        raise ValueError("replication artifacts cannot depend on Upstream")
+    for name, (folder, filename, hash_field) in names.items():
+        path = root / folder / filename
+        if not path.is_file() or _file_sha256(path) != row[hash_field]:
+            raise ValueError(f"seed {spec.seed} {name} differs from D21 sealed replication evidence")
+        if name in ("corpus", "panels", "initialization") and hasattr(args, name):
+            if Path(getattr(args, name)).resolve() != path.resolve():
+                raise ValueError(f"seed {spec.seed} {name} path differs from approved root")
+    metadata, _ = verify_envelope(_read(root / names["initialization"][0] /
+                                         names["initialization"][1]))
+    if metadata.get("seed") != spec.seed or metadata.get("tensor_content_sha256") != row["initialization_sha256"]:
+        raise ValueError("seed initialization identity differs from D21 sealed replication evidence")
+    order, order_sha = verify_envelope(_read(root / names["order"][0] /
+                                             names["order"][1]))
+    if order_sha != row["order_sha256"] or order.get("seed") != spec.seed:
+        raise ValueError("seed update order identity differs from D21 sealed replication evidence")
+
+
 def _gpu_identity() -> tuple[str, str]:
     gpu = _gpu_metadata()
     return gpu["name"], gpu["uuid"]
@@ -97,7 +154,8 @@ def preflight_approved_training(args) -> dict:
     gpu = _gpu_metadata()
     identity = authorize_production_device(lock, hardware, condition=spec.condition,
                                            device_role=spec.device_role,
-                                           gpu_name=gpu["name"], gpu_uuid=gpu["uuid"])
+                                           gpu_name=gpu["name"], gpu_uuid=gpu["uuid"],
+                                           seed=spec.seed)
     environment, _ = verify_envelope(lock_set["environment"])
     _check_runtime_environment(environment, spec.device_role, gpu)
     result = {**identity, "gpu_driver": gpu["driver"], "gpu_vram_mib": gpu["vram_mib"],
@@ -105,7 +163,9 @@ def preflight_approved_training(args) -> dict:
               "runtime_source": source, "training_started": False}
     artifact_root = getattr(args, "artifact_root", None)
     if artifact_root is None and hasattr(args, "corpus"):
-        artifact_root = args.corpus.resolve().parents[1]
+        artifact_root = (args.teacher_dir if spec.seed in (1, 2) else args.corpus).resolve().parent
+        if spec.seed == 0:
+            artifact_root = args.corpus.resolve().parents[1]
     if artifact_root is not None:
         from .stage06_artifacts import build_inventory
         artifact_root = Path(artifact_root).resolve()
@@ -114,11 +174,11 @@ def preflight_approved_training(args) -> dict:
                for name in ("Upstream", "upstream")):
             raise ValueError("production artifacts cannot depend on reference-only Upstream")
         if hasattr(args, "corpus"):
-            expected = {"corpus": next((artifact_root / "corpus").glob("owt-corpus-*.json"), None),
-                        "panels": next((artifact_root / "panels").glob("owt-panels-*.json"), None),
-                        "student_config": artifact_root / "student-config/config.json",
+            expected = {"student_config": artifact_root / "student-config/config.json",
                         "teacher_dir": artifact_root / "teacher"}
             if spec.seed == 0:
+                expected["corpus"] = next((artifact_root / "corpus").glob("owt-corpus-*.json"), None)
+                expected["panels"] = next((artifact_root / "panels").glob("owt-panels-*.json"), None)
                 expected["initialization"] = next((artifact_root / "initialization/seed0").glob("init-seed0-*.json"), None)
             if any(value is None or Path(getattr(args, key)).resolve() != value.resolve()
                    for key, value in expected.items()):
@@ -130,6 +190,17 @@ def preflight_approved_training(args) -> dict:
                 k: v for k, v in committed.items() if k != "observed_external_root"}:
             raise ValueError("production scientific artifact inventory differs from lock")
         result["scientific_artifacts_verified"] = True
+        if spec.seed in (1, 2):
+            if lock["protocol"].get("production_config_binding_schema") not in (4, 5, 6):
+                raise ValueError("optional seed requires a sealed replication protocol")
+            replication_root = getattr(args, "replication_root", None)
+            if replication_root is None and hasattr(args, "corpus"):
+                replication_root = _replication_root_from_corpus(args.corpus, spec.seed)
+            if replication_root is None:
+                raise ValueError("optional seed preflight requires --replication-root")
+            _check_seed_replication_artifacts(repo_root, Path(replication_root).resolve(),
+                                              lock, spec, args)
+            result["seed_replication_artifacts_verified"] = True
     return result
 
 
@@ -151,7 +222,7 @@ def _model_digest(model: torch.nn.Module) -> str:
 
 
 def _require_s1_data_lock(protocol: dict, corpus: dict, corpus_hash: str,
-                          panel_hash: str) -> None:
+                          panel_hash: str, *, seed: int = 0) -> None:
     data = protocol.get("data", {})
     if not isinstance(data, dict) or data.get("recipe") != RECIPE:
         raise ValueError("approved S1 protocol must require upstream-compatible OWT recipe")
@@ -159,11 +230,18 @@ def _require_s1_data_lock(protocol: dict, corpus: dict, corpus_hash: str,
         "dataset_revision": corpus["dataset"]["revision"],
         "tokenizer_revision": corpus["tokenizer"]["revision"],
         "tokenizer_files_sha256": corpus["tokenizer"]["files_sha256"],
-        "production_corpus_sha256": corpus_hash,
-        "frozen_panels_sha256": panel_hash,
     }
     if any(data.get(key) != value for key, value in required.items()):
-        raise ValueError("S1 source, tokenizer, corpus or frozen panels differ from approved lock")
+        raise ValueError("S1 source or tokenizer differs from approved lock")
+    if seed == 0:
+        expected_corpus, expected_panels = data["production_corpus_sha256"], data["frozen_panels_sha256"]
+    else:
+        row = protocol["seed_replications"][str(seed)]
+        expected_corpus, expected_panels = row["corpus_sha256"], row["panels_sha256"]
+    if (("seed_replications" in protocol and corpus.get("seed") != seed) or
+            corpus_hash != expected_corpus or
+            panel_hash != expected_panels):
+        raise ValueError("S1 seed, corpus or frozen panels differ from approved lock")
 
 
 def run_approved_training(args) -> dict:
@@ -218,7 +296,8 @@ def run_approved_training(args) -> dict:
     panel_hash = (validate_upstream_owt_panels(panel_doc, corpus_doc) if spec.study == "S1"
                   else validate_owt_panels(panel_doc, corpus_doc))
     if spec.study == "S1":
-        _require_s1_data_lock(lock["protocol"], corpus, corpus_hash, panel_hash)
+        _require_s1_data_lock(lock["protocol"], corpus, corpus_hash, panel_hash,
+                              seed=spec.seed)
     evaluation_blocks = {b["id"]: b["token_ids"] for b in corpus["partitions"]["evaluation"]["blocks"]}
     model_hash = hashlib.sha256(canonical_json_bytes(config.to_dict())).hexdigest()
     identity = {"study": spec.study, "condition": spec.condition, "seed": spec.seed,
