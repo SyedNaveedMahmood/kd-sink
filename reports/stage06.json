@@ -1869,5 +1869,40 @@
     "errors_observed": [],
     "training_complete": false,
     "completion_audit": "pending_after_each_10000_update_run"
+  },
+  "adrita_pc_c5_seed12_health_20261001": {
+    "status": "seed1_healthy_update100_step100_evaluation_progressing_seed2_queued",
+    "observed_utc": "2026-10-01T12:51:42Z",
+    "status_commit": "972e39d71b2940a580f2320f526c1e67c4e94443",
+    "queue_phase": "seed1_running_seed2_queued",
+    "queue_pid": 20996,
+    "trainer_wrapper_pid": 16224,
+    "trainer_worker_pid": 19184,
+    "protocol_root_sha256": "7b12e5a637c3a8b6ebe66d4bedbd202077fc7960bc98a443babf8bf68de8d8a7",
+    "gpu_model": "NVIDIA GeForce RTX 4080 SUPER",
+    "gpu_uuid": "GPU-2a5c25d0-1f73-919b-fd8b-f6f0df709aaf",
+    "seed1": {
+      "run_id": "s1-c5-seed1-rtx4080super",
+      "updates_observed": 100,
+      "latest_step": 100,
+      "latest_loss": 6.549253553152084,
+      "input_tokens": 819200,
+      "target_tokens": 812800,
+      "finite_values_and_exact_ordered_counters": true,
+      "evaluation_record_files_at_observation": 5697,
+      "step100_evaluation_progressed_from_5022_records_in_85_seconds": true,
+      "gpu_memory_used_mib": 14683,
+      "gpu_memory_free_mib": 1365,
+      "gpu_utilization_percent": 46
+    },
+    "seed2": {
+      "run_id": "s1-c5-seed2-rtx4080super",
+      "preflight_passed": true,
+      "status": "queued",
+      "training_started": false
+    },
+    "queue_and_trainer_errors": [],
+    "training_complete": false,
+    "completion_audit": "pending_after_each_10000_update_run"
   }
 }

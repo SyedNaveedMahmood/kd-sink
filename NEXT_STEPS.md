@@ -195,8 +195,9 @@ The first end-to-end check-only invocation caught a queue-only expectation for
 a `seed` field absent from otherwise successful preflight output; that false
 gate was removed while the explicit config and `--seed` checks remain. The
 corrected check-only gate passed and the serial queue was armed at
-2026-10-01T12:08:52Z. At the 2026-10-01T12:45:56Z health sample, seed1 had
-78 finite, ordered updates with exact token counters and seed2 remained queued.
+2026-10-01T12:08:52Z. At the 2026-10-01T12:51:42Z health sample, seed1 had
+100 finite, ordered updates with exact token counters; its step100 evaluation
+was advancing and seed2 remained queued.
 Neither run is complete or scientific coverage until its final audit passes.
 
 - [x] Push and arm the C5 seed1/seed2 serial queue; confirm seed1 training is healthy and seed2 remains queued.
