@@ -179,6 +179,19 @@ environment, records its actual UUID, and resumes only on that UUID; seed0
 remains tied to its reference UUID. No seed1/2 condition other than C4 is
 scheduled by the current AbdullahPC queue. Stage09 remains out of scope.
 
+## Adrita-PC C5 optional seeds 1 and 2 (2026-10-01)
+
+The operator explicitly requested only C5 seed1 and seed2 on Adrita-PC. The
+seed-specific corpus, panels, update order, and CPU-FP32 initialization were
+recreated from the pinned local source and match the D23 sealed digests. Both
+no-training D23 preflights passed on RTX 4080 SUPER UUID
+`GPU-2a5c25d0-1f73-919b-fd8b-f6f0df709aaf`. The C5-only serial queue in
+`scripts/launch_stage06_c5_seed12_queue.py` requires its clean commit on
+`origin/main`; it starts seed2 only after seed1 passes the final checkpoint and all 222
+registered evaluation checks. Queue state is recorded in
+`E:\KD-SINK-stage06-runs\launcher\c5-seed12-20261001\queue-status.json` and
+run logs remain outside Git. Neither run is scientific coverage until audited.
+
 ## S1 C5 interruption and resume (2026-09-30, observed 07:49 UTC)
 
 The earlier C1 gate completed successfully and launched C5 on NaveedPC. C5 reached update 8,070, then an unexpected Windows restart interrupted it without an OOM or traceback. The original log is preserved byte-for-byte as `train.precrash-through-8070.jsonl`. The checksum-verified rolling step-8,000 checkpoint retained the same C5/seed/root/physical-GPU identity. On explicit operator request, the same lineage resumed from step 8,000 with unchanged microbatch 4 and accumulation 16. At the latest health sample it reached update 8,148 with finite loss and no runtime error. Completion remains unproven; the practical ETC was 16:20-16:40 Asia/Dhaka on 2026-09-30.

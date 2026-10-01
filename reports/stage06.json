@@ -1750,5 +1750,59 @@
     "final_010000_verified_in_archive": true,
     "missing_files": [],
     "unexpected_files": []
+  },
+  "adrita_pc_c5_seed12_queue_20261001": {
+    "status": "artifacts_and_both_production_preflights_verified_queue_not_started",
+    "protocol_root_sha256": "7b12e5a637c3a8b6ebe66d4bedbd202077fc7960bc98a443babf8bf68de8d8a7",
+    "hardware_lock_sha256": "edab38c79e19c7fe82841644db512a5318c469dd23609b8f3f24d9e92c1503e7",
+    "runtime_source_commit": "9cb1815d44c3b2f42ddd508e5f9c71cc2ea274ec",
+    "gpu_model": "NVIDIA GeForce RTX 4080 SUPER",
+    "gpu_uuid": "GPU-2a5c25d0-1f73-919b-fd8b-f6f0df709aaf",
+    "production_artifact_root": "E:\\KD-SINK-stage06-Adrita\\artifacts\\KD-SINK-stage06-production",
+    "replication_artifact_root": "E:\\KD-SINK-stage06-replications",
+    "seed_artifact_evidence_sha256": "95e5d563138b15dae66bf2cce9a112a8c08d00fb32a19ab5bf3b2337814658c7",
+    "seeds": {
+      "1": {
+        "run_id": "s1-c5-seed1-rtx4080super",
+        "corpus_sha256": "46d2e21520a35430b7d363b887f9fd8b9f5e13e862e83554b66ebbde520b21c6",
+        "corpus_file_sha256": "4afa5f30ebe9fdc051a25ffc0d1fec81f0d240f884355ea0ffda4f5f7f227596",
+        "panels_sha256": "bff7ba69c82c40beb7493b60197eb8c0159a124853905e303e1e2f6da9580523",
+        "panels_file_sha256": "fee3929fe3fcae78460e123cebef55e0a2f2d4b841e107c91d6bb70dae70bb8b",
+        "order_sha256": "852a92f9c02fd4a231e7aa657f70675f100595e85063874ee623da51c3a71e5b",
+        "order_file_sha256": "ce437583cd8e38825c980404565d66a0d2ccef88839ad64b9a009050cef6c40a",
+        "initialization_sha256": "f387f849ffaf65651b01144e620e454252196e7071c7c3d3036edb99778f9fde",
+        "initialization_metadata_file_sha256": "1e0875bfae15d85fbcf6741716208d8e483e546f6460daa5dc8b579a7f8d4f0f",
+        "initialization_weights_file_sha256": "9c087d36c0b24b4878627d9282427f2d6150588fd861588986edf3e04ac1fae4",
+        "preflight": "passed_training_started_false"
+      },
+      "2": {
+        "run_id": "s1-c5-seed2-rtx4080super",
+        "corpus_sha256": "258c3617caa5a199a1e0ac1071b0cf812a9a0dfec7dabc679189678ad6925a63",
+        "corpus_file_sha256": "b289f5c00601da505191918d7dde4ed764ae7712666241cf2df7ea703ca7b652",
+        "panels_sha256": "32d5ebef8d4f18574f4b34d0cb7f2603d0db15c887e5246ecb7e8ea9b7f4b2d7",
+        "panels_file_sha256": "88d86a3eabd18f1903b3fb8bbb45f469af86af8b3a83fca64aa550e10483010a",
+        "order_sha256": "9e033da4fe8872dc684cf8dcbd60cb0cd2398103a14f9b6e76a68d3b412b1256",
+        "order_file_sha256": "0bebc83ae489041f3dc709a98af3fc42ba9e2105192ffa95960502ae27f51554",
+        "initialization_sha256": "04c8100428af9f14af179a8857b270fc369a25856a2fd2644d4b18f3a005ccc7",
+        "initialization_metadata_file_sha256": "39dba1908440c8a4e1dd62fa3910a33c6df4c6bfe492867a0000f181b9ac52f1",
+        "initialization_weights_file_sha256": "4b4e3a0b3005e53750a74c281c9d77d860cacb6eda55b4fe19be230bba9e901d",
+        "preflight": "passed_training_started_false"
+      }
+    },
+    "run_root": "E:\\KD-SINK-stage06-runs",
+    "ops_root": "E:\\KD-SINK-stage06-runs\\launcher\\c5-seed12-20261001",
+    "queue_script": "scripts/launch_stage06_c5_seed12_queue.py",
+    "queue_order": [
+      "s1-c5-seed1-rtx4080super",
+      "s1-c5-seed2-rtx4080super"
+    ],
+    "schedule": {
+      "microbatch": 4,
+      "accumulation": 16,
+      "effective_batch": 64,
+      "optimizer_updates": 10000
+    },
+    "trainer_source_change_needed": false,
+    "training_started": false
   }
 }
