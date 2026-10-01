@@ -11,7 +11,7 @@ import subprocess
 from pathlib import Path
 
 from .config import MODELS, S1_VARIANTS, production_binding_for, resolve_config
-from .hardware import RTX4080_SUPER_MODEL
+from .hardware import RTX3090_MODEL, RTX4080_SUPER_MODEL
 from .hardware import Profile, build_batch_plan, validate_eligibility_matrix
 from .owt_compat import RECIPE
 from .provenance import (COMMIT_PATTERN, _no_duplicate_keys, canonical_json_bytes, payload_digest,
@@ -32,6 +32,11 @@ D21_PATH = "protocols/s1_researcher_amendment_d21_c3_seed12_20260929.json"
 D21_EVIDENCE_PATH = "reports/stage06_c3_seed12_artifacts.json"
 D21_PROTOCOL_ROOT = "95a3607791fab3911916bcab407f7d10dab3576f197ebe7b606c2f9e3ac8ab15"
 D22_PATH = "protocols/s1_researcher_amendment_d22_c0_c2_seed12_20261001.json"
+D22_PROTOCOL_ROOT = "fc263c1843f01afda21d8697cbc8617a91033f92482da25c485118acf8bb20b6"
+D23_PATH = "protocols/s1_researcher_amendment_d23_all_conditions_seed12_20261001.json"
+D23_SEED_CONDITIONS = [f"C{i}" for i in range(7)]
+D23_SEED_DEVICE_ROLES = {**{f"C{i}": "rtx4080super" for i in (0, 1, 2, 3, 5, 6)},
+                         "C4": "rtx3090"}
 GPU_UUIDS = {
     "rtx4080super": "GPU-72b4b307-b613-c35e-ea32-53f4431de9ee",
     "rtx3090": "GPU-a21766e4-bb31-9b79-5e8f-e58021e9708e",
@@ -331,6 +336,100 @@ def build_d22_lock_set(repo: Path, predecessor: dict[str, dict],
              "D22 changed a D21 scientific, hardware or seed-artifact field")
     result = {**{name: predecessor[name] for name in LOCK_NAMES[:-1]},
               "protocol": seal_payload(current)}
+    validate_protocol_lock(result["protocol"])
+    return result
+
+
+def _d23(repo: Path, predecessor: dict) -> tuple[dict, str]:
+    """Verify the user's prospective all-condition seed-1/2 extension."""
+    decision, digest = _sealed(Path(repo) / D23_PATH)
+    old = predecessor["protocol"]
+    _require(decision.get("kind") == "s1-d23-all-condition-seed12-replication-v1" and
+             decision.get("decision_id") == "D23" and
+             decision.get("status") == "approved_prospective_optional_replication" and
+             decision.get("predecessor_production_root") == D22_PROTOCOL_ROOT and
+             decision.get("d21_amendment_sha256") == old.get("d21_researcher_amendment_sha256") and
+             decision.get("d22_amendment_sha256") == old.get("d22_researcher_amendment_sha256") and
+             decision.get("replication_evidence_sha256") == old.get("seed_replications_sha256") and
+             decision.get("conditions") == D23_SEED_CONDITIONS and
+             decision.get("seeds") == [1, 2] and
+             decision.get("condition_device_roles") == D23_SEED_DEVICE_ROLES and
+             decision.get("reuse_same_seed_artifacts_across_conditions") is True and
+             decision.get("common_schedule") == {"microbatch": 4, "accumulation": 16,
+                                                  "effective_sequences": 64,
+                                                  "optimizer_updates": 10000} and
+             decision.get("c4_variant") == S1_VARIANTS["C4"] and
+             decision.get("c4_device_policy") == {
+                 "model": RTX3090_MODEL, "reference_uuid": GPU_UUIDS["rtx3090"],
+                 "actual_uuid": "runtime_recorded", "resume_uuid": "same_physical_uuid_only",
+                 "allowed_conditions": ["C4"], "vram_mib": 24576} and
+             decision.get("optional_job_policy") ==
+             "one explicit job per condition and seed; C1/C2 use only their RTX4080 SUPER primary role and do not add 3090 bridges" and
+             decision.get("uuid_transfer_scope") ==
+             "optional seeds 1/2 only; exact RTX 3090 model and locked 24576 MiB environment; record actual UUID; resume only on same UUID; seed0 remains reference-UUID-bound" and
+             decision.get("preserve_prior_amendments_and_seed0_plan") is True and
+             decision.get("prospective_only") is True and
+             decision.get("scientific_objectives_changed") is False and
+             decision.get("calibration_changed") is False and
+             decision.get("seed0_artifacts_changed") is False,
+             "D23 differs from the explicit all-condition seed-1/2 request")
+    return decision, digest
+
+
+def build_d23_lock_set(repo: Path, predecessor: dict[str, dict],
+                       production_runtime_source_commit: str) -> dict[str, dict]:
+    """Extend optional seeds to C0-C6 and explicitly transfer RTX3090 by model."""
+    for name, document in predecessor.items():
+        _require(verify_envelope(document)[1] == document.get("sha256"),
+                 f"D23 predecessor {name} lock envelope is invalid")
+    old, old_digest = validate_protocol_lock(predecessor["protocol"])
+    _require(old_digest == D22_PROTOCOL_ROOT and
+             all(old[f"{name}_lock_digest"] == predecessor[name]["sha256"]
+                 for name in LOCK_NAMES[:-1]),
+             "D23 requires the exact transitive D22 predecessor")
+    _require(production_runtime_source_commit and
+             COMMIT_PATTERN.fullmatch(production_runtime_source_commit) is not None,
+             "D23 runtime source must be an immutable commit")
+    decision, decision_digest = _d23(Path(repo), old)
+    current = copy.deepcopy(old)
+    current["source_commit"] = production_runtime_source_commit
+    current["production_runtime_source_commit"] = production_runtime_source_commit
+    current["approval"].update(approved_on_utc_date=decision["approved_on_utc_date"],
+                               d23_sha256=decision_digest,
+                               decision_ids=[*old["approval"]["decision_ids"], "D23"])
+    body = current["protocol"]
+    role_policy = {
+        "policy": "researcher_approved_reference_profile_transfer",
+        "model": RTX3090_MODEL, "reference_uuid": GPU_UUIDS["rtx3090"],
+        "allowed_conditions": ["C4"], "actual_uuid": "runtime_recorded",
+        "resume_uuid": "same_physical_uuid_only", "per_card_headroom_profile_required": False,
+        "microbatch": 4, "accumulation": 16, "vram_mib": 24576,
+    }
+    hardware_payload = copy.deepcopy(predecessor["hardware"]["payload"])
+    hardware_payload["predecessor_lock_sha256"] = predecessor["hardware"]["sha256"]
+    hardware_payload["d23_researcher_amendment_sha256"] = decision_digest
+    hardware_payload.setdefault("hardware_classes", {})["rtx3090"] = role_policy
+    hardware = seal_payload(hardware_payload)
+    body["hardware"]["hardware_classes"]["rtx3090"] = role_policy
+    current["hardware_lock_digest"] = hardware["sha256"]
+    body["d23_researcher_amendment_sha256"] = decision_digest
+    body["optional_seed_conditions"] = D23_SEED_CONDITIONS
+    body["optional_seed_device_roles"] = D23_SEED_DEVICE_ROLES
+    body["production_config_binding_schema"] = 6
+    body["amendment_chain"].append({"decision_id": "D23",
+                                    "predecessor_root_sha256": D22_PROTOCOL_ROOT,
+                                    "amendment_sha256": decision_digest})
+    _require(all(body[key] == old["protocol"][key] for key in
+                 ("teacher", "student", "teacher_layers_for_student", "data", "training",
+                  "objectives", "evaluation", "checkpointing", "calibration",
+                  "optional_studies", "run_plan", "seed_replications",
+                  "seed_replications_sha256", "optional_replication_conditions")) and
+             all(current[f"{name}_lock_digest"] == old[f"{name}_lock_digest"]
+                 for name in ("artifact", "environment", "calibration")) and
+             hardware_payload["proof"] == predecessor["hardware"]["payload"]["proof"],
+             "D23 changed scientific definitions, calibration, data, batch, or measured proof")
+    result = {**{name: predecessor[name] for name in LOCK_NAMES[:-1]},
+              "hardware": hardware, "protocol": seal_payload(current)}
     validate_protocol_lock(result["protocol"])
     return result
 
@@ -864,6 +963,24 @@ def validate_final_lock_set(directory: Path) -> dict[str, dict]:
     documents = {name: _read(directory / f"{name}.lock.json") for name in LOCK_NAMES}
     payloads = {name: verify_envelope(document)[0] for name, document in documents.items()}
     protocol, _ = validate_protocol_lock(documents["protocol"])
+    if "d23_researcher_amendment_sha256" in protocol["protocol"]:
+        historical = directory / "superseded"
+        old_protocol = _read(historical / f"s1-protocol-{D22_PROTOCOL_ROOT}.json")
+        old_payload, old_root = validate_protocol_lock(old_protocol)
+        old_hardware = _read(historical / f"s1-hardware-{old_payload['hardware_lock_digest']}.json")
+        d21_protocol = _read(historical / f"s1-protocol-{D21_PROTOCOL_ROOT}.json")
+        predecessor = {**{name: documents[name] for name in ("artifact", "environment", "calibration")},
+                       "hardware": old_hardware, "protocol": d21_protocol}
+        d22 = build_d22_lock_set(directory.parent, predecessor,
+                                 old_payload["production_runtime_source_commit"])
+        _require(old_root == D22_PROTOCOL_ROOT and old_protocol == d22["protocol"] and
+                 old_hardware == d22["hardware"], "D23 historical D22 root or hardware lock differs")
+        expected = build_d23_lock_set(directory.parent, d22,
+                                      protocol["production_runtime_source_commit"])
+        _require(documents == expected,
+                 "D23 successor differs from the exact D22 root or researcher amendment")
+        validate_optional_seed_configs(directory.parent, documents["protocol"])
+        return documents
     if "d22_researcher_amendment_sha256" in protocol["protocol"]:
         historical = directory / "superseded"
         old_protocol = _read(historical / f"s1-protocol-{D21_PROTOCOL_ROOT}.json")
@@ -1041,7 +1158,7 @@ def build_production_configs(repo: Path, protocol_document: dict,
     _require(root_digest == protocol_document["sha256"] and
              protocol.get("source_commit") == protocol.get("production_runtime_source_commit") and
              protocol.get("calibration_source_commit") == CALIBRATION_SOURCE_COMMIT and
-             protocol["protocol"].get("production_config_binding_schema") in (2, 3, 4, 5),
+             protocol["protocol"].get("production_config_binding_schema") in (2, 3, 4, 5, 6),
              "final S1 protocol binding schema is absent")
     reviewed = (reviewed_plan if reviewed_plan is not None else
                 _read(Path(repo) / "configs/s1_jobs_seed0_reviewed.json"))
@@ -1066,6 +1183,53 @@ def build_production_configs(repo: Path, protocol_document: dict,
     _require(len(configs) == 9 and len({(x["run_id"], x["seed"]) for x in jobs}) == 9,
              "production plan must contain nine unique physical jobs")
     return configs, plan
+
+
+def build_optional_seed_configs(repo: Path, protocol_document: dict) -> tuple[dict[str, dict], dict]:
+    """Build one explicit optional config per C0-C6 and seeds 1/2."""
+    protocol, root_digest = validate_protocol_lock(protocol_document)
+    body = protocol["protocol"]
+    _require(body.get("production_config_binding_schema") == 6 and
+             body.get("optional_seed_conditions") == D23_SEED_CONDITIONS and
+             body.get("optional_seed_device_roles") == D23_SEED_DEVICE_ROLES,
+             "all-condition seed configs require the D23 protocol")
+    configs, jobs = {}, []
+    for seed in (1, 2):
+        for condition in D23_SEED_CONDITIONS:
+            role = D23_SEED_DEVICE_ROLES[condition]
+            template_role = "rtx3090" if condition == "C4" else "rtx4080super"
+            template = _read(Path(repo) / f"configs/production/s1/{condition.lower()}_{template_role}.json")
+            source = copy.deepcopy(template)
+            source["device_role"] = role
+            source["protocol_digest"] = root_digest
+            source["production_binding"] = production_binding_for(protocol, role, seed)
+            resolve_config(source, seed=seed, protocol_lock=protocol_document, production=True)
+            name = f"{condition.lower()}_seed{seed}_{role}.json"
+            path = f"production/s1/{name}"
+            configs[path] = source
+            jobs.append({"run_id": f"s1-{condition.lower()}-seed{seed}-{role}",
+                         "config": path, "seed": seed})
+    plan = {"schema_version": 1, "status": "approved", "study": "S1",
+            "optional_s3_enabled": False, "jobs": jobs,
+            "hardware_confounds": [f"C4-C{i}-seed{seed}"
+                                   for seed in (1, 2) for i in (2, 3)]}
+    _require(len(configs) == 14, "D23 must generate exactly fourteen optional jobs")
+    return configs, plan
+
+
+def validate_optional_seed_configs(repo: Path, protocol_document: dict) -> dict:
+    from .job_plan import validate_job_plan
+    root = Path(repo) / "configs"
+    plan_path = root / "production/s1_seed12_jobs.json"
+    plan = _read(plan_path)
+    result = validate_job_plan(plan, root, protocol_lock=protocol_document, production=True)
+    expected_configs, expected_plan = build_optional_seed_configs(repo, protocol_document)
+    _require(plan == expected_plan and result["physical_runs"] == 14 and
+             result["unique_condition_seed_pairs"] == 14 and result["seeds"] == [1, 2] and
+             result["launchable"] is True and
+             all(_read(root / path) == document for path, document in expected_configs.items()),
+             "D23 optional config or fourteen-job plan differs from sealed protocol")
+    return result
 
 
 def write_production_configs(repo: Path, configs: dict[str, dict], plan: dict,

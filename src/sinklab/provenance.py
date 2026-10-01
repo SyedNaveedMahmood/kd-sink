@@ -103,9 +103,10 @@ def validate_protocol_lock(document: Any) -> tuple[dict[str, Any], str]:
     d20_approval = d19_approval | {"d20_sha256"}
     d21_approval = d20_approval | {"d21_sha256"}
     d22_approval = d21_approval | {"d22_sha256"}
+    d23_approval = d22_approval | {"d23_sha256"}
     if not isinstance(approval, dict) or set(approval) not in (
             base_approval, base_approval | {"approved_on_utc_date"}, d19_approval,
-            d20_approval, d21_approval, d22_approval):
+            d20_approval, d21_approval, d22_approval, d23_approval):
         raise LockError("approval record is incomplete")
     if not isinstance(approval["researcher"], str) or not approval["researcher"].strip():
         raise LockError("researcher approval is missing")
@@ -122,14 +123,17 @@ def validate_protocol_lock(document: Any) -> tuple[dict[str, Any], str]:
         raise LockError("approval UTC timestamp is missing")
     if not isinstance(approval["approval_sha256"], str) or not SHA256_PATTERN.fullmatch(approval["approval_sha256"]):
         raise LockError("approval evidence digest is missing")
-    class_binding = (isinstance(payload.get("protocol"), dict) and
-                     payload["protocol"].get("production_config_binding_schema") in (3, 4, 5))
+    schema = payload.get("protocol", {}).get("production_config_binding_schema") if isinstance(payload.get("protocol"), dict) else None
+    class_binding = schema in (3, 4, 5, 6)
     d20_binding = class_binding and "d20_researcher_amendment_sha256" in payload["protocol"]
-    d21_binding = d20_binding and payload["protocol"].get("production_config_binding_schema") == 4
-    d22_binding = d20_binding and payload["protocol"].get("production_config_binding_schema") == 5
+    d21_binding = d20_binding and "d21_researcher_amendment_sha256" in payload["protocol"]
+    d22_binding = d21_binding and "d22_researcher_amendment_sha256" in payload["protocol"]
+    d23_binding = d22_binding and schema == 6 and "d23_researcher_amendment_sha256" in payload["protocol"]
     required_decisions = {f"D{number:02d}" for number in range(
-        1, 23 if d22_binding else 22 if d21_binding else 21 if d20_binding else 20 if class_binding else 19)}
-    if class_binding and (set(approval) != (d22_approval if d22_binding else
+        1, 24 if d23_binding else 23 if d22_binding else 22 if d21_binding else
+        21 if d20_binding else 20 if class_binding else 19)}
+    if class_binding and (set(approval) != (d23_approval if d23_binding else
+                                            d22_approval if d22_binding else
                                             d21_approval if d21_binding else
                                             d20_approval if d20_binding else d19_approval) or
                           not isinstance(approval["d19_sha256"], str) or
@@ -154,12 +158,22 @@ def validate_protocol_lock(document: Any) -> tuple[dict[str, Any], str]:
                         approval["d22_sha256"] != payload["protocol"].get("d22_researcher_amendment_sha256") or
                         payload["protocol"].get("optional_replication_conditions") != ["C0", "C2"]):
         raise LockError("D22 C0/C2 seed-replication approval is missing")
+    if d23_binding and (not isinstance(approval["d23_sha256"], str) or
+                        not SHA256_PATTERN.fullmatch(approval["d23_sha256"]) or
+                        approval["d23_sha256"] != payload["protocol"].get("d23_researcher_amendment_sha256") or
+                        payload["protocol"].get("optional_seed_conditions") !=
+                        [f"C{i}" for i in range(7)] or
+                        payload["protocol"].get("optional_seed_device_roles") != {
+                            **{f"C{i}": "rtx4080super" for i in (0, 1, 2, 3, 5, 6)},
+                            "C4": "rtx3090"}):
+        raise LockError("D23 all-condition seed-replication approval is missing")
     decision_ids = approval["decision_ids"]
     if (not isinstance(decision_ids, list) or
             not all(isinstance(item, str) for item in decision_ids) or
             len(decision_ids) != len(required_decisions) or
             set(decision_ids) != required_decisions):
-        raise LockError("approval must cover D01-D22 exactly once" if d22_binding else
+        raise LockError("approval must cover D01-D23 exactly once" if d23_binding else
+                        "approval must cover D01-D22 exactly once" if d22_binding else
                         "approval must cover D01-D21 exactly once" if d21_binding else
                         "approval must cover D01-D20 exactly once" if d20_binding else
                         "approval must cover D01-D19 exactly once" if class_binding else

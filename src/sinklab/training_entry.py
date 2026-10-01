@@ -154,7 +154,8 @@ def preflight_approved_training(args) -> dict:
     gpu = _gpu_metadata()
     identity = authorize_production_device(lock, hardware, condition=spec.condition,
                                            device_role=spec.device_role,
-                                           gpu_name=gpu["name"], gpu_uuid=gpu["uuid"])
+                                           gpu_name=gpu["name"], gpu_uuid=gpu["uuid"],
+                                           seed=spec.seed)
     environment, _ = verify_envelope(lock_set["environment"])
     _check_runtime_environment(environment, spec.device_role, gpu)
     result = {**identity, "gpu_driver": gpu["driver"], "gpu_vram_mib": gpu["vram_mib"],
@@ -190,7 +191,7 @@ def preflight_approved_training(args) -> dict:
             raise ValueError("production scientific artifact inventory differs from lock")
         result["scientific_artifacts_verified"] = True
         if spec.seed in (1, 2):
-            if lock["protocol"].get("production_config_binding_schema") not in (4, 5):
+            if lock["protocol"].get("production_config_binding_schema") not in (4, 5, 6):
                 raise ValueError("optional seed requires a sealed replication protocol")
             replication_root = getattr(args, "replication_root", None)
             if replication_root is None and hasattr(args, "corpus"):
