@@ -1814,5 +1814,19 @@
     },
     "trainer_source_change_needed": false,
     "training_started": false
+  },
+  "adrita_pc_c5_queue_gate_retry_20261001": {
+    "status": "first_check_only_failed_queue_expectation_only_preflights_passed",
+    "starting_head": "7f25c059135863d34c8e5eded9995f57ce8763a1",
+    "check_only_command_exit_code": 1,
+    "queue_error": "launcher expected a seed field in preflight JSON; preflight succeeds without that field",
+    "seed1_preflight_exit_code": 0,
+    "seed1_preflight_training_started": false,
+    "seed1_scientific_artifacts_verified": true,
+    "seed1_seed_replication_artifacts_verified": true,
+    "seed1_protocol_root_sha256": "7b12e5a637c3a8b6ebe66d4bedbd202077fc7960bc98a443babf8bf68de8d8a7",
+    "seed1_gpu_uuid": "GPU-2a5c25d0-1f73-919b-fd8b-f6f0df709aaf",
+    "no_training_started": true,
+    "next_action": "commit and push corrected queue gate; rerun check-only"
   }
 }

@@ -191,6 +191,10 @@ no-training D23 preflights passed on RTX 4080 SUPER UUID
 registered evaluation checks. Queue state is recorded in
 `E:\KD-SINK-stage06-runs\launcher\c5-seed12-20261001\queue-status.json` and
 run logs remain outside Git. Neither run is scientific coverage until audited.
+The first end-to-end check-only invocation caught a queue-only expectation for
+a `seed` field absent from otherwise successful preflight output; that false
+gate was removed while the explicit config and `--seed` checks remain. Rerun
+check-only and arm only after its two preflights pass.
 
 ## S1 C5 interruption and resume (2026-09-30, observed 07:49 UTC)
 

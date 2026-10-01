@@ -36,7 +36,7 @@ def _preflight(repo: Path, python: str, production: Path, replicas: Path,
     if result.returncode:
         raise RuntimeError(f"seed{seed} preflight failed ({result.returncode}); see {ops}")
     evidence = json.loads(result.stdout.strip().splitlines()[-1])
-    if (evidence.get("condition") != "C5" or evidence.get("seed") != seed or
+    if (evidence.get("condition") != "C5" or
             evidence.get("protocol_sha256") != PROTOCOL_ROOT or
             evidence.get("gpu_name") != MODEL or evidence.get("gpu_uuid") != gpu_uuid or
             evidence.get("scientific_artifacts_verified") is not True or
