@@ -173,3 +173,20 @@ successor root refused C3 and C4 on that 4080. No scientific training began.
 The approved D20 decision is `s1_researcher_amendment_d20_c3_4080_20260929.json` (payload SHA `15f9cab8d2d691f14aca3b249b0a5d1458626c59c38ff47ce338f68ad9a532f5`), bound to the committed C3 qualification report (payload SHA `9b608a1a8da5af520435cd34dd45548ea29f3d85cf67977d1245276979bcb703`). The current prospective root `fd5199ae6f90985ce8c87539f3e76b6d810c5420ccb2d0f6d6ee300a27cef5f4` descends from exact D19 root `48c39a25f640b90a70056e3c8f7308b66b9d635876e22c56f76516a09d2c9791`; runtime source `028f919569db9db1721ef4e7074bdce3209d1808` includes only provenance/readiness authorization changes, with scientific training/evaluation code unchanged. Hardware lock `fc410cd3d01505d0cd7b9ffdda98caaf070bfd2524ca7ac7841a0c78e60aa593` retains the old common proof and adds measured C3 reference evidence. D19 locks/configs are archived under `protocols/superseded/` and `configs/superseded/d19/` for existing runs and the preapproved NaveedPC C5 queue. C4 remains 3090-only. The reviewed plan reports the `C4-C3-seed0` cross-device confound.
 
 The first D20 root `fd5199ae6f90985ce8c87539f3e76b6d810c5420ccb2d0f6d6ee300a27cef5f4` is archived but nonlaunchable: real preflight exposed an artifact-approval plan-reference defect before training. Corrected source milestone `56260519be5e31790a7ed7abc078e2a285c0cf18` binds artifact inventory to its original approved plan and reproduces the same sealed inventory digest. Replacement root `fccf4c14bc691e550c6304f4955b72037efb8d042b3e51afb70367920fff0552` is authoritative after its own validation; the D20 hardware lock and scientific artifact/calibration/environment locks are unchanged.
+
+## D22 C0/C2 optional seed replications (2026-10-01)
+
+D22 prospectively authorizes exactly C0 and C2 seeds 1 and 2 on the RTX 4080
+SUPER class. Each seed reuses its own D21-sealed corpus, panels, order, and
+CPU-FP32 initialization across C0 and C2, preserving within-seed pairing. The
+completed C3 seed 1/2 runs retain D21 root
+`95a3607791fab3911916bcab407f7d10dab3576f197ebe7b606c2f9e3ac8ab15`.
+The D22 runtime source is `e7473ee253194e6b89cccbb530d22c4df4d522a3`,
+the amendment digest is
+`0541cb72569d13a0d6b39f28d7f4c037e3d0f3b81f9c08577e5ea4e9fb4586ad`,
+and the successor root is
+`fc263c1843f01afda21d8697cbc8617a91033f92482da25c485118acf8bb20b6`.
+Artifact, environment, hardware, and calibration lock digests remain unchanged.
+All four NodiPC preflights verified the exact GPU, source, production artifact
+inventory, and seed-specific artifacts without starting training. Each queued
+trainer command remains an explicit single-condition, single-seed command.

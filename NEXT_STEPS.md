@@ -132,6 +132,22 @@ The researcher authorized C3-only seeds 1 and 2 and separate OpenWebText repacki
 
 The external queue status and run records determine actual launches; a prepared or armed queue is not scientific coverage.
 
+## Prospective D22 C0/C2 seed replications (2026-10-01)
+
+The researcher authorized four optional RTX 4080 SUPER jobs: C0 seed 1, C2
+seed 1, C0 seed 2, and C2 seed 2. C0 and C2 share the same sealed artifacts
+within each seed; seed 1 and seed 2 retain their separate D21 repacks/panels.
+
+- [x] Add focused D22 source validation without changing objective/trainer/model/evaluator behavior.
+- [x] Seal and push the D22 runtime source milestone.
+- [x] Seal the exact D21 successor and generate four root-bound configs.
+- [x] Pass all four real NodiPC production preflights with training disabled.
+- [ ] Complete the external fail-closed serial queue and verify each final checkpoint, 10,000 updates, and 222 evaluation aggregates.
+
+Queue order is C0 seed 1, C2 seed 1, C0 seed 2, C2 seed 2. A failed job or
+storage/GPU/provenance gate stops later jobs. Queue state and run artifacts,
+rather than this checklist, establish scientific completion.
+
 ## S1 C5 interruption and resume (2026-09-30, observed 07:49 UTC)
 
 The earlier C1 gate completed successfully and launched C5 on NaveedPC. C5 reached update 8,070, then an unexpected Windows restart interrupted it without an OOM or traceback. The original log is preserved byte-for-byte as `train.precrash-through-8070.jsonl`. The checksum-verified rolling step-8,000 checkpoint retained the same C5/seed/root/physical-GPU identity. On explicit operator request, the same lineage resumed from step 8,000 with unchanged microbatch 4 and accumulation 16. At the latest health sample it reached update 8,148 with finite loss and no runtime error. Completion remains unproven; the practical ETC was 16:20-16:40 Asia/Dhaka on 2026-09-30.

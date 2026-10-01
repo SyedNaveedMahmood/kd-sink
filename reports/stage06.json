@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "stage_id": "06",
-  "status": "production_ready_under_d21_c3_seed12_successor",
+  "status": "production_ready_under_d22_c0_c2_seed12_successor",
   "starting_commit": "5396f84828bd2de5eb29b6f0467eb084c1b2af8c",
   "resume_starting_commit": "aeb064f76ded84b7b1a7999371be6fd6ee7266f6",
   "implementation_milestones": [
@@ -1431,6 +1431,24 @@
     "condition": "C3",
     "separate_seed_packing_and_panels": true,
     "automatic_condition_sweep": false,
+    "new_training_started_at_seal": false
+  },
+  "d22_optional_c0_c2_seed_replications": {
+    "status": "sealed_and_preflight_verified_pending_external_queue_launch",
+    "predecessor_d21_root_sha256": "95a3607791fab3911916bcab407f7d10dab3576f197ebe7b606c2f9e3ac8ab15",
+    "successor_root_sha256": "fc263c1843f01afda21d8697cbc8617a91033f92482da25c485118acf8bb20b6",
+    "runtime_source_commit": "e7473ee253194e6b89cccbb530d22c4df4d522a3",
+    "amendment_sha256": "0541cb72569d13a0d6b39f28d7f4c037e3d0f3b81f9c08577e5ea4e9fb4586ad",
+    "seed_artifact_evidence_sha256": "95e5d563138b15dae66bf2cce9a112a8c08d00fb32a19ab5bf3b2337814658c7",
+    "conditions": ["C0", "C2"],
+    "seeds": [1, 2],
+    "queue_order": ["C0_seed1", "C2_seed1", "C0_seed2", "C2_seed2"],
+    "same_seed_artifacts_shared_across_conditions": true,
+    "common_schedule": {"microbatch": 4, "accumulation": 16, "effective_batch": 64, "optimizer_updates": 10000},
+    "real_nodipc_preflights": {"passed": 4, "failed": 0, "training_started": false},
+    "component_locks_changed": false,
+    "calibration_changed": false,
+    "scientific_implementation_changed": false,
     "new_training_started_at_seal": false
   }
 }
