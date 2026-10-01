@@ -1,6 +1,6 @@
 # Sequential implementation worklist
 
-Stage 06 production launch readiness is restored under the new runtime-bound root; no S1 scientific campaign has run. Read AGENTS.md first. Work in order from the first incomplete task. A checkbox becomes checked ONLY when its implementation AND required tests actually pass with report/journal evidence. Missing hardware/network/approval is BLOCKED,not passed. Stage capability,validation and scientific coverage are separate. Optional studies remain disabled until approval.
+Stage 06 production launch readiness is restored under the new runtime-bound root. Adrita-PC C5 seed1 is running and seed2 is queued; neither run is complete. Read AGENTS.md first. Work in order from the first incomplete task. A checkbox becomes checked ONLY when its implementation AND required tests actually pass with report/journal evidence. Missing hardware/network/approval is BLOCKED,not passed. Stage capability,validation and scientific coverage are separate. Optional studies remain disabled until approval.
 
 ## Stage00 - Foundation
 Work order: [00_FOUNDATION](design/e6a_v2/stages/00_FOUNDATION.md).
@@ -193,8 +193,14 @@ registered evaluation checks. Queue state is recorded in
 run logs remain outside Git. Neither run is scientific coverage until audited.
 The first end-to-end check-only invocation caught a queue-only expectation for
 a `seed` field absent from otherwise successful preflight output; that false
-gate was removed while the explicit config and `--seed` checks remain. Rerun
-check-only and arm only after its two preflights pass.
+gate was removed while the explicit config and `--seed` checks remain. The
+corrected check-only gate passed and the serial queue was armed at
+2026-10-01T12:08:52Z. At the 2026-10-01T12:45:56Z health sample, seed1 had
+78 finite, ordered updates with exact token counters and seed2 remained queued.
+Neither run is complete or scientific coverage until its final audit passes.
+
+- [x] Push and arm the C5 seed1/seed2 serial queue; confirm seed1 training is healthy and seed2 remains queued.
+- [ ] Complete both 10,000-update runs and audit their final checkpoints and 222 registered evaluation aggregates each.
 
 ## S1 C5 interruption and resume (2026-09-30, observed 07:49 UTC)
 

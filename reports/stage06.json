@@ -1828,5 +1828,46 @@
     "seed1_gpu_uuid": "GPU-2a5c25d0-1f73-919b-fd8b-f6f0df709aaf",
     "no_training_started": true,
     "next_action": "commit and push corrected queue gate; rerun check-only"
+  },
+  "adrita_pc_c5_seed12_launch_20261001": {
+    "status": "seed1_healthy_running_seed2_queued_not_complete",
+    "observed_utc": "2026-10-01T12:45:56Z",
+    "starting_head": "d4511c32346b6fe00573c60a44d93509026a938d",
+    "protocol_root_sha256": "7b12e5a637c3a8b6ebe66d4bedbd202077fc7960bc98a443babf8bf68de8d8a7",
+    "hardware_lock_sha256": "edab38c79e19c7fe82841644db512a5318c469dd23609b8f3f24d9e92c1503e7",
+    "gpu_model": "NVIDIA GeForce RTX 4080 SUPER",
+    "gpu_uuid": "GPU-2a5c25d0-1f73-919b-fd8b-f6f0df709aaf",
+    "queue_status_file": "E:\\KD-SINK-stage06-runs\\launcher\\c5-seed12-20261001\\queue-status.json",
+    "queue_pid": 20996,
+    "queue_phase": "seed1_running_seed2_queued",
+    "seed1": {
+      "run_id": "s1-c5-seed1-rtx4080super",
+      "run_path": "E:\\KD-SINK-stage06-runs\\s1-c5-seed1-rtx4080super",
+      "started_utc": "2026-10-01T12:08:52Z",
+      "updates_observed": 78,
+      "latest_step": 78,
+      "latest_loss": 6.874499320983887,
+      "latest_tokens_per_second": 2535.1972602113105,
+      "input_tokens": 638976,
+      "target_tokens": 633984,
+      "microbatch": 4,
+      "accumulation": 16,
+      "effective_batch": 64,
+      "finite_loss_lr_and_gradient": true,
+      "ordered_steps_and_exact_token_counts": true,
+      "step0_rolling_and_weights_checkpoints_complete": true,
+      "step0_evaluation_completed": true,
+      "gpu_memory_used_mib_at_observation": 14686,
+      "gpu_memory_free_mib_at_observation": 1362
+    },
+    "seed2": {
+      "run_id": "s1-c5-seed2-rtx4080super",
+      "preflight_passed": true,
+      "status": "queued",
+      "training_started": false
+    },
+    "errors_observed": [],
+    "training_complete": false,
+    "completion_audit": "pending_after_each_10000_update_run"
   }
 }
