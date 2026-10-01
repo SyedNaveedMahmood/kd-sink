@@ -93,6 +93,8 @@ The old root `2a11da9bb71957a4d6b3a2f93a34bd67491dd9d21d70577a7a10858930a8943e` 
 
 **S1 C5 Adrita-PC resumed health (2026-09-29, observed 18:21 UTC):** The same C5 seed-0 D20 command resumed from verified rolling-003000 on the same GPU UUID and 4x16 schedule. After cached step-3000 evaluation, it replayed all 193 interrupted-tail updates exactly for loss, objective components, gradient norm and learning rate, then passed the old stop point to update 3211. The active log has one sequence of updates 1..3211 with finite loss/gradient and exact token counters. Fresh step-3100 and step-3200 student/teacher dense64 evaluations completed; all 386 regenerated step-3100 cache records matched the archived interrupted records by SHA-256. The worker remains running toward 10,000; no completion claim. See `reports/stage06.json` and the external health audit.
 
+**Adrita-PC C5/C6 seed0 transfer archives (2026-10-01):** Created independent ZIP64 archives outside Git at `E:\KD-SINK-transfer`. Each archive contains the complete source run directory, a file-level `TRANSFER_SHA256SUMS.txt`, and a `TRANSFER_MANIFEST.json`; each adjacent `.sha256` sidecar matches the finished ZIP. C5 preserves D20 root `fccf4c14bc691e550c6304f4955b72037efb8d042b3e51afb70367920fff0552` and C6 preserves its original D19 root `48c39a25f640b90a70056e3c8f7308b66b9d635876e22c56f76516a09d2c9791`. Both source/archive counts and uncompressed byte totals match; CRC, internal SHA list, and final-010000 checks passed. See the per-run archive receipts in `reports/stage06.json`.
+
 ## Stage07 - S2
 Work order: [07_S2_PRETRAINING](design/e6a_v2/stages/07_S2_PRETRAINING.md).
 - [x]07.1 Immutable public checkpoint/seed inventory capability; one public step0 entry is now resolved and verified.
