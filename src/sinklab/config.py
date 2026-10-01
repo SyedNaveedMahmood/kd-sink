@@ -46,7 +46,7 @@ def production_binding_for(payload: Mapping[str, Any], device_role: str, seed: i
     """The immutable per-job identities a final S1 config must repeat exactly."""
     body = payload["protocol"]
     schema = body.get("production_config_binding_schema")
-    if schema in (3, 4) and device_role == "rtx4080super":
+    if schema in (3, 4, 5) and device_role == "rtx4080super":
         hardware_binding = body["hardware"]["hardware_classes"][device_role]
         identity = {"hardware_binding": {
             "policy": "researcher_approved_reference_profile_transfer",
@@ -55,11 +55,11 @@ def production_binding_for(payload: Mapping[str, Any], device_role: str, seed: i
             "reference_uuid": hardware_binding["reference_uuid"],
             "actual_uuid": "runtime_recorded",
         }}
-    elif schema in (2, 3, 4):
+    elif schema in (2, 3, 4, 5):
         identity = {"gpu_uuid": body["hardware"]["gpu_uuids"][device_role]}
     else:
         raise KeyError("unsupported production binding schema")
-    if schema == 4 and seed in (1, 2):
+    if schema in (4, 5) and seed in (1, 2):
         replica = body["seed_replications"][str(seed)]
         data_binding = {
             "initialization_sha256": replica["initialization_sha256"],
@@ -145,9 +145,12 @@ def resolve_config(
         if payload["protocol"].get("production_config_binding_schema") == 4 and seed != 0 and (
                 condition != "C3" or device_role != "rtx4080super" or seed not in (1, 2)):
             raise ConfigError("D21 optional replication authorizes only C3 seeds 1 and 2 on RTX4080 SUPER")
+        if payload["protocol"].get("production_config_binding_schema") == 5 and seed != 0 and (
+                condition not in ("C0", "C2") or device_role != "rtx4080super" or seed not in (1, 2)):
+            raise ConfigError("D22 optional replication authorizes only C0/C2 seeds 1 and 2 on RTX4080 SUPER")
         if study == "S3" and payload["protocol"].get("optional_studies", {}).get("S3") is not True:
             raise ConfigError("S3 requires separate approval")
-        if payload["protocol"].get("production_config_binding_schema") in (2, 3, 4) and production:
+        if payload["protocol"].get("production_config_binding_schema") in (2, 3, 4, 5) and production:
             try:
                 expected_binding = production_binding_for(payload, device_role, seed)
             except (KeyError, TypeError) as exc:

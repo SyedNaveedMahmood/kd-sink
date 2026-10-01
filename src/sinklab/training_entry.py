@@ -50,7 +50,7 @@ def _replication_root_from_corpus(path: Path, seed: int) -> Path:
 
 def _check_seed_replication_artifacts(repo: Path, root: Path, lock: dict,
                                       spec, args) -> None:
-    """Verify the exact externally stored files bound by the D21 root."""
+    """Verify the exact externally stored files bound by the D21/D22 roots."""
     from .stage06_readiness import D21_EVIDENCE_PATH
     evidence, evidence_sha = verify_envelope(_read(repo / D21_EVIDENCE_PATH))
     body = lock["protocol"]
@@ -76,18 +76,18 @@ def _check_seed_replication_artifacts(repo: Path, root: Path, lock: dict,
     for name, (folder, filename, hash_field) in names.items():
         path = root / folder / filename
         if not path.is_file() or _file_sha256(path) != row[hash_field]:
-            raise ValueError(f"seed {spec.seed} {name} differs from D21 artifact evidence")
+            raise ValueError(f"seed {spec.seed} {name} differs from D21 sealed replication evidence")
         if name in ("corpus", "panels", "initialization") and hasattr(args, name):
             if Path(getattr(args, name)).resolve() != path.resolve():
                 raise ValueError(f"seed {spec.seed} {name} path differs from approved root")
     metadata, _ = verify_envelope(_read(root / names["initialization"][0] /
                                          names["initialization"][1]))
     if metadata.get("seed") != spec.seed or metadata.get("tensor_content_sha256") != row["initialization_sha256"]:
-        raise ValueError("seed initialization identity differs from D21")
+        raise ValueError("seed initialization identity differs from D21 sealed replication evidence")
     order, order_sha = verify_envelope(_read(root / names["order"][0] /
                                              names["order"][1]))
     if order_sha != row["order_sha256"] or order.get("seed") != spec.seed:
-        raise ValueError("seed update order identity differs from D21")
+        raise ValueError("seed update order identity differs from D21 sealed replication evidence")
 
 
 def _gpu_identity() -> tuple[str, str]:
@@ -190,8 +190,8 @@ def preflight_approved_training(args) -> dict:
             raise ValueError("production scientific artifact inventory differs from lock")
         result["scientific_artifacts_verified"] = True
         if spec.seed in (1, 2):
-            if lock["protocol"].get("production_config_binding_schema") != 4:
-                raise ValueError("optional C3 seed requires D21 production protocol")
+            if lock["protocol"].get("production_config_binding_schema") not in (4, 5):
+                raise ValueError("optional seed requires a sealed replication protocol")
             replication_root = getattr(args, "replication_root", None)
             if replication_root is None and hasattr(args, "corpus"):
                 replication_root = _replication_root_from_corpus(args.corpus, spec.seed)

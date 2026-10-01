@@ -30,6 +30,8 @@ D20_PATH = "protocols/s1_researcher_amendment_d20_c3_4080_20260929.json"
 D20_EVIDENCE_PATH = "reports/stage06_c3_4080_qualification.json"
 D21_PATH = "protocols/s1_researcher_amendment_d21_c3_seed12_20260929.json"
 D21_EVIDENCE_PATH = "reports/stage06_c3_seed12_artifacts.json"
+D21_PROTOCOL_ROOT = "95a3607791fab3911916bcab407f7d10dab3576f197ebe7b606c2f9e3ac8ab15"
+D22_PATH = "protocols/s1_researcher_amendment_d22_c0_c2_seed12_20261001.json"
 GPU_UUIDS = {
     "rtx4080super": "GPU-72b4b307-b613-c35e-ea32-53f4431de9ee",
     "rtx3090": "GPU-a21766e4-bb31-9b79-5e8f-e58021e9708e",
@@ -259,6 +261,74 @@ def build_d21_lock_set(repo: Path, predecessor: dict[str, dict],
                   "objectives", "evaluation", "checkpointing", "calibration",
                   "optional_studies", "run_plan", "hardware")),
              "D21 changed a D20 scientific or hardware field")
+    result = {**{name: predecessor[name] for name in LOCK_NAMES[:-1]},
+              "protocol": seal_payload(current)}
+    validate_protocol_lock(result["protocol"])
+    return result
+
+
+def _d22(repo: Path, predecessor: dict) -> tuple[dict, str]:
+    """Verify the prospective paired C0/C2 optional-seed authorization."""
+    decision, digest = _sealed(Path(repo) / D22_PATH)
+    body = predecessor
+    _require(decision.get("kind") == "s1-d22-c0-c2-seed12-replication-v1" and
+             decision.get("decision_id") == "D22" and
+             decision.get("status") == "approved_prospective_optional_replication" and
+             decision.get("predecessor_production_root") == D21_PROTOCOL_ROOT and
+             decision.get("d21_amendment_sha256") ==
+             body["protocol"]["d21_researcher_amendment_sha256"] and
+             decision.get("replication_evidence_sha256") ==
+             body["protocol"]["seed_replications_sha256"] and
+             decision.get("conditions") == ["C0", "C2"] and
+             decision.get("seeds") == [1, 2] and
+             decision.get("device_role") == "rtx4080super" and
+             decision.get("reuse_same_seed_artifacts_across_conditions") is True and
+             decision.get("common_schedule") == {"microbatch": 4, "accumulation": 16,
+                                                  "effective_sequences": 64,
+                                                  "optimizer_updates": 10000} and
+             decision.get("c0_variant") == S1_VARIANTS["C0"] and
+             decision.get("c2_variant") == S1_VARIANTS["C2"] and
+             decision.get("preserve_completed_d21_c3_runs") is True and
+             decision.get("prospective_only") is True and
+             decision.get("calibration_changed") is False and
+             decision.get("scientific_artifact_changed") is False,
+             "D22 decision differs from authorized C0/C2 optional replications")
+    return decision, digest
+
+
+def build_d22_lock_set(repo: Path, predecessor: dict[str, dict],
+                       production_runtime_source_commit: str) -> dict[str, dict]:
+    """Authorize C0/C2 seeds 1/2 while preserving the complete D21 lineage."""
+    old, old_digest = validate_protocol_lock(predecessor["protocol"])
+    _require(old_digest == D21_PROTOCOL_ROOT and
+             all(old[f"{name}_lock_digest"] == predecessor[name]["sha256"]
+                 for name in LOCK_NAMES[:-1]),
+             "D22 requires the exact transitive D21 predecessor")
+    decision, decision_digest = _d22(Path(repo), old)
+    _require(COMMIT_PATTERN.fullmatch(production_runtime_source_commit) is not None,
+             "D22 runtime source must be an immutable commit")
+    current = copy.deepcopy(old)
+    current["source_commit"] = production_runtime_source_commit
+    current["production_runtime_source_commit"] = production_runtime_source_commit
+    current["approval"].update(approved_on_utc_date=decision["approved_on_utc_date"],
+                               d22_sha256=decision_digest,
+                               decision_ids=[*old["approval"]["decision_ids"], "D22"])
+    body = current["protocol"]
+    body["predecessor_protocol_root_sha256"] = D21_PROTOCOL_ROOT
+    body["d22_researcher_amendment_sha256"] = decision_digest
+    body["optional_replication_conditions"] = ["C0", "C2"]
+    body["production_config_binding_schema"] = 5
+    body["amendment_chain"].append({"decision_id": "D22",
+                                   "predecessor_root_sha256": D21_PROTOCOL_ROOT,
+                                   "amendment_sha256": decision_digest})
+    _require(all(current[f"{name}_lock_digest"] == old[f"{name}_lock_digest"]
+                 for name in LOCK_NAMES[:-1]) and
+             all(body[key] == old["protocol"][key] for key in
+                 ("teacher", "student", "teacher_layers_for_student", "data", "training",
+                  "objectives", "evaluation", "checkpointing", "calibration",
+                  "optional_studies", "run_plan", "hardware", "seed_replications",
+                  "seed_replications_sha256")),
+             "D22 changed a D21 scientific, hardware or seed-artifact field")
     result = {**{name: predecessor[name] for name in LOCK_NAMES[:-1]},
               "protocol": seal_payload(current)}
     validate_protocol_lock(result["protocol"])
@@ -794,6 +864,20 @@ def validate_final_lock_set(directory: Path) -> dict[str, dict]:
     documents = {name: _read(directory / f"{name}.lock.json") for name in LOCK_NAMES}
     payloads = {name: verify_envelope(document)[0] for name, document in documents.items()}
     protocol, _ = validate_protocol_lock(documents["protocol"])
+    if "d22_researcher_amendment_sha256" in protocol["protocol"]:
+        historical = directory / "superseded"
+        old_protocol = _read(historical / f"s1-protocol-{D21_PROTOCOL_ROOT}.json")
+        old_payload, old_root = validate_protocol_lock(old_protocol)
+        _require(old_root == D21_PROTOCOL_ROOT and
+                 old_payload["protocol"].get("d22_researcher_amendment_sha256") is None,
+                 "D22 historical D21 root differs")
+        predecessor = {**{name: documents[name] for name in LOCK_NAMES[:-1]},
+                       "protocol": old_protocol}
+        expected = build_d22_lock_set(directory.parent, predecessor,
+                                      protocol["production_runtime_source_commit"])
+        _require(documents == expected,
+                 "D22 successor differs from exact D21 root or researcher amendment")
+        return documents
     if "d21_researcher_amendment_sha256" in protocol["protocol"]:
         historical = directory / "superseded"
         old_protocol = _read(historical / f"s1-protocol-{D20_PROTOCOL_ROOT}.json")
@@ -829,7 +913,7 @@ def validate_final_lock_set(directory: Path) -> dict[str, dict]:
     _require(protocol.get("production_runtime_source_commit") == protocol.get("source_commit") and
              protocol.get("calibration_source_commit") == CALIBRATION_SOURCE_COMMIT and
              protocol.get("execution_critical_path_set_version") == EXECUTION_CRITICAL_PATH_SET_VERSION and
-             protocol["protocol"].get("production_config_binding_schema") in (2, 3, 4) and
+             protocol["protocol"].get("production_config_binding_schema") in (2, 3, 4, 5) and
              protocol["protocol"].get("calibration", {}).get("calibration_source_commit") ==
              CALIBRATION_SOURCE_COMMIT,
              "old production root is superseded: runtime source provenance binding is absent")
@@ -957,7 +1041,7 @@ def build_production_configs(repo: Path, protocol_document: dict,
     _require(root_digest == protocol_document["sha256"] and
              protocol.get("source_commit") == protocol.get("production_runtime_source_commit") and
              protocol.get("calibration_source_commit") == CALIBRATION_SOURCE_COMMIT and
-             protocol["protocol"].get("production_config_binding_schema") in (2, 3, 4),
+             protocol["protocol"].get("production_config_binding_schema") in (2, 3, 4, 5),
              "final S1 protocol binding schema is absent")
     reviewed = (reviewed_plan if reviewed_plan is not None else
                 _read(Path(repo) / "configs/s1_jobs_seed0_reviewed.json"))
