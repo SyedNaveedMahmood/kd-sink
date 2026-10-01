@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "stage_id": "06",
-  "status": "production_ready_under_d22_c0_c2_seed12_successor",
+  "status": "d23_preflights_passed_full_cpu_tests_passed_queue_pending",
   "starting_commit": "5396f84828bd2de5eb29b6f0467eb084c1b2af8c",
   "resume_starting_commit": "aeb064f76ded84b7b1a7999371be6fd6ee7266f6",
   "implementation_milestones": [
@@ -438,7 +438,7 @@
   "upstream_files_changed": 0,
   "pushed": true,
   "remaining_blockers": [],
-  "next_action": "Only an explicitly operator-launched single S1 condition/seed production job may proceed; preserve its actual start GPU UUID for same-UUID resume. No production training was launched during D19 sealing.",
+  "next_action": "Run only the two explicitly requested D23 C4 seed1/2 jobs serially on the RTX3090 class; preserve actual UUID for same-UUID resume. Other optional configs are not queued or launched.",
   "runtime_source_repair_20260928": {
     "starting_commit": "dceba4976c06399cffabdd50e80c41c94137a5e6",
     "old_root_sha256": "2a11da9bb71957a4d6b3a2f93a34bd67491dd9d21d70577a7a10858930a8943e",
@@ -1450,5 +1450,59 @@
     "calibration_changed": false,
     "scientific_implementation_changed": false,
     "new_training_started_at_seal": false
+  },
+  "d23_optional_all_condition_seed_replications": {
+    "status": "external_artifacts_verified_both_c4_preflights_and_tests_passed",
+    "predecessor_d22_root_sha256": "fc263c1843f01afda21d8697cbc8617a91033f92482da25c485118acf8bb20b6",
+    "production_runtime_source_commit": "9cb1815d44c3b2f42ddd508e5f9c71cc2ea274ec",
+    "amendment_sha256": "e2e4d7f98069185a4669261ddb6f8455410ee07ddb322e0cd4cbd08d3bc8d789",
+    "production_root_sha256": "7b12e5a637c3a8b6ebe66d4bedbd202077fc7960bc98a443babf8bf68de8d8a7",
+    "locks": {
+      "artifact": "2e721e9726e666cb8dc08a9b7d606a6d6ff99b434011b40fe2cf41f8eb315ccd",
+      "environment": "7cc28883dea319bd5f76ba8f5f2759be5a519df23d9f2bea63ae2353e548884b",
+      "hardware": "edab38c79e19c7fe82841644db512a5318c469dd23609b8f3f24d9e92c1503e7",
+      "calibration": "fa031af3de63832e054b89539d3867c2904c9b592b1e7a8b3e4ca3e3676c532f"
+    },
+    "conditions": ["C0", "C1", "C2", "C3", "C4", "C5", "C6"],
+    "seeds": [1, 2],
+    "optional_physical_jobs": 14,
+    "condition_device_roles": {
+      "C0": "rtx4080super", "C1": "rtx4080super", "C2": "rtx4080super",
+      "C3": "rtx4080super", "C4": "rtx3090", "C5": "rtx4080super",
+      "C6": "rtx4080super"
+    },
+    "c4_uuid_policy": "optional seeds1/2 only: exact RTX3090 model and locked 24576 MiB environment; record actual UUID and resume only on same UUID; seed0 remains reference-UUID-bound",
+    "c1_c2_seed12_hardware_bridges_added": false,
+    "seed_artifact_evidence_sha256": "95e5d563138b15dae66bf2cce9a112a8c08d00fb32a19ab5bf3b2337814658c7",
+    "artifact_root": "E:\\KD-SINK-stage06-replications",
+    "requested_queue": ["C4_seed1", "C4_seed2"],
+    "queue_status": "not_started",
+    "preflights": {
+      "passed": 2,
+      "failed": 0,
+      "gpu_name": "NVIDIA GeForce RTX 3090",
+      "gpu_uuid": "GPU-a21766e4-bb31-9b79-5e8f-e58021e9708e",
+      "gpu_vram_mib": 24576,
+      "gpu_driver": "591.86",
+      "protocol_sha256": "7b12e5a637c3a8b6ebe66d4bedbd202077fc7960bc98a443babf8bf68de8d8a7",
+      "hardware_sha256": "edab38c79e19c7fe82841644db512a5318c469dd23609b8f3f24d9e92c1503e7",
+      "runtime_source_match": true,
+      "scientific_artifacts_verified": true,
+      "seed_replication_artifacts_verified": true,
+      "training_started": false
+    },
+    "plan_validation": {
+      "seed0": {"launchable": true, "physical_runs": 9, "unique_condition_seed_pairs": 7},
+      "optional_seeds12": {"launchable": true, "physical_runs": 14, "unique_condition_seed_pairs": 14}
+    },
+    "tests": {
+      "focused_stage06_and_replication": {"passed": 106, "failed": 0, "skipped": 0},
+      "full_cpu_regression": {"passed": 255, "failed": 0, "skipped": 0, "warnings": 1},
+      "offline_clean_wheel": {"passed": 1, "failed": 0, "skipped": 0},
+      "pip_check": "passed",
+      "uv_locked_dry_run": "Would make no changes",
+      "git_diff_check": "passed"
+    },
+    "scientific_coverage": "none_for_optional_seeds"
   }
 }

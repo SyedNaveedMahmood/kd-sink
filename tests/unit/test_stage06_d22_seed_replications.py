@@ -26,8 +26,14 @@ def _d21_predecessor() -> dict[str, dict]:
     historical = REPO / "protocols/superseded" / f"s1-protocol-{D21_PROTOCOL_ROOT}.json"
     protocol = _read(historical if historical.exists() else REPO / "protocols/protocol.lock.json")
     assert protocol["sha256"] == D21_PROTOCOL_ROOT
-    return {**{name: _read(REPO / f"protocols/{name}.lock.json")
-               for name in LOCK_NAMES[:-1]}, "protocol": protocol}
+    result = {"protocol": protocol}
+    for name in LOCK_NAMES[:-1]:
+        lock = _read(REPO / f"protocols/{name}.lock.json")
+        expected = protocol["payload"][f"{name}_lock_digest"]
+        if lock["sha256"] != expected:
+            lock = _read(REPO / "protocols/superseded" / f"s1-{name}-{expected}.json")
+        result[name] = lock
+    return result
 
 
 def _config(condition: str, lock: dict, seed: int) -> dict:

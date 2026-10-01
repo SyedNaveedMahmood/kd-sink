@@ -48,12 +48,16 @@ def _write(path: Path, document: dict) -> None:
 
 
 def _fixture(tmp_path: Path, monkeypatch) -> tuple[dict, dict, dict]:
-    old = {name: _read(REPO / f"protocols/{name}.lock.json") for name in
-           ("artifact", "environment", "hardware", "calibration", "protocol")}
-    if old["protocol"]["sha256"] != D20_PROTOCOL_ROOT:
-        old["protocol"] = _read(REPO / "protocols/superseded" /
-                                f"s1-protocol-{D20_PROTOCOL_ROOT}.json")
-    assert old["protocol"]["sha256"] == D20_PROTOCOL_ROOT
+    historical = REPO / "protocols/superseded" / f"s1-protocol-{D20_PROTOCOL_ROOT}.json"
+    protocol = _read(historical if historical.exists() else REPO / "protocols/protocol.lock.json")
+    assert protocol["sha256"] == D20_PROTOCOL_ROOT
+    old = {"protocol": protocol}
+    for name in ("artifact", "environment", "hardware", "calibration"):
+        lock = _read(REPO / f"protocols/{name}.lock.json")
+        expected = protocol["payload"][f"{name}_lock_digest"]
+        if lock["sha256"] != expected:
+            lock = _read(REPO / "protocols/superseded" / f"s1-{name}-{expected}.json")
+        old[name] = lock
     data = old["protocol"]["payload"]["protocol"]["data"]
     rows = {
         str(seed): {"corpus_sha256": str(seed) * 64,

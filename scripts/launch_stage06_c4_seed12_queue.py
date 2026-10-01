@@ -52,6 +52,8 @@ def _no_active_trainer() -> None:
 
 def _verify_complete(run: Path, *, seed: int, root_sha: str, gpu_uuid: str) -> dict:
     from sinklab.checkpoint import verify_checkpoint
+    from sinklab.evaluate import RETAINED_FULL
+    from sinklab.provenance import verify_envelope
     final = verify_checkpoint(run / "checkpoints/final-010000")
     identity = final["identity"]
     if (final["step"] != 10000 or final["kind"] != "final" or
@@ -83,7 +85,34 @@ def _verify_complete(run: Path, *, seed: int, root_sha: str, gpu_uuid: str) -> d
                     raise RuntimeError(f"C4 seed{seed} update sequence breaks at {updates}")
     if updates != 10000:
         raise RuntimeError(f"C4 seed{seed} ended with {updates} updates")
+    expected = {(step, "owt_dense64", role)
+                for step in range(0, 10001, 100) for role in ("student", "teacher")}
+    expected |= {(step, "owt_full300", role) for step in RETAINED_FULL
+                 for role in ("student", "teacher")}
+    expected |= {(step, "owt_lm2000", "student") for step in (0, 10000)}
+    complete = set()
+    for path in (run / "evaluation").glob("aggregate-*.json"):
+        document, _ = verify_envelope(_json(path))
+        key, operations = document["key"], document["operations"]
+        if (key.get("run_id") != run.name or
+                key.get("run_identity", {}).get("protocol_sha256") != root_sha or
+                key.get("run_identity", {}).get("seed") != seed or
+                key.get("run_identity", {}).get("corpus_sha256") != identity.get("data_hash")):
+            continue
+        row = (key.get("step"), key.get("panel"), key.get("model_role"))
+        if row not in expected:
+            continue
+        required_ops = {"clean"} if row[1] == "owt_lm2000" else {"clean", "delete", "relocate"}
+        if (set(operations) != required_ops or any(
+                operation.get("status") != "complete" or
+                operation.get("missing_item_ids") or operation.get("failed_item_ids")
+                for operation in operations.values())):
+            raise RuntimeError(f"C4 seed{seed} has a failed evaluation aggregate: {row}")
+        complete.add(row)
+    if complete != expected:
+        raise RuntimeError(f"C4 seed{seed} lacks {len(expected - complete)} registered evaluation aggregates")
     return {"run_id": run.name, "seed": seed, "updates": updates,
+            "evaluation_aggregates": len(complete),
             "final_identity_sha256": final["identity_sha256"]}
 
 

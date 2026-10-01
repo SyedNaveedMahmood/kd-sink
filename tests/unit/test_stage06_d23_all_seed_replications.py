@@ -25,7 +25,18 @@ def _read(path: Path) -> dict:
 
 
 def _predecessor() -> dict[str, dict]:
-    return {name: _read(ROOT / f"protocols/{name}.lock.json") for name in LOCK_NAMES}
+    current = _read(ROOT / "protocols/protocol.lock.json")
+    protocol = (current if current["sha256"] == D22_PROTOCOL_ROOT else
+                _read(ROOT / "protocols/superseded" /
+                      f"s1-protocol-{D22_PROTOCOL_ROOT}.json"))
+    result = {"protocol": protocol}
+    for name in LOCK_NAMES[:-1]:
+        lock = _read(ROOT / f"protocols/{name}.lock.json")
+        expected = protocol["payload"][f"{name}_lock_digest"]
+        if lock["sha256"] != expected:
+            lock = _read(ROOT / "protocols/superseded" / f"s1-{name}-{expected}.json")
+        result[name] = lock
+    return result
 
 
 def _config(condition: str, seed: int, protocol: dict) -> dict:

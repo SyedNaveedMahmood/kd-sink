@@ -190,3 +190,11 @@ Artifact, environment, hardware, and calibration lock digests remain unchanged.
 All four NodiPC preflights verified the exact GPU, source, production artifact
 inventory, and seed-specific artifacts without starting training. Each queued
 trainer command remains an explicit single-condition, single-seed command.
+
+## D23 all-condition optional seed replications (2026-10-01)
+
+The prospective D23 amendment (`s1_researcher_amendment_d23_all_conditions_seed12_20261001.json`, SHA-256 `e2e4d7f98069185a4669261ddb6f8455410ee07ddb322e0cd4cbd08d3bc8d789`) extends optional seeds 1 and 2 to C0-C6. It preserves D21/D22 history, seed0, all objective variants and scales, the 10,000-update horizon, the 4x16 schedule, and the D21-sealed per-seed corpus/panels/order/initialization. The fourteen single-run configs are in `configs/production/s1_seed12_jobs.json`; this is a plan only, not a sweep launcher.
+
+The current production runtime source milestone is `9cb1815d44c3b2f42ddd508e5f9c71cc2ea274ec`; D23 production root is `7b12e5a637c3a8b6ebe66d4bedbd202077fc7960bc98a443babf8bf68de8d8a7`. Artifact (`2e721e...`), environment (`7cc288...`) and calibration (`fa031a...`) locks are unchanged. The successor hardware lock (`edab38c79e19c7fe82841644db512a5318c469dd23609b8f3f24d9e92c1503e7`) adds an explicit prospective RTX3090 class policy for optional seed1/2 C4 only. It retains the measured reference profile and requires exact RTX3090 model, locked software/driver/24,576 MiB environment, recording the actual UUID, and same-UUID resume. Seed0 stays pinned to the reference UUID. C4 remains prohibited on RTX4080 SUPER. For seed1/2, C0/C1/C2/C3/C5/C6 use the RTX4080 SUPER primary role; C1/C2 hardware bridges are not added.
+
+For a C3 run pass `--mse-scale 68.00580071126464`; for a C4 run pass `--rel-scale 0.120179255876581` and do not pass `--mse-scale`. Other conditions take neither scale. The repository's explicit config/plan validators bind each run to its seed-specific artifacts and D23 root. The requested AbdullahPC C4 seed1/2 jobs use the fail-closed serial launcher `scripts/launch_stage06_c4_seed12_queue.py`; seed2 waits for successful seed1 completion and full registered evaluation coverage. Neither training job is scientific coverage merely because it is configured or queued. Current queue/preflight state is recorded in `reports/stage06.json`.

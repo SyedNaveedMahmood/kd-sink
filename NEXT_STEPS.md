@@ -148,6 +148,23 @@ Queue order is C0 seed 1, C2 seed 1, C0 seed 2, C2 seed 2. A failed job or
 storage/GPU/provenance gate stops later jobs. Queue state and run artifacts,
 rather than this checklist, establish scientific completion.
 
+## D23 optional seed replications across C0-C6 (2026-10-01)
+
+- [x] Add the prospective all-condition seed1/2 amendment without rewriting D21/D22.
+- [x] Push runtime-source milestone `9cb1815d44c3b2f42ddd508e5f9c71cc2ea274ec`.
+- [x] Seal D23 root `7b12e5a637c3a8b6ebe66d4bedbd202077fc7960bc98a443babf8bf68de8d8a7`, preserve the seed0 nine-job plan, and validate fourteen explicit optional configs.
+- [x] Verify all local seed1/2 artifact hashes and pass both real C4/3090 preflights without starting training.
+- [x] Pass focused (106) and full CPU (255) regressions, offline clean-wheel, lock/package checks, and validate both job plans.
+- [ ] Commit/push the validated D23 successor and start only the serialized C4 seed1 then seed2 queue.
+- [ ] Audit each completed run's final checkpoint, 10,000 updates, and all 222 registered evaluation aggregates before claiming scientific coverage.
+
+The optional plan assigns C0/C1/C2/C3/C5/C6 to the RTX4080 SUPER primary role
+and C4 to the RTX3090. It adds no C1/C2 hardware bridge jobs. Optional C4
+seed1/2 accepts an exact-model RTX3090 with the locked 24,576 MiB software
+environment, records its actual UUID, and resumes only on that UUID; seed0
+remains tied to its reference UUID. No seed1/2 condition other than C4 is
+scheduled by the current AbdullahPC queue. Stage09 remains out of scope.
+
 ## S1 C5 interruption and resume (2026-09-30, observed 07:49 UTC)
 
 The earlier C1 gate completed successfully and launched C5 on NaveedPC. C5 reached update 8,070, then an unexpected Windows restart interrupted it without an OOM or traceback. The original log is preserved byte-for-byte as `train.precrash-through-8070.jsonl`. The checksum-verified rolling step-8,000 checkpoint retained the same C5/seed/root/physical-GPU identity. On explicit operator request, the same lineage resumed from step 8,000 with unchanged microbatch 4 and accumulation 16. At the latest health sample it reached update 8,148 with finite loss and no runtime error. Completion remains unproven; the practical ETC was 16:20-16:40 Asia/Dhaka on 2026-09-30.
