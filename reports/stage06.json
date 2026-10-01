@@ -1434,7 +1434,7 @@
     "new_training_started_at_seal": false
   },
   "d22_optional_c0_c2_seed_replications": {
-    "status": "sealed_and_preflight_verified_pending_external_queue_launch",
+    "status": "c0_seed1_verified_complete_remaining_queue_pending_safe_restart",
     "predecessor_d21_root_sha256": "95a3607791fab3911916bcab407f7d10dab3576f197ebe7b606c2f9e3ac8ab15",
     "successor_root_sha256": "fc263c1843f01afda21d8697cbc8617a91033f92482da25c485118acf8bb20b6",
     "runtime_source_commit": "e7473ee253194e6b89cccbb530d22c4df4d522a3",
@@ -1449,7 +1449,17 @@
     "component_locks_changed": false,
     "calibration_changed": false,
     "scientific_implementation_changed": false,
-    "new_training_started_at_seal": false
+    "new_training_started_at_seal": false,
+    "c0_seed1_completion_audit_20261001": {
+      "run_dir": "D:\\KD-SINK-stage06-c0-c2-seed12-runs\\s1-c0-seed1-rtx4080super",
+      "failure_cause": "queue completion verifier required finite KD and attention for CE-only C0; inactive components are correctly null",
+      "scientific_training_failure": false,
+      "verified_updates": 10000,
+      "verified_evaluation_aggregates": 222,
+      "final_manifest_sha256": "6deb4cedd2db1d7d89bf3de13525369887b55b9efb6a04fa91ac6b11adbcf529",
+      "remaining_d22_jobs_at_audit": ["C2_seed1", "C0_seed2", "C2_seed2"],
+      "queue_status": "stopped; D23 successor changed the active root, so no automatic D22 restart"
+    }
   },
   "d23_optional_all_condition_seed_replications": {
     "status": "external_artifacts_verified_both_c4_preflights_and_tests_passed",

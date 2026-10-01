@@ -103,6 +103,11 @@ def _verify_complete(run: Path, *, condition: str, seed: int, root_sha: str) -> 
             identity.get("gpu_uuid") != NODI_UUID or identity.get("microbatch") != 4):
         raise ValueError(f"{condition} seed {seed} final checkpoint identity differs")
     found = 0
+    active_components = ("loss", "ce", "grad_norm", "lr")
+    if condition == "C2":
+        active_components += ("kd", "attention")
+    elif condition != "C0":
+        raise ValueError(f"unsupported queue condition: {condition}")
     with (run / "train.jsonl").open(encoding="utf-8") as stream:
         for line in stream:
             row = json.loads(line)
@@ -111,7 +116,10 @@ def _verify_complete(run: Path, *, condition: str, seed: int, root_sha: str) -> 
             found += 1
             if (row["step"] != found or
                     not all(isinstance(row.get(field), (int, float)) and math.isfinite(row[field])
-                            for field in ("loss", "ce", "kd", "attention", "grad_norm", "lr")) or
+                            for field in active_components) or
+                    (condition == "C0" and
+                     (row.get("kd") is not None or row.get("attention") is not None)) or
+                    row.get("relation") is not None or
                     row["input_tokens"] != found * 8192 or
                     row["target_tokens"] != found * 8128):
                 raise ValueError(f"{condition} seed {seed} update record differs at {found}")
@@ -142,6 +150,23 @@ def _verify_complete(run: Path, *, condition: str, seed: int, root_sha: str) -> 
     return {"condition": condition, "seed": seed, "updates": found,
             "aggregate_count": len(complete),
             "final_manifest_sha256": _hash(run / "checkpoints/final-010000/manifest.json")}
+
+
+def _verified_completed_prefix(jobs: list[dict], run_root: Path, root_sha: str) -> list[dict]:
+    """Resume only a contiguous prefix of fully verified, immutable runs."""
+    completed = []
+    missing_seen = False
+    for row in jobs:
+        run = run_root / row["run_id"]
+        occupied = run.exists() and any(run.iterdir())
+        if not occupied:
+            missing_seen = True
+        elif missing_seen:
+            raise RuntimeError(f"run directory occupied after an unstarted job: {run}")
+        else:
+            completed.append(_verify_complete(
+                run, condition=row["condition"], seed=row["seed"], root_sha=root_sha))
+    return completed
 
 
 def main() -> None:
@@ -179,10 +204,8 @@ def main() -> None:
         _gpu()
         if _active_trainers():
             raise RuntimeError("another sinklab trainer is active")
-        for row in queue["jobs"]:
-            run = run_root / row["run_id"]
-            if run.exists() and any(run.iterdir()):
-                raise RuntimeError(f"fresh run directory is occupied: {run}")
+        results = _verified_completed_prefix(queue["jobs"], run_root, root)
+        for row in queue["jobs"][len(results):]:
             _cmd([python, "-m", "sinklab", "preflight-production",
                   "--config", f"configs/{row['config']}",
                   "--protocol-lock", "protocols/protocol.lock.json",
@@ -190,11 +213,13 @@ def main() -> None:
                   "--artifact-root", str(production), "--replication-root", str(replicas),
                   "--seed", str(row["seed"])], cwd=repo, env=env,
                  log=ops / "preflight.log")
-        _status(status_path, "queue_armed", protocol_root=root, jobs=queue["jobs"])
-        results = []
-        for index, row in enumerate(queue["jobs"], 1):
+        _status(status_path, "queue_armed", protocol_root=root, jobs=queue["jobs"],
+                completed=results)
+        for index, row in enumerate(queue["jobs"][len(results):], len(results) + 1):
             condition, seed = row["condition"], row["seed"]
             run = run_root / row["run_id"]
+            if run.exists() and any(run.iterdir()):
+                raise RuntimeError(f"fresh run directory is occupied: {run}")
             if shutil.disk_usage(run_root).free < 35 * 1024**3:
                 raise RuntimeError(f"insufficient free storage before {row['run_id']}")
             _gpu()
