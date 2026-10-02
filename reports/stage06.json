@@ -434,11 +434,11 @@
     "First full CPU regression: 112 passed/1 failed because exact uv sync does not install the undeclared python-build frontend. The offline wheel test now uses the already-installed pip PEP 517 frontend with no build isolation/dependencies; the same no-Upstream wheel/install assertions pass.",
     "The first synthetic shape-fixture command failed at Python parse time because of a mismatched closing bracket; syntax was corrected and the same preparation command exited 0. No GPU profile was run before that correction."
   ],
-  "scientific_coverage": "C3 seed0 final coverage and Adrita-PC C5 seed1 final checkpoint plus 222 evaluation aggregates independently verified; other S1 optional seed coverage is not asserted here",
+  "scientific_coverage": "C3 seed0 and Adrita-PC C5 seed1 final coverage verified; Adrita-PC C5 seed2 is active and not yet complete; other S1 optional seed coverage is not asserted here",
   "upstream_files_changed": 0,
   "pushed": true,
   "remaining_blockers": [],
-  "next_action": "Complete the explicitly authorized Adrita-PC C5 seed2 run from the verified seed1 prefix, then return to the separately documented C4 seed1/2 queue.",
+  "next_action": "Continue monitoring Adrita-PC C5 seed2 through update 10000, verify its final checkpoint and 222 aggregates, then return to the separately documented C4 seed1/2 queue.",
   "runtime_source_repair_20260928": {
     "starting_commit": "dceba4976c06399cffabdd50e80c41c94137a5e6",
     "old_root_sha256": "2a11da9bb71957a4d6b3a2f93a34bd67491dd9d21d70577a7a10858930a8943e",
@@ -1933,7 +1933,7 @@
       "matching_live_processes": 0
     },
     "repair": {
-      "status": "committed_not_yet_pushed",
+      "status": "committed_and_pushed",
       "commit": "0d0179573372bf2e3b280a30ca0bd639210df9ec",
       "behavior": "accept C5 active KD/attention fields and resume only from a verified contiguous completed prefix",
       "files": [
@@ -1947,5 +1947,61 @@
       "training_started_during_audit": false
     },
     "next_action": "commit and push repair, pass C5 check-only gates, then rearm only seed2 on the same GPU UUID"
+  },
+  "adrita_pc_c5_seed2_relaunch_health_20261002": {
+    "observed_utc": "2026-10-02T04:49:27Z",
+    "status": "seed1_verified_seed2_running_healthy_at_update123",
+    "implementation_commit": "0d0179573372bf2e3b280a30ca0bd639210df9ec",
+    "documentation_commit": "76d6462f3a3473edc1f345d63ba9ba35c9b3eb7d",
+    "pushed_head": "76d6462f3a3473edc1f345d63ba9ba35c9b3eb7d",
+    "production_root_sha256": "7b12e5a637c3a8b6ebe66d4bedbd202077fc7960bc98a443babf8bf68de8d8a7",
+    "hardware_lock_sha256": "edab38c79e19c7fe82841644db512a5318c469dd23609b8f3f24d9e92c1503e7",
+    "gpu_model": "NVIDIA GeForce RTX 4080 SUPER",
+    "gpu_uuid": "GPU-2a5c25d0-1f73-919b-fd8b-f6f0df709aaf",
+    "seed1": {
+      "run_id": "s1-c5-seed1-rtx4080super",
+      "verified_updates": 10000,
+      "complete_evaluation_aggregates": 222,
+      "final_manifest_sha256": "23a2a593f0c689665db99dfd75d52aade2cdac122fd649221323c48424b2aac2"
+    },
+    "seed2": {
+      "run_id": "s1-c5-seed2-rtx4080super",
+      "run_path": "E:\\KD-SINK-stage06-runs\\s1-c5-seed2-rtx4080super",
+      "queue_started_utc": "2026-10-02T04:20:51Z",
+      "queue_phase": "seed2_running",
+      "queue_error": null,
+      "seed2_preflight_passed": true,
+      "start_identity": {
+        "study": "S1",
+        "condition": "C5",
+        "seed": 2,
+        "protocol_root_sha256": "7b12e5a637c3a8b6ebe66d4bedbd202077fc7960bc98a443babf8bf68de8d8a7",
+        "gpu_uuid": "GPU-2a5c25d0-1f73-919b-fd8b-f6f0df709aaf",
+        "microbatch": 4,
+        "accumulation": 16,
+        "effective_batch": 64
+      },
+      "verified_updates_at_sample": 123,
+      "updates_sequential_finite_and_counters_exact": true,
+      "input_tokens": 1007616,
+      "shifted_targets": 999744,
+      "complete_evaluation_events_through_step100": 9,
+      "failed_evaluation_events": 0,
+      "runtime_or_cuda_error_lines": 0,
+      "gpu_used_mib": 15154,
+      "gpu_free_mib": 894,
+      "gpu_utilization_percent": 79,
+      "final_checkpoint_audit": "pending",
+      "completion_coverage": false
+    },
+    "first_postpush_check_only_attempt": {
+      "status": "failed_before_training_wrong_artifact_root_argument",
+      "incorrect_root": "E:\\KD-SINK-stage06-production",
+      "stderr": "tokenizer path is not a directory",
+      "correct_recorded_root": "E:\\KD-SINK-stage06-Adrita\\artifacts\\KD-SINK-stage06-production",
+      "corrected_check_only": "passed_both_preflights_and_verified_seed1_prefix",
+      "training_started_on_failed_attempt": false
+    },
+    "next_action": "leave seed2 running and audit final checkpoint plus 222 registered aggregates after completion"
   }
 }
