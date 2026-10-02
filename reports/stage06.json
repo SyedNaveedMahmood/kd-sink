@@ -1953,6 +1953,7 @@
     "status": "seed1_verified_seed2_running_healthy_at_update123",
     "implementation_commit": "0d0179573372bf2e3b280a30ca0bd639210df9ec",
     "documentation_commit": "76d6462f3a3473edc1f345d63ba9ba35c9b3eb7d",
+    "health_snapshot_commit": "914428c332ee6aa666b8a3a2147840f212d81d22",
     "pushed_head": "76d6462f3a3473edc1f345d63ba9ba35c9b3eb7d",
     "production_root_sha256": "7b12e5a637c3a8b6ebe66d4bedbd202077fc7960bc98a443babf8bf68de8d8a7",
     "hardware_lock_sha256": "edab38c79e19c7fe82841644db512a5318c469dd23609b8f3f24d9e92c1503e7",
