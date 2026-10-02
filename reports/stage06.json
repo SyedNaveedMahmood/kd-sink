@@ -1933,7 +1933,8 @@
       "matching_live_processes": 0
     },
     "repair": {
-      "status": "implemented_tests_passed_not_yet_pushed",
+      "status": "committed_not_yet_pushed",
+      "commit": "0d0179573372bf2e3b280a30ca0bd639210df9ec",
       "behavior": "accept C5 active KD/attention fields and resume only from a verified contiguous completed prefix",
       "files": [
         "scripts/launch_stage06_c0_c2_seed12_queue.py",
