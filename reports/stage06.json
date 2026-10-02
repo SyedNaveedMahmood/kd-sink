@@ -434,11 +434,11 @@
     "First full CPU regression: 112 passed/1 failed because exact uv sync does not install the undeclared python-build frontend. The offline wheel test now uses the already-installed pip PEP 517 frontend with no build isolation/dependencies; the same no-Upstream wheel/install assertions pass.",
     "The first synthetic shape-fixture command failed at Python parse time because of a mismatched closing bracket; syntax was corrected and the same preparation command exited 0. No GPU profile was run before that correction."
   ],
-  "scientific_coverage": "C3 seed0 final-010000 and evaluation coverage verified by D21 queue; other S1 run coverage is not asserted here",
+  "scientific_coverage": "C3 seed0 final coverage and Adrita-PC C5 seed1 final checkpoint plus 222 evaluation aggregates independently verified; other S1 optional seed coverage is not asserted here",
   "upstream_files_changed": 0,
   "pushed": true,
   "remaining_blockers": [],
-  "next_action": "Run only the two explicitly requested D23 C4 seed1/2 jobs serially on the RTX3090 class; preserve actual UUID for same-UUID resume. Other optional configs are not queued or launched.",
+  "next_action": "Complete the explicitly authorized Adrita-PC C5 seed2 run from the verified seed1 prefix, then return to the separately documented C4 seed1/2 queue.",
   "runtime_source_repair_20260928": {
     "starting_commit": "dceba4976c06399cffabdd50e80c41c94137a5e6",
     "old_root_sha256": "2a11da9bb71957a4d6b3a2f93a34bd67491dd9d21d70577a7a10858930a8943e",
@@ -1904,5 +1904,47 @@
     "queue_and_trainer_errors": [],
     "training_complete": false,
     "completion_audit": "pending_after_each_10000_update_run"
+  },
+  "adrita_pc_c5_seed12_seed1_completion_queue_fix_20261002": {
+    "observed_utc": "2026-10-02T03:50:32Z",
+    "status": "seed1_complete_verified_queue_stopped_before_seed2",
+    "protocol_root_sha256": "7b12e5a637c3a8b6ebe66d4bedbd202077fc7960bc98a443babf8bf68de8d8a7",
+    "hardware_lock_sha256": "edab38c79e19c7fe82841644db512a5318c469dd23609b8f3f24d9e92c1503e7",
+    "gpu_model": "NVIDIA GeForce RTX 4080 SUPER",
+    "gpu_uuid": "GPU-2a5c25d0-1f73-919b-fd8b-f6f0df709aaf",
+    "seed1": {
+      "run_id": "s1-c5-seed1-rtx4080super",
+      "run_path": "E:\\KD-SINK-stage06-runs\\s1-c5-seed1-rtx4080super",
+      "updates": 10000,
+      "all_updates_finite_sequential_and_token_counts_exact": true,
+      "input_tokens": 81920000,
+      "shifted_targets": 81280000,
+      "complete_evaluation_aggregates": 222,
+      "failed_or_missing_aggregates": 0,
+      "final_checkpoint_step": 10000,
+      "final_checkpoint_hash_verification": "passed",
+      "final_manifest_sha256": "23a2a593f0c689665db99dfd75d52aade2cdac122fd649221323c48424b2aac2"
+    },
+    "queue": {
+      "phase": "stopped_failed_gate",
+      "updated_utc": "2026-10-01T23:28:45Z",
+      "error": "unsupported queue condition: C5",
+      "seed2_run_directory_exists": false,
+      "matching_live_processes": 0
+    },
+    "repair": {
+      "status": "implemented_tests_passed_not_yet_pushed",
+      "behavior": "accept C5 active KD/attention fields and resume only from a verified contiguous completed prefix",
+      "files": [
+        "scripts/launch_stage06_c0_c2_seed12_queue.py",
+        "scripts/launch_stage06_c5_seed12_queue.py",
+        "tests/unit/test_stage06_d22_queue.py"
+      ],
+      "test_command": ".venv\\Scripts\\python.exe -m pytest -q tests/unit/test_stage06_d22_queue.py",
+      "test_exit_code": 0,
+      "test_passed": 10,
+      "training_started_during_audit": false
+    },
+    "next_action": "commit and push repair, pass C5 check-only gates, then rearm only seed2 on the same GPU UUID"
   }
 }

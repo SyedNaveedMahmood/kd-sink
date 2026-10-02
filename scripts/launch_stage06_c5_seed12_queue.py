@@ -90,11 +90,13 @@ def main() -> None:
         if shared._active_trainers():
             raise RuntimeError("another sinklab trainer is active")
         runs.mkdir(parents=True, exist_ok=True)
+        queue_jobs = [{"seed": seed, "condition": "C5", "run_id": run_id}
+                      for seed, _, run_id in JOBS]
+        completed = shared._verified_completed_prefix(queue_jobs, runs, root)
+        completed_seeds = {row["seed"] for row in completed}
         for seed, config, run_id in JOBS:
             run = runs / run_id
-            if run.exists() and any(run.iterdir()):
-                raise RuntimeError(f"fresh run directory is occupied: {run}")
-            if shutil.disk_usage(runs).free < 35 * 1024**3:
+            if seed not in completed_seeds and shutil.disk_usage(runs).free < 35 * 1024**3:
                 raise RuntimeError(f"less than 35 GiB free for {run_id}")
             binding = shared._json(repo / "configs" / config)["production_binding"]
             if (binding.get("seed") != seed or
@@ -103,26 +105,32 @@ def main() -> None:
 
         preflights = [_preflight(repo, python, production, replicas, ops, seed, config,
                                  args.gpu_uuid) for seed, config, _ in JOBS]
-        shared._status(status, "preflights_passed_training_not_started",
+        phase = ("seed1_complete_seed2_queued" if 1 in completed_seeds
+                 else "preflights_passed_training_not_started")
+        shared._status(status, phase,
                        protocol_root=root, gpu_model=MODEL, gpu_uuid=args.gpu_uuid,
-                       queued=[run_id for _, _, run_id in JOBS], preflights=preflights)
+                       queued=[run_id for _, _, run_id in JOBS], completed=completed,
+                       preflights=preflights)
         if args.check_only:
             print(json.dumps({"ready": True, "protocol_root": root,
                               "gpu_uuid": args.gpu_uuid,
                               "queued": [run_id for _, _, run_id in JOBS],
+                              "completed": completed,
                               "training_started": False}, sort_keys=True))
             return
 
-        completed = []
-        shared._status(status, "queue_armed_seed1_launching_seed2_queued",
+        armed_phase = ("seed1_complete_seed2_launching" if 1 in completed_seeds
+                       else "queue_armed_seed1_launching_seed2_queued")
+        shared._status(status, armed_phase,
                        protocol_root=root, gpu_model=MODEL, gpu_uuid=args.gpu_uuid,
                        queued=[run_id for _, _, run_id in JOBS], completed=completed,
                        queue_pid=os.getpid())
         for seed, config, run_id in JOBS:
+            if seed in completed_seeds:
+                continue
             run = runs / run_id
-            if seed == 2:
-                shared._verify_complete(runs / JOBS[0][2], condition="C5", seed=1,
-                                        root_sha=root)
+            if seed == 2 and 1 not in completed_seeds:
+                raise RuntimeError("seed2 requires verified seed1 completion")
             shared._gpu()
             if shared._active_trainers():
                 raise RuntimeError("another sinklab trainer appeared")
@@ -163,6 +171,7 @@ def main() -> None:
                 raise RuntimeError(f"{run_id} trainer exited with status {return_code}; see {log}")
             result = shared._verify_complete(run, condition="C5", seed=seed, root_sha=root)
             completed.append(result)
+            completed_seeds.add(seed)
             shared._status(status, "seed1_complete_seed2_queued" if seed == 1 else "seed2_complete",
                            protocol_root=root, gpu_model=MODEL, gpu_uuid=args.gpu_uuid,
                            queued=[row[2] for row in JOBS], completed=completed)

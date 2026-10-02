@@ -201,7 +201,12 @@ was advancing and seed2 remained queued.
 Neither run is complete or scientific coverage until its final audit passes.
 
 - [x] Push and arm the C5 seed1/seed2 serial queue; confirm seed1 training is healthy and seed2 remains queued.
-- [ ] Complete both 10,000-update runs and audit their final checkpoints and 222 registered evaluation aggregates each.
+- [x] Verify C5 seed1 completion: 10,000 finite sequential updates, final checkpoint integrity, and all 222 registered evaluation aggregates.
+- [x] Repair the shared completion gate for C5 and permit the queue to resume only from a verified completed prefix; focused tests pass.
+- [ ] Commit/push the repair, pass the C5 queue's check-only gates, and rearm seed2 on the same Adrita-PC GPU.
+- [ ] Complete C5 seed2 and audit both runs' final checkpoints, 10,000 updates, and 222 registered evaluation aggregates each.
+
+At 2026-10-02T03:50:32Z, Adrita-PC C5 seed1 had completed 10,000 updates and all 222 evaluation aggregates. The independent queue verifier confirmed the D23 identity, actual GPU UUID, protected final checkpoint hashes, sequential finite updates, and evaluation completeness. The old serial queue stopped after seed1 because its shared D22 verifier rejected C5 as an unsupported condition; seed2 was not started. The narrow verifier/queue-resume fix is implemented and focused tests pass; it still needs a pushed commit and the check-only gate before seed2 can launch.
 
 ## S1 C5 interruption and resume (2026-09-30, observed 07:49 UTC)
 

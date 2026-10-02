@@ -61,7 +61,7 @@ def _run_fixture(tmp_path: Path, monkeypatch: pytest.MonkeyPatch, condition: str
     return run
 
 
-@pytest.mark.parametrize("condition", ["C0", "C2"])
+@pytest.mark.parametrize("condition", ["C0", "C2", "C5"])
 def test_queue_verifies_objective_specific_update_fields(tmp_path, monkeypatch, condition):
     run = _run_fixture(tmp_path, monkeypatch, condition)
     result = QUEUE._verify_complete(run, condition=condition, seed=1, root_sha="a" * 64)
@@ -72,6 +72,7 @@ def test_queue_verifies_objective_specific_update_fields(tmp_path, monkeypatch, 
 @pytest.mark.parametrize("condition,field,value", [
     ("C0", "kd", 1.0), ("C0", "ce", float("nan")),
     ("C2", "attention", None), ("C2", "input_tokens", 0),
+    ("C5", "attention", None),
 ])
 def test_queue_rejects_bad_update_fields(tmp_path, monkeypatch, condition, field, value):
     run = _run_fixture(tmp_path, monkeypatch, condition)
@@ -105,3 +106,15 @@ def test_queue_resumes_only_verified_completed_prefix(tmp_path, monkeypatch):
     (tmp_path / "run-3" / "train.jsonl").touch()
     with pytest.raises(RuntimeError, match="occupied after an unstarted job"):
         QUEUE._verified_completed_prefix(jobs, tmp_path, "a" * 64)
+
+
+def test_queue_accepts_verified_c5_seed1_prefix(tmp_path, monkeypatch):
+    run = _run_fixture(tmp_path, monkeypatch, "C5")
+    jobs = [
+        {"run_id": run.name, "condition": "C5", "seed": 1},
+        {"run_id": "s1-c5-seed2-rtx4080super", "condition": "C5", "seed": 2},
+    ]
+    completed = QUEUE._verified_completed_prefix(jobs, tmp_path, "a" * 64)
+    assert completed[0]["condition"] == "C5"
+    assert completed[0]["seed"] == 1
+    assert len(completed) == 1

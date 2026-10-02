@@ -104,7 +104,7 @@ def _verify_complete(run: Path, *, condition: str, seed: int, root_sha: str) -> 
         raise ValueError(f"{condition} seed {seed} final checkpoint identity differs")
     found = 0
     active_components = ("loss", "ce", "grad_norm", "lr")
-    if condition == "C2":
+    if condition in {"C2", "C5"}:
         active_components += ("kd", "attention")
     elif condition != "C0":
         raise ValueError(f"unsupported queue condition: {condition}")

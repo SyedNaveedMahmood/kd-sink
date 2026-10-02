@@ -481,3 +481,11 @@ A documentation-only milestone commit was attempted after git diff --cached --ch
 
 - The update100 snapshot and its report/worklist changes were committed and pushed as `8e421647a1cd1b79fd8a8c65026001bafa1af4e`; HEAD and `origin/main` matched and the working tree was clean. A post-push sample parsed seed1 through update134 (latest loss 6.281380891799927; 1,097,728 input tokens; 1,089,152 targets). Queue PID 20996, trainer PIDs 16224/19184, and `seed1_running_seed2_queued` state remained live with no error. GPU UUID matched the approved 4080 SUPER; it reported 14,682 MiB used and 1,366 MiB free at 55% utilization.
 - No source, protocol, artifact, or training process was changed. Next: end this Codex session while the detached queue continues; it will start seed2 only after seed1 passes the built-in completion audit. The milestone commit recorded here is `8e421647a1cd1b79fd8a8c65026001bafa1af4e`.
+
+## 2026-10-02T03:50:32Z - Codex (GPT-6) - Adrita-PC C5 seed1 completion and queue-gate repair
+
+- Starting commit `9d11204a52715f0566203a001adea3c322e0b877`; user asked for progress on the previously authorized C5 seeds1/2. Seed1 reached update 10000; no seed2 run directory or matching live process existed.
+- The shared completion verifier confirmed seed1's D23/C5/seed1 identity, Adrita RTX 4080 SUPER UUID, 10000 ordered finite updates, exact input/target totals, valid protected final checkpoint hashes (manifest SHA256 `23a2a593f0c689665db99dfd75d52aade2cdac122fd649221323c48424b2aac2`), and 222 complete required evaluation aggregates. The old queue had stopped after seed1 with `unsupported queue condition: C5`.
+- Updated the shared verifier's active component set for C5 and the C5 queue's fail-closed resume behavior so seed2 can launch only after an occupied seed1 directory passes the full verifier. Added tests for C5 active/inactive metrics and completed-prefix handling. No source training/evaluation/GPU workload or run artifact was changed in this audit/fix.
+- Validation: focused queue tests, 10 passed; queue-script bytecode compilation and `git diff --check` passed; the real seed1 completion verifier passed. No scientific scope or locks changed.
+- Next: push this fix, pass the C5 check-only preflights, relaunch the serial queue from verified seed1 completion, then monitor/audit seed2. Milestone commit: pending.
