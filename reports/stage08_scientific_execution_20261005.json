@@ -3,8 +3,8 @@
   "hostname": "DESKTOP-GPO5752",
   "non_occurrences": {
     "S2_rerun": false,
-    "S4_scientific_inference": false,
-    "S6_scientific_inference": false,
+    "S4_scientific_inference": true,
+    "S6_scientific_inference": true,
     "Stage09": false,
     "humanEval_code_execution": false,
     "source_run_modification": false,
@@ -38,17 +38,27 @@
         "console_log": "D:\\KD-SINK-central\\analysis\\stage08_scientific_20261005\\S4_attempt02.console.jsonl",
         "result_directory": "D:\\KD-SINK-central\\analysis\\stage08_scientific_20261005\\S4_attempt02",
         "runner_fix_commit": "b14c9a40d221d6ad00d12f76ad0f4d3a60123700",
-        "scientific_model_inference_started": false,
-        "source_preflight_status": "in_progress",
-        "started_utc": "2026-10-04T21:19:06Z"
+        "scientific_model_inference_started": true,
+        "source_preflight_status": "PASS",
+        "started_utc": "2026-10-04T21:19:06Z",
+        "source_run_manifest_path": "D:\\KD-SINK-central\\analysis\\stage08_scientific_20261005\\S4_attempt02\\S4_RUN_MANIFEST.json",
+        "source_run_manifest_file_sha256": "794bf1673c46c00a190e74bea2f2ec1e1468bf9b5d9420090244d87de225da47",
+        "source_run_manifest_envelope_sha256": "f2fc91d7f584d73c06a1c39a02ec3df07c3a622b7cbbd5af9c84c22828b4adab"
       },
       "expected_record_count": 108000,
       "panel_item_ids_sha256": "5298fa0d63e7743077e60e6ab0afe254fb077891ab4d06ae648bc74cda8f7fce",
       "panel_payload_sha256": "03fa2adf3931f7594fae23d70e402c697ad2c771e53bdb68977b614336cc5013",
       "progress": {
-        "phase": "ready_to_retry_after_fix_commit",
+        "phase": "teacher_reference_battery",
         "retry_result_directory": "D:\\KD-SINK-central\\analysis\\stage08_scientific_20261005\\S4_attempt02",
-        "scientific_model_inference_started": false
+        "scientific_model_inference_started": true,
+        "teacher_completed_items": 60,
+        "teacher_total_items": 300,
+        "incremental_record_file_count": 637,
+        "console_log": "D:\\KD-SINK-central\\analysis\\stage08_scientific_20261005\\S4_attempt02.console.jsonl",
+        "all_35_checkpoints_preflight_passed": true,
+        "C3_training_log_status": "accepted_historical_prefix_gap",
+        "C3_exception_sha256": "f021ac0441f775d45d19a8109d47c0f45a0b0bbfc025bbd2df35be688e291cd2"
       },
       "repair": {
         "change": "Verify raw config.json SHA-256 directly and assert locked GPT-2-large shape 36x20x1280. Add exact runner script SHA to S4 run binding.",
@@ -100,7 +110,7 @@
         },
         "verified_logical_checkpoints": 35
       },
-      "status": "RUNNING_RETRY_PREFLIGHT"
+      "status": "RUNNING_SCIENTIFIC_INFERENCE"
     },
     "S5": {
       "D26_sha256": "888b21509000b570c83c2574f5a6bfbc3d1ec2dc197e88d841d085bac222f182",
@@ -149,18 +159,41 @@
       "D25_panel_sha256": "73b0162539bd5870a95aecd9149edadb97cff6eb36fdc4e9b3f73d0bad6e9508",
       "D25_panel_verification_status": "PASS",
       "progress": {
+        "phase": "scientific_inference",
         "console_log": "D:\\KD-SINK-central\\analysis\\stage08_scientific_20261005\\S6.console.jsonl",
-        "current_checkpoint_steps_verified": [
-          0,
-          500
+        "scientific_model_inference_started": true,
+        "D25_panel_verification": "PASS",
+        "D25_panel_sha256": "73b0162539bd5870a95aecd9149edadb97cff6eb36fdc4e9b3f73d0bad6e9508",
+        "tokenizer_sha256": "68bfbc36e7d352017e23168f34c98b3b92a18bdcb658c163dea499d8d690c580",
+        "completed_state_count": 5,
+        "expected_state_count": 28,
+        "completed_states": [
+          {
+            "condition": "C0",
+            "step": 0
+          },
+          {
+            "condition": "C0",
+            "step": 500
+          },
+          {
+            "condition": "C0",
+            "step": 2000
+          },
+          {
+            "condition": "C0",
+            "step": 10000
+          },
+          {
+            "condition": "C1",
+            "step": 0
+          }
         ],
-        "current_condition": "C2",
-        "fully_verified_conditions": [
-          "C0",
-          "C1"
-        ],
-        "phase": "D24_source_checkpoint_audit",
-        "scientific_model_inference_started": false
+        "current_condition": "C1",
+        "current_step": 500,
+        "incremental_record_file_count": 9030,
+        "optional_512_1024": "disabled",
+        "HumanEval_code_execution": false
       },
       "required_student_batteries": 28,
       "result_directory": "D:\\KD-SINK-central\\analysis\\stage08_scientific_20261005\\S6",
@@ -193,11 +226,21 @@
         ],
         "training_seed": 0
       },
-      "status": "RUNNING_PREFLIGHT",
-      "tokenizer_sha256": "68bfbc36e7d352017e23168f34c98b3b92a18bdcb658c163dea499d8d690c580"
+      "status": "RUNNING_SCIENTIFIC_INFERENCE",
+      "tokenizer_sha256": "68bfbc36e7d352017e23168f34c98b3b92a18bdcb658c163dea499d8d690c580",
+      "run_manifest_path": "D:\\KD-SINK-central\\analysis\\stage08_scientific_20261005\\S6\\S6_RUN_MANIFEST.json",
+      "run_manifest_file_sha256": "64a268fcbccb5422c97c392bfc534e8facec0f5185ecc7c20f05c6cfc37c20eb",
+      "run_manifest_envelope_sha256": "ffecc146664eb523c9e6c00453d8f4f9646567d2b35d479ab45b3f67a4c89cbd",
+      "source_checkpoint_preflight": {
+        "expected_logical_checkpoints": 28,
+        "verified_logical_checkpoints": 28,
+        "status": "PASS",
+        "C3_training_log_status": "accepted_historical_prefix_gap",
+        "C3_exception_sha256": "f021ac0441f775d45d19a8109d47c0f45a0b0bbfc025bbd2df35be688e291cd2"
+      }
     }
   },
-  "updated_utc": "2026-10-04T21:19:06Z",
+  "updated_utc": "2026-10-04T21:55:15Z",
   "validation": {
     "S4_verifier_fix_focused": "9 passed, 0 failed, 0 skipped; exit 0",
     "focused_command": ".venv\\Scripts\\python.exe -m pytest -q tests\\unit\\test_stage08_probes.py tests\\unit\\test_stage08_scientific_common.py tests\\unit\\test_stage08_s5.py tests\\unit\\test_stage08_s6.py tests\\unit\\test_stage08_s6_d25.py tests\\unit\\test_stage08_readiness.py tests\\unit\\test_followup_policy.py",
