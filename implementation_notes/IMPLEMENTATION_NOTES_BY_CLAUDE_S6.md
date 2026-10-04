@@ -112,3 +112,14 @@ The paired 40/128-token RTX 4080 SUPER engineering smoke and report were committ
 - Remote ref verification returned the same commit. S6 scientific inference had not started at this receipt.
 - Next: after S4 completes or blocks, re-verify D25 source/panel hashes and run S6 independently; optional contexts stay disabled.
 - Receipt commit: pending.
+
+## 2026-10-04T21:12:52Z - Codex (GPT-6) - S6 independent execution preflight
+
+- S6 independently started after S4 attempt01 blocked before outcomes. D25 panel/source/tokenizer verification passed unchanged: panel `73b0162539bd5870a95aecd9149edadb97cff6eb36fdc4e9b3f73d0bad6e9508`, tokenizer `68bfbc36e7d352017e23168f34c98b3b92a18bdcb658c163dea499d8d690c580`, six max40/max128 context hashes printed in the external console log; 512/1024 remain disabled.
+- The runner is rechecking all28 D24 seed0 checkpoints. At this timestamp C0 steps0,500,2000 pass; step10000 and C1-C6 remain pending. No model load/inference yet. HumanEval code execution is prohibited by the run.
+- Next: complete source/checkpoint preflight; independently continue S6 regardless of S4 attempt status.
+
+## 2026-10-04T21:17:38Z - Codex (GPT-6) - S6 checkpoint audit continues alongside S4 repair
+
+- S6 D25 frozen panels remain independently verified. At this update, C0's four required D24 states pass; C1 steps0/500/2000 pass and its final checkpoint remains in progress. No model has been loaded for S6.
+- No S6 source/input/panel change was made while correcting S4. Continue the exact28-state audit, then evaluate contexts40/128 only; no HumanEval code execution or optional512/1024.

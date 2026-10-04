@@ -840,3 +840,18 @@ A documentation-only milestone commit was attempted after git diff --cached --ch
 - At this status update, teacher weights are loading/teacher battery is about to begin; no model forward outcome has been emitted yet. No C3 history was reconstructed. S4 proceeds under the original FP32 fixed battery.
 - Current states: S4 `RUNNING_AFTER_PREFLIGHT`; S5 `COMPLETE`; S6 `PENDING_EXECUTION`. Report updated at `reports/stage08_scientific_execution_20261005.json`.
 - Next: verify teacher response and continue all35 fixed S4 batteries. After S4 completes or blocks, run S6 independently.
+
+## 2026-10-04T21:12:52Z - Codex (GPT-6) - S4 pinned-config verifier failure and correction
+
+- S4's first attempt passed the 35/35 D24 source/checkpoint preflight, then failed before any teacher forward pass. Its failure receipt is preserved at `D:\KD-SINK-central\analysis\stage08_scientific_20261005\S4\S4_FAILURE_1791148138.json`, envelope SHA `845dcdc7b7320942f9a55c0b7006ac6c6beb8d1222bee1c7c37ad8c54d25e37d`.
+- Diagnosis: the artifact lock and existing Stage06 GPU contract pin SHA-256 of raw `teacher/config.json` bytes (`7fccdcfd6622055342a734c663ee0b61ff4fd697f42467595df0bf4448c8c170`). The S4 driver instead hashed a canonicalized `model.config.to_dict()` after Transformers inserted/defaulted values, so it compared different representations. The local raw file matches the locked digest exactly. This is a verifier implementation mismatch, not a model/artifact identity discrepancy; teacher weights were only loaded on CPU and no probe/evaluation result exists.
+- Narrow fix: verify the locked raw config file bytes directly; separately assert the already locked GPT-2-large architecture shape36x20x1280; bind the exact S4 driver source SHA in the S4 run manifest. Preserve the failed attempt directory; retry to separate `S4_attempt02` with a new immutable manifest.
+- The independent S6 job has passed D25 source/panel/tokenizer verification and is auditing C0 checkpoints 0/500/2000; it has not loaded a model or started inference. Its D25 paired context hashes are persisted in the S6 console log/report.
+- Current campaign report: S4 `RETRY_AFTER_VERIFIER_FIX`; S5 `COMPLETE`; S6 `RUNNING_PREFLIGHT`. The checker unit and existing regression tests are running before the repair milestone commit. No source run, model weights, panels or failed S4 evidence was modified.
+
+## 2026-10-04T21:17:38Z - Codex (GPT-6) - S4 raw-config verification fix validated
+
+- Implemented the narrow correction: hash the exact locked teacher `config.json` bytes, then separately require the locked GPT-2-large shape (36 layers,20 heads,1280 width). The S4 scientific run binding now includes `scripts/run_stage08_s4.py`, so a later retry records the exact corrected driver SHA. The failed attempt01 directory and failure envelope remain untouched; retry directory is `S4_attempt02`.
+- Added an exact-file-byte regression. Focused command `.\.venv\Scripts\python.exe -m pytest -q tests\unit\test_stage08_scientific_runners.py tests\unit\test_stage08_scientific_common.py tests\unit\test_stage08_probes.py` exited0:9 passed/0 failed/0 skipped. `git diff --check` passed. This test verifies the locked raw file identity and rejects a different byte stream; it does not infer a license or change science.
+- S4 attempt02 has not started. S6 remains independently in source preflight; C0 all four required states passed and C1 steps0/500/2000 passed at report time, with no S6 inference.
+- Next: commit/push this code/test/report correction; launch S4 attempt02 with `--output ...\\S4_attempt02`. Continue S6 source audit independently.

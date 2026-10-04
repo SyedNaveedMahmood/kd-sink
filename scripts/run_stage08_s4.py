@@ -53,6 +53,14 @@ def _write_result(path: Path, payload: dict) -> str:
     return document["sha256"]
 
 
+def _verify_pinned_file(path: Path, expected_sha256: str, label: str) -> str:
+    """Verify the immutable bytes named by an artifact lock."""
+    actual = sha256_file(path)
+    if actual != expected_sha256:
+        raise ValueError(f"pinned {label} file SHA-256 mismatch: {path}")
+    return actual
+
+
 def _artifact_inputs(artifact_root: Path) -> tuple[dict, list[dict], str, dict]:
     artifact_document = read_json(REPO / "protocols" / "artifact.lock.json")
     artifact, artifact_sha = verify_envelope(artifact_document)
@@ -138,14 +146,15 @@ def _teacher(artifact_root: Path, artifact: dict, gpu: dict):
     if teacher_meta["weights_sha256"] != "5f47f3e12f91cd33b662ce7e433b6150ad5512b5884a2cee961b50e9c3bbebce":
         raise ValueError("teacher weight identity differs from the pinned S1 artifact lock")
     teacher_root = artifact_root / "teacher"
+    _verify_pinned_file(teacher_root / "config.json", teacher_meta["config_sha256"],
+                        "GPT-2-large teacher config")
     weight_path = teacher_root / "model.safetensors"
-    if sha256_file(weight_path) != teacher_meta["weights_sha256"]:
-        raise ValueError("pinned GPT-2-large teacher weights SHA-256 mismatch")
+    _verify_pinned_file(weight_path, teacher_meta["weights_sha256"],
+                        "GPT-2-large teacher weights")
     model = GPT2LMHeadModel.from_pretrained(str(teacher_root), local_files_only=True,
                                              attn_implementation="eager")
-    config_sha = hashlib.sha256(canonical_json_bytes(model.config.to_dict())).hexdigest()
-    if config_sha != teacher_meta["config_sha256"]:
-        raise ValueError("pinned GPT-2-large teacher config identity mismatch")
+    if (model.config.n_layer, model.config.n_head, model.config.n_embd) != (36, 20, 1280):
+        raise ValueError("pinned GPT-2-large teacher architecture differs from the S1 artifact lock")
     if any(parameter.dtype != torch.float32 for parameter in model.parameters()):
         raise ValueError("S4 FP32 protocol requires an FP32 GPT-2-large teacher")
     model.to(device="cuda:0").eval().requires_grad_(False)
@@ -258,7 +267,8 @@ def run(*, output: Path, runs_root: Path, artifact_root: Path, resume: bool = Fa
     if checkpoint_count != 35:
         raise ValueError(f"S4 requires 35 individually verified checkpoints; found {checkpoint_count}")
     d24_decision_path = REPO / "protocols" / "s1_researcher_amendment_d24_seed0_followups_20261004.json"
-    science_code = scientific_source_hashes(("src/sinklab/probes.py", "src/sinklab/evaluate.py",
+    science_code = scientific_source_hashes(("scripts/run_stage08_s4.py",
+        "src/sinklab/probes.py", "src/sinklab/evaluate.py",
         "src/sinklab/metrics.py", "src/sinklab/models.py", "src/sinklab/interventions.py",
         "src/sinklab/provenance.py", "src/sinklab/followup_policy.py"))
     manifest_payload = {"schema": "stage08-s4-science-run-v1", "status": "in_progress",

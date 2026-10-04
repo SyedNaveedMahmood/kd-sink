@@ -98,3 +98,16 @@ Real GPT-2-large S4 engineering qualification and compact probe evidence were co
 - Fresh execution preflight verified35/35 C0-C6 seed0 checkpoints and all seven source logs before S4 model inference. Every checkpoint model payload SHA/manifest/COMPLETE/step/run/condition/seed/original protocol root passed. C3's only accepted limitation remains exact D24 exception `f021ac0441f775d45d19a8109d47c0f45a0b0bbfc025bbd2df35be688e291cd2`, status `accepted_historical_prefix_gap`; all five C3 checkpoint payloads passed.
 - S4 immutable run manifest SHA `b96f9414cd0195276ab5af24cc2ae062cf2c2b90982959e001dce48a0ffe5f81`; binds repository commit `5bcd4f7cb697b104f1442c18c1ea9a00a73a3174`, D24, OWT panel, device, and original run identities. Manifest and incremental results remain outside Git and source runs.
 - No inference outcome had been emitted at the exact timestamp of this note; teacher-model/battery startup was pending. See the updated execution report and external progress JSONL.
+
+## 2026-10-04T21:12:52Z - Codex (GPT-6) - S4 config-hash gate diagnosis
+
+- S4 attempt01 stopped after successful35/35 checkpoint/source preflight and before any evaluation forward. Preserved failure receipt SHA `845dcdc7b7320942f9a55c0b7006ac6c6beb8d1222bee1c7c37ad8c54d25e37d`.
+- Existing Stage06 GPU contract and artifact lock establish that `config_sha256=7fccdcfd6622055342a734c663ee0b61ff4fd697f42467595df0bf4448c8c170` is the hash of raw pinned `teacher/config.json`; local raw bytes match exactly. S4 incorrectly compared canonicalized in-memory Transformers serialization. No teacher forward pass, student checkpoint load, or S4 result was produced.
+- Correcting only the verification representation, asserting the locked 36-layer/20-head/1280-width shape, and binding the S4 runner source hash does not change model identity or protocol. Retry output goes to a new sibling attempt directory, preserving attempt01 evidence.
+- Next: pass focused verifier regression tests and commit/push the correction; launch attempt02 with the same fixed S4 scientific scope.
+
+## 2026-10-04T21:17:38Z - Codex (GPT-6) - S4 verifier repair passed tests
+
+- The local locked raw teacher config bytes match the artifact SHA. Replaced the invalid comparison to Transformers' expanded `model.config.to_dict()` hash with direct raw-file SHA verification; separately asserts the already locked36x20x1280 shape. Added `scripts/run_stage08_s4.py` to its immutable science-source binding. No model identity, probe, precision, checkpoint, or estimand changed.
+- Exact test: `.\.venv\Scripts\python.exe -m pytest -q tests\unit\test_stage08_scientific_runners.py tests\unit\test_stage08_scientific_common.py tests\unit\test_stage08_probes.py`; exit0,9 passed/0 failed/0 skipped. `git diff --check` exit0. The preserved attempt01 failure happened before any forward/outcome; attempt02 is separate.
+- Next: commit/push, then retry the fixed S4 design at the sibling attempt02 output path.

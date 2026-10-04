@@ -24,16 +24,36 @@
         "scope": "exact C3 seed0 transferred train log; absent updates 1-2500 only; no reconstruction or rerun",
         "sha256": "f021ac0441f775d45d19a8109d47c0f45a0b0bbfc025bbd2df35be688e291cd2"
       },
+      "attempt_1": {
+        "cause": "Runner compared canonicalized in-memory GPT-2 configuration against a lock that pins raw config.json bytes.",
+        "expected_locked_config_file_sha256": "7fccdcfd6622055342a734c663ee0b61ff4fd697f42467595df0bf4448c8c170",
+        "failure_receipt_sha256": "845dcdc7b7320942f9a55c0b7006ac6c6beb8d1222bee1c7c37ad8c54d25e37d",
+        "model_forward_outcomes_emitted": false,
+        "observed_raw_config_file_sha256": "7fccdcfd6622055342a734c663ee0b61ff4fd697f42467595df0bf4448c8c170",
+        "records_written": 0,
+        "result_directory": "D:\\KD-SINK-central\\analysis\\stage08_scientific_20261005\\S4",
+        "status": "FAILED_INTEGRITY_CHECK_BEFORE_SCIENTIFIC_OUTCOME"
+      },
       "expected_record_count": 108000,
       "panel_item_ids_sha256": "5298fa0d63e7743077e60e6ab0afe254fb077891ab4d06ae648bc74cda8f7fce",
       "panel_payload_sha256": "03fa2adf3931f7594fae23d70e402c697ad2c771e53bdb68977b614336cc5013",
       "progress": {
-        "console_log": "D:\\KD-SINK-central\\analysis\\stage08_scientific_20261005\\S4.console.jsonl",
-        "phase": "teacher_model_load_or_fixed_reference_start",
+        "phase": "ready_to_retry_after_fix_commit",
+        "retry_result_directory": "D:\\KD-SINK-central\\analysis\\stage08_scientific_20261005\\S4_attempt02",
         "scientific_model_inference_started": false
+      },
+      "repair": {
+        "change": "Verify raw config.json SHA-256 directly and assert locked GPT-2-large shape 36x20x1280. Add exact runner script SHA to S4 run binding.",
+        "classification": "narrow verifier implementation correction; scientific scope and identity unchanged",
+        "focused_test": {
+          "command": ".venv\\Scripts\\python.exe -m pytest -q tests\\unit\\test_stage08_scientific_runners.py tests\\unit\\test_stage08_scientific_common.py tests\\unit\\test_stage08_probes.py",
+          "result": "9 passed, 0 failed, 0 skipped, exit 0"
+        },
+        "validation": "PASS: raw locked config-file SHA is checked directly; regression distinguishes exact file bytes from altered serialization."
       },
       "required_student_batteries": 35,
       "result_directory": "D:\\KD-SINK-central\\analysis\\stage08_scientific_20261005\\S4",
+      "retry_result_directory": "D:\\KD-SINK-central\\analysis\\stage08_scientific_20261005\\S4_attempt02",
       "run_manifest_repository_commit": "5bcd4f7cb697b104f1442c18c1ea9a00a73a3174",
       "run_manifest_sha256": "b96f9414cd0195276ab5af24cc2ae062cf2c2b90982959e001dce48a0ffe5f81",
       "scope": {
@@ -71,7 +91,7 @@
         },
         "verified_logical_checkpoints": 35
       },
-      "status": "RUNNING_AFTER_PREFLIGHT"
+      "status": "RETRY_AFTER_VERIFIER_FIX"
     },
     "S5": {
       "D26_sha256": "888b21509000b570c83c2574f5a6bfbc3d1ec2dc197e88d841d085bac222f182",
@@ -118,6 +138,21 @@
     },
     "S6": {
       "D25_panel_sha256": "73b0162539bd5870a95aecd9149edadb97cff6eb36fdc4e9b3f73d0bad6e9508",
+      "D25_panel_verification_status": "PASS",
+      "progress": {
+        "console_log": "D:\\KD-SINK-central\\analysis\\stage08_scientific_20261005\\S6.console.jsonl",
+        "current_checkpoint_steps_verified": [
+          0,
+          500,
+          2000
+        ],
+        "current_condition": "C1",
+        "fully_verified_conditions": [
+          "C0"
+        ],
+        "phase": "D24_source_checkpoint_audit",
+        "scientific_model_inference_started": false
+      },
       "required_student_batteries": 28,
       "result_directory": "D:\\KD-SINK-central\\analysis\\stage08_scientific_20261005\\S6",
       "scope": {
@@ -149,12 +184,13 @@
         ],
         "training_seed": 0
       },
-      "status": "PENDING_EXECUTION",
+      "status": "RUNNING_PREFLIGHT",
       "tokenizer_sha256": "68bfbc36e7d352017e23168f34c98b3b92a18bdcb658c163dea499d8d690c580"
     }
   },
-  "updated_utc": "2026-10-04T21:08:50Z",
+  "updated_utc": "2026-10-04T21:17:38Z",
   "validation": {
+    "S4_verifier_fix_focused": "9 passed, 0 failed, 0 skipped; exit 0",
     "focused_command": ".venv\\Scripts\\python.exe -m pytest -q tests\\unit\\test_stage08_probes.py tests\\unit\\test_stage08_scientific_common.py tests\\unit\\test_stage08_s5.py tests\\unit\\test_stage08_s6.py tests\\unit\\test_stage08_s6_d25.py tests\\unit\\test_stage08_readiness.py tests\\unit\\test_followup_policy.py",
     "focused_result": "78 passed, 0 failed, 0 skipped",
     "full_offline_command": ".venv\\Scripts\\python.exe -m pytest -q tests\\unit tests\\integration -m 'not gpu and not network'",
