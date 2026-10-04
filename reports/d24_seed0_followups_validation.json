@@ -124,7 +124,15 @@
       "src/sinklab/pythia.py"
     ],
     "original_decision_register_lf_sha256": "3ffe4d15915caf7abce566be4f0ed09695a8ffb4149e25c9787b0b18e552f119",
-    "git_diff_check_exit_code": 0
+    "git_diff_check_exit_code": 0,
+    "historical_training_runtime_binding": {
+      "status": "expected_refusal_verified",
+      "source_commit": "9cb1815d44c3b2f42ddd508e5f9c71cc2ea274ec",
+      "message": "execution-critical committed tree differs from source milestone",
+      "model_or_gpu_access": false
+    },
+    "changed_json_python_parse": "pass",
+    "journal_history_prefix": "pass; append-only after LF normalization"
   },
   "readiness": "Policy requirements/checker validated with synthetic manifests only. No real source-run inventory, GPU feasibility, panel readiness, or scientific coverage claimed. Missing seed1/2 weights are not blockers.",
   "runtime_boundary": "Historical training runtime binding is unchanged. The amended execution-critical source tree is intentionally not authorized by the old D23 runtime binding; no training/resume from this checkout is approved by D24.",
@@ -137,7 +145,7 @@
   "historical_records_rewritten": false,
   "upstream_modified": false,
   "next_action": "Explicit seed0 run/device selection and read-only inventory/panel/runtime gates before any separately authorized follow-up execution.",
-  "milestone_commit": "The commit containing this report; exact SHA is appended to the journals in the subsequent evidence commit.",
+  "milestone_commit": "320d1d963936856a937d094a1fc1d64c490dfa64",
   "files_changed": [
     "NEXT_STEPS.md",
     "README.md",
