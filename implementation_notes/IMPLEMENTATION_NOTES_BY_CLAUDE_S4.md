@@ -111,3 +111,9 @@ Real GPT-2-large S4 engineering qualification and compact probe evidence were co
 - The local locked raw teacher config bytes match the artifact SHA. Replaced the invalid comparison to Transformers' expanded `model.config.to_dict()` hash with direct raw-file SHA verification; separately asserts the already locked36x20x1280 shape. Added `scripts/run_stage08_s4.py` to its immutable science-source binding. No model identity, probe, precision, checkpoint, or estimand changed.
 - Exact test: `.\.venv\Scripts\python.exe -m pytest -q tests\unit\test_stage08_scientific_runners.py tests\unit\test_stage08_scientific_common.py tests\unit\test_stage08_probes.py`; exit0,9 passed/0 failed/0 skipped. `git diff --check` exit0. The preserved attempt01 failure happened before any forward/outcome; attempt02 is separate.
 - Next: commit/push, then retry the fixed S4 design at the sibling attempt02 output path.
+
+## 2026-10-04T21:19:06Z - Codex (GPT-6) - S4 attempt02 started after config verifier correction
+
+- Commit `b14c9a40d221d6ad00d12f76ad0f4d3a60123700` contains the raw-file config hash correction, exact-byte regression and runner hash binding; pushed and remote SHA verified. Focused tests passed9/9.
+- Attempt02 runs at `D:\KD-SINK-central\analysis\stage08_scientific_20261005\S4_attempt02`; attempt01's `FAILED_INTEGRITY_CHECK` receipt remains preserved in its original directory. Attempt02 is performing full fixed-source preflight again before model access; no inference has begun.
+- Next: require all35 checkpoints and logs to pass in the retry, then start teacher reference and student batteries.

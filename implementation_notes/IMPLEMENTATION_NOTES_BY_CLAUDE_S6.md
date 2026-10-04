@@ -123,3 +123,8 @@ The paired 40/128-token RTX 4080 SUPER engineering smoke and report were committ
 
 - S6 D25 frozen panels remain independently verified. At this update, C0's four required D24 states pass; C1 steps0/500/2000 pass and its final checkpoint remains in progress. No model has been loaded for S6.
 - No S6 source/input/panel change was made while correcting S4. Continue the exact28-state audit, then evaluate contexts40/128 only; no HumanEval code execution or optional512/1024.
+
+## 2026-10-04T21:19:06Z - Codex (GPT-6) - S6 preflight progress
+
+- Exact D25 panels/tokenizer pass. C0 and C1 each passed all four required seed0 checkpoint checks and their complete training logs. C2 step0 and step500 pass; C2 step2000/10000 and C3-C6 remain. S6 inference has not started.
+- S4 attempt02 is independently repeating D24 preflight after the narrow teacher-config hash verifier correction. GPU remains idle; no concurrent S4/S6 inference is launched.

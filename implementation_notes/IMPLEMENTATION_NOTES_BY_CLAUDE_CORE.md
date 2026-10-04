@@ -855,3 +855,10 @@ A documentation-only milestone commit was attempted after git diff --cached --ch
 - Added an exact-file-byte regression. Focused command `.\.venv\Scripts\python.exe -m pytest -q tests\unit\test_stage08_scientific_runners.py tests\unit\test_stage08_scientific_common.py tests\unit\test_stage08_probes.py` exited0:9 passed/0 failed/0 skipped. `git diff --check` passed. This test verifies the locked raw file identity and rejects a different byte stream; it does not infer a license or change science.
 - S4 attempt02 has not started. S6 remains independently in source preflight; C0 all four required states passed and C1 steps0/500/2000 passed at report time, with no S6 inference.
 - Next: commit/push this code/test/report correction; launch S4 attempt02 with `--output ...\\S4_attempt02`. Continue S6 source audit independently.
+
+## 2026-10-04T21:19:06Z - Codex (GPT-6) - S4 corrected attempt02 launched
+
+- Verifier correction/test milestone `b14c9a40d221d6ad00d12f76ad0f4d3a60123700` is pushed and origin/main matched. Focused regression result:9 passed,0 failed,0 skipped.
+- Started S4 retry attempt02 in a new output directory, preserving attempt01's sealed failure receipt. It is repeating the full D24/corpus preflight; no model inference has started.
+- S6 independently completed source-log/checkpoint preflight for C0 and C1. C2 steps0 and500 are verified; steps2000/10000 and C3-C6 remain. D25 panel hashes remain valid, no model load/inference yet.
+- Current report records the attempt split and external logs. Next: finish both independent preflights, then run fixed batteries on the same authorized RTX4080 SUPER without overlapping scientific GPU inference.
