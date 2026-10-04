@@ -1,5 +1,7 @@
 # Training lifecycle and exact continuation
 
+Prospective [D24](S1_CHECKPOINT_FOLLOWUP_POLICY.md) leaves training, original in-training evaluation, checkpoint retention and completed scientific records unchanged. All future S1 checkpoint-dependent analysis/replay/intervention is seed0-only. Required follow-up checkpoints are S4:0,100,500,2000,10000; S6:0,500,2000,10000 for C0-C6. No seed1/2 weights are required for follow-up readiness; no deletion is authorized.
+
 ## Independent command
 Require one study, condition, seed, approved protocol, hardware lock and unique run directory. Future interface, not implemented code:
 

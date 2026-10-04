@@ -2,6 +2,8 @@
 
 The new implementation is specified in [the E6A v2 design pack](design/e6a_v2/README.md).
 
+The prospective [D24 follow-up policy](design/e6a_v2/S1_CHECKPOINT_FOLLOWUP_POLICY.md) makes all future S1 checkpoint-dependent work seed0-only. S4/S6 are designated-seed0 follow-ups; S5 may still reuse recorded seed1/2 numbers. S2 and historical training roots/results are unchanged. Current validation is in [the D24 report](reports/d24_seed0_followups_validation.json); earlier stage descriptions below are historical capability notes.
+
 Coding agents start with [AGENTS.md](AGENTS.md) and [NEXT_STEPS.md](NEXT_STEPS.md). Stages 00-03 provide CPU-tested preparation, model, intervention, and objective primitives; no training campaign has run. Production runs require approval and measured feasibility gates.
 
 `Upstream/` is the archived reference implementation. New code may borrow reviewed components with provenance, but must work when that directory is absent. Do not edit or delete it during this design handoff.

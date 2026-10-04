@@ -1,5 +1,7 @@
 # S1 - Longitudinal sink inheritance
 
+Prospective [D24](../S1_CHECKPOINT_FOLLOWUP_POLICY.md): all future checkpoint-dependent analyses using S1 trained models are seed0-only. This does not alter completed seed1/2 scientific results, training provenance or retention. Already-recorded numeric results remain available for compatible multi-seed analyses; new inference for S5 is seed0-only. Original in-training evaluation is unchanged.
+
 PRIMARY STUDY. Frozen GPT-2-large (36layers,20heads,1280width) -> randomly initialized GPT-2-medium (24layers,16heads,1024width). C0-C6 at mandatory seed0, each launched separately for10,000 optimizer updates on a fixed approved GPU role. Complete seed1/seed2 campaigns are optional and separately invoked. C4/REL is3090-only; 4080 C3 remains pending profile. One seed permits descriptive within-seed contrasts only, not across-seed variance or reproducibility claims. Model/tokenizer/weights/config require verified immutable artifacts. No acceptance test presumes the old finding persists.
 
 ## Questions and contrasts

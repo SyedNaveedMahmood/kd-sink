@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "kind": "s1-checkpoint-followup-requirements",
+  "amendment_sha256": "46351d8e32ef1ef6238af18c11676e45e3d439e0e46942d1e61e35b8001851e6",
+  "source_study": "S1",
+  "training_seeds": [
+    0
+  ],
+  "conditions": [
+    "C0",
+    "C1",
+    "C2",
+    "C3",
+    "C4",
+    "C5",
+    "C6"
+  ],
+  "checkpoints": {
+    "S4": [
+      0,
+      100,
+      500,
+      2000,
+      10000
+    ],
+    "S6": [
+      0,
+      500,
+      2000,
+      10000
+    ]
+  },
+  "new_s5_inference_training_seeds": [
+    0
+  ],
+  "existing_s5_record_training_seeds": [
+    0,
+    1,
+    2
+  ],
+  "source_identity": "original run/checkpoint manifests; never relabel training protocol roots",
+  "run_and_device_selection": "explicit source manifests; preserve assigned device blocks and hardware confounds; bridges do not add training seeds",
+  "execution_authorized": false,
+  "interpretation": "S4/S6 are designated-seed0 follow-ups and cannot support across-training-seed reproducibility claims. Items, checkpoints, domains and hardware replicas are not independent training seeds."
+}

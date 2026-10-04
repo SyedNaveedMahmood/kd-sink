@@ -1,5 +1,7 @@
 # Approval lock boundary
 
+Prospective D24 (2026-10-04): `s1_researcher_amendment_d24_seed0_followups_20261004.json` seals all future S1 checkpoint-dependent analyses as seed0-only. Its SHA is a separate follow-up policy root, not a replacement for `protocol.lock.json` or any historical root. S4/S6 are designated-seed0 follow-ups; S5 retains recorded seed1/2 numeric analyses. See `design/e6a_v2/S1_CHECKPOINT_FOLLOWUP_POLICY.md`. Old training runtime bindings remain unchanged; the amended source tree does not pass an old training runtime binding and must not be used to train/resume under it.
+
 The checked `design/e6a_v2/templates/` files remain drafts. The final S1 seed-0
 production lock is `protocol.lock.json`; `sinklab validate --production`
 requires that explicit lock and its exact digest in each run config.

@@ -1,5 +1,7 @@
 # Required test matrix and evidence gates
 
+D24 regression: reject S1 seed1/2 and ambiguous seeds before model/store access for S4, S6 (including optional long contexts), S5 new inference and future checkpoint panels. Enforce S4/S6 fixed steps; readiness requires only 35/28 seed0 states. Verify separate policy/source hashes, unchanged historical record keys, retained S5 seed1/2 numeric reuse, and unchanged S2 tests. CPU synthetic tests do not authorize scientific runs.
+
 This is a specification, not evidence that experiment tests have run. Every report gives exact commands, environment/device, exit status, collected/passed/failed/skipped counts and log paths. Missing required hardware tests are BLOCKED, not passed. No finite suite catches every error. Explain discrepancies before changing numerical tolerances.
 
 ## T00: Configuration, CLI and independence

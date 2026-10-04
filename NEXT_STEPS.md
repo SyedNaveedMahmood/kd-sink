@@ -1,6 +1,16 @@
 # Sequential implementation worklist
 
-Stage 06 production launch readiness is restored under the new runtime-bound root. Adrita-PC C5 seed1 is running and seed2 is queued; neither run is complete. Read AGENTS.md first. Work in order from the first incomplete task. A checkbox becomes checked ONLY when its implementation AND required tests actually pass with report/journal evidence. Missing hardware/network/approval is BLOCKED,not passed. Stage capability,validation and scientific coverage are separate. Optional studies remain disabled until approval.
+D24 prospective S1 checkpoint-follow-up policy is sealed and CPU-validated: all new checkpoint-dependent work is seed0-only. S4/S6 are designated-seed0 follow-ups. Historical launch/health snapshots below are dated evidence, not current process status. No scientific work was launched for this amendment. Read AGENTS.md first. Work in order from the first incomplete task. A checkbox becomes checked ONLY when its implementation AND required tests actually pass with report/journal evidence. Missing hardware/network/approval is BLOCKED,not passed. Stage capability,validation and scientific coverage are separate. Optional studies remain disabled until approval.
+
+## Prospective D24 - S1 checkpoint follow-ups (2026-10-04)
+
+- [x] Seal the researcher rule in `protocols/s1_researcher_amendment_d24_seed0_followups_20261004.json`; preserve every historical training root/config and the sealed original decision register.
+- [x] Restrict S4 to C0-C6/seed0 at0,100,500,2000,10000 (35 logical states); S6 to C0-C6/seed0 at0,500,2000,10000 (28). No seed1/2 checkpoint readiness requirement.
+- [x] Guard S4/S6 and new shared-evaluator S1 checkpoint work before model access. Keep original training identity plus the separate D24 policy hash; preserve registered in-training record keys and S2.
+- [x] Preserve S5 reuse of recorded seed1/2 results; restrict any new S5 model inference to seed0. Label S4/S6 as designated-seed0 follow-ups, without across-training-seed reproducibility claims.
+- [x] CPU synthetic/full regression: 310 passed, 0 failed, 0 skipped; one external astor deprecation warning. Offline wheel validation included. Historical preservation/seal checks passed. See `reports/d24_seed0_followups_validation.json` and appended CORE/S1/S4/S5/S6 journals.
+
+D24 follow-up policy SHA: `46351d8e32ef1ef6238af18c11676e45e3d439e0e46942d1e61e35b8001851e6`. This is not a replacement for any S1 training root. The changed execution-critical source tree is not approved for training/resume under the old runtime lock; that lock remains unchanged and must continue to fail closed. Actual checkpoint inventory and scientific follow-up execution readiness were not audited here. Next: explicitly select original seed0 runs/device blocks and verify required states/panels/runtime before separately authorized follow-up work. No optional study or long context is enabled by this amendment.
 
 ## Stage00 - Foundation
 Work order: [00_FOUNDATION](design/e6a_v2/stages/00_FOUNDATION.md).

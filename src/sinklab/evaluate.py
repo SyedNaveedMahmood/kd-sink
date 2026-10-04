@@ -19,6 +19,7 @@ import torch
 from tqdm import tqdm
 
 from .interventions import AttentionIntervention, normalize_layer_scope
+from .followup_policy import admit_s1_followup
 from .metrics import (METRIC_VERSION, aggregate_behavior, attention_similarity,
                       behavioral_item, depth_support, fingerprint,
                       guarded_spearman, sink_profile, weighted_depth_wasserstein)
@@ -116,8 +117,9 @@ class RecordStore:
 def _key(*, run_id: str, step: int, panel: str, panel_hash: str,
          checkpoint_hash: str, item_id: str, scope: Sequence[int],
          operation: str, strength: float, precision: str, model_role: str,
-         evaluation_mode: str, run_identity: dict, denominator_floor: float) -> dict:
-    return {"run_id": run_id, "step": step, "panel": panel, "panel_hash": panel_hash,
+         evaluation_mode: str, run_identity: dict, denominator_floor: float,
+         followup_policy: dict | None = None) -> dict:
+    key = {"run_id": run_id, "step": step, "panel": panel, "panel_hash": panel_hash,
             "checkpoint_hash": checkpoint_hash, "item_id": item_id,
             "scope": list(scope), "operation": operation, "strength": strength,
             "precision": precision, "model_role": model_role,
@@ -125,6 +127,9 @@ def _key(*, run_id: str, step: int, panel: str, panel_hash: str,
             "run_identity": run_identity,
             "fingerprint_denominator_floor": denominator_floor,
             "metric_version": METRIC_VERSION, "intervention_version": "prevalue-v1"}
+    if followup_policy is not None:
+        key["followup_policy"] = followup_policy
+    return key
 
 
 def evaluate_panel(*, adapter, items: Sequence[dict], panel: str, panel_hash: str,
@@ -135,7 +140,19 @@ def evaluate_panel(*, adapter, items: Sequence[dict], panel: str, panel_hash: st
                    precision: str = "fp32", model_role: str = "student",
                    retry_failed: bool = False, terminal: bool | None = None,
                    denominator_floor: float | None = None, behavior_only: bool = False,
-                   run_identity: dict | None = None) -> dict:
+                   run_identity: dict | None = None,
+                   execution_context: str = "checkpoint_followup",
+                   followup_study: str = "S1") -> dict:
+    # The trainer alone selects registered_training for its original cadence.
+    # New/replayed checkpoint inference defaults to D24, including S5 inference.
+    if execution_context not in {"checkpoint_followup", "registered_training"}:
+        raise EvaluationError("unknown evaluation execution context")
+    if execution_context == "registered_training" and followup_study != "S1":
+        raise EvaluationError("follow-up studies cannot use registered_training")
+    followup_policy = None
+    if (run_identity is not None and run_identity.get("study") == "S1"
+            and execution_context == "checkpoint_followup"):
+        followup_policy = admit_s1_followup(run_identity, study=followup_study, step=step)
     if not items or len({item["id"] for item in items}) != len(items):
         raise EvaluationError("nonempty unique frozen panel items required")
     if len(set(operations)) != len(operations) or any(op not in {"clean", "none", "delete", "relocate"} for op in operations):
@@ -162,7 +179,8 @@ def evaluate_panel(*, adapter, items: Sequence[dict], panel: str, panel_hash: st
                                   strength=0. if op in {"clean", "none"} else 1.,
                                   precision=precision, model_role=model_role,
                                   evaluation_mode="nll_only" if behavior_only else "full",
-                                  run_identity=run_identity, denominator_floor=denominator_floor)
+                                  run_identity=run_identity, denominator_floor=denominator_floor,
+                                  followup_policy=followup_policy)
                           for op in operations} for item in items}
     progress = tqdm(total=len(items) * len(operations), disable=not terminal,
                     desc=f"eval {panel} step{step} {model_role}", unit="item-op")
@@ -303,6 +321,8 @@ def evaluate_panel(*, adapter, items: Sequence[dict], panel: str, panel_hash: st
                      "operations": list(operations),
                      "evaluation_mode": "nll_only" if behavior_only else "full",
                      "metric_version": METRIC_VERSION, "kind": "aggregate"}
+    if followup_policy is not None:
+        aggregate_key["followup_policy"] = followup_policy
     # Aggregate can gain items after an explicit failed-item retry; atomic replace is safe.
     aggregate_path = store.root / f"aggregate-{payload_digest(aggregate_key)}.json"
     temporary = aggregate_path.with_name(f".{aggregate_path.stem}.{uuid.uuid4().hex}.tmp")

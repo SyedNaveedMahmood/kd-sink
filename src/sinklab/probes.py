@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from .followup_policy import admit_s1_followup
+
 import hashlib
 import random
 from contextlib import contextmanager
@@ -172,16 +174,37 @@ def evaluate_probe_battery(*, adapter, items: list[dict], store: RecordStore,
                            checkpoint_sha256: str, panel_sha256: str,
                            run_id: str, model_role: str, control_seed: int,
                            denominator_floor: float, responsiveness_floor: float,
-                           provenance: dict, retry_failed: bool = False) -> dict:
+                           provenance: dict, retry_failed: bool = False,
+                           source_identity: dict | None = None,
+                           step: int | None = None) -> dict:
     """Freeze one battery definition; report every applicable or inapplicable probe."""
+    if not provenance or not isinstance(provenance, dict):
+        raise ProbeError("immutable run provenance required")
+    if model_role not in {"student", "teacher"}:
+        raise ProbeError("explicit student/teacher model role required")
+    if source_identity is None and model_role == "student":
+        raise ProbeError("original checkpoint source_identity and step required")
+    if source_identity is None and provenance.get("study") == "S1":
+        raise ProbeError("S1-associated probes require original source_identity")
+    followup_policy = None
+    if source_identity is not None:
+        if not isinstance(source_identity, dict):
+            raise ProbeError("original checkpoint source_identity required")
+        if source_identity.get("study") not in {"S1", "S3"}:
+            raise ProbeError("S4 student source must be S1 or separately approved S3")
+        if source_identity.get("run_id", run_id) != run_id:
+            raise ProbeError("checkpoint source run ID disagrees with S4 run ID")
+        if source_identity["study"] == "S1":
+            followup_policy = admit_s1_followup(source_identity, study="S4", step=step)
+        for field in ("study", "condition", "seed", "run_id", "protocol_hash", "protocol_sha256"):
+            if field in provenance and field in source_identity and provenance[field] != source_identity[field]:
+                raise ProbeError(f"conflicting source provenance: {field}")
     if any(not isinstance(x, str) or not SHA256_PATTERN.fullmatch(x) for x in (checkpoint_sha256, panel_sha256)):
         raise ProbeError("checkpoint and panel SHA-256 required")
     if not items or len({i["id"] for i in items}) != len(items):
         raise ProbeError("unique frozen panel items required")
     if denominator_floor <= 0 or responsiveness_floor < 0:
         raise ProbeError("explicit nonnegative numerical guards required")
-    if not provenance or not isinstance(provenance, dict):
-        raise ProbeError("immutable run provenance required")
     plan = probe_plan(adapter.model, control_seed=control_seed)
     if isinstance(adapter.model, GPTNeoXForCausalLM):
         return {"status": "not_applicable", "probes": plan,
@@ -203,6 +226,10 @@ def evaluate_probe_battery(*, adapter, items: list[dict], store: RecordStore,
                     "provenance": provenance, "probe_version": PROBE_VERSION,
                     "denominator_floor": denominator_floor,
                     "responsiveness_floor": responsiveness_floor}
+                if source_identity is not None:
+                    key.update(source_identity=source_identity, step=step)
+                if followup_policy is not None:
+                    key["followup_policy"] = followup_policy
                 prior = store.read(key)
                 if prior is not None and prior["status"] == "complete":
                     results[name].append(prior)
@@ -248,4 +275,6 @@ def evaluate_probe_battery(*, adapter, items: list[dict], store: RecordStore,
     return {"status": "complete" if all(v["status"] == "complete" for v in summaries.values()) else "incomplete",
             "probes": summaries, "checkpoint_sha256": checkpoint_sha256,
             "panel_sha256": panel_sha256, "provenance": provenance,
-            "model_role": model_role, "probe_version": PROBE_VERSION}
+            "model_role": model_role, "probe_version": PROBE_VERSION,
+            "source_identity": source_identity, "step": step,
+            "followup_policy": followup_policy}

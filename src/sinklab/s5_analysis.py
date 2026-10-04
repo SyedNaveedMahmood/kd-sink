@@ -83,7 +83,8 @@ def extract_s1_record(*, aggregate_path: Path, store_root: Path,
                 item_id=item_id, scope=key["scope"], operation=op,
                 strength=0. if op == "clean" else 1., precision=key["precision"],
                 model_role="student", evaluation_mode="full", run_identity=identity,
-                denominator_floor=key["fingerprint_denominator_floor"])
+                denominator_floor=key["fingerprint_denominator_floor"],
+                followup_policy=key.get("followup_policy"))
             row = store.read(row_key)
             if row is None or row["status"] != "complete":
                 raise S5Error(f"missing or failed S1 item {item_id} {op}")

@@ -1,5 +1,7 @@
 # Minimal software and artifact interfaces
 
+Prospective [D24](S1_CHECKPOINT_FOLLOWUP_POLICY.md) is a separate sealed follow-up policy root. Preserve original training protocol identities in every new record alongside D24. All new S1 checkpoint-dependent work is seed0-only; S4/S6 completeness requires no seed1/2 weights. Historical training plans/locks below remain unchanged and do not define the amended follow-up scope.
+
 ## Target structure
 ```text
 AGENTS.md

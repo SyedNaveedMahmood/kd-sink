@@ -1,5 +1,7 @@
 # Measurements, estimands and analysis
 
+Prospective [D24](S1_CHECKPOINT_FOLLOWUP_POLICY.md) limits all new S1 checkpoint-dependent work to seed0. S4/S6 are designated-seed0 follow-ups and cannot support across-training-seed reproducibility claims; generic paired-seed/multi-seed guidance below applies to available recorded S1/S5 results, not new S4/S6 replications. Missing seed1/2 observations must not trigger new model inference. S2 is unchanged.
+
 The manuscript distinguishes pattern, circuit and function [PAPER]. The revision must additionally distinguish OUTPUT SENSITIVITY from usefulness for prediction. Self-KL/flips indicate perturbation, not necessarily improved predictive loss. Near-zero signed mean Delta CE does not imply unchanged predictions.
 
 ## Behavioral definitions

@@ -2,7 +2,7 @@
 
 EVALUATION ONLY using retained S1 and approved S3 states. Preserve pattern/anchor/route/function distinctions without assuming the new teacher has the old circuit.
 
-Fixed main checkpoints0,100,500,2000,10000, all C0-C6 seeds in their assigned device blocks. Teacher once per immutable numerical/probe/panel spec; cached reference only with matching hashes. Full300 OWT; S6 domains after enabled. Route probes are not mandatory every100 updates. Do not pick states labeled first-functional from noisy outcomes unless a separate prospective rule and retained states permit it.
+Under prospective D24, fixed S1 checkpoints0,100,500,2000,10000, C0-C6, seed0 only, in their assigned device blocks. S4 using S1 models is a designated-seed0 follow-up and cannot support across-training-seed reproducibility claims. Its 35 logical condition/checkpoint requirements never include seed1/2 weights. Separately approved S3 scope is unchanged and remains disabled. Teacher once per immutable numerical/probe/panel spec; cached reference only with matching hashes. Full300 OWT; S6 domains after enabled. Route probes are not mandatory every100 updates. Do not pick states labeled first-functional from noisy outcomes unless a separate prospective rule and retained states permit it.
 
 ## Probe battery
 MODEL_AND_INTERVENTION_CONTRACTS defines position0->position1 embedding replacement; removal of all absolute PE; Q-bias removal; exact legacy-form first-MLP EPE direction transport; top3 model-local K-input-coordinate ablation and five matched-cardinality random controls. Record integer scopes and coordinate selection. Parameter-route edits use all native layers unless locus explicitly states layer0; these are distinct from mapped-teacher attention deletion scope and must be labeled.
@@ -17,3 +17,5 @@ Absence of these routes does not exhaustively identify a student's alternative c
 Required tests: batched EPE transport equals per-example reference; vector-sum conservation but no false norm claim; K/Q/V slices correctly isolated; top3 tie-break/random-set cardinality; all weights/modes restored after exceptions; zero-norm and small-baseline guards; explicit Pythia non-applicability.
 
 Journal: `implementation_notes/IMPLEMENTATION_NOTES_BY_CLAUDE_S4.md`. Stage08.
+
+Prospective scope: [D24](../S1_CHECKPOINT_FOLLOWUP_POLICY.md). Preserve each original source run/checkpoint/protocol identity and record the separate D24 follow-up policy SHA for new inference. Never relabel historical roots.

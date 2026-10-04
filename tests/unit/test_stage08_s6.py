@@ -106,8 +106,13 @@ def test_optional_long_context_requires_scope_memory_and_position_limit(tmp_path
             run_identity={"fixture": True}, denominator_floor=1e-8, precision="fp32")
 
 
-def test_domain_evaluation_wrapper_pairs_contexts_and_pools_items(tmp_path, monkeypatch):
+@pytest.mark.parametrize("source_study", ["fixture", "S1"])
+def test_domain_evaluation_wrapper_pairs_contexts_and_pools_items(tmp_path, monkeypatch, source_study):
     import sinklab.s6 as s6
+    from sinklab.followup_policy import admit_s1_followup
+    identity = ({"study": "S1", "condition": "C6", "seed": 0,
+                 "protocol_sha256": "a" * 64, "model_sha256": "c" * 64,
+                 "corpus_sha256": "d" * 64} if source_study == "S1" else {"fixture": True})
     document = panel_fixture()
     original_render = s6.render_domain_items
     def one_item(document, *, tokenizer_sha256, domain, context):
@@ -131,7 +136,9 @@ def test_domain_evaluation_wrapper_pairs_contexts_and_pools_items(tmp_path, monk
                     scope=scope, operation=op, strength=0. if op == "clean" else 1.,
                     precision=kwargs["precision"], model_role="student",
                     evaluation_mode="full", run_identity=kwargs["run_identity"],
-                    denominator_floor=kwargs["denominator_floor"])
+                    denominator_floor=kwargs["denominator_floor"],
+                    followup_policy=admit_s1_followup(identity, study="S6", step=0)
+                    if source_study == "S1" else None)
                 kwargs["store"].write(key, status="complete", value={"behavior": behavior})
         return {"key": {"scope": scope}, "operations": {op: {"status": "complete"}
                 for op in kwargs["operations"]}}
@@ -139,7 +146,7 @@ def test_domain_evaluation_wrapper_pairs_contexts_and_pools_items(tmp_path, monk
     result = evaluate_s6_domains(adapter=object(), document=document,
         tokenizer_sha256="b" * 64, checkpoint_sha256="c" * 64,
         run_id="fixture", step=0, store=RecordStore(tmp_path),
-        run_identity={"fixture": True}, denominator_floor=1e-8, precision="fp32")
+        run_identity=identity, denominator_floor=1e-8, precision="fp32")
     assert result["status"] == "complete"
     assert result["pooled"]["40_delete"]["equal_item"]["item_count"] == 3
     assert result["pooled"]["40_delete"]["token_weighted"]["accuracy_definition"] == "next_token_argmax_fraction"

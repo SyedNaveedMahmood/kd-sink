@@ -327,6 +327,7 @@ def run_approved_training(args) -> dict:
             items = [{"id": ident, "input_ids": evaluation_blocks[ident],
                       "attention_mask": [1] * 128} for ident in ids]
             result = evaluate_panel(adapter=student, items=items, panel=panel_name,
+                                    execution_context="registered_training",
                                     panel_hash=panel_hash, checkpoint_hash=_model_digest(student.model),
                                     run_id=identity["run_id"], step=step, store=store,
                                     teacher_adapter=None if panel_name == "owt_lm2000" else teacher,
@@ -343,6 +344,7 @@ def run_approved_training(args) -> dict:
                 raise ValueError(f"evaluation incomplete: {panel_name} step {step}; inspect item records")
             if panel_name != "owt_lm2000":
                 teacher_result = evaluate_panel(adapter=teacher, items=items, panel=panel_name,
+                    execution_context="registered_training",
                     panel_hash=panel_hash, checkpoint_hash=teacher_digest,
                     run_id=identity["run_id"], step=step, store=store,
                     layer_scope=_teacher_map(spec.study), operations=("clean", "delete", "relocate"),

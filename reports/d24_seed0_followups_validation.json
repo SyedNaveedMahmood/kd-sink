@@ -1,0 +1,178 @@
+{
+  "schema_version": 1,
+  "decision_id": "D24",
+  "status": "sealed_and_cpu_validated_no_scientific_execution",
+  "created_utc": "2026-10-04T15:49:54Z",
+  "starting_commit": "6c772b8845d5dc7446aa45a32bfd45c0879399c3",
+  "amendment_path": "protocols/s1_researcher_amendment_d24_seed0_followups_20261004.json",
+  "amendment_sha256": "46351d8e32ef1ef6238af18c11676e45e3d439e0e46942d1e61e35b8001851e6",
+  "root_role": "separate prospective follow-up policy; original S1 training roots unchanged",
+  "unchanged_d23_training_root": "7b12e5a637c3a8b6ebe66d4bedbd202077fc7960bc98a443babf8bf68de8d8a7",
+  "rule": "All future checkpoint-dependent analyses using S1 trained models are seed0-only.",
+  "scope": {
+    "S4": {
+      "conditions": [
+        "C0",
+        "C1",
+        "C2",
+        "C3",
+        "C4",
+        "C5",
+        "C6"
+      ],
+      "seeds": [
+        0
+      ],
+      "steps": [
+        0,
+        100,
+        500,
+        2000,
+        10000
+      ],
+      "logical_states": 35
+    },
+    "S6": {
+      "conditions": [
+        "C0",
+        "C1",
+        "C2",
+        "C3",
+        "C4",
+        "C5",
+        "C6"
+      ],
+      "seeds": [
+        0
+      ],
+      "steps": [
+        0,
+        500,
+        2000,
+        10000
+      ],
+      "logical_states": 28
+    },
+    "S5": "Recorded seed0/1/2 numbers remain eligible; new model inference seed0-only",
+    "future_S1_checkpoint_work": "seed0-only",
+    "S2": "unchanged",
+    "S3": "unchanged and not enabled"
+  },
+  "interpretation": "S4/S6 are designated-seed0 follow-ups and cannot support across-training-seed reproducibility claims.",
+  "tests": [
+    {
+      "command": ".\\.venv\\Scripts\\python.exe -m pytest -q tests/unit/test_followup_policy.py tests/unit/test_stage08_probes.py tests/unit/test_stage08_s5.py tests/unit/test_stage08_s6.py",
+      "phase": "initial focused suite before added actual-schema/readiness tests",
+      "environment": {
+        "CUDA_VISIBLE_DEVICES": "",
+        "HF_HUB_OFFLINE": "1",
+        "TRANSFORMERS_OFFLINE": "1"
+      },
+      "device": "CPU synthetic",
+      "exit_code": 0,
+      "passed": 53,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 54.25
+    },
+    {
+      "command": ".\\.venv\\Scripts\\python.exe -m pytest -q tests/unit tests/integration -m 'not gpu and not network'",
+      "phase": "first full regression",
+      "environment": {
+        "CUDA_VISIBLE_DEVICES": "",
+        "HF_HUB_OFFLINE": "1",
+        "TRANSFORMERS_OFFLINE": "1"
+      },
+      "device": "CPU synthetic/local offline",
+      "exit_code": 1,
+      "passed": 309,
+      "failed": 1,
+      "skipped": 0,
+      "seconds": 52.9,
+      "failure": "test_researcher_approval_covers_registered_d01_d18_and_sealed_amendment: adding D24 to historically hash-sealed DECISIONS.md changed its approval-bound SHA. Removed only the new paragraph, restoring the original register/hash. No historical approval or test assertion was weakened; D24 stays in a separate amendment and active guidance."
+    },
+    {
+      "command": ".\\.venv\\Scripts\\python.exe -m pytest -q tests/unit tests/integration -m 'not gpu and not network'",
+      "phase": "final full regression after preserving sealed register",
+      "environment": {
+        "CUDA_VISIBLE_DEVICES": "",
+        "HF_HUB_OFFLINE": "1",
+        "TRANSFORMERS_OFFLINE": "1"
+      },
+      "device": "CPU synthetic/local offline",
+      "exit_code": 0,
+      "passed": 310,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 42.51,
+      "includes": "offline clean wheel; S2 regressions; registered training/exact-resume synthetic tests; S4/S5/S6; D24 admission and read-only checkpoint fixture hashing",
+      "warnings": [
+        "One external astor ast.Num deprecation warning"
+      ]
+    }
+  ],
+  "validation": {
+    "sealed_protocol_envelopes_verified": 28,
+    "historical_files_checked_unchanged": 180,
+    "historical_baseline_commit": "6c772b8845d5dc7446aa45a32bfd45c0879399c3",
+    "historical_path_selection": [
+      "all pre-existing protocols except README",
+      "all pre-existing configs",
+      "all pre-existing reports",
+      "design/e6a_v2/DECISIONS.md",
+      "design/e6a_v2/studies/S2_PRETRAINING_DEVELOPMENT.md",
+      "src/sinklab/pythia.py"
+    ],
+    "original_decision_register_lf_sha256": "3ffe4d15915caf7abce566be4f0ed09695a8ffb4149e25c9787b0b18e552f119",
+    "git_diff_check_exit_code": 0
+  },
+  "readiness": "Policy requirements/checker validated with synthetic manifests only. No real source-run inventory, GPU feasibility, panel readiness, or scientific coverage claimed. Missing seed1/2 weights are not blockers.",
+  "runtime_boundary": "Historical training runtime binding is unchanged. The amended execution-critical source tree is intentionally not authorized by the old D23 runtime binding; no training/resume from this checkout is approved by D24.",
+  "scientific_training_commands_executed": 0,
+  "scientific_evaluation_commands_executed": 0,
+  "gpu_tests_executed": 0,
+  "network_tests_executed": 0,
+  "profiling_or_calibration_executed": 0,
+  "original_runs_modified": false,
+  "historical_records_rewritten": false,
+  "upstream_modified": false,
+  "next_action": "Explicit seed0 run/device selection and read-only inventory/panel/runtime gates before any separately authorized follow-up execution.",
+  "milestone_commit": "The commit containing this report; exact SHA is appended to the journals in the subsequent evidence commit.",
+  "files_changed": [
+    "NEXT_STEPS.md",
+    "README.md",
+    "configs/s1_checkpoint_followups_seed0.json",
+    "design/e6a_v2/METRICS_AND_ANALYSIS.md",
+    "design/e6a_v2/MODEL_AND_INTERVENTION_CONTRACTS.md",
+    "design/e6a_v2/README.md",
+    "design/e6a_v2/S1_CHECKPOINT_FOLLOWUP_POLICY.md",
+    "design/e6a_v2/SOFTWARE_AND_ARTIFACT_CONTRACTS.md",
+    "design/e6a_v2/TEST_MATRIX.md",
+    "design/e6a_v2/TRAINING_AND_CHECKPOINTING.md",
+    "design/e6a_v2/stages/08_S4_S5_S6.md",
+    "design/e6a_v2/stages/09_ANALYSIS_RELEASE.md",
+    "design/e6a_v2/studies/S1_LONGITUDINAL_KD.md",
+    "design/e6a_v2/studies/S4_MECHANISTIC_INHERITANCE.md",
+    "design/e6a_v2/studies/S5_SINK_SUPERVISION.md",
+    "design/e6a_v2/studies/S6_CROSS_DOMAIN.md",
+    "implementation_notes/IMPLEMENTATION_NOTES_BY_CLAUDE_CORE.md",
+    "implementation_notes/IMPLEMENTATION_NOTES_BY_CLAUDE_S1.md",
+    "implementation_notes/IMPLEMENTATION_NOTES_BY_CLAUDE_S4.md",
+    "implementation_notes/IMPLEMENTATION_NOTES_BY_CLAUDE_S5.md",
+    "implementation_notes/IMPLEMENTATION_NOTES_BY_CLAUDE_S6.md",
+    "protocols/README.md",
+    "protocols/s1_researcher_amendment_d24_seed0_followups_20261004.json",
+    "reports/d24_seed0_followups_validation.json",
+    "scripts/check_s1_followup_readiness.py",
+    "src/sinklab/evaluate.py",
+    "src/sinklab/followup_policy.py",
+    "src/sinklab/probes.py",
+    "src/sinklab/s5_analysis.py",
+    "src/sinklab/s6.py",
+    "src/sinklab/training_entry.py",
+    "tests/unit/test_followup_policy.py",
+    "tests/unit/test_stage08_probes.py",
+    "tests/unit/test_stage08_s5.py",
+    "tests/unit/test_stage08_s6.py"
+  ]
+}

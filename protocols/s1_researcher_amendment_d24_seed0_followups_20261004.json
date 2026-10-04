@@ -1,0 +1,92 @@
+{
+  "schema_version": 1,
+  "payload": {
+    "decision_id": "D24",
+    "kind": "s1-checkpoint-followup-scope-v1",
+    "status": "approved_prospective",
+    "approved_on_utc_date": "2026-10-04",
+    "approval_authority": "researcher explicit instruction in this session",
+    "prospective_only": true,
+    "rule": "All future checkpoint-dependent analyses using S1 trained models are seed0-only.",
+    "source_review_commit": "6c772b8845d5dc7446aa45a32bfd45c0879399c3",
+    "historical_current_training_root_sha256": "7b12e5a637c3a8b6ebe66d4bedbd202077fc7960bc98a443babf8bf68de8d8a7",
+    "root_role": "separate follow-up policy root; not a replacement S1 training root",
+    "source_study": "S1",
+    "allowed_training_seeds": [
+      0
+    ],
+    "conditions": [
+      "C0",
+      "C1",
+      "C2",
+      "C3",
+      "C4",
+      "C5",
+      "C6"
+    ],
+    "s4": {
+      "checkpoints": [
+        0,
+        100,
+        500,
+        2000,
+        10000
+      ],
+      "training_seeds": [
+        0
+      ],
+      "conditions": [
+        "C0",
+        "C1",
+        "C2",
+        "C3",
+        "C4",
+        "C5",
+        "C6"
+      ]
+    },
+    "s6": {
+      "checkpoints": [
+        0,
+        500,
+        2000,
+        10000
+      ],
+      "training_seeds": [
+        0
+      ],
+      "conditions": [
+        "C0",
+        "C1",
+        "C2",
+        "C3",
+        "C4",
+        "C5",
+        "C6"
+      ]
+    },
+    "s5": {
+      "already_recorded_numeric_results": "seed0/1/2 permitted with original provenance and compatibility checks",
+      "new_model_inference_training_seeds": [
+        0
+      ]
+    },
+    "future_new_s1_checkpoint_evaluation_or_intervention_training_seeds": [
+      0
+    ],
+    "interpretation": "S4/S6 are designated-seed0 follow-ups and cannot support across-training-seed reproducibility claims. Items, checkpoints, domains and hardware replicas are not independent training seeds.",
+    "historical_preservation": {
+      "completed_s1_seed1_seed2_results_and_provenance": "unchanged",
+      "all_original_training_protocol_roots": "unchanged; carry source root alongside D24 follow-up policy SHA",
+      "original_checkpoints_and_training_retention": "unchanged; no deletion authorized",
+      "registered_s1_training_and_its_in_training_evaluation": "unchanged; checkpoint replay/new post-training inference is governed by D24",
+      "s2": "unchanged",
+      "s3": "unchanged; separately approved optional S3 scope is not enabled by D24"
+    },
+    "readiness": "S4 requires 35 logical C0-C6/seed0/step states; S6 requires 28. Missing seed1/2 weights are never a follow-up blocker. Keep every candidate identity and require explicit hardware/run selection; do not count bridges as seeds.",
+    "execution_authorization": "No training, scientific evaluation, intervention, profiling, calibration, downloads, continuation, or long-context work is authorized by this amendment alone.",
+    "runtime_boundary": "Existing production runtime bindings remain unchanged. Source changes for this policy are not authorization to train/resume under an old lock with a different execution-critical tree.",
+    "prospective_precedence": "Supersedes active all-seed S4/S6 and future S1 checkpoint-follow-up requirements only; historical sealed approvals/results/journals remain intact."
+  },
+  "sha256": "46351d8e32ef1ef6238af18c11676e45e3d439e0e46942d1e61e35b8001851e6"
+}

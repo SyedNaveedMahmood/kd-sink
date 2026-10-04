@@ -1,5 +1,7 @@
 # Stage09 - Analysis, reproducibility and handoff
 
+D24 scope for later analysis: S4/S6 using S1 are designated-seed0 follow-ups and cannot support across-training-seed reproducibility claims. Generic paired-seed tasks below apply to compatible already-recorded S1/S5 results and unchanged S2 scope. Any new checkpoint inference using S1 is seed0-only. Missing seed1/2 weights are not a follow-up completeness blocker. Preserve each original training root alongside the separate [D24](../S1_CHECKPOINT_FOLLOWUP_POLICY.md) policy.
+
 Dependency:all preceding required capability gates; optional scopes remain clearly marked. Read AGENTS,NEXT_STEPS,all affected journals,METRICS_AND_ANALYSIS.md,SOFTWARE_AND_ARTIFACT_CONTRACTS.md,TEST_MATRIX.md.
 
 ## Tasks

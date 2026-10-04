@@ -126,3 +126,22 @@ def test_probe_battery_records_nonresponse_guard_and_neox_not_applicable(tmp_pat
         **{k: v for k, v in kwargs.items() if k != "adapter"})
     assert neox_result["status"] == "not_applicable"
     assert all(v["status"] == "not_applicable" for v in neox_result["probes"].values())
+
+
+def test_d24_s4_student_records_keep_training_root_and_separate_policy(tmp_path):
+    from sinklab.followup_policy import D24_SHA256
+    source = {"study": "S1", "condition": "C6", "seed": 0,
+              "run_id": "original", "protocol_sha256": "c" * 64}
+    result = evaluate_probe_battery(adapter=GPT2Adapter(_gpt2()),
+        items=[{"id": "a", "input_ids": [1, 2, 3, 4], "attention_mask": [1] * 4}],
+        store=RecordStore(tmp_path), checkpoint_sha256="a" * 64,
+        panel_sha256="b" * 64, run_id="original", model_role="student",
+        control_seed=1729, denominator_floor=1e-8, responsiveness_floor=1e-8,
+        provenance={"fixture": True}, source_identity=source, step=10000)
+    assert result["status"] == "complete"
+    assert result["followup_policy"]["amendment_sha256"] == D24_SHA256
+    for path in tmp_path.glob("*.json"):
+        key = json.loads(path.read_text())["payload"]["key"]
+        assert key["source_identity"] == source
+        assert key["step"] == 10000
+        assert key["followup_policy"]["source_protocol_sha256"] == "c" * 64

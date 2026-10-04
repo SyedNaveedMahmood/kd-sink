@@ -1,5 +1,7 @@
 # E6A v2 design pack
 
+Current follow-up scope: [prospective D24](S1_CHECKPOINT_FOLLOWUP_POLICY.md) restricts all new S1 checkpoint-dependent work to seed0. S4/S6 are designated-seed0 follow-ups; S5 may reuse already-recorded seed1/2 numbers. S2 and historical training roots/results are unchanged. Earlier status statements retain their design context; current validation is in NEXT_STEPS and the D24 report.
+
 Status: partially amended research protocol, **not yet a fully approved preregistration or production experiment**. The corrected 2026-09-28 S1 researcher amendment resolves the single-seed campaign, condition/device eligibility policy, OpenWebText recipe and exact extension semantics. Stage06 remains blocked on production data, selected-role profiling, calibration and locks.
 
 ## Study map

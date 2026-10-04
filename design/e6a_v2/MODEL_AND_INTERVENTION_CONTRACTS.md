@@ -1,5 +1,7 @@
 # Model adapters and causal interventions
 
+Prospective [D24](S1_CHECKPOINT_FOLLOWUP_POLICY.md) restricts every new evaluation/intervention using S1 trained checkpoints to seed0, including the positional controls and numerical sensitivity studies described below. S4 uses C0-C6 at0,100,500,2000,10000; S6 at0,500,2000,10000. Probe-control RNG seeds are not training seeds. S2 and separately approved optional S3 scope are unchanged.
+
 ## One attention computation, not a display-only hook
 Implement a narrow native-PyTorch adapter for pinned Hugging Face GPT2LMHeadModel; GPTNeoXForCausalLM supports S2. Preserve pretrained projection layout, scaling, normalization, residual paths, activations, tied embeddings and architecture-specific positions. Assert layers/heads/width. Student weights are fresh from configuration, not pretrained.
 

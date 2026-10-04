@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from .followup_policy import admit_s1_followup
+
 from typing import Iterable
 
 from .evaluate import RecordStore, _key, evaluate_panel
@@ -101,6 +103,8 @@ def evaluate_s6_domains(*, adapter, document: dict, tokenizer_sha256: str,
                         contexts: tuple[int, ...] = (40, 128),
                         teacher_adapter=None, teacher_map=None) -> dict:
     """Explicit domain battery; matched IDs, separate context masks and cache keys."""
+    followup_policy = (admit_s1_followup(run_identity, study="S6", step=step)
+                       if run_identity.get("study") == "S1" else None)
     if contexts != (40, 128):
         raise S6Error("S6 primary domain battery requires paired 40/128 renderings")
     if step not in {0, 500, 2000, 10000}:
@@ -124,7 +128,7 @@ def evaluate_s6_domains(*, adapter, document: dict, tokenizer_sha256: str,
                 teacher_map=teacher_map, operations=("clean", "delete", "relocate"),
                 precision=precision,
                 denominator_floor=denominator_floor, run_identity=run_identity,
-                terminal=False)
+                terminal=False, followup_study="S6")
             results[f"{domain}_{context}"] = result
             scope = result["key"]["scope"]
             for op in ("clean", "delete", "relocate"):
@@ -135,7 +139,7 @@ def evaluate_s6_domains(*, adapter, document: dict, tokenizer_sha256: str,
                         item_id=item["id"], scope=scope, operation=op,
                         strength=0. if op == "clean" else 1., precision=precision,
                         model_role="student", evaluation_mode="full", run_identity=run_identity,
-                        denominator_floor=denominator_floor)
+                        denominator_floor=denominator_floor, followup_policy=followup_policy)
                     row = store.read(key)
                     if row is None or row["status"] != "complete":
                         raise S6Error(f"missing domain observation: {domain}/{context}/{op}/{item['id']}")
@@ -197,6 +201,8 @@ def evaluate_optional_long_context(*, adapter, items: list[dict], context: int,
                                    precision: str, teacher_adapter=None,
                                    teacher_map=None) -> dict:
     """An explicit admitted long-context call, with no clipping or batch adaptation."""
+    if run_identity.get("study") == "S1":
+        admit_s1_followup(run_identity, study="S6", step=step)
     gate = validate_optional_long_context(model=adapter.model, context=context,
         approval=approval, memory_validation=memory_validation)
     if teacher_adapter is not None:
@@ -215,6 +221,6 @@ def evaluate_optional_long_context(*, adapter, items: list[dict], context: int,
         run_id=run_id, step=step, store=store, teacher_adapter=teacher_adapter,
         teacher_map=teacher_map, operations=("clean", "delete", "relocate"),
         precision=precision, denominator_floor=denominator_floor,
-        run_identity=run_identity, terminal=False)
+        run_identity=run_identity, terminal=False, followup_study="S6")
     return {"gate": gate, "evaluation": result,
             "metric_label": "fixed_window_language_modeling_not_task_accuracy"}
