@@ -28,22 +28,14 @@
       "panel_item_ids_sha256": "5298fa0d63e7743077e60e6ab0afe254fb077891ab4d06ae648bc74cda8f7fce",
       "panel_payload_sha256": "03fa2adf3931f7594fae23d70e402c697ad2c771e53bdb68977b614336cc5013",
       "progress": {
-        "current_checkpoint_steps_verified": [
-          0,
-          100,
-          500,
-          2000
-        ],
-        "current_condition": "C1",
-        "fully_verified_conditions": [
-          "C0"
-        ],
-        "incremental_console_log": "D:\\KD-SINK-central\\analysis\\stage08_scientific_20261005\\S4.console.jsonl",
-        "phase": "source_preflight",
+        "console_log": "D:\\KD-SINK-central\\analysis\\stage08_scientific_20261005\\S4.console.jsonl",
+        "phase": "teacher_model_load_or_fixed_reference_start",
         "scientific_model_inference_started": false
       },
       "required_student_batteries": 35,
       "result_directory": "D:\\KD-SINK-central\\analysis\\stage08_scientific_20261005\\S4",
+      "run_manifest_repository_commit": "5bcd4f7cb697b104f1442c18c1ea9a00a73a3174",
+      "run_manifest_sha256": "b96f9414cd0195276ab5af24cc2ae062cf2c2b90982959e001dce48a0ffe5f81",
       "scope": {
         "conditions": [
           "C0",
@@ -64,7 +56,22 @@
         "teacher_reference_batteries": 1,
         "training_seed": 0
       },
-      "status": "RUNNING_PREFLIGHT"
+      "source_checkpoint_preflight": {
+        "C3_exception_sha256": "f021ac0441f775d45d19a8109d47c0f45a0b0bbfc025bbd2df35be688e291cd2",
+        "expected_logical_checkpoints": 35,
+        "status": "PASS",
+        "training_log_status_by_condition": {
+          "C0": "complete",
+          "C1": "complete",
+          "C2": "complete",
+          "C3": "accepted_historical_prefix_gap",
+          "C4": "complete",
+          "C5": "complete",
+          "C6": "complete"
+        },
+        "verified_logical_checkpoints": 35
+      },
+      "status": "RUNNING_AFTER_PREFLIGHT"
     },
     "S5": {
       "D26_sha256": "888b21509000b570c83c2574f5a6bfbc3d1ec2dc197e88d841d085bac222f182",
@@ -146,7 +153,7 @@
       "tokenizer_sha256": "68bfbc36e7d352017e23168f34c98b3b92a18bdcb658c163dea499d8d690c580"
     }
   },
-  "updated_utc": "2026-10-04T20:50:43Z",
+  "updated_utc": "2026-10-04T21:08:50Z",
   "validation": {
     "focused_command": ".venv\\Scripts\\python.exe -m pytest -q tests\\unit\\test_stage08_probes.py tests\\unit\\test_stage08_scientific_common.py tests\\unit\\test_stage08_s5.py tests\\unit\\test_stage08_s6.py tests\\unit\\test_stage08_s6_d25.py tests\\unit\\test_stage08_readiness.py tests\\unit\\test_followup_policy.py",
     "focused_result": "78 passed, 0 failed, 0 skipped",

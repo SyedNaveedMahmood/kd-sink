@@ -832,3 +832,11 @@ A documentation-only milestone commit was attempted after git diff --cached --ch
 - Current status: S4 `RUNNING_PREFLIGHT`; S5 `COMPLETE`; S6 `PENDING_EXECUTION`. See `reports/stage08_scientific_execution_20261005.json`.
 - User-visible update stated that S4 is verifying all states before inference and that the GPU is idle. No messages sent to others.
 - Next: require the entire35-state preflight to pass before allowing S4 inference, then audit persisted outputs. S6 remains independent and will proceed after S4 completes or blocks.
+
+## 2026-10-04T21:08:50Z - Codex (GPT-6) - S4 full source preflight passed
+
+- All35 D24 C0-C6 seed0 checkpoint states passed fresh independent manifest/COMPLETE/model-payload SHA, step, run ID, condition, seed and original-root checks. All seven training logs end at step10000; C3 alone reports `accepted_historical_prefix_gap`, bound to exact exception SHA `f021ac0441f775d45d19a8109d47c0f45a0b0bbfc025bbd2df35be688e291cd2`. No other provenance gap was observed. OWT Full300 panel/corpus identities passed before the source audit.
+- Immutable external S4 run manifest: `D:\KD-SINK-central\analysis\stage08_scientific_20261005\S4\S4_RUN_MANIFEST.json`, envelope SHA `b96f9414cd0195276ab5af24cc2ae062cf2c2b90982959e001dce48a0ffe5f81`, bound to repository commit `5bcd4f7cb697b104f1442c18c1ea9a00a73a3174`. External JSONL console log remains beside the S4 directory.
+- At this status update, teacher weights are loading/teacher battery is about to begin; no model forward outcome has been emitted yet. No C3 history was reconstructed. S4 proceeds under the original FP32 fixed battery.
+- Current states: S4 `RUNNING_AFTER_PREFLIGHT`; S5 `COMPLETE`; S6 `PENDING_EXECUTION`. Report updated at `reports/stage08_scientific_execution_20261005.json`.
+- Next: verify teacher response and continue all35 fixed S4 batteries. After S4 completes or blocks, run S6 independently.

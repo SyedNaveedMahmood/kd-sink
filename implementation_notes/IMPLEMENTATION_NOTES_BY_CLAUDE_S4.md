@@ -92,3 +92,9 @@ Real GPT-2-large S4 engineering qualification and compact probe evidence were co
 - Started the user-authorized fixed D24 S4 run using the pushed runner. OWT Full300 immutable panel identity passed. All five C0 states and C1 steps0/100/500/2000 passed source payload/identity checks; C1 step10000 and C2-C6 remain to verify before any inference.
 - Run progress is persisted to `D:\KD-SINK-central\analysis\stage08_scientific_20261005\S4.console.jsonl`; output store remains separate from source runs. No model has been loaded and no scientific S4 result has been generated yet.
 - Next: complete strict source preflight before first model access, then carry on with the exact fixed probe battery. No training/S2/Stage09.
+
+## 2026-10-04T21:08:50Z - Codex (GPT-6) - S4 full D24 source audit passed
+
+- Fresh execution preflight verified35/35 C0-C6 seed0 checkpoints and all seven source logs before S4 model inference. Every checkpoint model payload SHA/manifest/COMPLETE/step/run/condition/seed/original protocol root passed. C3's only accepted limitation remains exact D24 exception `f021ac0441f775d45d19a8109d47c0f45a0b0bbfc025bbd2df35be688e291cd2`, status `accepted_historical_prefix_gap`; all five C3 checkpoint payloads passed.
+- S4 immutable run manifest SHA `b96f9414cd0195276ab5af24cc2ae062cf2c2b90982959e001dce48a0ffe5f81`; binds repository commit `5bcd4f7cb697b104f1442c18c1ea9a00a73a3174`, D24, OWT panel, device, and original run identities. Manifest and incremental results remain outside Git and source runs.
+- No inference outcome had been emitted at the exact timestamp of this note; teacher-model/battery startup was pending. See the updated execution report and external progress JSONL.
