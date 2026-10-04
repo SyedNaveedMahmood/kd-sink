@@ -8,6 +8,8 @@ Execution snapshot (2026-10-04T22:32:35Z): S4 C0 seed0 step0 student battery has
 
 Execution snapshot (2026-10-04T22:53:59Z): S4 teacher reference is complete and one of 35 student batteries is complete; C0 step100 is at 170/300 items. S6 has completed21/28 states and is evaluating C5 step500. A read-only, sealed independent prefix audit passed for S6 C0-C3 (16 states, 28,800 item-operation records, 96 aggregates); its receipt is recorded in the campaign report. S5 remains COMPLETE; all jobs retain their approved scopes.
 
+Execution snapshot (2026-10-04T23:14:15Z): S4 teacher plus two of 35 student batteries are complete; C0 step500 is at 190/300 items. S6 has completed26/28 states and is evaluating C6 step2000. Its expanded independent prefix audit for C0-C5 passed 24 states, 43,200 item-operation records and 144 aggregates; receipt and hash-index values are in the campaign report. S5 remains COMPLETE.
+
 ## Prospective D24 - S1 checkpoint follow-ups (2026-10-04)
 
 - [x] Seal the researcher rule in `protocols/s1_researcher_amendment_d24_seed0_followups_20261004.json`; preserve every historical training root/config and the sealed original decision register.

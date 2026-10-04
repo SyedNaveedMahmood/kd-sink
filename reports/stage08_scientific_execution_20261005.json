@@ -53,18 +53,18 @@
         "teacher_reference_batteries_completed": 1,
         "teacher_completed_items": 300,
         "teacher_total_items": 300,
-        "student_batteries_completed": 1,
+        "student_batteries_completed": 2,
         "student_batteries_required": 35,
         "active_battery": {
           "condition": "C0",
-          "step": 100,
+          "step": 500,
           "model_role": "student",
           "panel": "owt_full300",
           "run_id": "s1-c0-seed0-rtx4080super"
         },
-        "active_battery_completed_items": 170,
+        "active_battery_completed_items": 190,
         "active_battery_total_items": 300,
-        "incremental_record_file_count": 7780,
+        "incremental_record_file_count": 10944,
         "console_log": "D:\\KD-SINK-central\\analysis\\stage08_scientific_20261005\\S4_attempt02.console.jsonl",
         "all_35_checkpoints_preflight_passed": true,
         "C3_training_log_status": "accepted_historical_prefix_gap",
@@ -175,7 +175,7 @@
         "D25_panel_verification": "PASS",
         "D25_panel_sha256": "73b0162539bd5870a95aecd9149edadb97cff6eb36fdc4e9b3f73d0bad6e9508",
         "tokenizer_sha256": "68bfbc36e7d352017e23168f34c98b3b92a18bdcb658c163dea499d8d690c580",
-        "completed_state_count": 21,
+        "completed_state_count": 26,
         "expected_state_count": 28,
         "completed_states": [
           {
@@ -261,28 +261,72 @@
           {
             "condition": "C5",
             "step": 0
+          },
+          {
+            "condition": "C5",
+            "step": 500
+          },
+          {
+            "condition": "C5",
+            "step": 2000
+          },
+          {
+            "condition": "C5",
+            "step": 10000
+          },
+          {
+            "condition": "C6",
+            "step": 0
+          },
+          {
+            "condition": "C6",
+            "step": 500
           }
         ],
-        "current_condition": "C5",
-        "current_step": 500,
-        "incremental_record_file_count": 38346,
+        "current_condition": "C6",
+        "current_step": 2000,
+        "incremental_record_file_count": 48189,
         "optional_512_1024": "disabled",
         "HumanEval_code_execution": false,
         "record_file_count_snapshot": 16926,
         "aggregate_file_count_snapshot": 56,
-        "current_panel": "s6_gsm8k_40",
-        "current_panel_items_completed": 20,
+        "current_panel": "s6_sst2_128",
+        "current_panel_items_completed": 100,
         "completed_prefix_audit": {
           "status": "PASS_SEALED_PREFIX_AUDIT",
-          "scope": "C0-C3 seed0, steps 0/500/2000/10000",
-          "receipt_path": "D:\\KD-SINK-central\\analysis\\stage08_scientific_20261005\\audits\\S6_PREFIX_AUDIT_C0-C3.json",
-          "receipt_file_sha256": "69f4d8d4791c60172692fb9e7d1c91f8c5f357545fef7995e4754bc9bbf9fedb",
-          "receipt_envelope_sha256": "87ff69324dcd7911c84e05336609b36652ae380dd74ea8ff61a09d44f1a35368",
-          "record_summary_hash_index_sha256": "e1f8525e9f31da38bcd2a38970d417fbcf76a93ac941f92bb99eb2190a329d7e",
-          "states": 16,
-          "item_operation_records": 28800,
-          "aggregate_records": 96
-        }
+          "scope": "C0-C5 seed0, steps 0/500/2000/10000",
+          "receipt_path": "D:\\KD-SINK-central\\analysis\\stage08_scientific_20261005\\audits\\S6_PREFIX_AUDIT_C0-C5.json",
+          "receipt_file_sha256": "e7a73d737347017940622dc667bcbea40d0ecd38331586fd3dc47e8c7618e897",
+          "receipt_envelope_sha256": "027392d07be473461f5241ddb952f0e93efc6c38dd511b3eae88d40fe6611187",
+          "record_summary_hash_index_sha256": "e98e29218e048157e488806a9d0393a63ee4989113470e3ff268bd101fd2fdc0",
+          "states": 24,
+          "item_operation_records": 43200,
+          "aggregate_records": 144
+        },
+        "completed_prefix_audits": [
+          {
+            "status": "PASS_SEALED_PREFIX_AUDIT",
+            "scope": "C0-C3 seed0, steps 0/500/2000/10000",
+            "receipt_path": "D:\\KD-SINK-central\\analysis\\stage08_scientific_20261005\\audits\\S6_PREFIX_AUDIT_C0-C3.json",
+            "receipt_file_sha256": "69f4d8d4791c60172692fb9e7d1c91f8c5f357545fef7995e4754bc9bbf9fedb",
+            "receipt_envelope_sha256": "87ff69324dcd7911c84e05336609b36652ae380dd74ea8ff61a09d44f1a35368",
+            "record_summary_hash_index_sha256": "e1f8525e9f31da38bcd2a38970d417fbcf76a93ac941f92bb99eb2190a329d7e",
+            "states": 16,
+            "item_operation_records": 28800,
+            "aggregate_records": 96
+          },
+          {
+            "status": "PASS_SEALED_PREFIX_AUDIT",
+            "scope": "C0-C5 seed0, steps 0/500/2000/10000",
+            "receipt_path": "D:\\KD-SINK-central\\analysis\\stage08_scientific_20261005\\audits\\S6_PREFIX_AUDIT_C0-C5.json",
+            "receipt_file_sha256": "e7a73d737347017940622dc667bcbea40d0ecd38331586fd3dc47e8c7618e897",
+            "receipt_envelope_sha256": "027392d07be473461f5241ddb952f0e93efc6c38dd511b3eae88d40fe6611187",
+            "record_summary_hash_index_sha256": "e98e29218e048157e488806a9d0393a63ee4989113470e3ff268bd101fd2fdc0",
+            "states": 24,
+            "item_operation_records": 43200,
+            "aggregate_records": 144
+          }
+        ]
       },
       "required_student_batteries": 28,
       "result_directory": "D:\\KD-SINK-central\\analysis\\stage08_scientific_20261005\\S6",
@@ -347,7 +391,7 @@
       }
     }
   },
-  "updated_utc": "2026-10-04T22:53:59Z",
+  "updated_utc": "2026-10-04T23:14:15Z",
   "validation": {
     "S4_verifier_fix_focused": "9 passed, 0 failed, 0 skipped; exit 0",
     "focused_command": ".venv\\Scripts\\python.exe -m pytest -q tests\\unit\\test_stage08_probes.py tests\\unit\\test_stage08_scientific_common.py tests\\unit\\test_stage08_s5.py tests\\unit\\test_stage08_s6.py tests\\unit\\test_stage08_s6_d25.py tests\\unit\\test_stage08_readiness.py tests\\unit\\test_followup_policy.py",
