@@ -823,3 +823,12 @@ A documentation-only milestone commit was attempted after git diff --cached --ch
 - `git push origin main` exited0; `git ls-remote origin refs/heads/main` returned the same SHA. The worktree was clean after the milestone commit.
 - Next: execute S4, then execute S6 independently; no training, S2, or Stage09.
 - Receipt commit: pending.
+
+## 2026-10-04T20:50:43Z - Codex (GPT-6) - S4 source preflight started
+
+- S4 run was launched from the pushed runner milestone `adb05268a138b3652d7bdb089438f6e25185302e` on the approved Adrita-PC RTX4080 SUPER scope. It first revalidated the pinned OWT panel and is currently rechecking D24 training logs, exact original protocol lineage, and every required checkpoint payload before model inference.
+- C0's five required states (0,100,500,2000,10000) have passed fresh verification. C1 steps0,100,500,2000 have passed; its final state and the remaining conditions are pending. No model has been loaded and GPU utilization remains at idle while source verification proceeds.
+- Append-only JSON progress log: `D:\KD-SINK-central\analysis\stage08_scientific_20261005\S4.console.jsonl`. Scientific output is isolated at the sibling `S4` directory. No source run was written.
+- Current status: S4 `RUNNING_PREFLIGHT`; S5 `COMPLETE`; S6 `PENDING_EXECUTION`. See `reports/stage08_scientific_execution_20261005.json`.
+- User-visible update stated that S4 is verifying all states before inference and that the GPU is idle. No messages sent to others.
+- Next: require the entire35-state preflight to pass before allowing S4 inference, then audit persisted outputs. S6 remains independent and will proceed after S4 completes or blocks.

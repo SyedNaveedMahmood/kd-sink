@@ -246,3 +246,5 @@ The earlier C1 gate completed successfully and launched C5 on NaveedPC. C5 reach
 
 ## D21 optional C3-only replications (2026-09-30T03:10:59Z)
 D20 C3 seed0 final coverage verified. D21 successor root 95a3607791fab3911916bcab407f7d10dab3576f197ebe7b606c2f9e3ac8ab15 seals separately packed seed1/2 C3 artifacts, unchanged C3 science and two explicit single-seed jobs. The external one-shot queue launches seed1 only after seal push; seed2 requires verified seed1 completion. No other S1 condition is queued. Scientific completion remains per run.
+
+S4/S6 authorized campaign status update (2026-10-04 UTC): S4 source preflight is underway; C0 all five states and C1 steps0/100/500/2000 are verified so far, with no model load/inference. S6 has not started. Persisted progress/status is in `reports/stage08_scientific_execution_20261005.json` and the external S4 JSONL console log. S5 remains complete.

@@ -86,3 +86,9 @@ Real GPT-2-large S4 engineering qualification and compact probe evidence were co
 - The commit is pushed to `origin/main`; remote SHA matched. No S4 model load/inference had started at this receipt.
 - Next: execute the fixed S4 teacher battery and 35 seed0 state batteries from the external D: output path; preserve progress and resume only from matching run bindings.
 - Receipt commit: pending.
+
+## 2026-10-04T20:50:43Z - Codex (GPT-6) - S4 source preflight progress
+
+- Started the user-authorized fixed D24 S4 run using the pushed runner. OWT Full300 immutable panel identity passed. All five C0 states and C1 steps0/100/500/2000 passed source payload/identity checks; C1 step10000 and C2-C6 remain to verify before any inference.
+- Run progress is persisted to `D:\KD-SINK-central\analysis\stage08_scientific_20261005\S4.console.jsonl`; output store remains separate from source runs. No model has been loaded and no scientific S4 result has been generated yet.
+- Next: complete strict source preflight before first model access, then carry on with the exact fixed probe battery. No training/S2/Stage09.
