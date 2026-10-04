@@ -182,3 +182,16 @@ S6 C0-C3 prefix audit PASSED: 16/16 stable states, 28,800 item-operation records
 - NEXT_STEPS tasks actually completed: S5 complete; S6 C0-C5 stable prefix independently audited; no S4/S6 completion checkbox changed.
 - Remaining work/first task for next agent: keep S4 and S6 processes running; finish S4's remaining34 student batteries and S6 C6 steps2000/10000; perform complete audits, update status only after pass.
 - Milestone commit: previous progress/journal milestone pushed as 567fc013ba1688ecbce517794ec3ad97378bc435; current report entry pending commit.
+
+
+## 2026-10-04T23:31:54Z - Codex (GPT-6) - S4 live progress
+
+- Starting branch/commit: main / 8993e253e69e91b5b61b46fd439d199bd906f955.
+- Approved scope: continue attempt02's fixed S4 seed0 battery on RTX4080 SUPER, with all prior source preflight seals unchanged.
+- Files changed: campaign report, NEXT_STEPS, CORE/S4 execution journals; no S4 science output changed by this documentation work.
+- Progress: teacher battery 300/300; three of 35 student batteries complete; active C0 step2000 student Full300 battery 180/300; 13,867 incremental result files. Last GPU snapshot: RTX4080 SUPER 12% utilization, 4,311 MiB used, 44C.
+- Scope/integrity: all35 required D24 checkpoint states preflighted; C3 log prefix exception remains exact and limited to updates1-2500. Attempt01 receipt is preserved. Attempt02 remains active; no final audit/status claim yet.
+- User-visible communication: reported S4 continuing and S6 audit result.
+- Verification: console tail and result file count read-only; no scientific command started by this progress record.
+- Next: continue existing S4 process and audit all108,000 required records at completion.
+- Milestone commit: pending.

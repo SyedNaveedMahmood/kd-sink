@@ -925,3 +925,17 @@ S6 C0-C3 prefix audit PASSED: 16/16 stable states, 28,800 item-operation records
 - NEXT_STEPS tasks actually completed: S5 complete; S6 C0-C5 stable prefix independently audited; no S4/S6 completion checkbox changed.
 - Remaining work/first task for next agent: keep S4 and S6 processes running; finish S4's remaining34 student batteries and S6 C6 steps2000/10000; perform complete audits, update status only after pass.
 - Milestone commit: previous progress/journal milestone pushed as 567fc013ba1688ecbce517794ec3ad97378bc435; current report entry pending commit.
+
+
+## 2026-10-04T23:31:54Z - Codex (GPT-6) - Stage08 S6 final audit and S4 continuation
+
+- Starting branch/commit: main / 8993e253e69e91b5b61b46fd439d199bd906f955.
+- User request and approved scope: continue the explicitly authorized S4/S5/S6 Stage08 scientific work; keep S1 sources untouched; no training, S2 rerun, Stage09, optional-context work, or HumanEval code execution.
+- Source files/functions read, immutable revisions and licenses: stage08 scientific runner, S6 record schema and independent-audit output, campaign report, NEXT_STEPS, journal template, D24/D25/D26. D24 SHA 46351d8e32ef1ef6238af18c11676e45e3d439e0e46942d1e61e35b8001851e6; D25 panel SHA 73b0162539bd5870a95aecd9149edadb97cff6eb36fdc4e9b3f73d0bad6e9508; D26 SHA 888b21509000b570c83c2574f5a6bfbc3d1ec2dc197e88d841d085bac222f182.
+- Files changed: reports/stage08_scientific_execution_20261005.json, NEXT_STEPS.md, append-only CORE/S4/S6 journals.
+- Decision: classify S6 by the complete independent record audit while retaining and disclosing its stale runner count failure receipt; do not alter or rerun S6 outputs. Continue the already-running S4 battery.
+- Findings: S6 independent audit PASS: 28/28 states, 50,400 item-operation records, 168 aggregate documents, 50,598 indexed result-tree files; audit file SHA 74df9b921909d5fe41700cd5b9b67f583243d0b689579a7bea222fa35b75ecb, envelope SHA 5a66ce30937cd3905140dc95dcc9be1729210d029060f0c08a15778b6179e1f2. Tree index SHA 9cacf79c0e6d1309b562d6d3e68c0388e958aa96f2c3327e372a0af019be47ae. The preserved driver receipt says 50,400 items and 168 aggregates differ because it expected 504; it is a stale final counter, not hidden. S4 C0 step2000 progressed to 180/300 items and 13,867 incremental files; RTX4080 SUPER at 12% utilization, 4,311 MiB, 44C in last snapshot.
+- User-visible communication: reported S6 full audit PASS and S4 continuing; no external messages sent.
+- Tests/verification: independently rehashed S6 audit JSON and tree index against their sidecars; canonical audit envelope recomputation matched; all 50,598 hash-index paths were unique. Read-only external audit verified data coverage and hashes. No test/training/evaluation was launched as part of docs update.
+- Remaining action: continue S4, then independently audit its complete result tree before final campaign status.
+- Milestone commit: pending.

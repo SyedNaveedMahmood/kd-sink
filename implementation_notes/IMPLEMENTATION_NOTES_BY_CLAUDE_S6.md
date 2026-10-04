@@ -193,3 +193,17 @@ S6 C0-C3 prefix audit PASSED: 16/16 stable states, 28,800 item-operation records
 - NEXT_STEPS tasks actually completed: S5 complete; S6 C0-C5 stable prefix independently audited; no S4/S6 completion checkbox changed.
 - Remaining work/first task for next agent: keep S4 and S6 processes running; finish S4's remaining34 student batteries and S6 C6 steps2000/10000; perform complete audits, update status only after pass.
 - Milestone commit: previous progress/journal milestone pushed as 567fc013ba1688ecbce517794ec3ad97378bc435; current report entry pending commit.
+
+
+## 2026-10-04T23:31:54Z - Codex (GPT-6) - S6 independent final audit
+
+- Starting branch/commit: main / 8993e253e69e91b5b61b46fd439d199bd906f955.
+- Approved scope: finish independent verification of the already-completed S6 inference outputs; no rerun or result mutation.
+- Files changed: campaign report, NEXT_STEPS, CORE/S6 execution journals.
+- Finding/status: PASS independently verified, 28/28 states, 50,400 item-operation records, 168 aggregate documents, 50,598 files in the indexed output tree, 732,686,141 total tree bytes. The final audit rechecked seven source logs, seven protocol files, source checkpoint preflight/load statistics, every summary against console seals, all record envelopes, finite metric values and exact coverage. S1 sources were not modified.
+- Audit evidence: receipt `D:\KD-SINK-central\analysis\stage08_scientific_20261005\audits\S6_FINAL_INDEPENDENT_AUDIT.json`, file SHA 74df9b921909d5fe41700cd5b9b67f583243d0b689579a7bea222fa35b75ecb, envelope SHA 5a66ce30937cd3905140dc95dcc9be1729210d029060f0c08a15778b6179e1f2. Tree index SHA 9cacf79c0e6d1309b562d6d3e68c0388e958aa96f2c3327e372a0af019be47ae; 50,598 unique paths. Sidecar checks and envelope recomputation passed.
+- Preserved limitation: the pre-correction in-memory driver returned `FAILED_INTEGRITY_CHECK` with message `S6 stored record counts differ: items=50400, aggregates=168` because its old expected aggregate count was 504. Receipt SHA c12b359d793cfd4f3d8f8e835fe04409de903266f6b7c8a2755258ee2b9b3bf0 and envelope SHA d338d8ae55badc9175fe3054049737ff932a8ccbdcec63e848bbcb72e6a23962. The independent audit matches the corrected schema (one aggregate document per domain/context panel, all three operations within each); the runner receipt remains part of the scientific record.
+- Restricted activities confirmed: training=false, S2=false, Stage09=false, HumanEval code execution=false, source_runs_modified=false, optional512/1024 disabled.
+- Tests/verification: read-only CPU audit sidecar hashes, canonical envelope SHA, and 50,598-entry index uniqueness passed. No source run files changed.
+- Next action: S6 is done; continue S4.
+- Milestone commit: pending.
