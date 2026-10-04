@@ -49,12 +49,22 @@
       "panel_item_ids_sha256": "5298fa0d63e7743077e60e6ab0afe254fb077891ab4d06ae648bc74cda8f7fce",
       "panel_payload_sha256": "03fa2adf3931f7594fae23d70e402c697ad2c771e53bdb68977b614336cc5013",
       "progress": {
-        "phase": "teacher_reference_battery",
-        "retry_result_directory": "D:\\KD-SINK-central\\analysis\\stage08_scientific_20261005\\S4_attempt02",
-        "scientific_model_inference_started": true,
-        "teacher_completed_items": 190,
+        "phase": "student_probe_battery",
+        "teacher_reference_batteries_completed": 1,
+        "teacher_completed_items": 300,
         "teacher_total_items": 300,
-        "incremental_record_file_count": 1946,
+        "student_batteries_completed": 0,
+        "student_batteries_required": 35,
+        "active_battery": {
+          "condition": "C0",
+          "step": 0,
+          "model_role": "student",
+          "panel": "owt_full300",
+          "run_id": "s1-c0-seed0-rtx4080super"
+        },
+        "active_battery_completed_items": 140,
+        "active_battery_total_items": 300,
+        "incremental_record_file_count": 4417,
         "console_log": "D:\\KD-SINK-central\\analysis\\stage08_scientific_20261005\\S4_attempt02.console.jsonl",
         "all_35_checkpoints_preflight_passed": true,
         "C3_training_log_status": "accepted_historical_prefix_gap",
@@ -165,7 +175,7 @@
         "D25_panel_verification": "PASS",
         "D25_panel_sha256": "73b0162539bd5870a95aecd9149edadb97cff6eb36fdc4e9b3f73d0bad6e9508",
         "tokenizer_sha256": "68bfbc36e7d352017e23168f34c98b3b92a18bdcb658c163dea499d8d690c580",
-        "completed_state_count": 9,
+        "completed_state_count": 15,
         "expected_state_count": 28,
         "completed_states": [
           {
@@ -203,15 +213,41 @@
           {
             "condition": "C2",
             "step": 0
+          },
+          {
+            "condition": "C2",
+            "step": 500
+          },
+          {
+            "condition": "C2",
+            "step": 2000
+          },
+          {
+            "condition": "C2",
+            "step": 10000
+          },
+          {
+            "condition": "C3",
+            "step": 0
+          },
+          {
+            "condition": "C3",
+            "step": 500
+          },
+          {
+            "condition": "C3",
+            "step": 2000
           }
         ],
-        "current_condition": "C2",
-        "current_step": 500,
-        "incremental_record_file_count": 9030,
+        "current_condition": "C3",
+        "current_step": 10000,
+        "incremental_record_file_count": 28080,
         "optional_512_1024": "disabled",
         "HumanEval_code_execution": false,
         "record_file_count_snapshot": 16926,
-        "aggregate_file_count_snapshot": 56
+        "aggregate_file_count_snapshot": 56,
+        "current_panel": "s6_sst2_128",
+        "current_panel_items_completed": 20
       },
       "required_student_batteries": 28,
       "result_directory": "D:\\KD-SINK-central\\analysis\\stage08_scientific_20261005\\S6",
@@ -276,7 +312,7 @@
       }
     }
   },
-  "updated_utc": "2026-10-04T22:10:11Z",
+  "updated_utc": "2026-10-04T22:32:35Z",
   "validation": {
     "S4_verifier_fix_focused": "9 passed, 0 failed, 0 skipped; exit 0",
     "focused_command": ".venv\\Scripts\\python.exe -m pytest -q tests\\unit\\test_stage08_probes.py tests\\unit\\test_stage08_scientific_common.py tests\\unit\\test_stage08_s5.py tests\\unit\\test_stage08_s6.py tests\\unit\\test_stage08_s6_d25.py tests\\unit\\test_stage08_readiness.py tests\\unit\\test_followup_policy.py",
