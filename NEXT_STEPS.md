@@ -1,6 +1,6 @@
 # Sequential implementation worklist
 
-D24 prospective S1 checkpoint-follow-up policy is sealed and CPU-validated: all new checkpoint-dependent work is seed0-only. D25 prospectively freezes S6 external data inputs and records upstream license uncertainty without inferring a license. S4/S6 remain designated-seed0 follow-ups. Current preparation status: S4 READY, S5 BLOCKED on mixed-root compatibility, S6 READY for preparation only. No scientific evaluation was launched. Read AGENTS.md first. Work in order from the first incomplete task. A checkbox becomes checked ONLY when its implementation AND required tests actually pass with report/journal evidence. Missing hardware/network/approval is BLOCKED,not passed. Stage capability,validation and scientific coverage are separate. Optional studies remain disabled until approval.
+D24 prospective S1 checkpoint-follow-up policy is sealed and CPU-validated: all new checkpoint-dependent work is seed0-only. D25 prospectively freezes S6 external data inputs and records upstream license uncertainty without inferring a license. S4/S6 remain designated-seed0 follow-ups. D26 seals the exact compatible mixed-root C1/C2/C5/C6 seed0 S5 reuse-only join after protocol/environment review. The user has now explicitly authorized the independent S4/S5/S6 scientific work described in the latest Stage08 execution request; no training, S2 rerun, or Stage09 is authorized. S5 full source reaggregation, S4 probes, and S6 domain/context evaluation are still pending. A checkbox becomes checked ONLY after its implementation and required tests/output audits actually pass with report/journal evidence. Missing hardware/network/approval is BLOCKED, not passed. Stage capability, validation, and scientific coverage are separate.
 
 ## Prospective D24 - S1 checkpoint follow-ups (2026-10-04)
 
@@ -20,6 +20,15 @@ D24 follow-up policy SHA: `46351d8e32ef1ef6238af18c11676e45e3d439e0e46942d1e61e3
 - [x] Focused CPU tests: 73 passed; full offline CPU/unit/integration tests: 327 passed, 0 failed, 0 skipped; one external `astor` deprecation warning. Fresh read-only log/checkpoint audit verified all seven logs, 35 S4 states, and 28 S6 states. C3's exact sealed transferred-log-prefix exception remains the only log exception.
 
 D25 SHA-256: `6c42ffebf8fa6b1a49787ec7468040939b6fd360c6132e2df10bf2b212780704`; source-lock SHA-256: `173b54c9dea5d19ad34a1174540173f40e1ad491ed4c81c9375f58e0be6d5235`. Frozen panel hashes, source evidence, and verification receipts are in `reports/stage08_s6_d25_preparation.json`; source tokens and raw text remain outside Git. S5's earlier mixed-root blocker remains open and is not changed by D25. No training, evaluation, GPU work, S4/S5 science, or Stage09 was executed.
+
+## Prospective D26 - S5 seed0 mixed historical roots (2026-10-05)
+
+- [x] Seal the researcher-approved, exact four-run S5 compatibility rule before reading S5 metric outcomes; retain all source roots unchanged.
+- [x] Verify common comparison-critical protocol sections, seed/init/data/order/panel identity, architecture and teacher map, training schedule, objective registry, evaluation policy, calibration, numerical precision/backend, package map and 4080 runtime.
+- [x] Add a narrow D26 validator, exact-root join admission, and tests for a valid mixed-root join plus rejection of a substantive schedule mismatch.
+- [ ] Reverify all four source logs and complete S1 evaluation records, reaggregate all Dense64 and retained Full300 C1/C2/C5/C6 seed0 records, and seal the complete S5 analysis output.
+
+D26 SHA-256: `888b21509000b570c83c2574f5a6bfbc3d1ec2dc197e88d841d085bac222f182`; critical-invariant SHA-256: `133d07d6513c7d25f7963afa76b01d0942e1658af90c585cd06fbc58cca9599e`. The four actual original roots are preserved in the amendment and `reports/stage08_s5_d26_compatibility.json`. Root/environment review found three physical RTX 4080 SUPER UUIDs; the S5 output must retain each per-condition UUID and hardware-lock hash as a hardware confound. The compatibility decision changes only join admission; it does not change the scientific estimand or authorize new S5 inference.
 
 ## Stage00 - Foundation
 Work order: [00_FOUNDATION](design/e6a_v2/stages/00_FOUNDATION.md).

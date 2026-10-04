@@ -9,6 +9,7 @@ from pathlib import Path
 from .evaluate import RecordStore, _key
 from .metrics import METRIC_VERSION, aggregate_behavior
 from .provenance import SHA256_PATTERN, _no_duplicate_keys, payload_digest, verify_envelope
+from .s5_compatibility import validate_d26
 
 
 class S5Error(ValueError):
@@ -42,9 +43,14 @@ def _weighted_attention(items: list[dict], kind: str, field: str, weight: str) -
 def extract_s1_record(*, aggregate_path: Path, store_root: Path,
                       run_manifest: dict) -> dict:
     """Verify a full causal aggregate plus all item records; never evaluate a model."""
-    if not isinstance(run_manifest, dict) or set(run_manifest) != {
+    required_manifest_fields = {
             "run_id", "condition", "seed", "device_role", "initialization_sha256",
-            "data_sha256", "protocol_sha256"}:
+            "data_sha256", "protocol_sha256"}
+    optional_manifest_fields = {"comparison_invariants", "objective_variant", "gpu_uuid",
+                                "hardware_sha256", "source_commit", "environment_lock_sha256"}
+    if (not isinstance(run_manifest, dict) or
+            not required_manifest_fields.issubset(run_manifest) or
+            set(run_manifest) - required_manifest_fields - optional_manifest_fields):
         raise S5Error("complete immutable S1 run manifest required")
     for field in ("initialization_sha256", "data_sha256", "protocol_sha256"):
         if not isinstance(run_manifest[field], str) or not SHA256_PATTERN.fullmatch(run_manifest[field]):
@@ -52,6 +58,8 @@ def extract_s1_record(*, aggregate_path: Path, store_root: Path,
     try:
         document = json.loads(Path(aggregate_path).read_text(encoding="utf-8"),
                               object_pairs_hook=_no_duplicate_keys)
+        if document.get("schema_version") != 1:
+            raise S5Error("unsupported S1 aggregate envelope schema")
         aggregate, aggregate_sha = verify_envelope(document)
     except (OSError, ValueError) as exc:
         raise S5Error(f"cannot verify S1 aggregate: {exc}") from exc
@@ -86,7 +94,8 @@ def extract_s1_record(*, aggregate_path: Path, store_root: Path,
                 denominator_floor=key["fingerprint_denominator_floor"],
                 followup_policy=key.get("followup_policy"))
             row = store.read(row_key)
-            if row is None or row["status"] != "complete":
+            if (row is None or row["status"] != "complete" or
+                    row.get("schema_version") != METRIC_VERSION):
                 raise S5Error(f"missing or failed S1 item {item_id} {op}")
             values.append(row["value"])
             item_digests.append(payload_digest(row))
@@ -109,7 +118,7 @@ def extract_s1_record(*, aggregate_path: Path, store_root: Path,
             measures[f"{op}_{target}"] = metrics[source]
     if set(measures) != set(MEASURES) or any(not isinstance(x, (int, float)) or not math.isfinite(x) for x in measures.values()):
         raise S5Error("missing or nonfinite S5 measure")
-    return {"study": "S1", "condition": run_manifest["condition"], "seed": run_manifest["seed"],
+    result = {"study": "S1", "condition": run_manifest["condition"], "seed": run_manifest["seed"],
         "device_role": run_manifest["device_role"], "run_id": key["run_id"],
         "step": key["step"], "panel": key["panel"], "panel_sha256": key["panel_hash"],
         "checkpoint_sha256": key["checkpoint_hash"], "precision": key["precision"],
@@ -120,13 +129,24 @@ def extract_s1_record(*, aggregate_path: Path, store_root: Path,
         "source_aggregate_sha256": aggregate_sha,
         "source_item_bundle_sha256": payload_digest({"item_record_sha256": item_digests}),
         "item_ids": item_ids, "measures": measures, "status": "complete"}
+    for field in optional_manifest_fields:
+        if field in run_manifest:
+            result[field] = run_manifest[field]
+    return result
 
 
 def join_s5(rows: list[dict], *, device_role: str, panel_sha256: str,
-            steps: list[int], seeds: list[int]) -> dict:
+            steps: list[int], seeds: list[int],
+            compatibility_document: dict | None = None) -> dict:
     """Join observed quartets only; report every absent record without imputation."""
+    compatibility = validate_d26(compatibility_document) if compatibility_document is not None else None
     if not steps or not seeds or len(set(steps)) != len(steps) or len(set(seeds)) != len(seeds):
         raise S5Error("explicit unique steps and training seeds required")
+    if compatibility is not None:
+        if seeds != [0]:
+            raise S5Error("D26 mixed-root permission is limited to seed0")
+        if panel_sha256 != compatibility["critical_invariants"]["panel_manifest_sha256"]:
+            raise S5Error("D26 S5 panel hash differs from the frozen panel manifest")
     selected = {}
     for row in rows:
         if row["device_role"] != device_role or row["panel_sha256"] != panel_sha256 or row["step"] not in steps or row["seed"] not in seeds:
@@ -158,12 +178,19 @@ def join_s5(rows: list[dict], *, device_role: str, panel_sha256: str,
             if len({row["run_id"] for row in quartet.values()}) != len(CONDITIONS):
                 raise S5Error("one S1 run ID cannot stand for multiple conditions")
             first = quartet["C1"]
+            roots_differ = len({row["protocol_sha256"] for row in quartet.values()}) > 1
+            if roots_differ and compatibility is None:
+                raise S5Error("incompatible S5 protocol_sha256: mixed roots require sealed D26")
+            if compatibility is not None:
+                _validate_d26_quartet(quartet, compatibility, seed=seed)
             for condition, row in quartet.items():
-                for field in ("protocol_sha256", "initialization_sha256", "data_sha256",
+                for field in ("initialization_sha256", "data_sha256",
                               "panel_sha256", "panel", "precision", "layer_scope",
                               "metric_version", "item_ids"):
                     if row[field] != first[field]:
                         raise S5Error(f"incompatible S5 {field}: {condition}")
+                if not roots_differ and row["protocol_sha256"] != first["protocol_sha256"]:
+                    raise S5Error(f"incompatible S5 protocol_sha256: {condition}")
             comparisons = {}
             for a, b in (("C1", "C2"), ("C2", "C5"), ("C2", "C6"),
                          ("C1", "C5"), ("C1", "C6")):
@@ -171,6 +198,11 @@ def join_s5(rows: list[dict], *, device_role: str, panel_sha256: str,
                     quartet[a]["measures"][metric] for metric in MEASURES}
             joined.append({"step": step, "seed": seed, "device_role": device_role,
                 "panel_sha256": panel_sha256,
+                "source_protocol_roots": {c: quartet[c]["protocol_sha256"] for c in CONDITIONS},
+                "source_gpu_uuids": {c: quartet[c].get("gpu_uuid") for c in CONDITIONS},
+                "source_hardware_lock_sha256": {c: quartet[c].get("hardware_sha256") for c in CONDITIONS},
+                "condition_objective_variants": {c: quartet[c].get("objective_variant") for c in CONDITIONS},
+                "s5_compatibility_amendment_sha256": compatibility["sha256"] if compatibility else None,
                 "source_run_ids": {c: quartet[c]["run_id"] for c in CONDITIONS},
                 "source_aggregate_sha256": {c: quartet[c]["source_aggregate_sha256"] for c in CONDITIONS},
                 "source_item_bundle_sha256": {c: quartet[c]["source_item_bundle_sha256"] for c in CONDITIONS},
@@ -179,4 +211,31 @@ def join_s5(rows: list[dict], *, device_role: str, panel_sha256: str,
     return {"status": "complete" if not missing else "incomplete",
             "joined": joined, "missing": missing, "device_role": device_role,
             "panel_sha256": panel_sha256, "steps": steps, "seeds": seeds,
-            "analysis": "reuse_only_no_training"}
+            "analysis": "reuse_only_no_training",
+            "s5_compatibility_amendment_sha256": compatibility["sha256"] if compatibility else None}
+
+
+def _validate_d26_quartet(quartet: dict[str, dict], compatibility: dict, *, seed: int) -> None:
+    """Fail closed on any source/run/root or critical-invariant mismatch."""
+    if seed != 0:
+        raise S5Error("D26 mixed-root permission is limited to seed0")
+    expected_invariants = compatibility["critical_invariants"]
+    expected_runs = compatibility["allowed_runs"]
+    expected_roots = compatibility["allowed_protocol_roots_by_condition"]
+    expected_variants = compatibility["condition_objective_variants"]
+    for condition, row in quartet.items():
+        approved = expected_runs[condition]
+        if (row["run_id"] != approved["run_id"] or
+                row["protocol_sha256"] != expected_roots[condition] or
+                row["device_role"] != approved["device_role"] or
+                row.get("gpu_uuid") != approved["gpu_uuid"] or
+                row.get("hardware_sha256") != approved["hardware_lock_sha256"] or
+                row.get("source_commit") != approved["source_commit"] or
+                row.get("environment_lock_sha256") != approved["environment_lock_sha256"] or
+                row.get("initialization_sha256") != expected_invariants["initialization_sha256"] or
+                row.get("data_sha256") != expected_invariants["data_sha256"]):
+            raise S5Error(f"D26 S5 source identity/root mismatch: {condition}")
+        if (row.get("objective_variant") != expected_variants[condition] or
+                row.get("comparison_invariants") != expected_invariants or
+                payload_digest(row.get("comparison_invariants", {})) != compatibility["critical_invariants_sha256"]):
+            raise S5Error(f"incompatible S5 comparison-critical invariants: {condition}")

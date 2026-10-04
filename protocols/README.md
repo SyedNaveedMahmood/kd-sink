@@ -2,6 +2,8 @@
 
 Prospective D24 (2026-10-04): `s1_researcher_amendment_d24_seed0_followups_20261004.json` seals all future S1 checkpoint-dependent analyses as seed0-only. Its SHA is a separate follow-up policy root, not a replacement for `protocol.lock.json` or any historical root. S4/S6 are designated-seed0 follow-ups; S5 retains recorded seed1/2 numeric analyses. See `design/e6a_v2/S1_CHECKPOINT_FOLLOWUP_POLICY.md`. Old training runtime bindings remain unchanged; the amended source tree does not pass an old training runtime binding and must not be used to train/resume under it.
 
+Prospective D26 (2026-10-04 UTC): `s1_researcher_amendment_d26_s5_mixed_roots_20261005.json` admits only the named S1 C1/C2/C5/C6 seed0 records to an S5 mixed-historical-root reuse join, and only after the sealed comparison-critical invariants match. Original roots and GPU UUIDs remain attached; the observed physical-device variation is reported. SHA-256: `888b21509000b570c83c2574f5a6bfbc3d1ec2dc197e88d841d085bac222f182`. This does not authorize new S5 inference or alter the S5 estimand.
+
 The checked `design/e6a_v2/templates/` files remain drafts. The final S1 seed-0
 production lock is `protocol.lock.json`; `sinklab validate --production`
 requires that explicit lock and its exact digest in each run config.

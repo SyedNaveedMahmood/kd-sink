@@ -1,5 +1,6 @@
 import copy
 import json
+from pathlib import Path
 
 import pytest
 from transformers import GPT2Config, GPT2LMHeadModel
@@ -90,3 +91,49 @@ def test_s5_rejects_mismatched_provenance_and_duplicate_replica(tmp_path):
         malformed[0]["source_aggregate_sha256"] = "not-a-hash"
         join_s5(malformed, device_role="rtx4080super", panel_sha256="d" * 64,
                 steps=[100], seeds=[0])
+
+
+def _d26_rows(rows):
+    document = json.loads(Path("protocols/s1_researcher_amendment_d26_s5_mixed_roots_20261005.json").read_text())
+    payload = document["payload"]
+    for row in rows:
+        condition = row["condition"]
+        allowed = payload["allowed_runs"][condition]
+        row.update(run_id=allowed["run_id"], protocol_sha256=allowed["protocol_root_sha256"],
+            panel_sha256=payload["critical_invariants"]["panel_manifest_sha256"],
+            initialization_sha256=payload["critical_invariants"]["initialization_sha256"],
+            data_sha256=payload["critical_invariants"]["data_sha256"],
+            comparison_invariants=payload["critical_invariants"],
+            objective_variant=payload["condition_objective_variants"][condition],
+            gpu_uuid=allowed["gpu_uuid"], hardware_sha256=allowed["hardware_lock_sha256"],
+            source_commit=allowed["source_commit"],
+            environment_lock_sha256=allowed["environment_lock_sha256"])
+    return rows, document
+
+
+def test_s5_d26_allows_only_the_approved_mixed_root_seed0_join(tmp_path):
+    rows, document = _d26_rows(_records(tmp_path))
+    panel_sha = document["payload"]["critical_invariants"]["panel_manifest_sha256"]
+    result = join_s5(rows, device_role="rtx4080super", panel_sha256=panel_sha,
+        steps=[100], seeds=[0], compatibility_document=document)
+    assert result["status"] == "complete"
+    joined = result["joined"][0]
+    assert len(set(joined["source_protocol_roots"].values())) == 3
+    assert len(set(joined["source_gpu_uuids"].values())) == 3
+    assert joined["s5_compatibility_amendment_sha256"] == document["sha256"]
+    with pytest.raises(S5Error, match="mixed roots require sealed D26"):
+        join_s5(rows, device_role="rtx4080super", panel_sha256=panel_sha,
+            steps=[100], seeds=[0])
+    with pytest.raises(S5Error, match="seed0"):
+        join_s5(rows, device_role="rtx4080super", panel_sha256=panel_sha,
+            steps=[100], seeds=[1], compatibility_document=document)
+
+
+def test_s5_d26_rejects_real_comparison_incompatibility(tmp_path):
+    rows, document = _d26_rows(_records(tmp_path))
+    rows[2]["comparison_invariants"] = copy.deepcopy(rows[2]["comparison_invariants"])
+    rows[2]["comparison_invariants"]["training_schedule"]["lr"] *= 2
+    with pytest.raises(S5Error, match="comparison-critical invariants"):
+        join_s5(rows, device_role="rtx4080super",
+            panel_sha256=document["payload"]["critical_invariants"]["panel_manifest_sha256"],
+            steps=[100], seeds=[0], compatibility_document=document)
