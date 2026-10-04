@@ -17,6 +17,11 @@ def decision():
     return CHECKS.read_json(ROOT / CHECKS.EXCEPTION_PATH)
 
 
+def test_item_ids_digest_uses_canonical_object_envelope():
+    item_ids = ["panel-item-a", "panel-item-b"]
+    assert CHECKS.item_ids_digest(item_ids) == payload_digest({"item_ids": item_ids})
+
+
 def test_exception_accepts_only_exact_approved_identity_and_log_digest():
     doc = decision()
     binding = doc["payload"]

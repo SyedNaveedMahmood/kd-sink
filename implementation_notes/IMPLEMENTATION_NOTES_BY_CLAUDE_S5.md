@@ -85,3 +85,10 @@ Stage08 08.4 evidence was committed as `51e7903a0a400e2daac80e2aa0b295d8603dba42
 - NEXT_STEPS completed: D26 decision sealing and narrow compatibility tests only. First next action: commit/push the visible progress updates in the S5 reaggregator, then run external read-only S5 reaggregation; continue independently to S4/S6.
 - D26 implementation milestone: `b5c201644af458477c285b48b7a31bda7e70be11`, pushed to `origin/main` and verified as the remote tip. The reaggregator's output-progress logging is a separate small pre-run follow-up.
 - Milestone commit: `b5c201644af458477c285b48b7a31bda7e70be11`.
+
+## 2026-10-04T19:49:25Z - Codex (GPT-6) - S5 audit runtime correction
+
+- First production invocation `.\.venv\Scripts\python.exe -u scripts\run_stage08_s5.py --output D:\KD-SINK-central\analysis\stage08_scientific_20261005\S5` traversed and checked C1's 222 aggregates and 58,984 item records through the final coverage check. It then failed in the readiness report digest (`payload_digest(list)`), an implementation error after record validation. It did not reach C1 completion logging or write output files. Source run remains unchanged.
+- Fixed the digest input shape by wrapping the item ID list in the canonical object envelope and added `test_item_ids_digest_uses_canonical_object_envelope`. Focused readiness/S5 tests: exit0, 15 passed; compile and whitespace checks exit0.
+- No scientific conclusion was produced and the interrupted attempt is not counted as S5 coverage. Rerun the complete audit after committing the fix.
+- Milestone commit: pending.

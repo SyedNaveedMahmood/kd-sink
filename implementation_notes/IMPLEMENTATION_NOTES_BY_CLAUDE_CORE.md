@@ -795,3 +795,11 @@ A documentation-only milestone commit was attempted after git diff --cached --ch
 - D26 implementation milestone `b5c201644af458477c285b48b7a31bda7e70be11` is pushed and verified at `origin/main`. Added JSON progress events to the S5 source audit/reaggregation driver before outcome work; focused S5 tests and syntax checks pass. The final full CPU suite ran before this print-only change.
 - Next: commit/push the progress-output follow-up, execute read-only S5 reaggregation, then proceed independently with S4/S6 using separate result stores.
 - Milestone commit: `b5c201644af458477c285b48b7a31bda7e70be11` (D26 decision/compatibility); progress-output follow-up pending.
+
+## 2026-10-04T19:49:25Z - Codex (GPT-6) - S5 verifier report-digest correction
+
+- Starting commit: `033f1a0a3e8cd47be8078950d91b2e865ab25995`. Read-only S5 reaggregation started against the four D26-approved D: source runs. C1 training/protocol checks and the full 59,206-file evaluation audit completed without a source mismatch; the audit then exited nonzero while formatting its returned panel-ID digest because `payload_digest` requires an object, but was passed a list. No S5 result files were emitted and no source data was changed.
+- Corrected the readiness report helper to hash panel IDs in a canonical object envelope and added a focused regression assertion. No scientific key, record, hash, coverage, or acceptance rule changed.
+- Validation: focused `tests/unit/test_stage08_readiness.py tests/unit/test_stage08_s5.py`, exit0, 15 passed; Python compile and `git diff --check` exit0. The four-condition S5 audit will be rerun from the beginning; C1's first traversal is not represented as a completed audit because the report return failed.
+- No checkpoint/model loaded; no GPU work, training, S2, S4/S6 or Stage09 started. Next: commit/push this narrow fix and rerun S5. Continue S4/S6 independently.
+- Milestone commit: pending.

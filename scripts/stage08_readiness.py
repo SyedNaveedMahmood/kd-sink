@@ -26,6 +26,11 @@ def sha256(path: Path) -> str:
     return digest.hexdigest()
 
 
+def item_ids_digest(item_ids: list[str]) -> str:
+    """Hash panel IDs through the object-only canonical payload interface."""
+    return payload_digest({"item_ids": item_ids})
+
+
 def accepted_c3_log_exception(*, identity: dict, log_sha256: str, document: dict) -> dict:
     """Only exact approved log bytes AND exact original checkpoint identity qualify."""
     payload, digest = verify_envelope(document)
@@ -189,5 +194,5 @@ def verify_evaluation_records(run: Path, identity: dict) -> dict:
     return {"path": str(root), "status": "verified", "aggregate_count": len(seen_groups),
             "item_record_count": len(seen_files) - len(seen_groups),
             "file_count": len(files), "panels": {k: {"panel_hash": v["panel_hash"],
-                "item_ids_sha256": payload_digest(v["item_ids"]), "item_count": len(v["item_ids"])}
+                "item_ids_sha256": item_ids_digest(v["item_ids"]), "item_count": len(v["item_ids"])}
                 for k, v in panels.items()}}
