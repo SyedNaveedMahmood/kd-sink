@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "payload": {
+    "kind": "specific-historical-provenance-exception-v1",
+    "status": "researcher_approved",
+    "approved_utc_date": "2026-10-04",
+    "approval_source": "Explicit researcher instruction in this session: accept only the documented C3 seed0 transferred-log gap",
+    "d24_policy_sha256": "46351d8e32ef1ef6238af18c11676e45e3d439e0e46942d1e61e35b8001851e6",
+    "exact_wording": "The transferred C3 seed0 train.jsonl containing only updates 2501-10000 after resumed_step=2500 is an accepted historical provenance limitation. Do NOT reconstruct, fabricate, splice, or rerun updates 1-2500. This known log gap by itself must NOT block S4/S6.",
+    "restriction": "This exception is ONLY for the already-documented C3 seed0 transferred-log gap. Do not weaken any other provenance or integrity checks. Any checkpoint hash, identity, payload, manifest, or additional log discrepancy remains a hard blocker. C3 is irrelevant to S5.",
+    "source_run_path": "D:\\KD-SINK-central\\runs\\s1-c3-seed0-rtx4080super",
+    "original_source_path": "F:\\KD-SINK-stage06-runs\\s1-c3-seed0-rtx4080super",
+    "identity": {
+      "backend": "eager",
+      "calibration_hash": "fa031af3de63832e054b89539d3867c2904c9b592b1e7a8b3e4ca3e3676c532f",
+      "condition": "C3",
+      "data_hash": "76dcdc819b97ecff4d3c458bdf4dbd7c1a5dc2a525541e29099e6a6ac760d700",
+      "device_role": "rtx4080super",
+      "gpu_uuid": "GPU-72b4b307-b613-c35e-ea32-53f4431de9ee",
+      "hardware_hash": "fc410cd3d01505d0cd7b9ffdda98caaf070bfd2524ca7ac7841a0c78e60aa593",
+      "init_hash": "1a27890c588f317a4ae5523430f8af53c591bca29c9a78d13bf182c9c145fc09",
+      "microbatch": 4,
+      "model_hash": "b21bb330c10c1f9e324f487bb403d1629adf66f5643cfc19df8bbe5914d51358",
+      "precision": "bf16",
+      "protocol_hash": "fccf4c14bc691e550c6304f4955b72037efb8d042b3e51afb70367920fff0552",
+      "run_id": "s1-c3-seed0-rtx4080super",
+      "seed": 0,
+      "study": "S1"
+    },
+    "identity_sha256": "b0948d1b994e2115c59e87bc2f876ea3aea3bec93e50507d7240c27082b02861",
+    "train_jsonl_sha256": "3f01cbd4fe455e39b500c8dbcad80291aca48f69fcd7ea22f5f8177fdb8bdbf0",
+    "train_jsonl_bytes": 3334446,
+    "observed_update_range": [
+      2501,
+      10000
+    ],
+    "missing_update_range": [
+      1,
+      2500
+    ],
+    "observed_update_count": 7500,
+    "start_event_count": 1,
+    "resumed_step": 2500,
+    "final_input_tokens": 81920000,
+    "final_shifted_targets": 81280000,
+    "final_manifest_sha256": "7d629c59a650724ae4122686b5c57ce408a141e15bb7848e04a84e6311a3d122",
+    "transfer_manifest_sha256": "955a8588718424500841ebb00d596e0480ee4a471e5c0786d910f05231383d32",
+    "source_data_modified": false,
+    "execution_authorized": false
+  },
+  "sha256": "f021ac0441f775d45d19a8109d47c0f45a0b0bbfc025bbd2df35be688e291cd2"
+}

@@ -16,20 +16,119 @@ class S6Error(ValueError):
     pass
 
 
+DOMAIN_SOURCE_CONTRACTS = {
+    "sst2": {
+        "repository": "nyu-mll/glue", "config": "sst2", "split": "validation",
+        "field": "sentence", "file_path": "sst2/validation-00000-of-00001.parquet",
+        "columns": ["sentence", "label", "idx"],
+        "parquet_columns_read": ["sentence", "idx"],
+        "selection_identifier_field": "idx",
+    },
+    "gsm8k": {
+        "repository": "openai/gsm8k", "config": "main", "split": "test",
+        "field": "question", "file_path": "main/test-00000-of-00001.parquet",
+        "columns": ["question", "answer"],
+        "parquet_columns_read": ["question"],
+        "selection_identifier_field": "split_row_index",
+    },
+    "humaneval": {
+        "repository": "openai/openai_humaneval", "config": "openai_humaneval",
+        "split": "test", "field": "prompt",
+        "file_path": "openai_humaneval/test-00000-of-00001.parquet",
+        "columns": ["task_id", "prompt", "canonical_solution", "test", "entry_point"],
+        "parquet_columns_read": ["task_id", "prompt"],
+        "selection_identifier_field": "task_id",
+    },
+}
+LICENSE_STATUSES = {"upstream_stated", "upstream_unspecified", "upstream_ambiguous"}
+SOURCE_METADATA_FIELDS = {
+    "repository", "revision", "config", "split", "field", "file_path", "file_sha256",
+    "file_bytes", "row_count", "columns", "parquet_columns_read", "model_input_fields",
+    "selection_identifier_field", "source_uri", "license",
+}
+LICENSE_METADATA_FIELDS = {
+    "status", "upstream_value", "evidence_uri", "evidence_sha256", "evidence_text", "status_basis",
+}
+
+
+def validate_s6_source_metadata(source_metadata: dict) -> dict:
+    """Validate pinned source identity and documented license status without requiring a license claim."""
+    if not isinstance(source_metadata, dict) or set(source_metadata) != set(DOMAIN_SOURCE_CONTRACTS):
+        raise S6Error("complete SST-2, GSM8K, and HumanEval source metadata required")
+    normalized = {}
+    for domain, contract in DOMAIN_SOURCE_CONTRACTS.items():
+        metadata = source_metadata[domain]
+        if not isinstance(metadata, dict) or set(metadata) != SOURCE_METADATA_FIELDS:
+            raise S6Error(f"{domain} source metadata is incomplete")
+        for field, expected in contract.items():
+            if metadata[field] != expected:
+                raise S6Error(f"{domain} source {field} differs from the approved S6 identity")
+        if (not isinstance(metadata["revision"], str) or
+                not COMMIT_PATTERN.fullmatch(metadata["revision"])):
+            raise S6Error(f"{domain} source revision must be an immutable commit SHA")
+        if (not isinstance(metadata["file_sha256"], str) or
+                not SHA256_PATTERN.fullmatch(metadata["file_sha256"])):
+            raise S6Error(f"{domain} source file SHA-256 is required")
+        if (type(metadata["file_bytes"]) is not int or metadata["file_bytes"] <= 0 or
+                type(metadata["row_count"]) is not int or metadata["row_count"] <= 0):
+            raise S6Error(f"{domain} source size and row count must be positive integers")
+        if metadata["model_input_fields"] != [contract["field"]]:
+            raise S6Error(f"{domain} model input must use only the registered source field")
+        expected_uri = (f"https://huggingface.co/datasets/{contract['repository']}"
+                        f"/resolve/{metadata['revision']}/{contract['file_path']}")
+        if metadata["source_uri"] != expected_uri:
+            raise S6Error(f"{domain} source URI must bind the immutable revision and file")
+
+        license_metadata = metadata["license"]
+        if (not isinstance(license_metadata, dict) or
+                set(license_metadata) != LICENSE_METADATA_FIELDS):
+            raise S6Error(f"{domain} complete license metadata/status/evidence required")
+        status = license_metadata["status"]
+        value = license_metadata["upstream_value"]
+        if not isinstance(status, str) or status not in LICENSE_STATUSES:
+            raise S6Error(f"{domain} license status is not recognized")
+        if status == "upstream_stated":
+            if not isinstance(value, str) or not value.strip():
+                raise S6Error(f"{domain} upstream-stated license value must be preserved exactly")
+        elif status == "upstream_unspecified" and value is not None:
+            raise S6Error(f"{domain} unspecified upstream license value must remain null")
+        elif value is not None and not isinstance(value, (str, list)):
+            raise S6Error(f"{domain} uncertain upstream license value must be recorded verbatim or null")
+        evidence_uri = (f"https://huggingface.co/datasets/{contract['repository']}"
+                        f"/blob/{metadata['revision']}/README.md")
+        if license_metadata["evidence_uri"] != evidence_uri:
+            raise S6Error(f"{domain} license evidence must reference the pinned upstream card")
+        if (not isinstance(license_metadata["evidence_sha256"], str) or
+                not SHA256_PATTERN.fullmatch(license_metadata["evidence_sha256"]) or
+                not isinstance(license_metadata["evidence_text"], list) or
+                not license_metadata["evidence_text"] or
+                any(not isinstance(line, str) or not line.strip()
+                    for line in license_metadata["evidence_text"]) or
+                not isinstance(license_metadata["status_basis"], str) or
+                not license_metadata["status_basis"].strip()):
+            raise S6Error(f"{domain} license status requires hashed source evidence and explanation")
+        normalized[domain] = metadata
+    return normalized
+
+
 def prepare_s6_domains(sources: dict[str, Iterable[dict]], tokenizer, *,
                        tokenizer_id: str, tokenizer_revision: str,
-                       tokenizer_sha256: str, revisions: dict[str, str],
-                       licenses: dict[str, str]) -> dict:
+                       tokenizer_sha256: str, source_metadata: dict,
+                       decision_sha256: str, source_lock_sha256: str) -> dict:
     if (not tokenizer_id or not COMMIT_PATTERN.fullmatch(tokenizer_revision) or
-            set(licenses) != set(DOMAIN_FIELDS) or
-            any(not isinstance(value, str) or not value.strip() for value in licenses.values())):
-        raise S6Error("pinned tokenizer revision and all source licenses required")
+            not SHA256_PATTERN.fullmatch(decision_sha256) or
+            not SHA256_PATTERN.fullmatch(source_lock_sha256)):
+        raise S6Error("pinned tokenizer, D25 decision, and source lock required")
+    source_metadata = validate_s6_source_metadata(source_metadata)
     base, _ = verify_envelope(prepare_domain_panels(sources, tokenizer,
-        tokenizer_sha256=tokenizer_sha256, revisions=revisions))
+        tokenizer_sha256=tokenizer_sha256,
+        revisions={name: metadata["revision"] for name, metadata in source_metadata.items()}))
     return seal_payload({"kind": "s6-domains-v1", "base_panel": base,
         "tokenizer": {"id": tokenizer_id, "revision": tokenizer_revision,
                       "files_sha256": tokenizer_sha256},
-        "source_licenses": licenses,
+        "decision_sha256": decision_sha256,
+        "source_lock_sha256": source_lock_sha256,
+        "source_metadata": source_metadata,
         "metric_label": "causal_language_modeling_not_domain_task_accuracy"})
 
 
@@ -42,11 +141,16 @@ def validate_s6_domains(document: dict, *, tokenizer_sha256: str) -> tuple[dict,
     if (not payload["tokenizer"].get("id") or
             not COMMIT_PATTERN.fullmatch(payload["tokenizer"].get("revision", ""))):
         raise S6Error("unpinned S6 tokenizer")
+    if (not SHA256_PATTERN.fullmatch(payload.get("decision_sha256", "")) or
+            not SHA256_PATTERN.fullmatch(payload.get("source_lock_sha256", ""))):
+        raise S6Error("D25 decision or S6 source lock is not pinned")
+    source_metadata = validate_s6_source_metadata(payload.get("source_metadata"))
     validate_domain_panels(seal_payload(payload["base_panel"]),
                            tokenizer_sha256=tokenizer_sha256)
-    if (set(payload["source_licenses"]) != set(DOMAIN_FIELDS) or
-            any(not isinstance(v, str) or not v.strip() for v in payload["source_licenses"].values())):
-        raise S6Error("missing domain license provenance")
+    for domain in DOMAIN_FIELDS:
+        if (payload["base_panel"]["domains"][domain]["revision"] !=
+                source_metadata[domain]["revision"]):
+            raise S6Error(f"{domain} panel source revision differs from source metadata")
     return payload, digest
 
 
@@ -56,6 +160,8 @@ def render_domain_items(document: dict, *, tokenizer_sha256: str,
     if domain not in DOMAIN_FIELDS or context not in {40, 128}:
         raise S6Error("domain/context must be one registered source and 40 or 128 tokens")
     source = payload["base_panel"]["domains"][domain]
+    metadata = payload["source_metadata"][domain]
+    license_metadata = metadata["license"]
     items = []
     for row in source["items"]:
         rendering = row["renderings"][str(context)]
@@ -66,7 +172,10 @@ def render_domain_items(document: dict, *, tokenizer_sha256: str,
                       "source_field": row["source_field"],
                       "source_split": row["source_split"],
                       "source_revision": source["revision"],
-                      "source_license": payload["source_licenses"][domain],
+                      "source_file_sha256": metadata["file_sha256"],
+                      "source_license_status": license_metadata["status"],
+                      "source_upstream_license_value": license_metadata["upstream_value"],
+                      "source_license_evidence_sha256": license_metadata["evidence_sha256"],
                       "input_ids": ids, "attention_mask": mask,
                       "labels": [token if valid else -100 for token, valid in zip(ids, mask)],
                       "valid_target_count": rendering["real_token_count"] - 1,
@@ -168,7 +277,10 @@ def evaluate_s6_domains(*, adapter, document: dict, tokenizer_sha256: str,
                     (short[ident]["edited_nll_sum_nats"] - short[ident]["clean_nll_sum_nats"]) / short[ident]["valid_targets"]}
                 for ident in short]
     return {"status": "complete", "metric_label": "causal_language_modeling_not_domain_task_accuracy",
+            "decision_sha256": payload["decision_sha256"],
+            "source_lock_sha256": payload["source_lock_sha256"],
             "s6_manifest_sha256": manifest_sha, "source_revisions": {d: payload["base_panel"]["domains"][d]["revision"] for d in DOMAIN_FIELDS},
+            "source_license_statuses": {d: payload["source_metadata"][d]["license"]["status"] for d in DOMAIN_FIELDS},
             "results": results, "pooled": pooled, "paired": paired}
 
 

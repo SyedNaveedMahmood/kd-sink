@@ -1,0 +1,326 @@
+{
+  "branch": "main",
+  "checkpoint_readiness": {
+    "c3_checkpoint_verification_waived": false,
+    "c3_exception_exact_wording": "The transferred C3 seed0 train.jsonl containing only updates 2501-10000 after resumed_step=2500 is an accepted historical provenance limitation. Do NOT reconstruct, fabricate, splice, or rerun updates 1-2500. This known log gap by itself must NOT block S4/S6.",
+    "c3_exception_sha256": "f021ac0441f775d45d19a8109d47c0f45a0b0bbfc025bbd2df35be688e291cd2",
+    "final_input_tokens": 81920000,
+    "final_shifted_targets": 81280000,
+    "identity_manifest_complete_marker_and_model_payload_hashes": "all required checkpoint checks passed via scripts/stage08_readiness.py::verify_required_checkpoint",
+    "s4_required_steps": [
+      0,
+      100,
+      500,
+      2000,
+      10000
+    ],
+    "s4_verified_checkpoint_count": 35,
+    "s6_required_steps": [
+      0,
+      500,
+      2000,
+      10000
+    ],
+    "s6_verified_checkpoint_count": 28,
+    "source_run_root": "D:\\KD-SINK-central\\runs",
+    "training_logs": [
+      {
+        "condition": "C0",
+        "log_sha256": "75d04810872052aa45df447fcd8fc118360c518849f68231396b8b92ee615573",
+        "run_id": "s1-c0-seed0-rtx4080super",
+        "starts": 1,
+        "status": "complete",
+        "updates": 10000
+      },
+      {
+        "condition": "C1",
+        "log_sha256": "759ed5572a763f69544cf27a4acf58012758cbc88bde7dd48f720d90c3d1dcaa",
+        "run_id": "s1-c1-seed0-rtx4080super",
+        "starts": 1,
+        "status": "complete",
+        "updates": 10000
+      },
+      {
+        "condition": "C2",
+        "log_sha256": "c676fde4a0752d070e39c342dd19de2c511ff578bec963bc29da665cf9b78ba8",
+        "run_id": "s1-c2-seed0-rtx4080super",
+        "starts": 1,
+        "status": "complete",
+        "updates": 10000
+      },
+      {
+        "condition": "C3",
+        "exception_sha256": "f021ac0441f775d45d19a8109d47c0f45a0b0bbfc025bbd2df35be688e291cd2",
+        "first_update": 2501,
+        "last_update": 10000,
+        "log_sha256": "3f01cbd4fe455e39b500c8dbcad80291aca48f69fcd7ea22f5f8177fdb8bdbf0",
+        "run_id": "s1-c3-seed0-rtx4080super",
+        "starts": 1,
+        "status": "accepted_historical_prefix_gap",
+        "updates": 7500
+      },
+      {
+        "condition": "C4",
+        "log_sha256": "68a376ade6e3d6cc1c67def03a82166d855fcf5db65dfd005847d7e65ae585ac",
+        "run_id": "s1-c4-seed0-rtx3090",
+        "starts": 1,
+        "status": "complete",
+        "updates": 10000
+      },
+      {
+        "condition": "C5",
+        "log_sha256": "f23843f340ee887100004e6fc532bff895596b78ec43d29a55e1984b0d0e5f62",
+        "run_id": "s1-c5-seed0-rtx4080super",
+        "starts": 2,
+        "status": "complete",
+        "updates": 10000
+      },
+      {
+        "condition": "C6",
+        "log_sha256": "1356eea20ed26421ec01ff788762fc885030043c2edfa850e58bf6adb1538a6d",
+        "run_id": "s1-c6-seed0-rtx4080super",
+        "starts": 1,
+        "status": "complete",
+        "updates": 10000
+      }
+    ]
+  },
+  "created_utc": "2026-10-04T18:21:00Z",
+  "d25": {
+    "d24_policy_sha256": "46351d8e32ef1ef6238af18c11676e45e3d439e0e46942d1e61e35b8001851e6",
+    "historical_s1_s2_d24_roots_modified": false,
+    "path": "protocols/s1_researcher_amendment_d25_s6_external_datasets_20261004.json",
+    "prospective_only": true,
+    "sha256": "6c42ffebf8fa6b1a49787ec7468040939b6fd360c6132e2df10bf2b212780704",
+    "source_lock_path": "protocols/s6_external_dataset_sources_d25.json",
+    "source_lock_sha256": "173b54c9dea5d19ad34a1174540173f40e1ad491ed4c81c9375f58e0be6d5235"
+  },
+  "execution_boundary": {
+    "gpu_execution": false,
+    "model_weights_loaded": false,
+    "s4_or_s5_science": false,
+    "scientific_evaluation": false,
+    "source_run_directories_modified": false,
+    "stage09": false,
+    "training": false
+  },
+  "hostname": "DESKTOP-GPO5752",
+  "panel_freeze": {
+    "answers_completions_and_test_code_in_inputs": false,
+    "external_directory": "D:\\KD-SINK-central\\analysis\\S6_D25\\panels",
+    "external_to_git": true,
+    "items_per_domain": 100,
+    "max_contexts": [
+      40,
+      128
+    ],
+    "model_input_fields_only": true,
+    "optional_contexts": {
+      "1024": "disabled",
+      "512": "disabled"
+    },
+    "paired_context_panel_sha256": {
+      "gsm8k_max128": "e0822d6d87685151ac120b95a65ec090d7530cd34b69585e2414dea9b0a1e6c2",
+      "gsm8k_max40": "2a8ce0ccbf1357341cc640b041000817d5d12547d3ea0987231e379ed2ead42f",
+      "humaneval_max128": "1738b0cc78295ebc38a7a69f2aba2730f0c4b8c3837a339e42673d72d7c4a79b",
+      "humaneval_max40": "801fcab5bb5fe1662d0577a180c79d315879d63c982164ba6afcb50b5dff4325",
+      "sst2_max128": "081807cde26bb65b462883b6c23b653194127f19889d16ee91c89a67ff92350b",
+      "sst2_max40": "57f556aab23bbaa5726ad03b4cabc0996efd588c7845108207e79699d0054960"
+    },
+    "paired_same_documents_and_order": true,
+    "panel_file_sha256": "47f7aa9674e324d5c383c386c1a11d187d200e9a4930ab00a8407ddebf7b5f56",
+    "panel_manifest_sha256": "73b0162539bd5870a95aecd9149edadb97cff6eb36fdc4e9b3f73d0bad6e9508",
+    "preparation_manifest_file_sha256": "6d1ed1e105d9885cc1e992788fafee6f8d3ed102414ddf3ce6d3bc8c945f5158",
+    "preparation_manifest_sha256": "20c6213d551ecbcc0ff371b3ba2d40cc8bdabfb6f6473d1c975577e34e931e47",
+    "raw_dataset_text_committed": false,
+    "right_padding": "EOS; two or more real tokens per item",
+    "source_selection_envelope_sha256": "2215ddbfea9dc16d6ceb896b57f037023e018674c183e2a6321c023ec299b995",
+    "source_selection_file_sha256": "012a47bf8e4fa44516f80f9366a623165dbcb20abce6296dff9743c3c715d26d"
+  },
+  "readiness": {
+    "s4": "READY",
+    "s5": "BLOCKED",
+    "s5_reason": "The existing join still enforces exact protocol-root equality; this D25 S6-only task does not change S5.",
+    "s6": "READY",
+    "s6_scope": "Source and panel preparation/checkpoint readiness only; scientific evaluation remains separately authorized."
+  },
+  "s6_sources": {
+    "gsm8k": {
+      "columns": [
+        "question",
+        "answer"
+      ],
+      "config": "main",
+      "field": "question",
+      "file_bytes": 419088,
+      "file_path": "main/test-00000-of-00001.parquet",
+      "file_sha256": "ee7b8da9e381df27b9e3f7758a159ab2bdaa4dbaa910546cbbc47e0cb44e4f59",
+      "license": {
+        "evidence_sha256": "a17e882503578c9e324560630e31017617714ee025c87cf4fea6fd916895f3c1",
+        "evidence_text": [
+          "license:\n- mit",
+          "The GSM8K dataset is licensed under the MIT License."
+        ],
+        "evidence_uri": "https://huggingface.co/datasets/openai/gsm8k/blob/740312add88f781978c0658806c59bc2815b9866/README.md",
+        "status": "upstream_stated",
+        "status_basis": "Both pinned upstream card metadata and its licensing section state MIT.",
+        "upstream_value": "mit"
+      },
+      "license_evidence_sha256_verified": true,
+      "local_snapshot_dir": "D:\\KD-SINK-central\\analysis\\S6_D25\\sources\\gsm8k",
+      "model_input_fields": [
+        "question"
+      ],
+      "parquet_columns_read": [
+        "question"
+      ],
+      "repository": "openai/gsm8k",
+      "revision": "740312add88f781978c0658806c59bc2815b9866",
+      "row_count": 1319,
+      "selected_item_count": 100,
+      "selected_unique_eligible_count": 1319,
+      "source_file_sha256_verified_against_upstream_blob": true,
+      "source_uri": "https://huggingface.co/datasets/openai/gsm8k/resolve/740312add88f781978c0658806c59bc2815b9866/main/test-00000-of-00001.parquet",
+      "split": "test"
+    },
+    "humaneval": {
+      "columns": [
+        "task_id",
+        "prompt",
+        "canonical_solution",
+        "test",
+        "entry_point"
+      ],
+      "config": "openai_humaneval",
+      "field": "prompt",
+      "file_bytes": 83920,
+      "file_path": "openai_humaneval/test-00000-of-00001.parquet",
+      "file_sha256": "2f2871a15fbc95b6c683043359f4ed8e144c5a1c4f24f25f66bc51f598dfcfb6",
+      "license": {
+        "evidence_sha256": "f81cb59f7dae73d1ee1069d7de3ba1c0f9d2bd80f4df6d6990d12bf488e5b5ef",
+        "evidence_text": [
+          "license:\n- mit",
+          "MIT License"
+        ],
+        "evidence_uri": "https://huggingface.co/datasets/openai/openai_humaneval/blob/7dce6050a7d6d172f3cc5c32aa97f52fa1a2e544/README.md",
+        "status": "upstream_stated",
+        "status_basis": "The pinned OpenAI dataset card metadata and licensing section state MIT.",
+        "upstream_value": "mit"
+      },
+      "license_evidence_sha256_verified": true,
+      "local_snapshot_dir": "D:\\KD-SINK-central\\analysis\\S6_D25\\sources\\humaneval",
+      "model_input_fields": [
+        "prompt"
+      ],
+      "parquet_columns_read": [
+        "task_id",
+        "prompt"
+      ],
+      "repository": "openai/openai_humaneval",
+      "revision": "7dce6050a7d6d172f3cc5c32aa97f52fa1a2e544",
+      "row_count": 164,
+      "selected_item_count": 100,
+      "selected_unique_eligible_count": 164,
+      "source_file_sha256_verified_against_upstream_blob": true,
+      "source_uri": "https://huggingface.co/datasets/openai/openai_humaneval/resolve/7dce6050a7d6d172f3cc5c32aa97f52fa1a2e544/openai_humaneval/test-00000-of-00001.parquet",
+      "split": "test"
+    },
+    "sst2": {
+      "columns": [
+        "sentence",
+        "label",
+        "idx"
+      ],
+      "config": "sst2",
+      "field": "sentence",
+      "file_bytes": 72819,
+      "file_path": "sst2/validation-00000-of-00001.parquet",
+      "file_sha256": "a1371f3b3a7b0bcefa8388799a9359dc3ce76c349cc0079507a7991364fd2a9b",
+      "license": {
+        "evidence_sha256": "073f689c80fc6b3366d583eb570a05be2140b01ff2fdd706c416e14d0d2d5d5a",
+        "evidence_text": [
+          "license:\n- other",
+          "The primary GLUE tasks are built on and derived from existing datasets. We refer users to the original licenses accompanying each dataset."
+        ],
+        "evidence_uri": "https://huggingface.co/datasets/nyu-mll/glue/blob/bcdcba79d07bc864c1c254ccfcedcce55bcc9a8c/README.md",
+        "status": "upstream_ambiguous",
+        "status_basis": "The pinned GLUE metadata says other and delegates to each original dataset license; no clearer SST-2 license identifier was verified.",
+        "upstream_value": "other"
+      },
+      "license_evidence_sha256_verified": true,
+      "local_snapshot_dir": "D:\\KD-SINK-central\\analysis\\S6_D25\\sources\\sst2",
+      "model_input_fields": [
+        "sentence"
+      ],
+      "parquet_columns_read": [
+        "sentence",
+        "idx"
+      ],
+      "repository": "nyu-mll/glue",
+      "revision": "bcdcba79d07bc864c1c254ccfcedcce55bcc9a8c",
+      "row_count": 872,
+      "selected_item_count": 100,
+      "selected_unique_eligible_count": 872,
+      "source_file_sha256_verified_against_upstream_blob": true,
+      "source_uri": "https://huggingface.co/datasets/nyu-mll/glue/resolve/bcdcba79d07bc864c1c254ccfcedcce55bcc9a8c/sst2/validation-00000-of-00001.parquet",
+      "split": "validation"
+    }
+  },
+  "schema_version": 1,
+  "scope": "preparation_only",
+  "starting_commit": "c3bc979d4e93bd9c59dfb022055b0ffdb8bb0e0b",
+  "tests": [
+    {
+      "command": ".\\.venv\\Scripts\\python.exe -m pytest -q tests/unit/test_stage08_s6.py tests/unit/test_stage08_s6_d25.py tests/unit/test_stage08_readiness.py tests/unit/test_stage08_probes.py tests/unit/test_stage08_s5.py tests/unit/test_followup_policy.py tests/integration/test_clean_wheel.py",
+      "environment": "CUDA_VISIBLE_DEVICES=; HF_HUB_OFFLINE=1; TRANSFORMERS_OFFLINE=1",
+      "exit_code": 0,
+      "failed": 0,
+      "passed": 73,
+      "skipped": 0
+    },
+    {
+      "command": ".\\.venv\\Scripts\\python.exe -m pytest -q tests/unit tests/integration -m 'not gpu and not network'",
+      "environment": "CUDA_VISIBLE_DEVICES=; HF_HUB_OFFLINE=1; TRANSFORMERS_OFFLINE=1",
+      "exit_code": 0,
+      "failed": 0,
+      "passed": 327,
+      "skipped": 0,
+      "warnings": [
+        "external astor DeprecationWarning: ast.Num is deprecated"
+      ]
+    },
+    {
+      "command": "scripts/prepare_s6_d25_panels.py (pinned local source snapshots; CUDA/HF/Transformers offline)",
+      "exit_code": 0,
+      "result": "100 paired items per domain frozen outside Git"
+    },
+    {
+      "command": "scripts/prepare_s6_d25_panels.py --verify-only (pinned local source snapshots; CUDA/HF/Transformers offline)",
+      "exit_code": 0,
+      "result": "source hashes, tokenizer identity, sealed panels, selection IDs, paired context hashes and sidecar verified"
+    }
+  ],
+  "tokenizer": {
+    "bundle_sha256": "68bfbc36e7d352017e23168f34c98b3b92a18bdcb658c163dea499d8d690c580",
+    "eos_pad_token_id": 50256,
+    "id": "openai-community/gpt2",
+    "local_bundle_hash_matches_s1_artifact_lock": true,
+    "revision": "607a30d783dfa663caf39e06633721c8d4cfcd7e",
+    "upstream_revision_file_sha256_matches_local_and_s1_lock": {
+      "config.json": "0daed7749b4f02b8f76240d5444551d7b08712dab4d0adb8239c56ba823bb7b4",
+      "merges.txt": "1ce1664773c50f3e0cc8842619a93edc4624525b728b188a9e0be33b7726adc5",
+      "tokenizer.json": "8414cab924d8b9b33013f0d221c5862f365ee9be39c5c2bfae8a5a9e970478a6",
+      "tokenizer_config.json": "5e04eb606e3a1583530a42e36c2a6b6615c86f34fe77e44d9ddeb43ff940931f",
+      "vocab.json": "196139668be63f3b5d6574427317ae82f612a97c5d1cdaf36ed2256dbf636783"
+    }
+  },
+  "verification": {
+    "40_128_pairing_right_padding_minimum_tokens": "PASS",
+    "license_evidence_snapshots_match_sha256": true,
+    "no_answers_completions_or_test_code_in_model_input_projection": "PASS",
+    "panel_and_sidecar_readback": "PASS",
+    "repository_git_diff_check": "PASS",
+    "selection_order_matches_panel_items": "PASS",
+    "source_snapshots_match_pinned_file_sha256": true
+  }
+}

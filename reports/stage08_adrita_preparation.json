@@ -1,0 +1,1662 @@
+{
+  "schema_version": 1,
+  "hostname": "DESKTOP-GPO5752",
+  "starting_commit": "c3bc979d4e93bd9c59dfb022055b0ffdb8bb0e0b",
+  "created_utc": "2026-10-04T17:04:00Z",
+  "scope": "preparation_only",
+  "source_inventory": "D:\\KD-SINK-central\\manifests\\S1_MASTER_INDEX.json",
+  "c3_exception_sha256": "f021ac0441f775d45d19a8109d47c0f45a0b0bbfc025bbd2df35be688e291cd2",
+  "s4": {
+    "status": "READY",
+    "scope": "Preparation/readiness only; not authorization to launch S4.",
+    "conditions": [
+      "C0",
+      "C1",
+      "C2",
+      "C3",
+      "C4",
+      "C5",
+      "C6"
+    ],
+    "seed": 0,
+    "required_steps": [
+      0,
+      100,
+      500,
+      2000,
+      10000
+    ],
+    "verified_checkpoint_count": 35,
+    "required_run_paths": {
+      "C0": "D:\\KD-SINK-central\\runs\\s1-c0-seed0-rtx4080super",
+      "C1": "D:\\KD-SINK-central\\runs\\s1-c1-seed0-rtx4080super",
+      "C2": "D:\\KD-SINK-central\\runs\\s1-c2-seed0-rtx4080super",
+      "C3": "D:\\KD-SINK-central\\runs\\s1-c3-seed0-rtx4080super",
+      "C4": "D:\\KD-SINK-central\\runs\\s1-c4-seed0-rtx3090",
+      "C5": "D:\\KD-SINK-central\\runs\\s1-c5-seed0-rtx4080super",
+      "C6": "D:\\KD-SINK-central\\runs\\s1-c6-seed0-rtx4080super"
+    },
+    "required_checkpoint_paths": [
+      "D:\\KD-SINK-central\\runs\\s1-c3-seed0-rtx4080super\\checkpoints\\weights-000000",
+      "D:\\KD-SINK-central\\runs\\s1-c3-seed0-rtx4080super\\checkpoints\\weights-000100",
+      "D:\\KD-SINK-central\\runs\\s1-c3-seed0-rtx4080super\\checkpoints\\weights-000500",
+      "D:\\KD-SINK-central\\runs\\s1-c3-seed0-rtx4080super\\checkpoints\\weights-002000",
+      "D:\\KD-SINK-central\\runs\\s1-c3-seed0-rtx4080super\\checkpoints\\final-010000",
+      "D:\\KD-SINK-central\\runs\\s1-c0-seed0-rtx4080super\\checkpoints\\weights-000000",
+      "D:\\KD-SINK-central\\runs\\s1-c0-seed0-rtx4080super\\checkpoints\\weights-000100",
+      "D:\\KD-SINK-central\\runs\\s1-c0-seed0-rtx4080super\\checkpoints\\weights-000500",
+      "D:\\KD-SINK-central\\runs\\s1-c0-seed0-rtx4080super\\checkpoints\\weights-002000",
+      "D:\\KD-SINK-central\\runs\\s1-c0-seed0-rtx4080super\\checkpoints\\final-010000",
+      "D:\\KD-SINK-central\\runs\\s1-c1-seed0-rtx4080super\\checkpoints\\weights-000000",
+      "D:\\KD-SINK-central\\runs\\s1-c1-seed0-rtx4080super\\checkpoints\\weights-000100",
+      "D:\\KD-SINK-central\\runs\\s1-c1-seed0-rtx4080super\\checkpoints\\weights-000500",
+      "D:\\KD-SINK-central\\runs\\s1-c1-seed0-rtx4080super\\checkpoints\\weights-002000",
+      "D:\\KD-SINK-central\\runs\\s1-c1-seed0-rtx4080super\\checkpoints\\final-010000",
+      "D:\\KD-SINK-central\\runs\\s1-c2-seed0-rtx4080super\\checkpoints\\weights-000000",
+      "D:\\KD-SINK-central\\runs\\s1-c2-seed0-rtx4080super\\checkpoints\\weights-000100",
+      "D:\\KD-SINK-central\\runs\\s1-c2-seed0-rtx4080super\\checkpoints\\weights-000500",
+      "D:\\KD-SINK-central\\runs\\s1-c2-seed0-rtx4080super\\checkpoints\\weights-002000",
+      "D:\\KD-SINK-central\\runs\\s1-c2-seed0-rtx4080super\\checkpoints\\final-010000",
+      "D:\\KD-SINK-central\\runs\\s1-c4-seed0-rtx3090\\checkpoints\\weights-000000",
+      "D:\\KD-SINK-central\\runs\\s1-c4-seed0-rtx3090\\checkpoints\\weights-000100",
+      "D:\\KD-SINK-central\\runs\\s1-c4-seed0-rtx3090\\checkpoints\\weights-000500",
+      "D:\\KD-SINK-central\\runs\\s1-c4-seed0-rtx3090\\checkpoints\\weights-002000",
+      "D:\\KD-SINK-central\\runs\\s1-c4-seed0-rtx3090\\checkpoints\\final-010000",
+      "D:\\KD-SINK-central\\runs\\s1-c5-seed0-rtx4080super\\checkpoints\\weights-000000",
+      "D:\\KD-SINK-central\\runs\\s1-c5-seed0-rtx4080super\\checkpoints\\weights-000100",
+      "D:\\KD-SINK-central\\runs\\s1-c5-seed0-rtx4080super\\checkpoints\\weights-000500",
+      "D:\\KD-SINK-central\\runs\\s1-c5-seed0-rtx4080super\\checkpoints\\weights-002000",
+      "D:\\KD-SINK-central\\runs\\s1-c5-seed0-rtx4080super\\checkpoints\\final-010000",
+      "D:\\KD-SINK-central\\runs\\s1-c6-seed0-rtx4080super\\checkpoints\\weights-000000",
+      "D:\\KD-SINK-central\\runs\\s1-c6-seed0-rtx4080super\\checkpoints\\weights-000100",
+      "D:\\KD-SINK-central\\runs\\s1-c6-seed0-rtx4080super\\checkpoints\\weights-000500",
+      "D:\\KD-SINK-central\\runs\\s1-c6-seed0-rtx4080super\\checkpoints\\weights-002000",
+      "D:\\KD-SINK-central\\runs\\s1-c6-seed0-rtx4080super\\checkpoints\\final-010000"
+    ],
+    "checkpoint_verification": "PASS: manifest/schema/step/kind/identity, COMPLETE, model payload SHA-256, and original protocol lineage independently verified.",
+    "training_logs": "C0-C2 and C4-C6 complete at 1-10000. C3 is accepted solely under the exact researcher-approved transferred-prefix exception above; all remaining provenance and checkpoints passed.",
+    "owt_artifacts": {
+      "root": "E:\\KD-SINK-stage06-Adrita\\artifacts\\KD-SINK-stage06-production",
+      "corpus_path": "E:\\KD-SINK-stage06-Adrita\\artifacts\\KD-SINK-stage06-production\\corpus\\owt-corpus-76dcdc819b97ecff4d3c458bdf4dbd7c1a5dc2a525541e29099e6a6ac760d700.json",
+      "corpus_file_sha256": "0956ca8b2974735686e77fa0ace2383868023af3cfb4d40fe45415f365bda9ea",
+      "corpus_payload_sha256": "76dcdc819b97ecff4d3c458bdf4d7c1a5dc2a525541e29099e6a6ac760d700",
+      "panels_path": "E:\\KD-SINK-stage06-Adrita\\artifacts\\KD-SINK-stage06-production\\panels\\owt-panels-03fa2adf3931f7594fae23d70e402c697ad2c771e53bdb68977b614336cc5013.json",
+      "panels_file_sha256": "20175f8cba6f083ac0d47be2096416c410e88587a6ac823ec9c2e9c936f403ba",
+      "panels_payload_sha256": "03fa2adf3931f7594fae23d70e402c697ad2c771e53bdb68977b614336cc5013",
+      "source_revision": "Skylion007/openwebtext@79d93d786212f7344586290adb811d4ae6a1762c",
+      "source_license": "cc0-1.0"
+    },
+    "probe_prerequisites": {
+      "status": "PASS from existing Stage08 implementation/tests and sealed real-teacher qualification",
+      "stage08_report": "reports/stage08.json",
+      "teacher_evidence": "reports/stage08_4080_gpu_evidence.json",
+      "teacher_evidence_file_sha256": "c380227c18df4f63cbdd9089a7aa404b4626aefc06214ddc95af141de13baf86",
+      "teacher_model_weights_sha256": "5f47f3e12f91cd33b662ce7e433b6150ad5512b5884a2cee961b50e9c3bbebce",
+      "engineering_source_panel_sha256": "29974142a3f3c9aead3d0e5f314da64b107aaf136a46df844a449a2535ad4745",
+      "engineering_tokenized_panel_sha256": "c68e6ffecb6b8cfd3a43c94c5811677325bd6094edcb3596a0f56a5e35b3ed67",
+      "limit": "Engineering calibration evidence, not production S4 coverage or a scientific effect claim."
+    },
+    "blockers": []
+  },
+  "s5": {
+    "status": "BLOCKED",
+    "scope": "Seed0 primary inputs only; no new inference; seed1/2 numeric reuse remains optional.",
+    "required_run_paths": {
+      "C1": "D:\\KD-SINK-central\\runs\\s1-c1-seed0-rtx4080super",
+      "C2": "D:\\KD-SINK-central\\runs\\s1-c2-seed0-rtx4080super",
+      "C5": "D:\\KD-SINK-central\\runs\\s1-c5-seed0-rtx4080super",
+      "C6": "D:\\KD-SINK-central\\runs\\s1-c6-seed0-rtx4080super"
+    },
+    "training_logs": {
+      "C1": "complete",
+      "C2": "complete",
+      "C5": "complete",
+      "C6": "complete"
+    },
+    "existing_record_inventory": {
+      "source": "D:\\KD-SINK-central\\manifests\\S1_MASTER_INDEX.json",
+      "prior_readiness_status": "RECORDS_PRESENT_HARDWARE_COMPARABILITY_LIMITED",
+      "prior_seed0_records_verified": true,
+      "runs": {
+        "s1-c1-seed0-rtx4080super": {
+          "evaluation_file_count": 59206,
+          "files_listed_in_transfer_sha256_manifest": true,
+          "protocol_root": "48c39a25f640b90a70056e3c8f7308b66b9d635876e22c56f76516a09d2c9791",
+          "gpu_uuid": "GPU-f6ff547d-b5cb-c2b8-ca56-ef87e6c18af0"
+        },
+        "s1-c2-seed0-rtx4080super": {
+          "evaluation_file_count": 59206,
+          "files_listed_in_transfer_sha256_manifest": true,
+          "protocol_root": "910961fcc53edaed0df48e3139dbb7ca2e058bf7480b67dab27bae0bcd90f26f",
+          "gpu_uuid": "GPU-72b4b307-b613-c35e-ea32-53f4431de9ee"
+        },
+        "s1-c5-seed0-rtx4080super": {
+          "evaluation_file_count": 59206,
+          "files_listed_in_transfer_sha256_manifest": true,
+          "protocol_root": "fccf4c14bc691e550c6304f4955b72037efb8d042b3e51afb70367920fff0552",
+          "gpu_uuid": "GPU-2a5c25d0-1f73-919b-fd8b-f6f0df709aaf"
+        },
+        "s1-c6-seed0-rtx4080super": {
+          "evaluation_file_count": 59206,
+          "files_listed_in_transfer_sha256_manifest": true,
+          "protocol_root": "48c39a25f640b90a70056e3c8f7308b66b9d635876e22c56f76516a09d2c9791",
+          "gpu_uuid": "GPU-2a5c25d0-1f73-919b-fd8b-f6f0df709aaf"
+        }
+      },
+      "note": "The existing central readiness audit marks these records verified and reports 59,206 evaluation files per run. A fresh complete per-item aggregate recomputation was not completed in this turn and is not claimed."
+    },
+    "protocol_roots_by_condition": {
+      "C1": "48c39a25f640b90a70056e3c8f7308b66b9d635876e22c56f76516a09d2c9791",
+      "C2": "910961fcc53edaed0df48e3139dbb7ca2e058bf7480b67dab27bae0bcd90f26f",
+      "C5": "fccf4c14bc691e550c6304f4955b72037efb8d042b3e51afb70367920fff0552",
+      "C6": "48c39a25f640b90a70056e3c8f7308b66b9d635876e22c56f76516a09d2c9791"
+    },
+    "gpu_uuids_by_condition": {
+      "C1": "GPU-f6ff547d-b5cb-c2b8-ca56-ef87e6c18af0",
+      "C2": "GPU-72b4b307-b613-c35e-ea32-53f4431de9ee",
+      "C5": "GPU-2a5c25d0-1f73-919b-fd8b-f6f0df709aaf",
+      "C6": "GPU-2a5c25d0-1f73-919b-fd8b-f6f0df709aaf"
+    },
+    "compatibility_gate": {
+      "status": "BLOCKED_MISMATCH",
+      "implementation": "src/sinklab/s5_analysis.py::join_s5",
+      "rule": "The existing S5 join requires identical protocol_sha256 across C1/C2/C5/C6 rows.",
+      "observed_distinct_root_count": 3,
+      "decision_needed": "Researcher must determine whether the existing source roots are compatible for a defined S5 analysis; do not relabel roots or bypass the gate."
+    },
+    "hardware_note": "The four inputs span three GPU UUIDs; S5 requires an explicit bridge/replica or a reported hardware confound. No C1/C2 RTX3090 bridge archives are present in the central index.",
+    "direct_item_reaggregation_attempt": "C1 read-only full item/aggregate recheck was cancelled before completion due per-file I/O time; no result or integrity error was emitted and it is not counted as passed.",
+    "blockers": [
+      "Strict existing join rejects the three distinct original protocol roots; researcher compatibility decision required."
+    ]
+  },
+  "s6": {
+    "status": "BLOCKED",
+    "scope": "Seed0 only; optional 512/1024 contexts disabled.",
+    "conditions": [
+      "C0",
+      "C1",
+      "C2",
+      "C3",
+      "C4",
+      "C5",
+      "C6"
+    ],
+    "seed": 0,
+    "required_steps": [
+      0,
+      500,
+      2000,
+      10000
+    ],
+    "verified_checkpoint_count": 28,
+    "required_run_paths": {
+      "C0": "D:\\KD-SINK-central\\runs\\s1-c0-seed0-rtx4080super",
+      "C1": "D:\\KD-SINK-central\\runs\\s1-c1-seed0-rtx4080super",
+      "C2": "D:\\KD-SINK-central\\runs\\s1-c2-seed0-rtx4080super",
+      "C3": "D:\\KD-SINK-central\\runs\\s1-c3-seed0-rtx4080super",
+      "C4": "D:\\KD-SINK-central\\runs\\s1-c4-seed0-rtx3090",
+      "C5": "D:\\KD-SINK-central\\runs\\s1-c5-seed0-rtx4080super",
+      "C6": "D:\\KD-SINK-central\\runs\\s1-c6-seed0-rtx4080super"
+    },
+    "required_checkpoint_paths": [
+      "D:\\KD-SINK-central\\runs\\s1-c3-seed0-rtx4080super\\checkpoints\\weights-000000",
+      "D:\\KD-SINK-central\\runs\\s1-c3-seed0-rtx4080super\\checkpoints\\weights-000500",
+      "D:\\KD-SINK-central\\runs\\s1-c3-seed0-rtx4080super\\checkpoints\\weights-002000",
+      "D:\\KD-SINK-central\\runs\\s1-c3-seed0-rtx4080super\\checkpoints\\final-010000",
+      "D:\\KD-SINK-central\\runs\\s1-c0-seed0-rtx4080super\\checkpoints\\weights-000000",
+      "D:\\KD-SINK-central\\runs\\s1-c0-seed0-rtx4080super\\checkpoints\\weights-000500",
+      "D:\\KD-SINK-central\\runs\\s1-c0-seed0-rtx4080super\\checkpoints\\weights-002000",
+      "D:\\KD-SINK-central\\runs\\s1-c0-seed0-rtx4080super\\checkpoints\\final-010000",
+      "D:\\KD-SINK-central\\runs\\s1-c1-seed0-rtx4080super\\checkpoints\\weights-000000",
+      "D:\\KD-SINK-central\\runs\\s1-c1-seed0-rtx4080super\\checkpoints\\weights-000500",
+      "D:\\KD-SINK-central\\runs\\s1-c1-seed0-rtx4080super\\checkpoints\\weights-002000",
+      "D:\\KD-SINK-central\\runs\\s1-c1-seed0-rtx4080super\\checkpoints\\final-010000",
+      "D:\\KD-SINK-central\\runs\\s1-c2-seed0-rtx4080super\\checkpoints\\weights-000000",
+      "D:\\KD-SINK-central\\runs\\s1-c2-seed0-rtx4080super\\checkpoints\\weights-000500",
+      "D:\\KD-SINK-central\\runs\\s1-c2-seed0-rtx4080super\\checkpoints\\weights-002000",
+      "D:\\KD-SINK-central\\runs\\s1-c2-seed0-rtx4080super\\checkpoints\\final-010000",
+      "D:\\KD-SINK-central\\runs\\s1-c4-seed0-rtx3090\\checkpoints\\weights-000000",
+      "D:\\KD-SINK-central\\runs\\s1-c4-seed0-rtx3090\\checkpoints\\weights-000500",
+      "D:\\KD-SINK-central\\runs\\s1-c4-seed0-rtx3090\\checkpoints\\weights-002000",
+      "D:\\KD-SINK-central\\runs\\s1-c4-seed0-rtx3090\\checkpoints\\final-010000",
+      "D:\\KD-SINK-central\\runs\\s1-c5-seed0-rtx4080super\\checkpoints\\weights-000000",
+      "D:\\KD-SINK-central\\runs\\s1-c5-seed0-rtx4080super\\checkpoints\\weights-000500",
+      "D:\\KD-SINK-central\\runs\\s1-c5-seed0-rtx4080super\\checkpoints\\weights-002000",
+      "D:\\KD-SINK-central\\runs\\s1-c5-seed0-rtx4080super\\checkpoints\\final-010000",
+      "D:\\KD-SINK-central\\runs\\s1-c6-seed0-rtx4080super\\checkpoints\\weights-000000",
+      "D:\\KD-SINK-central\\runs\\s1-c6-seed0-rtx4080super\\checkpoints\\weights-000500",
+      "D:\\KD-SINK-central\\runs\\s1-c6-seed0-rtx4080super\\checkpoints\\weights-002000",
+      "D:\\KD-SINK-central\\runs\\s1-c6-seed0-rtx4080super\\checkpoints\\final-010000"
+    ],
+    "checkpoint_verification": "PASS for all 28 logical states using the same strict manifest/COMPLETE/payload-SHA/identity verification as S4.",
+    "domain_panel_status": "BLOCKED_NOT_AVAILABLE",
+    "domain_panel_hashes": null,
+    "artifact_root_checked": "E:\\KD-SINK-stage06-Adrita\\artifacts\\KD-SINK-stage06-production",
+    "finding": "The local approved artifact root contains S1 OWT assets but no SST-2, GSM8K, or HumanEval source snapshots/frozen S6 inputs. reports/stage01.json says production revisions and licenses are unverified. No S6 panel was created.",
+    "source_evidence": [
+      "reports/stage01.json",
+      "design/e6a_v2/studies/S6_CROSS_DOMAIN.md",
+      "design/e6a_v2/DATA_AND_PROVENANCE.md"
+    ],
+    "optional_contexts_enabled": false,
+    "blockers": [
+      "Exact approved SST-2/GSM8K/HumanEval source revisions, licenses, and local input data are missing or unverified."
+    ]
+  },
+  "runs": [
+    {
+      "condition": "C3",
+      "run_path": "D:\\KD-SINK-central\\runs\\s1-c3-seed0-rtx4080super",
+      "identity": {
+        "backend": "eager",
+        "calibration_hash": "fa031af3de63832e054b89539d3867c2904c9b592b1e7a8b3e4ca3e3676c532f",
+        "condition": "C3",
+        "data_hash": "76dcdc819b97ecff4d3c458bdf4dbd7c1a5dc2a525541e29099e6a6ac760d700",
+        "device_role": "rtx4080super",
+        "gpu_uuid": "GPU-72b4b307-b613-c35e-ea32-53f4431de9ee",
+        "hardware_hash": "fc410cd3d01505d0cd7b9ffdda98caaf070bfd2524ca7ac7841a0c78e60aa593",
+        "init_hash": "1a27890c588f317a4ae5523430f8af53c591bca29c9a78d13bf182c9c145fc09",
+        "microbatch": 4,
+        "model_hash": "b21bb330c10c1f9e324f487bb403d1629adf66f5643cfc19df8bbe5914d51358",
+        "precision": "bf16",
+        "protocol_hash": "fccf4c14bc691e550c6304f4955b72037efb8d042b3e51afb70367920fff0552",
+        "run_id": "s1-c3-seed0-rtx4080super",
+        "seed": 0,
+        "study": "S1"
+      },
+      "protocol_path": "E:\\kd-sink\\protocols\\superseded\\s1-protocol-fccf4c14bc691e550c6304f4955b72037efb8d042b3e51afb70367920fff0552.json",
+      "training": {
+        "path": "D:\\KD-SINK-central\\runs\\s1-c3-seed0-rtx4080super\\train.jsonl",
+        "sha256": "3f01cbd4fe455e39b500c8dbcad80291aca48f69fcd7ea22f5f8177fdb8bdbf0",
+        "update_count": 7500,
+        "first_update": 2501,
+        "last_update": 10000,
+        "start_event_count": 1,
+        "final_input_tokens": 81920000,
+        "final_shifted_targets": 81280000,
+        "status": "accepted_historical_prefix_gap",
+        "exception_sha256": "f021ac0441f775d45d19a8109d47c0f45a0b0bbfc025bbd2df35be688e291cd2"
+      }
+    },
+    {
+      "condition": "C0",
+      "run_path": "D:\\KD-SINK-central\\runs\\s1-c0-seed0-rtx4080super",
+      "identity": {
+        "backend": "eager",
+        "calibration_hash": "fa031af3de63832e054b89539d3867c2904c9b592b1e7a8b3e4ca3e3676c532f",
+        "condition": "C0",
+        "data_hash": "76dcdc819b97ecff4d3c458bdf4dbd7c1a5dc2a525541e29099e6a6ac760d700",
+        "device_role": "rtx4080super",
+        "gpu_uuid": "GPU-72b4b307-b613-c35e-ea32-53f4431de9ee",
+        "hardware_hash": "c284abebf7b9915053c282d57555a1a28cf9ad8250f3c402a3f313207eaae138",
+        "init_hash": "1a27890c588f317a4ae5523430f8af53c591bca29c9a78d13bf182c9c145fc09",
+        "microbatch": 4,
+        "model_hash": "b21bb330c10c1f9e324f487bb403d1629adf66f5643cfc19df8bbe5914d51358",
+        "precision": "bf16",
+        "protocol_hash": "910961fcc53edaed0df48e3139dbb7ca2e058bf7480b67dab27bae0bcd90f26f",
+        "run_id": "s1-c0-seed0-rtx4080super",
+        "seed": 0,
+        "study": "S1"
+      },
+      "protocol_path": "E:\\kd-sink\\protocols\\superseded\\s1-protocol-910961fcc53edaed0df48e3139dbb7ca2e058bf7480b67dab27bae0bcd90f26f.json",
+      "training": {
+        "path": "D:\\KD-SINK-central\\runs\\s1-c0-seed0-rtx4080super\\train.jsonl",
+        "sha256": "75d04810872052aa45df447fcd8fc118360c518849f68231396b8b92ee615573",
+        "update_count": 10000,
+        "first_update": 1,
+        "last_update": 10000,
+        "start_event_count": 1,
+        "final_input_tokens": 81920000,
+        "final_shifted_targets": 81280000,
+        "status": "complete",
+        "exception_sha256": null
+      }
+    },
+    {
+      "condition": "C1",
+      "run_path": "D:\\KD-SINK-central\\runs\\s1-c1-seed0-rtx4080super",
+      "identity": {
+        "backend": "eager",
+        "calibration_hash": "fa031af3de63832e054b89539d3867c2904c9b592b1e7a8b3e4ca3e3676c532f",
+        "condition": "C1",
+        "data_hash": "76dcdc819b97ecff4d3c458bdf4dbd7c1a5dc2a525541e29099e6a6ac760d700",
+        "device_role": "rtx4080super",
+        "gpu_uuid": "GPU-f6ff547d-b5cb-c2b8-ca56-ef87e6c18af0",
+        "hardware_hash": "e7e76acf4421b553ed94689e218da674a8d57cbd66405271583fdff41354f80b",
+        "init_hash": "1a27890c588f317a4ae5523430f8af53c591bca29c9a78d13bf182c9c145fc09",
+        "microbatch": 4,
+        "model_hash": "b21bb330c10c1f9e324f487bb403d1629adf66f5643cfc19df8bbe5914d51358",
+        "precision": "bf16",
+        "protocol_hash": "48c39a25f640b90a70056e3c8f7308b66b9d635876e22c56f76516a09d2c9791",
+        "run_id": "s1-c1-seed0-rtx4080super",
+        "seed": 0,
+        "study": "S1"
+      },
+      "protocol_path": "E:\\kd-sink\\protocols\\superseded\\s1-protocol-48c39a25f640b90a70056e3c8f7308b66b9d635876e22c56f76516a09d2c9791.json",
+      "training": {
+        "path": "D:\\KD-SINK-central\\runs\\s1-c1-seed0-rtx4080super\\train.jsonl",
+        "sha256": "759ed5572a763f69544cf27a4acf58012758cbc88bde7dd48f720d90c3d1dcaa",
+        "update_count": 10000,
+        "first_update": 1,
+        "last_update": 10000,
+        "start_event_count": 1,
+        "final_input_tokens": 81920000,
+        "final_shifted_targets": 81280000,
+        "status": "complete",
+        "exception_sha256": null
+      }
+    },
+    {
+      "condition": "C2",
+      "run_path": "D:\\KD-SINK-central\\runs\\s1-c2-seed0-rtx4080super",
+      "identity": {
+        "backend": "eager",
+        "calibration_hash": "fa031af3de63832e054b89539d3867c2904c9b592b1e7a8b3e4ca3e3676c532f",
+        "condition": "C2",
+        "data_hash": "76dcdc819b97ecff4d3c458bdf4dbd7c1a5dc2a525541e29099e6a6ac760d700",
+        "device_role": "rtx4080super",
+        "gpu_uuid": "GPU-72b4b307-b613-c35e-ea32-53f4431de9ee",
+        "hardware_hash": "c284abebf7b9915053c282d57555a1a28cf9ad8250f3c402a3f313207eaae138",
+        "init_hash": "1a27890c588f317a4ae5523430f8af53c591bca29c9a78d13bf182c9c145fc09",
+        "microbatch": 4,
+        "model_hash": "b21bb330c10c1f9e324f487bb403d1629adf66f5643cfc19df8bbe5914d51358",
+        "precision": "bf16",
+        "protocol_hash": "910961fcc53edaed0df48e3139dbb7ca2e058bf7480b67dab27bae0bcd90f26f",
+        "run_id": "s1-c2-seed0-rtx4080super",
+        "seed": 0,
+        "study": "S1"
+      },
+      "protocol_path": "E:\\kd-sink\\protocols\\superseded\\s1-protocol-910961fcc53edaed0df48e3139dbb7ca2e058bf7480b67dab27bae0bcd90f26f.json",
+      "training": {
+        "path": "D:\\KD-SINK-central\\runs\\s1-c2-seed0-rtx4080super\\train.jsonl",
+        "sha256": "c676fde4a0752d070e39c342dd19de2c511ff578bec963bc29da665cf9b78ba8",
+        "update_count": 10000,
+        "first_update": 1,
+        "last_update": 10000,
+        "start_event_count": 1,
+        "final_input_tokens": 81920000,
+        "final_shifted_targets": 81280000,
+        "status": "complete",
+        "exception_sha256": null
+      }
+    },
+    {
+      "condition": "C4",
+      "run_path": "D:\\KD-SINK-central\\runs\\s1-c4-seed0-rtx3090",
+      "identity": {
+        "backend": "eager",
+        "calibration_hash": "fa031af3de63832e054b89539d3867c2904c9b592b1e7a8b3e4ca3e3676c532f",
+        "condition": "C4",
+        "data_hash": "76dcdc819b97ecff4d3c458bdf4dbd7c1a5dc2a525541e29099e6a6ac760d700",
+        "device_role": "rtx3090",
+        "gpu_uuid": "GPU-a21766e4-bb31-9b79-5e8f-e58021e9708e",
+        "hardware_hash": "fc410cd3d01505d0cd7b9ffdda98caaf070bfd2524ca7ac7841a0c78e60aa593",
+        "init_hash": "1a27890c588f317a4ae5523430f8af53c591bca29c9a78d13bf182c9c145fc09",
+        "microbatch": 4,
+        "model_hash": "b21bb330c10c1f9e324f487bb403d1629adf66f5643cfc19df8bbe5914d51358",
+        "precision": "bf16",
+        "protocol_hash": "95a3607791fab3911916bcab407f7d10dab3576f197ebe7b606c2f9e3ac8ab15",
+        "run_id": "s1-c4-seed0-rtx3090",
+        "seed": 0,
+        "study": "S1"
+      },
+      "protocol_path": "E:\\kd-sink\\protocols\\superseded\\s1-protocol-95a3607791fab3911916bcab407f7d10dab3576f197ebe7b606c2f9e3ac8ab15.json",
+      "training": {
+        "path": "D:\\KD-SINK-central\\runs\\s1-c4-seed0-rtx3090\\train.jsonl",
+        "sha256": "68a376ade6e3d6cc1c67def03a82166d855fcf5db65dfd005847d7e65ae585ac",
+        "update_count": 10000,
+        "first_update": 1,
+        "last_update": 10000,
+        "start_event_count": 1,
+        "final_input_tokens": 81920000,
+        "final_shifted_targets": 81280000,
+        "status": "complete",
+        "exception_sha256": null
+      }
+    },
+    {
+      "condition": "C5",
+      "run_path": "D:\\KD-SINK-central\\runs\\s1-c5-seed0-rtx4080super",
+      "identity": {
+        "backend": "eager",
+        "calibration_hash": "fa031af3de63832e054b89539d3867c2904c9b592b1e7a8b3e4ca3e3676c532f",
+        "condition": "C5",
+        "data_hash": "76dcdc819b97ecff4d3c458bdf4dbd7c1a5dc2a525541e29099e6a6ac760d700",
+        "device_role": "rtx4080super",
+        "gpu_uuid": "GPU-2a5c25d0-1f73-919b-fd8b-f6f0df709aaf",
+        "hardware_hash": "fc410cd3d01505d0cd7b9ffdda98caaf070bfd2524ca7ac7841a0c78e60aa593",
+        "init_hash": "1a27890c588f317a4ae5523430f8af53c591bca29c9a78d13bf182c9c145fc09",
+        "microbatch": 4,
+        "model_hash": "b21bb330c10c1f9e324f487bb403d1629adf66f5643cfc19df8bbe5914d51358",
+        "precision": "bf16",
+        "protocol_hash": "fccf4c14bc691e550c6304f4955b72037efb8d042b3e51afb70367920fff0552",
+        "run_id": "s1-c5-seed0-rtx4080super",
+        "seed": 0,
+        "study": "S1"
+      },
+      "protocol_path": "E:\\kd-sink\\protocols\\superseded\\s1-protocol-fccf4c14bc691e550c6304f4955b72037efb8d042b3e51afb70367920fff0552.json",
+      "training": {
+        "path": "D:\\KD-SINK-central\\runs\\s1-c5-seed0-rtx4080super\\train.jsonl",
+        "sha256": "f23843f340ee887100004e6fc532bff895596b78ec43d29a55e1984b0d0e5f62",
+        "update_count": 10000,
+        "first_update": 1,
+        "last_update": 10000,
+        "start_event_count": 2,
+        "final_input_tokens": 81920000,
+        "final_shifted_targets": 81280000,
+        "status": "complete",
+        "exception_sha256": null
+      }
+    },
+    {
+      "condition": "C6",
+      "run_path": "D:\\KD-SINK-central\\runs\\s1-c6-seed0-rtx4080super",
+      "identity": {
+        "backend": "eager",
+        "calibration_hash": "fa031af3de63832e054b89539d3867c2904c9b592b1e7a8b3e4ca3e3676c532f",
+        "condition": "C6",
+        "data_hash": "76dcdc819b97ecff4d3c458bdf4dbd7c1a5dc2a525541e29099e6a6ac760d700",
+        "device_role": "rtx4080super",
+        "gpu_uuid": "GPU-2a5c25d0-1f73-919b-fd8b-f6f0df709aaf",
+        "hardware_hash": "e7e76acf4421b553ed94689e218da674a8d57cbd66405271583fdff41354f80b",
+        "init_hash": "1a27890c588f317a4ae5523430f8af53c591bca29c9a78d13bf182c9c145fc09",
+        "microbatch": 4,
+        "model_hash": "b21bb330c10c1f9e324f487bb403d1629adf66f5643cfc19df8bbe5914d51358",
+        "precision": "bf16",
+        "protocol_hash": "48c39a25f640b90a70056e3c8f7308b66b9d635876e22c56f76516a09d2c9791",
+        "run_id": "s1-c6-seed0-rtx4080super",
+        "seed": 0,
+        "study": "S1"
+      },
+      "protocol_path": "E:\\kd-sink\\protocols\\superseded\\s1-protocol-48c39a25f640b90a70056e3c8f7308b66b9d635876e22c56f76516a09d2c9791.json",
+      "training": {
+        "path": "D:\\KD-SINK-central\\runs\\s1-c6-seed0-rtx4080super\\train.jsonl",
+        "sha256": "1356eea20ed26421ec01ff788762fc885030043c2edfa850e58bf6adb1538a6d",
+        "update_count": 10000,
+        "first_update": 1,
+        "last_update": 10000,
+        "start_event_count": 1,
+        "final_input_tokens": 81920000,
+        "final_shifted_targets": 81280000,
+        "status": "complete",
+        "exception_sha256": null
+      }
+    }
+  ],
+  "checkpoint_results": [
+    {
+      "path": "D:\\KD-SINK-central\\runs\\s1-c3-seed0-rtx4080super\\checkpoints\\weights-000000",
+      "step": 0,
+      "kind": "weights",
+      "manifest_sha256": "95160261bffcbcd1565d1c89abac6c7a636910f63ae64b0c9b7191c2f2ceb39e",
+      "identity_sha256": "b0948d1b994e2115c59e87bc2f876ea3aea3bec93e50507d7240c27082b02861",
+      "identity": {
+        "backend": "eager",
+        "calibration_hash": "fa031af3de63832e054b89539d3867c2904c9b592b1e7a8b3e4ca3e3676c532f",
+        "condition": "C3",
+        "data_hash": "76dcdc819b97ecff4d3c458bdf4dbd7c1a5dc2a525541e29099e6a6ac760d700",
+        "device_role": "rtx4080super",
+        "gpu_uuid": "GPU-72b4b307-b613-c35e-ea32-53f4431de9ee",
+        "hardware_hash": "fc410cd3d01505d0cd7b9ffdda98caaf070bfd2524ca7ac7841a0c78e60aa593",
+        "init_hash": "1a27890c588f317a4ae5523430f8af53c591bca29c9a78d13bf182c9c145fc09",
+        "microbatch": 4,
+        "model_hash": "b21bb330c10c1f9e324f487bb403d1629adf66f5643cfc19df8bbe5914d51358",
+        "precision": "bf16",
+        "protocol_hash": "fccf4c14bc691e550c6304f4955b72037efb8d042b3e51afb70367920fff0552",
+        "run_id": "s1-c3-seed0-rtx4080super",
+        "seed": 0,
+        "study": "S1"
+      },
+      "payload_sha256": {
+        "model.safetensors": "2a079734c8994deb61577dc3f4954e81898729e87e63e5f958289b4bd7b95f3e"
+      },
+      "status": "verified",
+      "required_for": [
+        "S4",
+        "S6"
+      ]
+    },
+    {
+      "path": "D:\\KD-SINK-central\\runs\\s1-c3-seed0-rtx4080super\\checkpoints\\weights-000100",
+      "step": 100,
+      "kind": "weights",
+      "manifest_sha256": "11a76b3a59c7fc02f87aec52d07ad4af4d8978edaf33811756446b870748a229",
+      "identity_sha256": "b0948d1b994e2115c59e87bc2f876ea3aea3bec93e50507d7240c27082b02861",
+      "identity": {
+        "backend": "eager",
+        "calibration_hash": "fa031af3de63832e054b89539d3867c2904c9b592b1e7a8b3e4ca3e3676c532f",
+        "condition": "C3",
+        "data_hash": "76dcdc819b97ecff4d3c458bdf4dbd7c1a5dc2a525541e29099e6a6ac760d700",
+        "device_role": "rtx4080super",
+        "gpu_uuid": "GPU-72b4b307-b613-c35e-ea32-53f4431de9ee",
+        "hardware_hash": "fc410cd3d01505d0cd7b9ffdda98caaf070bfd2524ca7ac7841a0c78e60aa593",
+        "init_hash": "1a27890c588f317a4ae5523430f8af53c591bca29c9a78d13bf182c9c145fc09",
+        "microbatch": 4,
+        "model_hash": "b21bb330c10c1f9e324f487bb403d1629adf66f5643cfc19df8bbe5914d51358",
+        "precision": "bf16",
+        "protocol_hash": "fccf4c14bc691e550c6304f4955b72037efb8d042b3e51afb70367920fff0552",
+        "run_id": "s1-c3-seed0-rtx4080super",
+        "seed": 0,
+        "study": "S1"
+      },
+      "payload_sha256": {
+        "model.safetensors": "62b1d2f3a2b6dbc198c4d98551ccf63cd65baa02483a45b582594110873fef93"
+      },
+      "status": "verified",
+      "required_for": [
+        "S4"
+      ]
+    },
+    {
+      "path": "D:\\KD-SINK-central\\runs\\s1-c3-seed0-rtx4080super\\checkpoints\\weights-000500",
+      "step": 500,
+      "kind": "weights",
+      "manifest_sha256": "2ac9e3c270188ebd2b67caa7481c7e309dc9fcdaad4d1ce34de229fbd50747e6",
+      "identity_sha256": "b0948d1b994e2115c59e87bc2f876ea3aea3bec93e50507d7240c27082b02861",
+      "identity": {
+        "backend": "eager",
+        "calibration_hash": "fa031af3de63832e054b89539d3867c2904c9b592b1e7a8b3e4ca3e3676c532f",
+        "condition": "C3",
+        "data_hash": "76dcdc819b97ecff4d3c458bdf4dbd7c1a5dc2a525541e29099e6a6ac760d700",
+        "device_role": "rtx4080super",
+        "gpu_uuid": "GPU-72b4b307-b613-c35e-ea32-53f4431de9ee",
+        "hardware_hash": "fc410cd3d01505d0cd7b9ffdda98caaf070bfd2524ca7ac7841a0c78e60aa593",
+        "init_hash": "1a27890c588f317a4ae5523430f8af53c591bca29c9a78d13bf182c9c145fc09",
+        "microbatch": 4,
+        "model_hash": "b21bb330c10c1f9e324f487bb403d1629adf66f5643cfc19df8bbe5914d51358",
+        "precision": "bf16",
+        "protocol_hash": "fccf4c14bc691e550c6304f4955b72037efb8d042b3e51afb70367920fff0552",
+        "run_id": "s1-c3-seed0-rtx4080super",
+        "seed": 0,
+        "study": "S1"
+      },
+      "payload_sha256": {
+        "model.safetensors": "412003a01c66959a618890f23ec3c775a115f567a4bcd95324af5097c3d6d5eb"
+      },
+      "status": "verified",
+      "required_for": [
+        "S4",
+        "S6"
+      ]
+    },
+    {
+      "path": "D:\\KD-SINK-central\\runs\\s1-c3-seed0-rtx4080super\\checkpoints\\weights-002000",
+      "step": 2000,
+      "kind": "weights",
+      "manifest_sha256": "3deed54e919ec9b1808412a2e01cf1a950a49850db77388f40ced9ab0fbdae94",
+      "identity_sha256": "b0948d1b994e2115c59e87bc2f876ea3aea3bec93e50507d7240c27082b02861",
+      "identity": {
+        "backend": "eager",
+        "calibration_hash": "fa031af3de63832e054b89539d3867c2904c9b592b1e7a8b3e4ca3e3676c532f",
+        "condition": "C3",
+        "data_hash": "76dcdc819b97ecff4d3c458bdf4dbd7c1a5dc2a525541e29099e6a6ac760d700",
+        "device_role": "rtx4080super",
+        "gpu_uuid": "GPU-72b4b307-b613-c35e-ea32-53f4431de9ee",
+        "hardware_hash": "fc410cd3d01505d0cd7b9ffdda98caaf070bfd2524ca7ac7841a0c78e60aa593",
+        "init_hash": "1a27890c588f317a4ae5523430f8af53c591bca29c9a78d13bf182c9c145fc09",
+        "microbatch": 4,
+        "model_hash": "b21bb330c10c1f9e324f487bb403d1629adf66f5643cfc19df8bbe5914d51358",
+        "precision": "bf16",
+        "protocol_hash": "fccf4c14bc691e550c6304f4955b72037efb8d042b3e51afb70367920fff0552",
+        "run_id": "s1-c3-seed0-rtx4080super",
+        "seed": 0,
+        "study": "S1"
+      },
+      "payload_sha256": {
+        "model.safetensors": "f434bde065a6073b54f44c9f45fbc759690b4a1b0a027e9394047735b82f330a"
+      },
+      "status": "verified",
+      "required_for": [
+        "S4",
+        "S6"
+      ]
+    },
+    {
+      "path": "D:\\KD-SINK-central\\runs\\s1-c3-seed0-rtx4080super\\checkpoints\\final-010000",
+      "step": 10000,
+      "kind": "final",
+      "manifest_sha256": "7d629c59a650724ae4122686b5c57ce408a141e15bb7848e04a84e6311a3d122",
+      "identity_sha256": "b0948d1b994e2115c59e87bc2f876ea3aea3bec93e50507d7240c27082b02861",
+      "identity": {
+        "backend": "eager",
+        "calibration_hash": "fa031af3de63832e054b89539d3867c2904c9b592b1e7a8b3e4ca3e3676c532f",
+        "condition": "C3",
+        "data_hash": "76dcdc819b97ecff4d3c458bdf4dbd7c1a5dc2a525541e29099e6a6ac760d700",
+        "device_role": "rtx4080super",
+        "gpu_uuid": "GPU-72b4b307-b613-c35e-ea32-53f4431de9ee",
+        "hardware_hash": "fc410cd3d01505d0cd7b9ffdda98caaf070bfd2524ca7ac7841a0c78e60aa593",
+        "init_hash": "1a27890c588f317a4ae5523430f8af53c591bca29c9a78d13bf182c9c145fc09",
+        "microbatch": 4,
+        "model_hash": "b21bb330c10c1f9e324f487bb403d1629adf66f5643cfc19df8bbe5914d51358",
+        "precision": "bf16",
+        "protocol_hash": "fccf4c14bc691e550c6304f4955b72037efb8d042b3e51afb70367920fff0552",
+        "run_id": "s1-c3-seed0-rtx4080super",
+        "seed": 0,
+        "study": "S1"
+      },
+      "payload_sha256": {
+        "model.safetensors": "b1d171453101a2549878e795788873ef1e4f82e2ab8c64bc4f3cc72aa314f03c",
+        "state.pt": "7163b1e829cad9d47277d542d38fd3dd34e7fd9ad3c472d4e5a179b96e1c4bdb"
+      },
+      "status": "verified",
+      "required_for": [
+        "S4",
+        "S6"
+      ]
+    },
+    {
+      "path": "D:\\KD-SINK-central\\runs\\s1-c0-seed0-rtx4080super\\checkpoints\\weights-000000",
+      "step": 0,
+      "kind": "weights",
+      "manifest_sha256": "5da9519fe81222dc070a3a5ef348aa3a806413c26c9172a0b0a34a400a98a7e3",
+      "identity_sha256": "e09b7e7d4f00a1a5d60e738d85c9d0a0a4948834aa56c0fbc94ed9864209f841",
+      "identity": {
+        "backend": "eager",
+        "calibration_hash": "fa031af3de63832e054b89539d3867c2904c9b592b1e7a8b3e4ca3e3676c532f",
+        "condition": "C0",
+        "data_hash": "76dcdc819b97ecff4d3c458bdf4dbd7c1a5dc2a525541e29099e6a6ac760d700",
+        "device_role": "rtx4080super",
+        "gpu_uuid": "GPU-72b4b307-b613-c35e-ea32-53f4431de9ee",
+        "hardware_hash": "c284abebf7b9915053c282d57555a1a28cf9ad8250f3c402a3f313207eaae138",
+        "init_hash": "1a27890c588f317a4ae5523430f8af53c591bca29c9a78d13bf182c9c145fc09",
+        "microbatch": 4,
+        "model_hash": "b21bb330c10c1f9e324f487bb403d1629adf66f5643cfc19df8bbe5914d51358",
+        "precision": "bf16",
+        "protocol_hash": "910961fcc53edaed0df48e3139dbb7ca2e058bf7480b67dab27bae0bcd90f26f",
+        "run_id": "s1-c0-seed0-rtx4080super",
+        "seed": 0,
+        "study": "S1"
+      },
+      "payload_sha256": {
+        "model.safetensors": "2a079734c8994deb61577dc3f4954e81898729e87e63e5f958289b4bd7b95f3e"
+      },
+      "status": "verified",
+      "required_for": [
+        "S4",
+        "S6"
+      ]
+    },
+    {
+      "path": "D:\\KD-SINK-central\\runs\\s1-c0-seed0-rtx4080super\\checkpoints\\weights-000100",
+      "step": 100,
+      "kind": "weights",
+      "manifest_sha256": "414026fdce87139c0283dc40a1591cdee0fe3bfbe790027c4e59ae7f74a5595c",
+      "identity_sha256": "e09b7e7d4f00a1a5d60e738d85c9d0a0a4948834aa56c0fbc94ed9864209f841",
+      "identity": {
+        "backend": "eager",
+        "calibration_hash": "fa031af3de63832e054b89539d3867c2904c9b592b1e7a8b3e4ca3e3676c532f",
+        "condition": "C0",
+        "data_hash": "76dcdc819b97ecff4d3c458bdf4dbd7c1a5dc2a525541e29099e6a6ac760d700",
+        "device_role": "rtx4080super",
+        "gpu_uuid": "GPU-72b4b307-b613-c35e-ea32-53f4431de9ee",
+        "hardware_hash": "c284abebf7b9915053c282d57555a1a28cf9ad8250f3c402a3f313207eaae138",
+        "init_hash": "1a27890c588f317a4ae5523430f8af53c591bca29c9a78d13bf182c9c145fc09",
+        "microbatch": 4,
+        "model_hash": "b21bb330c10c1f9e324f487bb403d1629adf66f5643cfc19df8bbe5914d51358",
+        "precision": "bf16",
+        "protocol_hash": "910961fcc53edaed0df48e3139dbb7ca2e058bf7480b67dab27bae0bcd90f26f",
+        "run_id": "s1-c0-seed0-rtx4080super",
+        "seed": 0,
+        "study": "S1"
+      },
+      "payload_sha256": {
+        "model.safetensors": "c50a9fa5f234a6b37d3f15b8ba8c0bd421f38738beccd72bd6c1ce879c8cd17f"
+      },
+      "status": "verified",
+      "required_for": [
+        "S4"
+      ]
+    },
+    {
+      "path": "D:\\KD-SINK-central\\runs\\s1-c0-seed0-rtx4080super\\checkpoints\\weights-000500",
+      "step": 500,
+      "kind": "weights",
+      "manifest_sha256": "a667e9910d507322e948769d881bde0693d1dc0af35298c8c3f0d79647f21e61",
+      "identity_sha256": "e09b7e7d4f00a1a5d60e738d85c9d0a0a4948834aa56c0fbc94ed9864209f841",
+      "identity": {
+        "backend": "eager",
+        "calibration_hash": "fa031af3de63832e054b89539d3867c2904c9b592b1e7a8b3e4ca3e3676c532f",
+        "condition": "C0",
+        "data_hash": "76dcdc819b97ecff4d3c458bdf4dbd7c1a5dc2a525541e29099e6a6ac760d700",
+        "device_role": "rtx4080super",
+        "gpu_uuid": "GPU-72b4b307-b613-c35e-ea32-53f4431de9ee",
+        "hardware_hash": "c284abebf7b9915053c282d57555a1a28cf9ad8250f3c402a3f313207eaae138",
+        "init_hash": "1a27890c588f317a4ae5523430f8af53c591bca29c9a78d13bf182c9c145fc09",
+        "microbatch": 4,
+        "model_hash": "b21bb330c10c1f9e324f487bb403d1629adf66f5643cfc19df8bbe5914d51358",
+        "precision": "bf16",
+        "protocol_hash": "910961fcc53edaed0df48e3139dbb7ca2e058bf7480b67dab27bae0bcd90f26f",
+        "run_id": "s1-c0-seed0-rtx4080super",
+        "seed": 0,
+        "study": "S1"
+      },
+      "payload_sha256": {
+        "model.safetensors": "6111c35e615e544257b50db1e5d750847e78ac981cae3c6cd519cfe526eb42c9"
+      },
+      "status": "verified",
+      "required_for": [
+        "S4",
+        "S6"
+      ]
+    },
+    {
+      "path": "D:\\KD-SINK-central\\runs\\s1-c0-seed0-rtx4080super\\checkpoints\\weights-002000",
+      "step": 2000,
+      "kind": "weights",
+      "manifest_sha256": "4f04efe067d38b70ed5859a9054b91a593743e2cdbfa78754a112c179b09932b",
+      "identity_sha256": "e09b7e7d4f00a1a5d60e738d85c9d0a0a4948834aa56c0fbc94ed9864209f841",
+      "identity": {
+        "backend": "eager",
+        "calibration_hash": "fa031af3de63832e054b89539d3867c2904c9b592b1e7a8b3e4ca3e3676c532f",
+        "condition": "C0",
+        "data_hash": "76dcdc819b97ecff4d3c458bdf4dbd7c1a5dc2a525541e29099e6a6ac760d700",
+        "device_role": "rtx4080super",
+        "gpu_uuid": "GPU-72b4b307-b613-c35e-ea32-53f4431de9ee",
+        "hardware_hash": "c284abebf7b9915053c282d57555a1a28cf9ad8250f3c402a3f313207eaae138",
+        "init_hash": "1a27890c588f317a4ae5523430f8af53c591bca29c9a78d13bf182c9c145fc09",
+        "microbatch": 4,
+        "model_hash": "b21bb330c10c1f9e324f487bb403d1629adf66f5643cfc19df8bbe5914d51358",
+        "precision": "bf16",
+        "protocol_hash": "910961fcc53edaed0df48e3139dbb7ca2e058bf7480b67dab27bae0bcd90f26f",
+        "run_id": "s1-c0-seed0-rtx4080super",
+        "seed": 0,
+        "study": "S1"
+      },
+      "payload_sha256": {
+        "model.safetensors": "b5caeccce955b6be0dcf6fa516df6f3b889b88fe8670817d8c7c75d84f3e7e5f"
+      },
+      "status": "verified",
+      "required_for": [
+        "S4",
+        "S6"
+      ]
+    },
+    {
+      "path": "D:\\KD-SINK-central\\runs\\s1-c0-seed0-rtx4080super\\checkpoints\\final-010000",
+      "step": 10000,
+      "kind": "final",
+      "manifest_sha256": "b6183f04c7700eb878208f97477c4196dab3d505b99f7c3f9f246e72198837e2",
+      "identity_sha256": "e09b7e7d4f00a1a5d60e738d85c9d0a0a4948834aa56c0fbc94ed9864209f841",
+      "identity": {
+        "backend": "eager",
+        "calibration_hash": "fa031af3de63832e054b89539d3867c2904c9b592b1e7a8b3e4ca3e3676c532f",
+        "condition": "C0",
+        "data_hash": "76dcdc819b97ecff4d3c458bdf4dbd7c1a5dc2a525541e29099e6a6ac760d700",
+        "device_role": "rtx4080super",
+        "gpu_uuid": "GPU-72b4b307-b613-c35e-ea32-53f4431de9ee",
+        "hardware_hash": "c284abebf7b9915053c282d57555a1a28cf9ad8250f3c402a3f313207eaae138",
+        "init_hash": "1a27890c588f317a4ae5523430f8af53c591bca29c9a78d13bf182c9c145fc09",
+        "microbatch": 4,
+        "model_hash": "b21bb330c10c1f9e324f487bb403d1629adf66f5643cfc19df8bbe5914d51358",
+        "precision": "bf16",
+        "protocol_hash": "910961fcc53edaed0df48e3139dbb7ca2e058bf7480b67dab27bae0bcd90f26f",
+        "run_id": "s1-c0-seed0-rtx4080super",
+        "seed": 0,
+        "study": "S1"
+      },
+      "payload_sha256": {
+        "model.safetensors": "21eabeb33b35ea32254b9ffa2eadc61046c096107b123111489613e4abf0810b",
+        "state.pt": "4b3e7ae569e8751aa4a5473c2cc22f72c0619db7521d92eb083c9685afc942b4"
+      },
+      "status": "verified",
+      "required_for": [
+        "S4",
+        "S6"
+      ]
+    },
+    {
+      "path": "D:\\KD-SINK-central\\runs\\s1-c1-seed0-rtx4080super\\checkpoints\\weights-000000",
+      "step": 0,
+      "kind": "weights",
+      "manifest_sha256": "98f52cd7cf00ee039ea592381639052493cd722e7e1dd652a3c8dcc14274b69e",
+      "identity_sha256": "9c50dedf9847c055f315ee9565b4a5482c47dbaf1687368981866187e472c481",
+      "identity": {
+        "backend": "eager",
+        "calibration_hash": "fa031af3de63832e054b89539d3867c2904c9b592b1e7a8b3e4ca3e3676c532f",
+        "condition": "C1",
+        "data_hash": "76dcdc819b97ecff4d3c458bdf4dbd7c1a5dc2a525541e29099e6a6ac760d700",
+        "device_role": "rtx4080super",
+        "gpu_uuid": "GPU-f6ff547d-b5cb-c2b8-ca56-ef87e6c18af0",
+        "hardware_hash": "e7e76acf4421b553ed94689e218da674a8d57cbd66405271583fdff41354f80b",
+        "init_hash": "1a27890c588f317a4ae5523430f8af53c591bca29c9a78d13bf182c9c145fc09",
+        "microbatch": 4,
+        "model_hash": "b21bb330c10c1f9e324f487bb403d1629adf66f5643cfc19df8bbe5914d51358",
+        "precision": "bf16",
+        "protocol_hash": "48c39a25f640b90a70056e3c8f7308b66b9d635876e22c56f76516a09d2c9791",
+        "run_id": "s1-c1-seed0-rtx4080super",
+        "seed": 0,
+        "study": "S1"
+      },
+      "payload_sha256": {
+        "model.safetensors": "2a079734c8994deb61577dc3f4954e81898729e87e63e5f958289b4bd7b95f3e"
+      },
+      "status": "verified",
+      "required_for": [
+        "S4",
+        "S6"
+      ]
+    },
+    {
+      "path": "D:\\KD-SINK-central\\runs\\s1-c1-seed0-rtx4080super\\checkpoints\\weights-000100",
+      "step": 100,
+      "kind": "weights",
+      "manifest_sha256": "1fad55c62f198adab8bade4002267911ad7ea140dcd5234b7788d5d2162a6de6",
+      "identity_sha256": "9c50dedf9847c055f315ee9565b4a5482c47dbaf1687368981866187e472c481",
+      "identity": {
+        "backend": "eager",
+        "calibration_hash": "fa031af3de63832e054b89539d3867c2904c9b592b1e7a8b3e4ca3e3676c532f",
+        "condition": "C1",
+        "data_hash": "76dcdc819b97ecff4d3c458bdf4dbd7c1a5dc2a525541e29099e6a6ac760d700",
+        "device_role": "rtx4080super",
+        "gpu_uuid": "GPU-f6ff547d-b5cb-c2b8-ca56-ef87e6c18af0",
+        "hardware_hash": "e7e76acf4421b553ed94689e218da674a8d57cbd66405271583fdff41354f80b",
+        "init_hash": "1a27890c588f317a4ae5523430f8af53c591bca29c9a78d13bf182c9c145fc09",
+        "microbatch": 4,
+        "model_hash": "b21bb330c10c1f9e324f487bb403d1629adf66f5643cfc19df8bbe5914d51358",
+        "precision": "bf16",
+        "protocol_hash": "48c39a25f640b90a70056e3c8f7308b66b9d635876e22c56f76516a09d2c9791",
+        "run_id": "s1-c1-seed0-rtx4080super",
+        "seed": 0,
+        "study": "S1"
+      },
+      "payload_sha256": {
+        "model.safetensors": "fa5fb2fe128c4a0949f033464928aa0c3081cee160a9bb3c0e13ba159f090b25"
+      },
+      "status": "verified",
+      "required_for": [
+        "S4"
+      ]
+    },
+    {
+      "path": "D:\\KD-SINK-central\\runs\\s1-c1-seed0-rtx4080super\\checkpoints\\weights-000500",
+      "step": 500,
+      "kind": "weights",
+      "manifest_sha256": "4f818fa620974c74459b89318f68c0235f6526afed36db002540b6f284454c49",
+      "identity_sha256": "9c50dedf9847c055f315ee9565b4a5482c47dbaf1687368981866187e472c481",
+      "identity": {
+        "backend": "eager",
+        "calibration_hash": "fa031af3de63832e054b89539d3867c2904c9b592b1e7a8b3e4ca3e3676c532f",
+        "condition": "C1",
+        "data_hash": "76dcdc819b97ecff4d3c458bdf4dbd7c1a5dc2a525541e29099e6a6ac760d700",
+        "device_role": "rtx4080super",
+        "gpu_uuid": "GPU-f6ff547d-b5cb-c2b8-ca56-ef87e6c18af0",
+        "hardware_hash": "e7e76acf4421b553ed94689e218da674a8d57cbd66405271583fdff41354f80b",
+        "init_hash": "1a27890c588f317a4ae5523430f8af53c591bca29c9a78d13bf182c9c145fc09",
+        "microbatch": 4,
+        "model_hash": "b21bb330c10c1f9e324f487bb403d1629adf66f5643cfc19df8bbe5914d51358",
+        "precision": "bf16",
+        "protocol_hash": "48c39a25f640b90a70056e3c8f7308b66b9d635876e22c56f76516a09d2c9791",
+        "run_id": "s1-c1-seed0-rtx4080super",
+        "seed": 0,
+        "study": "S1"
+      },
+      "payload_sha256": {
+        "model.safetensors": "05a0ae40f736447c2011d3ca754d40a9aeb08e9a2ddb022e33c163de766cb529"
+      },
+      "status": "verified",
+      "required_for": [
+        "S4",
+        "S6"
+      ]
+    },
+    {
+      "path": "D:\\KD-SINK-central\\runs\\s1-c1-seed0-rtx4080super\\checkpoints\\weights-002000",
+      "step": 2000,
+      "kind": "weights",
+      "manifest_sha256": "2197ce0ace5a54857bb9e52993eb0219cdf1193577314585f683b874138524cc",
+      "identity_sha256": "9c50dedf9847c055f315ee9565b4a5482c47dbaf1687368981866187e472c481",
+      "identity": {
+        "backend": "eager",
+        "calibration_hash": "fa031af3de63832e054b89539d3867c2904c9b592b1e7a8b3e4ca3e3676c532f",
+        "condition": "C1",
+        "data_hash": "76dcdc819b97ecff4d3c458bdf4dbd7c1a5dc2a525541e29099e6a6ac760d700",
+        "device_role": "rtx4080super",
+        "gpu_uuid": "GPU-f6ff547d-b5cb-c2b8-ca56-ef87e6c18af0",
+        "hardware_hash": "e7e76acf4421b553ed94689e218da674a8d57cbd66405271583fdff41354f80b",
+        "init_hash": "1a27890c588f317a4ae5523430f8af53c591bca29c9a78d13bf182c9c145fc09",
+        "microbatch": 4,
+        "model_hash": "b21bb330c10c1f9e324f487bb403d1629adf66f5643cfc19df8bbe5914d51358",
+        "precision": "bf16",
+        "protocol_hash": "48c39a25f640b90a70056e3c8f7308b66b9d635876e22c56f76516a09d2c9791",
+        "run_id": "s1-c1-seed0-rtx4080super",
+        "seed": 0,
+        "study": "S1"
+      },
+      "payload_sha256": {
+        "model.safetensors": "d9e4c30bc23497410ca3e57134f9ec337220ae38c8fe441888a5ae04a0123c14"
+      },
+      "status": "verified",
+      "required_for": [
+        "S4",
+        "S6"
+      ]
+    },
+    {
+      "path": "D:\\KD-SINK-central\\runs\\s1-c1-seed0-rtx4080super\\checkpoints\\final-010000",
+      "step": 10000,
+      "kind": "final",
+      "manifest_sha256": "486bdce57635870bc9a40fe1bbde14516a1f63b2d772ca5d04993902ece8cccc",
+      "identity_sha256": "9c50dedf9847c055f315ee9565b4a5482c47dbaf1687368981866187e472c481",
+      "identity": {
+        "backend": "eager",
+        "calibration_hash": "fa031af3de63832e054b89539d3867c2904c9b592b1e7a8b3e4ca3e3676c532f",
+        "condition": "C1",
+        "data_hash": "76dcdc819b97ecff4d3c458bdf4dbd7c1a5dc2a525541e29099e6a6ac760d700",
+        "device_role": "rtx4080super",
+        "gpu_uuid": "GPU-f6ff547d-b5cb-c2b8-ca56-ef87e6c18af0",
+        "hardware_hash": "e7e76acf4421b553ed94689e218da674a8d57cbd66405271583fdff41354f80b",
+        "init_hash": "1a27890c588f317a4ae5523430f8af53c591bca29c9a78d13bf182c9c145fc09",
+        "microbatch": 4,
+        "model_hash": "b21bb330c10c1f9e324f487bb403d1629adf66f5643cfc19df8bbe5914d51358",
+        "precision": "bf16",
+        "protocol_hash": "48c39a25f640b90a70056e3c8f7308b66b9d635876e22c56f76516a09d2c9791",
+        "run_id": "s1-c1-seed0-rtx4080super",
+        "seed": 0,
+        "study": "S1"
+      },
+      "payload_sha256": {
+        "model.safetensors": "e9475c366ce813464ad577d83411302e9812cad2cba6e4c0fa6b829a50bc27ad",
+        "state.pt": "a7e21509996fb93b492f8f7ce3a6ed382771a2e2528fc16b15c1c5e140f55fc5"
+      },
+      "status": "verified",
+      "required_for": [
+        "S4",
+        "S6"
+      ]
+    },
+    {
+      "path": "D:\\KD-SINK-central\\runs\\s1-c2-seed0-rtx4080super\\checkpoints\\weights-000000",
+      "step": 0,
+      "kind": "weights",
+      "manifest_sha256": "50769b0dd68e65b5cd587f15021bbbaba1ce384c09c74bfb05f7fc351d55ba1c",
+      "identity_sha256": "7d9bc23e1e6c75e09a78073fee23cf87bb8b709d565c2bafba2a12106e7696e9",
+      "identity": {
+        "backend": "eager",
+        "calibration_hash": "fa031af3de63832e054b89539d3867c2904c9b592b1e7a8b3e4ca3e3676c532f",
+        "condition": "C2",
+        "data_hash": "76dcdc819b97ecff4d3c458bdf4dbd7c1a5dc2a525541e29099e6a6ac760d700",
+        "device_role": "rtx4080super",
+        "gpu_uuid": "GPU-72b4b307-b613-c35e-ea32-53f4431de9ee",
+        "hardware_hash": "c284abebf7b9915053c282d57555a1a28cf9ad8250f3c402a3f313207eaae138",
+        "init_hash": "1a27890c588f317a4ae5523430f8af53c591bca29c9a78d13bf182c9c145fc09",
+        "microbatch": 4,
+        "model_hash": "b21bb330c10c1f9e324f487bb403d1629adf66f5643cfc19df8bbe5914d51358",
+        "precision": "bf16",
+        "protocol_hash": "910961fcc53edaed0df48e3139dbb7ca2e058bf7480b67dab27bae0bcd90f26f",
+        "run_id": "s1-c2-seed0-rtx4080super",
+        "seed": 0,
+        "study": "S1"
+      },
+      "payload_sha256": {
+        "model.safetensors": "2a079734c8994deb61577dc3f4954e81898729e87e63e5f958289b4bd7b95f3e"
+      },
+      "status": "verified",
+      "required_for": [
+        "S4",
+        "S6"
+      ]
+    },
+    {
+      "path": "D:\\KD-SINK-central\\runs\\s1-c2-seed0-rtx4080super\\checkpoints\\weights-000100",
+      "step": 100,
+      "kind": "weights",
+      "manifest_sha256": "ce1b75e88c98358ff07cbea57d830e9e48f4f6a7609a1b5a8c11499634a9a459",
+      "identity_sha256": "7d9bc23e1e6c75e09a78073fee23cf87bb8b709d565c2bafba2a12106e7696e9",
+      "identity": {
+        "backend": "eager",
+        "calibration_hash": "fa031af3de63832e054b89539d3867c2904c9b592b1e7a8b3e4ca3e3676c532f",
+        "condition": "C2",
+        "data_hash": "76dcdc819b97ecff4d3c458bdf4dbd7c1a5dc2a525541e29099e6a6ac760d700",
+        "device_role": "rtx4080super",
+        "gpu_uuid": "GPU-72b4b307-b613-c35e-ea32-53f4431de9ee",
+        "hardware_hash": "c284abebf7b9915053c282d57555a1a28cf9ad8250f3c402a3f313207eaae138",
+        "init_hash": "1a27890c588f317a4ae5523430f8af53c591bca29c9a78d13bf182c9c145fc09",
+        "microbatch": 4,
+        "model_hash": "b21bb330c10c1f9e324f487bb403d1629adf66f5643cfc19df8bbe5914d51358",
+        "precision": "bf16",
+        "protocol_hash": "910961fcc53edaed0df48e3139dbb7ca2e058bf7480b67dab27bae0bcd90f26f",
+        "run_id": "s1-c2-seed0-rtx4080super",
+        "seed": 0,
+        "study": "S1"
+      },
+      "payload_sha256": {
+        "model.safetensors": "14a0e9b9ff742389967b71e4be499be340b6311e5e0264dcb7b74791c61d5cb4"
+      },
+      "status": "verified",
+      "required_for": [
+        "S4"
+      ]
+    },
+    {
+      "path": "D:\\KD-SINK-central\\runs\\s1-c2-seed0-rtx4080super\\checkpoints\\weights-000500",
+      "step": 500,
+      "kind": "weights",
+      "manifest_sha256": "d497b1b6015cf4e1e40297c65ccd21e5b96e40738541d510319c1b5df0fbb3cd",
+      "identity_sha256": "7d9bc23e1e6c75e09a78073fee23cf87bb8b709d565c2bafba2a12106e7696e9",
+      "identity": {
+        "backend": "eager",
+        "calibration_hash": "fa031af3de63832e054b89539d3867c2904c9b592b1e7a8b3e4ca3e3676c532f",
+        "condition": "C2",
+        "data_hash": "76dcdc819b97ecff4d3c458bdf4dbd7c1a5dc2a525541e29099e6a6ac760d700",
+        "device_role": "rtx4080super",
+        "gpu_uuid": "GPU-72b4b307-b613-c35e-ea32-53f4431de9ee",
+        "hardware_hash": "c284abebf7b9915053c282d57555a1a28cf9ad8250f3c402a3f313207eaae138",
+        "init_hash": "1a27890c588f317a4ae5523430f8af53c591bca29c9a78d13bf182c9c145fc09",
+        "microbatch": 4,
+        "model_hash": "b21bb330c10c1f9e324f487bb403d1629adf66f5643cfc19df8bbe5914d51358",
+        "precision": "bf16",
+        "protocol_hash": "910961fcc53edaed0df48e3139dbb7ca2e058bf7480b67dab27bae0bcd90f26f",
+        "run_id": "s1-c2-seed0-rtx4080super",
+        "seed": 0,
+        "study": "S1"
+      },
+      "payload_sha256": {
+        "model.safetensors": "a516da635a798b90f3fd0fc6f0d2dfb3d44f89dcfa30663ee7309a5ceb4649bb"
+      },
+      "status": "verified",
+      "required_for": [
+        "S4",
+        "S6"
+      ]
+    },
+    {
+      "path": "D:\\KD-SINK-central\\runs\\s1-c2-seed0-rtx4080super\\checkpoints\\weights-002000",
+      "step": 2000,
+      "kind": "weights",
+      "manifest_sha256": "7ad57a522c81b04016983ab090e974984ce9d6ac4cd240e5d2cdd423e0ae43bd",
+      "identity_sha256": "7d9bc23e1e6c75e09a78073fee23cf87bb8b709d565c2bafba2a12106e7696e9",
+      "identity": {
+        "backend": "eager",
+        "calibration_hash": "fa031af3de63832e054b89539d3867c2904c9b592b1e7a8b3e4ca3e3676c532f",
+        "condition": "C2",
+        "data_hash": "76dcdc819b97ecff4d3c458bdf4dbd7c1a5dc2a525541e29099e6a6ac760d700",
+        "device_role": "rtx4080super",
+        "gpu_uuid": "GPU-72b4b307-b613-c35e-ea32-53f4431de9ee",
+        "hardware_hash": "c284abebf7b9915053c282d57555a1a28cf9ad8250f3c402a3f313207eaae138",
+        "init_hash": "1a27890c588f317a4ae5523430f8af53c591bca29c9a78d13bf182c9c145fc09",
+        "microbatch": 4,
+        "model_hash": "b21bb330c10c1f9e324f487bb403d1629adf66f5643cfc19df8bbe5914d51358",
+        "precision": "bf16",
+        "protocol_hash": "910961fcc53edaed0df48e3139dbb7ca2e058bf7480b67dab27bae0bcd90f26f",
+        "run_id": "s1-c2-seed0-rtx4080super",
+        "seed": 0,
+        "study": "S1"
+      },
+      "payload_sha256": {
+        "model.safetensors": "a6daa03e23798894ad7b2dc6a18c40c3d1184ada2e9e31f70d909e605aa0e85b"
+      },
+      "status": "verified",
+      "required_for": [
+        "S4",
+        "S6"
+      ]
+    },
+    {
+      "path": "D:\\KD-SINK-central\\runs\\s1-c2-seed0-rtx4080super\\checkpoints\\final-010000",
+      "step": 10000,
+      "kind": "final",
+      "manifest_sha256": "767f79ff2e92b760f5647c4473737b3933d56c05cbd4b2fa493d643c86cc1c5c",
+      "identity_sha256": "7d9bc23e1e6c75e09a78073fee23cf87bb8b709d565c2bafba2a12106e7696e9",
+      "identity": {
+        "backend": "eager",
+        "calibration_hash": "fa031af3de63832e054b89539d3867c2904c9b592b1e7a8b3e4ca3e3676c532f",
+        "condition": "C2",
+        "data_hash": "76dcdc819b97ecff4d3c458bdf4dbd7c1a5dc2a525541e29099e6a6ac760d700",
+        "device_role": "rtx4080super",
+        "gpu_uuid": "GPU-72b4b307-b613-c35e-ea32-53f4431de9ee",
+        "hardware_hash": "c284abebf7b9915053c282d57555a1a28cf9ad8250f3c402a3f313207eaae138",
+        "init_hash": "1a27890c588f317a4ae5523430f8af53c591bca29c9a78d13bf182c9c145fc09",
+        "microbatch": 4,
+        "model_hash": "b21bb330c10c1f9e324f487bb403d1629adf66f5643cfc19df8bbe5914d51358",
+        "precision": "bf16",
+        "protocol_hash": "910961fcc53edaed0df48e3139dbb7ca2e058bf7480b67dab27bae0bcd90f26f",
+        "run_id": "s1-c2-seed0-rtx4080super",
+        "seed": 0,
+        "study": "S1"
+      },
+      "payload_sha256": {
+        "model.safetensors": "fbe9f8a408c7e70495ecd93fbd06cf88728fa369976e766216edf37f2c07e298",
+        "state.pt": "54a7f0b0777e295ca5000cb0ef42520108767b0a45b9538a07f499fb294c21a1"
+      },
+      "status": "verified",
+      "required_for": [
+        "S4",
+        "S6"
+      ]
+    },
+    {
+      "path": "D:\\KD-SINK-central\\runs\\s1-c4-seed0-rtx3090\\checkpoints\\weights-000000",
+      "step": 0,
+      "kind": "weights",
+      "manifest_sha256": "7ab065d9f734fcc93e628d31307d0ac21ab7764534ecc04fb9f48394972ddac0",
+      "identity_sha256": "c8bb257912bb27081964bffa3d14f84130e59d3224bbd083b40d4ab86de06b17",
+      "identity": {
+        "backend": "eager",
+        "calibration_hash": "fa031af3de63832e054b89539d3867c2904c9b592b1e7a8b3e4ca3e3676c532f",
+        "condition": "C4",
+        "data_hash": "76dcdc819b97ecff4d3c458bdf4dbd7c1a5dc2a525541e29099e6a6ac760d700",
+        "device_role": "rtx3090",
+        "gpu_uuid": "GPU-a21766e4-bb31-9b79-5e8f-e58021e9708e",
+        "hardware_hash": "fc410cd3d01505d0cd7b9ffdda98caaf070bfd2524ca7ac7841a0c78e60aa593",
+        "init_hash": "1a27890c588f317a4ae5523430f8af53c591bca29c9a78d13bf182c9c145fc09",
+        "microbatch": 4,
+        "model_hash": "b21bb330c10c1f9e324f487bb403d1629adf66f5643cfc19df8bbe5914d51358",
+        "precision": "bf16",
+        "protocol_hash": "95a3607791fab3911916bcab407f7d10dab3576f197ebe7b606c2f9e3ac8ab15",
+        "run_id": "s1-c4-seed0-rtx3090",
+        "seed": 0,
+        "study": "S1"
+      },
+      "payload_sha256": {
+        "model.safetensors": "2a079734c8994deb61577dc3f4954e81898729e87e63e5f958289b4bd7b95f3e"
+      },
+      "status": "verified",
+      "required_for": [
+        "S4",
+        "S6"
+      ]
+    },
+    {
+      "path": "D:\\KD-SINK-central\\runs\\s1-c4-seed0-rtx3090\\checkpoints\\weights-000100",
+      "step": 100,
+      "kind": "weights",
+      "manifest_sha256": "bd6a11d37eb038a42fe88c8042137f2683f0d9316f1849f0dfa0141833fc1da2",
+      "identity_sha256": "c8bb257912bb27081964bffa3d14f84130e59d3224bbd083b40d4ab86de06b17",
+      "identity": {
+        "backend": "eager",
+        "calibration_hash": "fa031af3de63832e054b89539d3867c2904c9b592b1e7a8b3e4ca3e3676c532f",
+        "condition": "C4",
+        "data_hash": "76dcdc819b97ecff4d3c458bdf4dbd7c1a5dc2a525541e29099e6a6ac760d700",
+        "device_role": "rtx3090",
+        "gpu_uuid": "GPU-a21766e4-bb31-9b79-5e8f-e58021e9708e",
+        "hardware_hash": "fc410cd3d01505d0cd7b9ffdda98caaf070bfd2524ca7ac7841a0c78e60aa593",
+        "init_hash": "1a27890c588f317a4ae5523430f8af53c591bca29c9a78d13bf182c9c145fc09",
+        "microbatch": 4,
+        "model_hash": "b21bb330c10c1f9e324f487bb403d1629adf66f5643cfc19df8bbe5914d51358",
+        "precision": "bf16",
+        "protocol_hash": "95a3607791fab3911916bcab407f7d10dab3576f197ebe7b606c2f9e3ac8ab15",
+        "run_id": "s1-c4-seed0-rtx3090",
+        "seed": 0,
+        "study": "S1"
+      },
+      "payload_sha256": {
+        "model.safetensors": "abed8d60968ac101ce2855409c9224d342f35368a02052601a4893498f11f669"
+      },
+      "status": "verified",
+      "required_for": [
+        "S4"
+      ]
+    },
+    {
+      "path": "D:\\KD-SINK-central\\runs\\s1-c4-seed0-rtx3090\\checkpoints\\weights-000500",
+      "step": 500,
+      "kind": "weights",
+      "manifest_sha256": "1aa6db52bf040e9866adada8671589aa6c4816b412de7aa62d598113b85e05ce",
+      "identity_sha256": "c8bb257912bb27081964bffa3d14f84130e59d3224bbd083b40d4ab86de06b17",
+      "identity": {
+        "backend": "eager",
+        "calibration_hash": "fa031af3de63832e054b89539d3867c2904c9b592b1e7a8b3e4ca3e3676c532f",
+        "condition": "C4",
+        "data_hash": "76dcdc819b97ecff4d3c458bdf4dbd7c1a5dc2a525541e29099e6a6ac760d700",
+        "device_role": "rtx3090",
+        "gpu_uuid": "GPU-a21766e4-bb31-9b79-5e8f-e58021e9708e",
+        "hardware_hash": "fc410cd3d01505d0cd7b9ffdda98caaf070bfd2524ca7ac7841a0c78e60aa593",
+        "init_hash": "1a27890c588f317a4ae5523430f8af53c591bca29c9a78d13bf182c9c145fc09",
+        "microbatch": 4,
+        "model_hash": "b21bb330c10c1f9e324f487bb403d1629adf66f5643cfc19df8bbe5914d51358",
+        "precision": "bf16",
+        "protocol_hash": "95a3607791fab3911916bcab407f7d10dab3576f197ebe7b606c2f9e3ac8ab15",
+        "run_id": "s1-c4-seed0-rtx3090",
+        "seed": 0,
+        "study": "S1"
+      },
+      "payload_sha256": {
+        "model.safetensors": "ec5b388cd6699df08d43195a136747be1695194de22b0516a6ce885183e31472"
+      },
+      "status": "verified",
+      "required_for": [
+        "S4",
+        "S6"
+      ]
+    },
+    {
+      "path": "D:\\KD-SINK-central\\runs\\s1-c4-seed0-rtx3090\\checkpoints\\weights-002000",
+      "step": 2000,
+      "kind": "weights",
+      "manifest_sha256": "07dc3b62fe1ef8af3cb531092852da4b313b31bf74668e4e9c3f15c13e3998b2",
+      "identity_sha256": "c8bb257912bb27081964bffa3d14f84130e59d3224bbd083b40d4ab86de06b17",
+      "identity": {
+        "backend": "eager",
+        "calibration_hash": "fa031af3de63832e054b89539d3867c2904c9b592b1e7a8b3e4ca3e3676c532f",
+        "condition": "C4",
+        "data_hash": "76dcdc819b97ecff4d3c458bdf4dbd7c1a5dc2a525541e29099e6a6ac760d700",
+        "device_role": "rtx3090",
+        "gpu_uuid": "GPU-a21766e4-bb31-9b79-5e8f-e58021e9708e",
+        "hardware_hash": "fc410cd3d01505d0cd7b9ffdda98caaf070bfd2524ca7ac7841a0c78e60aa593",
+        "init_hash": "1a27890c588f317a4ae5523430f8af53c591bca29c9a78d13bf182c9c145fc09",
+        "microbatch": 4,
+        "model_hash": "b21bb330c10c1f9e324f487bb403d1629adf66f5643cfc19df8bbe5914d51358",
+        "precision": "bf16",
+        "protocol_hash": "95a3607791fab3911916bcab407f7d10dab3576f197ebe7b606c2f9e3ac8ab15",
+        "run_id": "s1-c4-seed0-rtx3090",
+        "seed": 0,
+        "study": "S1"
+      },
+      "payload_sha256": {
+        "model.safetensors": "da3e9c77bcbe528670605a0033770a03be575918a6674ac66f3bad60cc8d1874"
+      },
+      "status": "verified",
+      "required_for": [
+        "S4",
+        "S6"
+      ]
+    },
+    {
+      "path": "D:\\KD-SINK-central\\runs\\s1-c4-seed0-rtx3090\\checkpoints\\final-010000",
+      "step": 10000,
+      "kind": "final",
+      "manifest_sha256": "8b65fe8d78a07c1adb62f965f24fb08bc64fd49e1bcc11f675d1aa4800643d37",
+      "identity_sha256": "c8bb257912bb27081964bffa3d14f84130e59d3224bbd083b40d4ab86de06b17",
+      "identity": {
+        "backend": "eager",
+        "calibration_hash": "fa031af3de63832e054b89539d3867c2904c9b592b1e7a8b3e4ca3e3676c532f",
+        "condition": "C4",
+        "data_hash": "76dcdc819b97ecff4d3c458bdf4dbd7c1a5dc2a525541e29099e6a6ac760d700",
+        "device_role": "rtx3090",
+        "gpu_uuid": "GPU-a21766e4-bb31-9b79-5e8f-e58021e9708e",
+        "hardware_hash": "fc410cd3d01505d0cd7b9ffdda98caaf070bfd2524ca7ac7841a0c78e60aa593",
+        "init_hash": "1a27890c588f317a4ae5523430f8af53c591bca29c9a78d13bf182c9c145fc09",
+        "microbatch": 4,
+        "model_hash": "b21bb330c10c1f9e324f487bb403d1629adf66f5643cfc19df8bbe5914d51358",
+        "precision": "bf16",
+        "protocol_hash": "95a3607791fab3911916bcab407f7d10dab3576f197ebe7b606c2f9e3ac8ab15",
+        "run_id": "s1-c4-seed0-rtx3090",
+        "seed": 0,
+        "study": "S1"
+      },
+      "payload_sha256": {
+        "model.safetensors": "9a2e9a4f0ac23097010c71f31a35e26f333a3ed85a43d5761484aa1f7b65ae90",
+        "state.pt": "56d2fb0b3a47fe46e201f31526008b14dafb6ddfa1c982d9332df8a76f0fd3d8"
+      },
+      "status": "verified",
+      "required_for": [
+        "S4",
+        "S6"
+      ]
+    },
+    {
+      "path": "D:\\KD-SINK-central\\runs\\s1-c5-seed0-rtx4080super\\checkpoints\\weights-000000",
+      "step": 0,
+      "kind": "weights",
+      "manifest_sha256": "9371a5f80a1564252057a0c4b5d175a5eac945b09adcde4e9b3eafc40ae43f8b",
+      "identity_sha256": "1f74cf614846b21816b0074c7e8b1dab7c13d5fed93144c9ea14cf85a65e2b6c",
+      "identity": {
+        "backend": "eager",
+        "calibration_hash": "fa031af3de63832e054b89539d3867c2904c9b592b1e7a8b3e4ca3e3676c532f",
+        "condition": "C5",
+        "data_hash": "76dcdc819b97ecff4d3c458bdf4dbd7c1a5dc2a525541e29099e6a6ac760d700",
+        "device_role": "rtx4080super",
+        "gpu_uuid": "GPU-2a5c25d0-1f73-919b-fd8b-f6f0df709aaf",
+        "hardware_hash": "fc410cd3d01505d0cd7b9ffdda98caaf070bfd2524ca7ac7841a0c78e60aa593",
+        "init_hash": "1a27890c588f317a4ae5523430f8af53c591bca29c9a78d13bf182c9c145fc09",
+        "microbatch": 4,
+        "model_hash": "b21bb330c10c1f9e324f487bb403d1629adf66f5643cfc19df8bbe5914d51358",
+        "precision": "bf16",
+        "protocol_hash": "fccf4c14bc691e550c6304f4955b72037efb8d042b3e51afb70367920fff0552",
+        "run_id": "s1-c5-seed0-rtx4080super",
+        "seed": 0,
+        "study": "S1"
+      },
+      "payload_sha256": {
+        "model.safetensors": "2a079734c8994deb61577dc3f4954e81898729e87e63e5f958289b4bd7b95f3e"
+      },
+      "status": "verified",
+      "required_for": [
+        "S4",
+        "S6"
+      ]
+    },
+    {
+      "path": "D:\\KD-SINK-central\\runs\\s1-c5-seed0-rtx4080super\\checkpoints\\weights-000100",
+      "step": 100,
+      "kind": "weights",
+      "manifest_sha256": "3c5fff49218b7f2d168e2a3c777aa05916a03c3e7b71aeadb4fad546c9f10c7f",
+      "identity_sha256": "1f74cf614846b21816b0074c7e8b1dab7c13d5fed93144c9ea14cf85a65e2b6c",
+      "identity": {
+        "backend": "eager",
+        "calibration_hash": "fa031af3de63832e054b89539d3867c2904c9b592b1e7a8b3e4ca3e3676c532f",
+        "condition": "C5",
+        "data_hash": "76dcdc819b97ecff4d3c458bdf4dbd7c1a5dc2a525541e29099e6a6ac760d700",
+        "device_role": "rtx4080super",
+        "gpu_uuid": "GPU-2a5c25d0-1f73-919b-fd8b-f6f0df709aaf",
+        "hardware_hash": "fc410cd3d01505d0cd7b9ffdda98caaf070bfd2524ca7ac7841a0c78e60aa593",
+        "init_hash": "1a27890c588f317a4ae5523430f8af53c591bca29c9a78d13bf182c9c145fc09",
+        "microbatch": 4,
+        "model_hash": "b21bb330c10c1f9e324f487bb403d1629adf66f5643cfc19df8bbe5914d51358",
+        "precision": "bf16",
+        "protocol_hash": "fccf4c14bc691e550c6304f4955b72037efb8d042b3e51afb70367920fff0552",
+        "run_id": "s1-c5-seed0-rtx4080super",
+        "seed": 0,
+        "study": "S1"
+      },
+      "payload_sha256": {
+        "model.safetensors": "5742a3e809d3a1bd413ec8e9eb3ae5bd94a56077440b11af391b181892655f4e"
+      },
+      "status": "verified",
+      "required_for": [
+        "S4"
+      ]
+    },
+    {
+      "path": "D:\\KD-SINK-central\\runs\\s1-c5-seed0-rtx4080super\\checkpoints\\weights-000500",
+      "step": 500,
+      "kind": "weights",
+      "manifest_sha256": "376eea1c42b7345dd006b813dc038cdfdfe36ddaf252b6cd68d09e73da94d8e2",
+      "identity_sha256": "1f74cf614846b21816b0074c7e8b1dab7c13d5fed93144c9ea14cf85a65e2b6c",
+      "identity": {
+        "backend": "eager",
+        "calibration_hash": "fa031af3de63832e054b89539d3867c2904c9b592b1e7a8b3e4ca3e3676c532f",
+        "condition": "C5",
+        "data_hash": "76dcdc819b97ecff4d3c458bdf4dbd7c1a5dc2a525541e29099e6a6ac760d700",
+        "device_role": "rtx4080super",
+        "gpu_uuid": "GPU-2a5c25d0-1f73-919b-fd8b-f6f0df709aaf",
+        "hardware_hash": "fc410cd3d01505d0cd7b9ffdda98caaf070bfd2524ca7ac7841a0c78e60aa593",
+        "init_hash": "1a27890c588f317a4ae5523430f8af53c591bca29c9a78d13bf182c9c145fc09",
+        "microbatch": 4,
+        "model_hash": "b21bb330c10c1f9e324f487bb403d1629adf66f5643cfc19df8bbe5914d51358",
+        "precision": "bf16",
+        "protocol_hash": "fccf4c14bc691e550c6304f4955b72037efb8d042b3e51afb70367920fff0552",
+        "run_id": "s1-c5-seed0-rtx4080super",
+        "seed": 0,
+        "study": "S1"
+      },
+      "payload_sha256": {
+        "model.safetensors": "d7c1e885286c792cf51d69e1610148caeb067d93d549b9e03a284b4ede492ece"
+      },
+      "status": "verified",
+      "required_for": [
+        "S4",
+        "S6"
+      ]
+    },
+    {
+      "path": "D:\\KD-SINK-central\\runs\\s1-c5-seed0-rtx4080super\\checkpoints\\weights-002000",
+      "step": 2000,
+      "kind": "weights",
+      "manifest_sha256": "ab6f14a35f2ebe5b4f4dae0998844385fe569f7dc77ddc2f0becc8dc19b076f5",
+      "identity_sha256": "1f74cf614846b21816b0074c7e8b1dab7c13d5fed93144c9ea14cf85a65e2b6c",
+      "identity": {
+        "backend": "eager",
+        "calibration_hash": "fa031af3de63832e054b89539d3867c2904c9b592b1e7a8b3e4ca3e3676c532f",
+        "condition": "C5",
+        "data_hash": "76dcdc819b97ecff4d3c458bdf4dbd7c1a5dc2a525541e29099e6a6ac760d700",
+        "device_role": "rtx4080super",
+        "gpu_uuid": "GPU-2a5c25d0-1f73-919b-fd8b-f6f0df709aaf",
+        "hardware_hash": "fc410cd3d01505d0cd7b9ffdda98caaf070bfd2524ca7ac7841a0c78e60aa593",
+        "init_hash": "1a27890c588f317a4ae5523430f8af53c591bca29c9a78d13bf182c9c145fc09",
+        "microbatch": 4,
+        "model_hash": "b21bb330c10c1f9e324f487bb403d1629adf66f5643cfc19df8bbe5914d51358",
+        "precision": "bf16",
+        "protocol_hash": "fccf4c14bc691e550c6304f4955b72037efb8d042b3e51afb70367920fff0552",
+        "run_id": "s1-c5-seed0-rtx4080super",
+        "seed": 0,
+        "study": "S1"
+      },
+      "payload_sha256": {
+        "model.safetensors": "ad020067df5f66cc6719641c900988670ad19618ac4dffddc6b0a48d15fcf78a"
+      },
+      "status": "verified",
+      "required_for": [
+        "S4",
+        "S6"
+      ]
+    },
+    {
+      "path": "D:\\KD-SINK-central\\runs\\s1-c5-seed0-rtx4080super\\checkpoints\\final-010000",
+      "step": 10000,
+      "kind": "final",
+      "manifest_sha256": "cce6c99d112cdaa081d6029d38b7d90adcf01bb20375aaada0596e6936332514",
+      "identity_sha256": "1f74cf614846b21816b0074c7e8b1dab7c13d5fed93144c9ea14cf85a65e2b6c",
+      "identity": {
+        "backend": "eager",
+        "calibration_hash": "fa031af3de63832e054b89539d3867c2904c9b592b1e7a8b3e4ca3e3676c532f",
+        "condition": "C5",
+        "data_hash": "76dcdc819b97ecff4d3c458bdf4dbd7c1a5dc2a525541e29099e6a6ac760d700",
+        "device_role": "rtx4080super",
+        "gpu_uuid": "GPU-2a5c25d0-1f73-919b-fd8b-f6f0df709aaf",
+        "hardware_hash": "fc410cd3d01505d0cd7b9ffdda98caaf070bfd2524ca7ac7841a0c78e60aa593",
+        "init_hash": "1a27890c588f317a4ae5523430f8af53c591bca29c9a78d13bf182c9c145fc09",
+        "microbatch": 4,
+        "model_hash": "b21bb330c10c1f9e324f487bb403d1629adf66f5643cfc19df8bbe5914d51358",
+        "precision": "bf16",
+        "protocol_hash": "fccf4c14bc691e550c6304f4955b72037efb8d042b3e51afb70367920fff0552",
+        "run_id": "s1-c5-seed0-rtx4080super",
+        "seed": 0,
+        "study": "S1"
+      },
+      "payload_sha256": {
+        "model.safetensors": "e8c85cec2e24174180d5fbf5f49976de7901281f9f3caa82f79dc3ee47f38578",
+        "state.pt": "712308c070c86cbf3f7ee026b87267d311fef9eb4ef8a59752083040f3522e9e"
+      },
+      "status": "verified",
+      "required_for": [
+        "S4",
+        "S6"
+      ]
+    },
+    {
+      "path": "D:\\KD-SINK-central\\runs\\s1-c6-seed0-rtx4080super\\checkpoints\\weights-000000",
+      "step": 0,
+      "kind": "weights",
+      "manifest_sha256": "c1dfa292f6131041e8f38c8fdff2b0defcc99d9b427f83e8fa3b16f00f554829",
+      "identity_sha256": "1f349241a8e4112536705766fd4771fff8bc20223800c17fbb96a01c87a1aae0",
+      "identity": {
+        "backend": "eager",
+        "calibration_hash": "fa031af3de63832e054b89539d3867c2904c9b592b1e7a8b3e4ca3e3676c532f",
+        "condition": "C6",
+        "data_hash": "76dcdc819b97ecff4d3c458bdf4dbd7c1a5dc2a525541e29099e6a6ac760d700",
+        "device_role": "rtx4080super",
+        "gpu_uuid": "GPU-2a5c25d0-1f73-919b-fd8b-f6f0df709aaf",
+        "hardware_hash": "e7e76acf4421b553ed94689e218da674a8d57cbd66405271583fdff41354f80b",
+        "init_hash": "1a27890c588f317a4ae5523430f8af53c591bca29c9a78d13bf182c9c145fc09",
+        "microbatch": 4,
+        "model_hash": "b21bb330c10c1f9e324f487bb403d1629adf66f5643cfc19df8bbe5914d51358",
+        "precision": "bf16",
+        "protocol_hash": "48c39a25f640b90a70056e3c8f7308b66b9d635876e22c56f76516a09d2c9791",
+        "run_id": "s1-c6-seed0-rtx4080super",
+        "seed": 0,
+        "study": "S1"
+      },
+      "payload_sha256": {
+        "model.safetensors": "2a079734c8994deb61577dc3f4954e81898729e87e63e5f958289b4bd7b95f3e"
+      },
+      "status": "verified",
+      "required_for": [
+        "S4",
+        "S6"
+      ]
+    },
+    {
+      "path": "D:\\KD-SINK-central\\runs\\s1-c6-seed0-rtx4080super\\checkpoints\\weights-000100",
+      "step": 100,
+      "kind": "weights",
+      "manifest_sha256": "ec5ff642c2723c0926801cf85b8f58e3358ed1bd1c0074f0e557357803f49ea4",
+      "identity_sha256": "1f349241a8e4112536705766fd4771fff8bc20223800c17fbb96a01c87a1aae0",
+      "identity": {
+        "backend": "eager",
+        "calibration_hash": "fa031af3de63832e054b89539d3867c2904c9b592b1e7a8b3e4ca3e3676c532f",
+        "condition": "C6",
+        "data_hash": "76dcdc819b97ecff4d3c458bdf4dbd7c1a5dc2a525541e29099e6a6ac760d700",
+        "device_role": "rtx4080super",
+        "gpu_uuid": "GPU-2a5c25d0-1f73-919b-fd8b-f6f0df709aaf",
+        "hardware_hash": "e7e76acf4421b553ed94689e218da674a8d57cbd66405271583fdff41354f80b",
+        "init_hash": "1a27890c588f317a4ae5523430f8af53c591bca29c9a78d13bf182c9c145fc09",
+        "microbatch": 4,
+        "model_hash": "b21bb330c10c1f9e324f487bb403d1629adf66f5643cfc19df8bbe5914d51358",
+        "precision": "bf16",
+        "protocol_hash": "48c39a25f640b90a70056e3c8f7308b66b9d635876e22c56f76516a09d2c9791",
+        "run_id": "s1-c6-seed0-rtx4080super",
+        "seed": 0,
+        "study": "S1"
+      },
+      "payload_sha256": {
+        "model.safetensors": "4df3c8ac617a15502c0429215e8892b671277c645cb6330870676f46ad62942f"
+      },
+      "status": "verified",
+      "required_for": [
+        "S4"
+      ]
+    },
+    {
+      "path": "D:\\KD-SINK-central\\runs\\s1-c6-seed0-rtx4080super\\checkpoints\\weights-000500",
+      "step": 500,
+      "kind": "weights",
+      "manifest_sha256": "8132e7b9c51331a9fa94a31cbf47408e81d1212e7101fdc2345414df652d577e",
+      "identity_sha256": "1f349241a8e4112536705766fd4771fff8bc20223800c17fbb96a01c87a1aae0",
+      "identity": {
+        "backend": "eager",
+        "calibration_hash": "fa031af3de63832e054b89539d3867c2904c9b592b1e7a8b3e4ca3e3676c532f",
+        "condition": "C6",
+        "data_hash": "76dcdc819b97ecff4d3c458bdf4dbd7c1a5dc2a525541e29099e6a6ac760d700",
+        "device_role": "rtx4080super",
+        "gpu_uuid": "GPU-2a5c25d0-1f73-919b-fd8b-f6f0df709aaf",
+        "hardware_hash": "e7e76acf4421b553ed94689e218da674a8d57cbd66405271583fdff41354f80b",
+        "init_hash": "1a27890c588f317a4ae5523430f8af53c591bca29c9a78d13bf182c9c145fc09",
+        "microbatch": 4,
+        "model_hash": "b21bb330c10c1f9e324f487bb403d1629adf66f5643cfc19df8bbe5914d51358",
+        "precision": "bf16",
+        "protocol_hash": "48c39a25f640b90a70056e3c8f7308b66b9d635876e22c56f76516a09d2c9791",
+        "run_id": "s1-c6-seed0-rtx4080super",
+        "seed": 0,
+        "study": "S1"
+      },
+      "payload_sha256": {
+        "model.safetensors": "6eaa1ac2dca42a0a0a8c8111f1b74545e0f6f478ab54af533f4e2952afac8859"
+      },
+      "status": "verified",
+      "required_for": [
+        "S4",
+        "S6"
+      ]
+    },
+    {
+      "path": "D:\\KD-SINK-central\\runs\\s1-c6-seed0-rtx4080super\\checkpoints\\weights-002000",
+      "step": 2000,
+      "kind": "weights",
+      "manifest_sha256": "7ff0d4178f5f14a7bcb63dc0dc3b9b885408ffcc3a71e30358d62c302b340d4e",
+      "identity_sha256": "1f349241a8e4112536705766fd4771fff8bc20223800c17fbb96a01c87a1aae0",
+      "identity": {
+        "backend": "eager",
+        "calibration_hash": "fa031af3de63832e054b89539d3867c2904c9b592b1e7a8b3e4ca3e3676c532f",
+        "condition": "C6",
+        "data_hash": "76dcdc819b97ecff4d3c458bdf4dbd7c1a5dc2a525541e29099e6a6ac760d700",
+        "device_role": "rtx4080super",
+        "gpu_uuid": "GPU-2a5c25d0-1f73-919b-fd8b-f6f0df709aaf",
+        "hardware_hash": "e7e76acf4421b553ed94689e218da674a8d57cbd66405271583fdff41354f80b",
+        "init_hash": "1a27890c588f317a4ae5523430f8af53c591bca29c9a78d13bf182c9c145fc09",
+        "microbatch": 4,
+        "model_hash": "b21bb330c10c1f9e324f487bb403d1629adf66f5643cfc19df8bbe5914d51358",
+        "precision": "bf16",
+        "protocol_hash": "48c39a25f640b90a70056e3c8f7308b66b9d635876e22c56f76516a09d2c9791",
+        "run_id": "s1-c6-seed0-rtx4080super",
+        "seed": 0,
+        "study": "S1"
+      },
+      "payload_sha256": {
+        "model.safetensors": "c7e59934849e5fca4ea64ed7c0d672c3f0bd5dfd16de7e9d19bb4fbf23ee2d90"
+      },
+      "status": "verified",
+      "required_for": [
+        "S4",
+        "S6"
+      ]
+    },
+    {
+      "path": "D:\\KD-SINK-central\\runs\\s1-c6-seed0-rtx4080super\\checkpoints\\final-010000",
+      "step": 10000,
+      "kind": "final",
+      "manifest_sha256": "3226ce46691f25b630007c1c1bf3a78530d304b79ddc3e02876876b7666daa8e",
+      "identity_sha256": "1f349241a8e4112536705766fd4771fff8bc20223800c17fbb96a01c87a1aae0",
+      "identity": {
+        "backend": "eager",
+        "calibration_hash": "fa031af3de63832e054b89539d3867c2904c9b592b1e7a8b3e4ca3e3676c532f",
+        "condition": "C6",
+        "data_hash": "76dcdc819b97ecff4d3c458bdf4dbd7c1a5dc2a525541e29099e6a6ac760d700",
+        "device_role": "rtx4080super",
+        "gpu_uuid": "GPU-2a5c25d0-1f73-919b-fd8b-f6f0df709aaf",
+        "hardware_hash": "e7e76acf4421b553ed94689e218da674a8d57cbd66405271583fdff41354f80b",
+        "init_hash": "1a27890c588f317a4ae5523430f8af53c591bca29c9a78d13bf182c9c145fc09",
+        "microbatch": 4,
+        "model_hash": "b21bb330c10c1f9e324f487bb403d1629adf66f5643cfc19df8bbe5914d51358",
+        "precision": "bf16",
+        "protocol_hash": "48c39a25f640b90a70056e3c8f7308b66b9d635876e22c56f76516a09d2c9791",
+        "run_id": "s1-c6-seed0-rtx4080super",
+        "seed": 0,
+        "study": "S1"
+      },
+      "payload_sha256": {
+        "model.safetensors": "22ee796957ef17cefa64b9a7e5831440e2aef3ea8a4183fe0bfd431319b206e4",
+        "state.pt": "9ebfeae7d6b7c5455ef3ebb42593283f17d3ff4aec1224b023ffe86ace4c9dcc"
+      },
+      "status": "verified",
+      "required_for": [
+        "S4",
+        "S6"
+      ]
+    }
+  ],
+  "scientific_commands_executed": 0,
+  "d24_policy_sha256": "46351d8e32ef1ef6238af18c11676e45e3d439e0e46942d1e61e35b8001851e6",
+  "c3_exception": {
+    "path": "protocols/s1_c3_seed0_transferred_log_exception.json",
+    "exact_researcher_wording": "The transferred C3 seed0 train.jsonl containing only updates 2501-10000 after resumed_step=2500 is an accepted historical provenance limitation. Do NOT reconstruct, fabricate, splice, or rerun updates 1-2500. This known log gap by itself must NOT block S4/S6.",
+    "binding": {
+      "run_id": "s1-c3-seed0-rtx4080super",
+      "run_path": "D:\\KD-SINK-central\\runs\\s1-c3-seed0-rtx4080super",
+      "train_jsonl_sha256": "3f01cbd4fe455e39b500c8dbcad80291aca48f69fcd7ea22f5f8177fdb8bdbf0",
+      "train_jsonl_bytes": 3334446,
+      "updates": [
+        2501,
+        10000
+      ],
+      "missing_updates": [
+        1,
+        2500
+      ],
+      "resumed_step": 2500,
+      "identity_sha256": "b0948d1b994e2115c59e87bc2f876ea3aea3bec93e50507d7240c27082b02861",
+      "final_manifest_sha256": "7d629c59a650724ae4122686b5c57ce408a141e15bb7848e04a84e6311a3d122",
+      "transfer_manifest_sha256": "955a8588718424500841ebb00d596e0480ee4a471e5c0786d910f05231383d32"
+    },
+    "scope": "C3 seed0 transferred training-log prefix only; all identity/checkpoint verification remains strict; C3 excluded from S5 inputs.",
+    "sealed_payload_sha256": "f021ac0441f775d45d19a8109d47c0f45a0b0bbfc025bbd2df35be688e291cd2",
+    "file_sha256": "a5fbb621555a5fb4e5f9f7fafbb6fa485aab87683c545c3883ed9453ccd0843c"
+  },
+  "verification_limits": {
+    "direct_c1_item_reaggregation": "Not completed; no pass claimed.",
+    "source_runs_or_archives_modified": false,
+    "models_loaded": false,
+    "training_or_resume": false,
+    "scientific_evaluation_or_intervention": false,
+    "gpu_code": false,
+    "profiling_or_calibration": false,
+    "network_downloads": 0,
+    "stage09_started": false
+  },
+  "tests": [
+    {
+      "command": "$env:CUDA_VISIBLE_DEVICES=''; $env:HF_HUB_OFFLINE='1'; $env:TRANSFORMERS_OFFLINE='1'; .\\.venv\\Scripts\\python.exe -m pytest -q tests/unit/test_stage08_readiness.py tests/unit/test_followup_policy.py tests/unit/test_stage08_probes.py tests/unit/test_stage08_s5.py tests/unit/test_stage08_s6.py tests/integration/test_clean_wheel.py",
+      "environment": {
+        "CUDA_VISIBLE_DEVICES": "",
+        "HF_HUB_OFFLINE": "1",
+        "TRANSFORMERS_OFFLINE": "1"
+      },
+      "exit_code": 0,
+      "passed": 63,
+      "failed": 0,
+      "skipped": 0,
+      "device": "CPU/offline"
+    }
+  ]
+}

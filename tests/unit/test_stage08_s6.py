@@ -1,14 +1,22 @@
 import copy
+import importlib.util
+from pathlib import Path
 
 import pytest
 from transformers import GPT2Config, GPT2LMHeadModel
 
 from sinklab.provenance import seal_payload
 from sinklab.evaluate import RecordStore, _key
-from sinklab.s6 import (S6Error, equal_item_behavior, evaluate_optional_long_context,
+from sinklab.s6 import (DOMAIN_SOURCE_CONTRACTS, S6Error, equal_item_behavior, evaluate_optional_long_context,
                         evaluate_s6_domains, prepare_s6_domains,
                         render_domain_items, validate_optional_long_context,
-                        validate_s6_domains)
+                        validate_s6_domains, validate_s6_source_metadata)
+
+ROOT = Path(__file__).resolve().parents[2]
+PREP_SPEC = importlib.util.spec_from_file_location(
+    "prepare_s6_d25_panels", ROOT / "scripts/prepare_s6_d25_panels.py")
+PREP = importlib.util.module_from_spec(PREP_SPEC)
+PREP_SPEC.loader.exec_module(PREP)
 
 
 class Tokenizer:
@@ -26,10 +34,37 @@ def panel_fixture():
         "gsm8k": [{"split": "test", "question": f"question-{i}", "answer": "LEAK"} for i in range(101)],
         "humaneval": [{"split": "test", "prompt": f"def f_{i}(x): pass", "canonical_solution": "LEAK",
                        "test": "LEAK"} for i in range(101)]}
+    metadata = source_metadata_fixture()
     return prepare_s6_domains(sources, Tokenizer(), tokenizer_id="tiny",
         tokenizer_revision="a" * 40, tokenizer_sha256="b" * 64,
-        revisions={name: "pinned-fixture" for name in sources},
-        licenses={name: "fixture" for name in sources})
+        source_metadata=metadata, decision_sha256="c" * 64,
+        source_lock_sha256="d" * 64)
+
+
+def source_metadata_fixture():
+    metadata = {}
+    for domain, contract in DOMAIN_SOURCE_CONTRACTS.items():
+        revision = "a" * 40
+        license_status = "upstream_ambiguous" if domain == "sst2" else "upstream_stated"
+        license_value = "other" if domain == "sst2" else "mit"
+        metadata[domain] = {
+            **contract,
+            "revision": revision,
+            "file_sha256": "e" * 64,
+            "file_bytes": 1234,
+            "row_count": 101,
+            "model_input_fields": [contract["field"]],
+            "source_uri": f"https://huggingface.co/datasets/{contract['repository']}/resolve/{revision}/{contract['file_path']}",
+            "license": {
+                "status": license_status,
+                "upstream_value": license_value,
+                "evidence_uri": f"https://huggingface.co/datasets/{contract['repository']}/blob/{revision}/README.md",
+                "evidence_sha256": "f" * 64,
+                "evidence_text": ["license evidence fixture"],
+                "status_basis": "synthetic test fixture",
+            },
+        }
+    return metadata
 
 
 def test_same_document_contexts_masks_provenance_and_no_answer_leakage():
@@ -53,14 +88,67 @@ def test_same_document_contexts_masks_provenance_and_no_answer_leakage():
                 assert row["labels"] == [token if valid else -100
                                          for token, valid in zip(row["input_ids"], mask)]
                 assert row["valid_target_count"] == sum(mask) - 1
-                assert row["source_revision"] == "pinned-fixture"
-                assert row["source_license"] == "fixture"
+                assert row["source_revision"] == "a" * 40
+                assert row["source_file_sha256"] == "e" * 64
+                assert row["source_license_evidence_sha256"] == "f" * 64
+                if domain == "sst2":
+                    assert row["source_license_status"] == "upstream_ambiguous"
+                    assert row["source_upstream_license_value"] == "other"
+                else:
+                    assert row["source_license_status"] == "upstream_stated"
+                    assert row["source_upstream_license_value"] == "mit"
                 assert row["metric_label"] == "causal_language_modeling_not_domain_task_accuracy"
     assert "LEAK" not in str(document)
     damaged = copy.deepcopy(document["payload"])
     damaged["base_panel"]["domains"]["sst2"]["items"][0]["renderings"]["40"]["attention_mask"][0] = 0
     with pytest.raises(ValueError):
         validate_s6_domains(seal_payload(damaged), tokenizer_sha256="b" * 64)
+
+
+def test_s6_license_metadata_accepts_explicit_uncertainty_without_inventing_license():
+    metadata = source_metadata_fixture()
+    metadata["humaneval"]["license"]["status"] = "upstream_unspecified"
+    metadata["humaneval"]["license"]["upstream_value"] = None
+    validated = validate_s6_source_metadata(metadata)
+    assert validated["sst2"]["license"]["status"] == "upstream_ambiguous"
+    assert validated["sst2"]["license"]["upstream_value"] == "other"
+    assert validated["gsm8k"]["license"]["upstream_value"] == "mit"
+    assert validated["humaneval"]["license"]["status"] == "upstream_unspecified"
+
+
+@pytest.mark.parametrize("damage", ["missing", "status", "evidence", "revision", "field", "claimed"])
+def test_s6_rejects_incomplete_or_conflicting_source_license_metadata(damage):
+    metadata = source_metadata_fixture()
+    if damage == "missing":
+        del metadata["sst2"]["license"]
+    elif damage == "status":
+        metadata["sst2"]["license"]["status"] = "unknown"
+    elif damage == "evidence":
+        metadata["sst2"]["license"]["evidence_sha256"] = None
+    elif damage == "revision":
+        metadata["sst2"]["source_uri"] = "https://huggingface.co/datasets/nyu-mll/glue/resolve/main/file.parquet"
+    elif damage == "field":
+        metadata["gsm8k"]["field"] = "answer"
+    else:
+        metadata["sst2"]["license"]["status"] = "upstream_stated"
+        metadata["sst2"]["license"]["upstream_value"] = None
+    with pytest.raises(S6Error):
+        validate_s6_source_metadata(metadata)
+
+
+def test_d25_selector_is_repeatable_records_ids_and_never_returns_source_text():
+    rows = [{"split": "test", "prompt": f"function-{i}-" + "x" * 70,
+             "task_id": f"HumanEval/{i}", "test": "DO_NOT_SELECT_TEST_CODE",
+             "canonical_solution": "DO_NOT_SELECT_COMPLETION"} for i in range(101)]
+    a, eligible_a = PREP._selection(rows, domain="humaneval", field="prompt",
+        id_field="task_id", tokenizer=Tokenizer())
+    b, eligible_b = PREP._selection(rows, domain="humaneval", field="prompt",
+        id_field="task_id", tokenizer=Tokenizer())
+    assert eligible_a == eligible_b == 101
+    assert a == b and len(a) == 100
+    assert all("document_sha256" in row and "source_record_id" in row for row in a)
+    assert "DO_NOT_SELECT_TEST_CODE" not in str(a)
+    assert "DO_NOT_SELECT_COMPLETION" not in str(a)
 
 
 def test_equal_item_lm_pool_differs_from_target_weighting():
