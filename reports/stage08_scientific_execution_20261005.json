@@ -53,23 +53,31 @@
         "teacher_reference_batteries_completed": 1,
         "teacher_completed_items": 300,
         "teacher_total_items": 300,
-        "student_batteries_completed": 3,
+        "student_batteries_completed": 4,
         "student_batteries_required": 35,
         "active_battery": {
           "condition": "C0",
-          "step": 2000,
+          "step": 10000,
           "model_role": "student",
           "panel": "owt_full300",
           "run_id": "s1-c0-seed0-rtx4080super"
         },
-        "active_battery_completed_items": 180,
+        "active_battery_completed_items": 0,
         "active_battery_total_items": 300,
-        "incremental_record_file_count": 13867,
+        "incremental_record_file_count": 14969,
         "console_log": "D:\\KD-SINK-central\\analysis\\stage08_scientific_20261005\\S4_attempt02.console.jsonl",
         "all_35_checkpoints_preflight_passed": true,
         "C3_training_log_status": "accepted_historical_prefix_gap",
         "C3_exception_sha256": "f021ac0441f775d45d19a8109d47c0f45a0b0bbfc025bbd2df35be688e291cd2",
-        "last_observed_utc": "2026-10-04T23:31:54Z"
+        "last_observed_utc": "2026-10-04T23:37:52Z",
+        "last_completed_battery": {
+          "condition": "C0",
+          "step": 2000,
+          "status": "complete",
+          "items": 300,
+          "record_count": 3000,
+          "summary_sha256": "45129bc94fef74c37e0d0ad2cab0efea17f91938b77d71d5c13ef3ae982e3064"
+        }
       },
       "repair": {
         "change": "Verify raw config.json SHA-256 directly and assert locked GPT-2-large shape 36x20x1280. Add exact runner script SHA to S4 run binding.",
@@ -434,7 +442,7 @@
       }
     }
   },
-  "updated_utc": "2026-10-04T23:31:54Z",
+  "updated_utc": "2026-10-04T23:37:52Z",
   "validation": {
     "S4_verifier_fix_focused": "9 passed, 0 failed, 0 skipped; exit 0",
     "focused_command": ".venv\\Scripts\\python.exe -m pytest -q tests\\unit\\test_stage08_probes.py tests\\unit\\test_stage08_scientific_common.py tests\\unit\\test_stage08_s5.py tests\\unit\\test_stage08_s6.py tests\\unit\\test_stage08_s6_d25.py tests\\unit\\test_stage08_readiness.py tests\\unit\\test_followup_policy.py",

@@ -195,3 +195,14 @@ S6 C0-C3 prefix audit PASSED: 16/16 stable states, 28,800 item-operation records
 - Verification: console tail and result file count read-only; no scientific command started by this progress record.
 - Next: continue existing S4 process and audit all108,000 required records at completion.
 - Milestone commit: pending.
+
+
+## 2026-10-04T23:37:52Z - Codex (GPT-6) - S4 C0 step-2000 completion
+
+- Starting branch/commit: main / 2bc9d6ab7d8e833d3acfc36977a9d29a3a502f9d.
+- Scope: existing attempt02; no new run or scope change.
+- Result: C0 student Full300 battery at step2000 completed 300/300 items and sealed3,000 records. Summary SHA-256 45129bc94fef74c37e0d0ad2cab0efea17f91938b77d71d5c13ef3ae982e3064. The runner then began the fixed C0 step10000 battery. Four of 35 student batteries are complete.
+- Source preflight:35/35 checkpoints passed; C3 exception remains limited to the sealed missing training-log prefix.
+- No new science commands, training, HumanEval execution, or source modification occurred while updating documentation.
+- Next: monitor the active C0 step10000 battery and subsequent fixed batteries; final status waits for full independent audit.
+- Milestone commit: pending.
