@@ -1,4 +1,5 @@
 import copy
+import json
 import math
 import random
 
@@ -86,6 +87,10 @@ def test_panel_records_idempotent_and_restores_rng(tmp_path):
                 operations=("clean", "none", "delete", "relocate"), terminal=False)
     first = evaluate_panel(**args)
     files = sorted(p.name for p in tmp_path.iterdir())
+    aggregate_files = list(tmp_path.glob("aggregate-*.json"))
+    assert len(aggregate_files) == 1
+    aggregate = json.loads(aggregate_files[0].read_text(encoding="utf-8"))["payload"]
+    assert set(aggregate["operations"]) == set(args["operations"])
     second = evaluate_panel(**args)
     assert files == sorted(p.name for p in tmp_path.iterdir())
     assert first["operations"] == second["operations"]

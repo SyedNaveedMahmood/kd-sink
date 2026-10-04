@@ -38,6 +38,15 @@ D25_ROOT = Path(r"D:\KD-SINK-central\analysis\S6_D25")
 DEFAULT_OUTPUT = Path(r"E:\KD-SINK-stage08-scientific-20261005\S6")
 
 
+def _expected_record_counts() -> tuple[int, int]:
+    """Return item-operation records and one all-operations aggregate per panel."""
+    state_count = len(CONDITIONS) * len(STEPS)
+    panel_count = len(DOMAIN_FIELDS) * len(CONTEXTS)
+    item_records = state_count * panel_count * 100 * 3
+    aggregate_records = state_count * panel_count
+    return item_records, aggregate_records
+
+
 def emit(payload: dict) -> None:
     print(json.dumps(payload, sort_keys=True, separators=(",", ":")), flush=True)
 
@@ -287,8 +296,7 @@ def run(*, output: Path, runs_root: Path, artifact_root: Path,
 
     if len(completed) != 28:
         raise RuntimeError("S6 condition/checkpoint coverage differs from 28")
-    expected_item_records = len(CONDITIONS) * len(STEPS) * len(DOMAIN_FIELDS) * len(CONTEXTS) * 100 * 3
-    expected_aggregate_records = len(CONDITIONS) * len(STEPS) * len(DOMAIN_FIELDS) * len(CONTEXTS) * 3
+    expected_item_records, expected_aggregate_records = _expected_record_counts()
     item_count = aggregate_count = 0
     for path in (output / "records").glob("*.json"):
         document = read_json(path)
