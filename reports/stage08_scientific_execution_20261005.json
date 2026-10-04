@@ -1,0 +1,69 @@
+{
+  "schema": "stage08-scientific-execution-progress-v1",
+  "updated_utc": "2026-10-04T20:39:04Z",
+  "hostname": "DESKTOP-GPO5752",
+  "starting_commit": "540ce065ab1be28196d5742a5e8b6b2ad5ac7196",
+  "authorization": "User-provided Stage08 execution request; independent S4/S5/S6 jobs; no S1 training, S2 rerun, or Stage09.",
+  "policy_roots": {
+    "D24_sha256": "46351d8e32ef1ef6238af18c11676e45e3d439e0e46942d1e61e35b8001851e6",
+    "D25_sha256": "6c42ffebf8fa6b1a49787ec7468040939b6fd360c6132e2df10bf2b212780704",
+    "D26_sha256": "888b21509000b570c83c2574f5a6bfbc3d1ec2dc197e88d841d085bac222f182"
+  },
+  "studies": {
+    "S4": {
+      "status": "PENDING_EXECUTION",
+      "scope": {"training_seed": 0, "conditions": ["C0", "C1", "C2", "C3", "C4", "C5", "C6"], "steps": [0, 100, 500, 2000, 10000], "teacher_reference_batteries": 1},
+      "result_directory": "D:\\KD-SINK-central\\analysis\\stage08_scientific_20261005\\S4",
+      "required_student_batteries": 35,
+      "expected_record_count": 108000,
+      "panel_payload_sha256": "03fa2adf3931f7594fae23d70e402c697ad2c771e53bdb68977b614336cc5013",
+      "panel_item_ids_sha256": "5298fa0d63e7743077e60e6ab0afe254fb077891ab4d06ae648bc74cda8f7fce",
+      "C3_log_exception": {"path": "protocols/s1_c3_seed0_transferred_log_exception.json", "sha256": "f021ac0441f775d45d19a8109d47c0f45a0b0bbfc025bbd2df35be688e291cd2", "scope": "exact C3 seed0 transferred train log; absent updates 1-2500 only; no reconstruction or rerun"}
+    },
+    "S5": {
+      "status": "COMPLETE",
+      "scope": {"training_seed": 0, "conditions": ["C1", "C2", "C5", "C6"], "new_model_inference": false},
+      "result_directory": "D:\\KD-SINK-central\\analysis\\stage08_scientific_20261005\\S5",
+      "D26_sha256": "888b21509000b570c83c2574f5a6bfbc3d1ec2dc197e88d841d085bac222f182",
+      "source_run_audits": 4,
+      "per_source_evaluation_file_count": 59206,
+      "per_source_item_record_count": 58984,
+      "per_source_aggregate_count": 222,
+      "source_panel_step_rows": 440,
+      "dense64_joined_steps": 101,
+      "full300_joined_steps": 9,
+      "missing_steps": {"dense64": [], "full300": []},
+      "source_roots_preserved": {
+        "C1": "48c39a25f640b90a70056e3c8f7308b66b9d635876e22c56f76516a09d2c9791",
+        "C2": "910961fcc53edaed0df48e3139dbb7ca2e058bf7480b67dab27bae0bcd90f26f",
+        "C5": "fccf4c14bc691e550c6304f4955b72037efb8d042b3e51afb70367920fff0552",
+        "C6": "48c39a25f640b90a70056e3c8f7308b66b9d635876e22c56f76516a09d2c9791"
+      },
+      "source_verification_sha256": "9492bdc94542081821f6d52ba19653ffb1619a44781c17a8585a998d40d2a25d",
+      "source_rows_sha256": "dbb46820640eaa51e76ec402ba78b096c68c17143fb029f3a4b580266d73c42c",
+      "dense_join_sha256": "463770e94d7e7aea48c2948cec7f2655c886a13f5d87305fed7af477681d087c",
+      "full300_join_sha256": "659beb093b84d00201391fa4723df31483e15ed34c93b9f143cd71641128d892",
+      "sha256sums_sha256": "5b820ec2395eb6eb919bf72dc20cc4ba8eebd97d59cd5ed710dad6c82219bf31",
+      "audit_sha256": "09b3663cda822c7b5b3b697bbc3a44c4849b63e85f24b0a98abfce06c99dfa7c",
+      "independent_manifest_verification": {"status": "PASS", "manifested_files": 4},
+      "source_runs_modified": false
+    },
+    "S6": {
+      "status": "PENDING_EXECUTION",
+      "scope": {"training_seed": 0, "conditions": ["C0", "C1", "C2", "C3", "C4", "C5", "C6"], "steps": [0, 500, 2000, 10000], "domains": ["sst2", "gsm8k", "humaneval"], "contexts": [40, 128], "optional_512_1024": "disabled", "HumanEval_code_execution": false},
+      "result_directory": "D:\\KD-SINK-central\\analysis\\stage08_scientific_20261005\\S6",
+      "required_student_batteries": 28,
+      "D25_panel_sha256": "73b0162539bd5870a95aecd9149edadb97cff6eb36fdc4e9b3f73d0bad6e9508",
+      "tokenizer_sha256": "68bfbc36e7d352017e23168f34c98b3b92a18bdcb658c163dea499d8d690c580"
+    }
+  },
+  "validation": {
+    "focused_command": ".venv\\Scripts\\python.exe -m pytest -q tests\\unit\\test_stage08_probes.py tests\\unit\\test_stage08_scientific_common.py tests\\unit\\test_stage08_s5.py tests\\unit\\test_stage08_s6.py tests\\unit\\test_stage08_s6_d25.py tests\\unit\\test_stage08_readiness.py tests\\unit\\test_followup_policy.py",
+    "focused_result": "78 passed, 0 failed, 0 skipped",
+    "full_offline_command": ".venv\\Scripts\\python.exe -m pytest -q tests\\unit tests\\integration -m 'not gpu and not network'",
+    "full_offline_result": "333 passed, 0 failed, 0 skipped; one external astor DeprecationWarning",
+    "py_compile": "pass",
+    "git_diff_check": "pass"
+  },
+  "non_occurrences": {"training": false, "S2_rerun": false, "Stage09": false, "source_run_modification": false, "humanEval_code_execution": false}
+}

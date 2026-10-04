@@ -103,18 +103,22 @@ def test_probe_battery_records_nonresponse_guard_and_neox_not_applicable(tmp_pat
     adapter = GPT2Adapter(model)
     before = torch.get_rng_state().clone()
     item = [{"id": "a", "input_ids": [1, 2, 3, 4], "attention_mask": [1, 1, 1, 1]}]
+    progress = []
     kwargs = dict(adapter=adapter, items=item, store=RecordStore(tmp_path),
         checkpoint_sha256="a" * 64, panel_sha256="b" * 64, run_id="fixture",
         model_role="teacher", control_seed=3, denominator_floor=1e6,
-        responsiveness_floor=1e6, provenance={"fixture": True})
+        responsiveness_floor=1e6, provenance={"fixture": True},
+        progress_callback=lambda done, total, item_id: progress.append((done, total, item_id)))
     first = evaluate_probe_battery(**kwargs)
     assert first["status"] == "complete"
+    assert progress == [(1, 1, "a")]
     stored = json.loads(next(tmp_path.glob("*.json")).read_text(encoding="utf-8"))
     assert stored["payload"]["value"]["attention_mask"] == [[1, 1, 1, 1]]
     assert len(first["probes"]) == 10
     assert all(v["responsiveness"] == "nonresponsive" for v in first["probes"].values())
     assert all(v["fingerprint"]["ratio"] is None for v in first["probes"].values())
     files = sorted(p.name for p in tmp_path.iterdir())
+    kwargs.pop("progress_callback")
     assert evaluate_probe_battery(**kwargs) == first
     assert files == sorted(p.name for p in tmp_path.iterdir())
     assert model.training

@@ -92,3 +92,14 @@ Stage08 08.4 evidence was committed as `51e7903a0a400e2daac80e2aa0b295d8603dba42
 - Fixed the digest input shape by wrapping the item ID list in the canonical object envelope and added `test_item_ids_digest_uses_canonical_object_envelope`. Focused readiness/S5 tests: exit0, 15 passed; compile and whitespace checks exit0.
 - No scientific conclusion was produced and the interrupted attempt is not counted as S5 coverage. Rerun the complete audit after committing the fix.
 - Milestone commit: pending.
+
+## 2026-10-04T20:41:11Z - Codex (GPT-6) - S5 authorized seed0 reaggregation complete
+
+- Starting commit `540ce065ab1be28196d5742a5e8b6b2ad5ac7196`. Read D26, S5/Stage08, the attachment scope and prior S5/CORE journals. Executed only reuse of the approved existing seed0 C1/C2/C5/C6 S1 records; no model load or new inference.
+- Fresh source validation completed for C1/C2/C5/C6: training logs complete at step10000; each run's full59,206-file evaluation directory verified (58,984 item observations and222 aggregates); D26 roots, run identities, panel item IDs and hardware provenance retained. Reaggregated 440 Dense64/Full300 condition-step rows and joined all101 Dense64 and9 Full300 steps with no missing entries.
+- Output `D:\KD-SINK-central\analysis\stage08_scientific_20261005\S5`. Source verification SHA `9492bdc94542081821f6d52ba19653ffb1619a44781c17a8585a998d40d2a25d`; 440-row source file SHA `dbb46820640eaa51e76ec402ba78b096c68c17143fb029f3a4b580266d73c42c`; Dense64 join SHA `463770e94d7e7aea48c2948cec7f2655c886a13f5d87305fed7af477681d087c`; Full300 join SHA `659beb093b84d00201391fa4723df31483e15ed34c93b9f143cd71641128d892`; S5 audit SHA `09b3663cda822c7b5b3b697bbc3a44c4849b63e85f24b0a98abfce06c99dfa7c`. Independently rehashed all four files in `SHA256SUMS.txt`, matched audit bindings, and verified audit `.sha256` sidecar.
+- Compatibility is strictly the sealed D26 four-run rule. Original roots/hardware UUIDs remain on source rows. A first attempt at my separate read-only output checker used the wrong property name for the Full300 field and exited with KeyError; correcting the checker to the actual `full300_join_sha256` key passed. No S5 output or source was changed by the checker error.
+- Tests for this campaign's driver/preflight: focused 78 passed; full offline CPU/unit/integration suite333 passed,0 failed,0 skipped, one external astor warning; py_compile, runner help and `git diff --check` passed. Exact commands/evidence are in CORE and `reports/stage08_scientific_execution_20261005.json`.
+- User-visible communication reported S5 source and join completion before independent checksum verification. No messages sent to others. No training, S2, Stage09, GPU inference, or source-run modification.
+- Next: independently run fixed D24 S4 and D24/D25 S6, continuing S6 even if S4 blocks, then verify all outputs and update status.
+- Milestone commit: pending.

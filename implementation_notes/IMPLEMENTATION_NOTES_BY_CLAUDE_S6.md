@@ -95,3 +95,13 @@ The paired 40/128-token RTX 4080 SUPER engineering smoke and report were committ
 - Final clean-tree revalidation before pushing: panel `--verify-only` exit0; focused suite exit0 (73 passed,0 failed,0 skipped); full offline CPU/unit/integration suite exit0 (327 passed,0 failed,0 skipped; one external astor deprecation warning); `git diff --check` exit0. Optional long contexts remain disabled. No science, GPU work, training, model loading, or Stage09.
 - Next: commit this journal SHA receipt, then push both commits to `origin/main` as a normal fast-forward and verify the remote ref.
 - Milestone commit: `40f1923491ed79b77fe2e7cbb0ef38b65934dfc9`.
+
+## 2026-10-04T20:41:11Z - Codex (GPT-6) - S6 authorized-runner milestone
+
+- Starting commit: `540ce065ab1be28196d5742a5e8b6b2ad5ac7196`; read D25 amendment/source lock, D24, S6 and Stage08 contracts/exit gates, and latest S6/CORE journals. User authorized seed0 C0-C6 at steps0/500/2000/10000 using only the frozen D25 domain panels and max40/max128 contexts.
+- Added `scripts/run_stage08_s6.py` and shared Stage08 preflight/output helpers. The driver independently verifies D25 source/card snapshots, source selections, panel envelopes, tokenizer identity, D24 source logs, all28 required checkpoint manifests/payloads, and records each original S1 protocol root. FP32 is enforced with autocast disabled. It uses clean/delete/relocate and existing registered domain metrics; 512/1024 is disabled, input projections omit answers/completions/tests, and HumanEval code execution is false. Records are incremental and final expected coverage is50,400 item records plus504 aggregates.
+- D25 frozen panel SHA `73b0162539bd5870a95aecd9149edadb97cff6eb36fdc4e9b3f73d0bad6e9508`; tokenizer SHA `68bfbc36e7d352017e23168f34c98b3b92a18bdcb658c163dea499d8d690c580`. Output will be at `D:\KD-SINK-central\analysis\stage08_scientific_20261005\S6`, outside Git and source run directories.
+- Validation: focused Stage08 regression suite78 passed; full offline CPU/unit/integration suite333 passed, zero failures/skips, one external astor deprecation warning. Python compile and `git diff --check` passed. Panel/source verification was a no-outcome preflight; S6 inference has not started at this milestone.
+- User-visible communication noted S6 is staged separately and not yet running; no messages to others.
+- Next: commit/push runner milestone, re-verify D25 panels immediately before S6 science, then execute after S4 or if S4 blocks. No training, S2 rerun, Stage09, HumanEval code execution, or source-run modification.
+- Milestone commit: pending.

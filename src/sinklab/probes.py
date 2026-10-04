@@ -7,7 +7,7 @@ from .followup_policy import admit_s1_followup
 import hashlib
 import random
 from contextlib import contextmanager
-from typing import Iterator
+from typing import Callable, Iterator
 
 import torch
 from transformers import GPT2LMHeadModel, GPTNeoXForCausalLM
@@ -176,7 +176,8 @@ def evaluate_probe_battery(*, adapter, items: list[dict], store: RecordStore,
                            denominator_floor: float, responsiveness_floor: float,
                            provenance: dict, retry_failed: bool = False,
                            source_identity: dict | None = None,
-                           step: int | None = None) -> dict:
+                           step: int | None = None,
+                           progress_callback: Callable[[int, int, str], None] | None = None) -> dict:
     """Freeze one battery definition; report every applicable or inapplicable probe."""
     if not provenance or not isinstance(provenance, dict):
         raise ProbeError("immutable run provenance required")
@@ -213,7 +214,7 @@ def evaluate_probe_battery(*, adapter, items: list[dict], store: RecordStore,
         raise ProbeError("GPT-2 adapter required for applicable S4 probes")
     results = {name: [] for name in PROBE_IDS}
     with rng_neutral(adapter.model):
-        for item in items:
+        for item_index, item in enumerate(items, start=1):
             device = next(adapter.model.parameters()).device
             ids = torch.tensor([item["input_ids"]], dtype=torch.long, device=device)
             mask = torch.tensor([item["attention_mask"]], dtype=torch.bool, device=device)
@@ -255,6 +256,8 @@ def evaluate_probe_battery(*, adapter, items: list[dict], store: RecordStore,
                     store.write(key, status="failed", value=None,
                                 error=f"{type(exc).__name__}: {exc}", retry_failed=retry_failed)
                 results[name].append(store.read(key))
+            if progress_callback is not None:
+                progress_callback(item_index, len(items), item["id"])
     summaries = {}
     for name, records in results.items():
         complete = [r["value"] for r in records if r["status"] == "complete"]
