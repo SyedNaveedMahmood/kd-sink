@@ -88,3 +88,10 @@ The paired 40/128-token RTX 4080 SUPER engineering smoke and report were committ
 - User-visible communication: reported that D25 pinning/panel prep was complete and final audit/commit checks were underway. No messages were sent to others. No training, scientific evaluation, model load, GPU execution, S4/S5 science, Stage09, or active S1 run modification occurred.
 - Next: final `git diff --check`, inspect staged paths for raw data/tensor payloads, commit the preserved preparation milestone, push fast-forward to `origin/main`, verify remote SHA.
 - Milestone commit: pending.
+
+## 2026-10-04T18:32:54Z - Codex (GPT-6) - D25 S6 preparation milestone SHA
+
+- D25 amendment, source lock, S6 source-status validator, regeneration code, frozen-panel report, tests, and preserved Stage08 readiness milestone committed as `40f1923491ed79b77fe2e7cbb0ef38b65934dfc9` (`feat(stage08): seal D25 S6 source panels and readiness`). D25 SHA-256 remains `6c42ffebf8fa6b1a49787ec7468040939b6fd360c6132e2df10bf2b212780704`.
+- Final clean-tree revalidation before pushing: panel `--verify-only` exit0; focused suite exit0 (73 passed,0 failed,0 skipped); full offline CPU/unit/integration suite exit0 (327 passed,0 failed,0 skipped; one external astor deprecation warning); `git diff --check` exit0. Optional long contexts remain disabled. No science, GPU work, training, model loading, or Stage09.
+- Next: commit this journal SHA receipt, then push both commits to `origin/main` as a normal fast-forward and verify the remote ref.
+- Milestone commit: `40f1923491ed79b77fe2e7cbb0ef38b65934dfc9`.
