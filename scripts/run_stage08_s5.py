@@ -83,6 +83,10 @@ def run(*, runs_root: Path, artifact_root: Path, output: Path) -> dict:
     if output.exists() and any(output.iterdir()):
         raise FileExistsError(f"S5 output directory is not empty: {output}")
     output.mkdir(parents=True, exist_ok=True)
+    print(json.dumps({"event": "s5_start", "output": str(output),
+        "conditions": list(CONDITIONS), "training_seed": 0,
+        "D26_sha256": compatibility["sha256"], "model_loading": False,
+        "source_reaggregation_expected_rows": 440}, sort_keys=True), flush=True)
 
     artifact_document = read_json(REPO / "protocols" / "artifact.lock.json")
     _, artifact_sha = verify_envelope(artifact_document)
@@ -106,6 +110,8 @@ def run(*, runs_root: Path, artifact_root: Path, output: Path) -> dict:
         run_dir = runs_root / approved["run_id"]
         if not run_dir.is_dir():
             raise FileNotFoundError(f"approved S5 source run missing: {run_dir}")
+        print(json.dumps({"event": "s5_source_audit_start", "condition": condition,
+            "run_id": approved["run_id"], "source_path": str(run_dir)}, sort_keys=True), flush=True)
         final_path = run_dir / "checkpoints" / "final-010000"
         checkpoint_manifest = read_json(final_path / "manifest.json")
         identity = checkpoint_manifest["identity"]
@@ -149,6 +155,10 @@ def run(*, runs_root: Path, artifact_root: Path, output: Path) -> dict:
             "final_shifted_targets": train_audit["final_shifted_targets"],
             "evaluation": eval_audit,
         }
+        print(json.dumps({"event": "s5_source_audit_complete", "condition": condition,
+            "training_status": train_audit["status"], "evaluation_status": eval_audit["status"],
+            "aggregates": eval_audit["aggregate_count"], "items": eval_audit["item_record_count"]},
+            sort_keys=True), flush=True)
 
     dense_steps = list(range(0, 10001, 100))
     full_steps = [0, 100, 250, 500, 1000, 2000, 5000, 7500, 10000]
@@ -157,6 +167,10 @@ def run(*, runs_root: Path, artifact_root: Path, output: Path) -> dict:
     for condition in CONDITIONS:
         approved = compatibility["allowed_runs"][condition]
         run_dir = runs_root / approved["run_id"]
+        print(json.dumps({"event": "s5_reaggregation_start", "condition": condition,
+            "run_id": approved["run_id"], "panels": ["owt_dense64", "owt_full300"]},
+            sort_keys=True), flush=True)
+        condition_rows = {"owt_dense64": 0, "owt_full300": 0}
         for aggregate_path in sorted((run_dir / "evaluation").glob("aggregate-*.json")):
             aggregate_document = read_json(aggregate_path)
             aggregate, _ = verify_envelope(aggregate_document)
@@ -177,10 +191,19 @@ def run(*, runs_root: Path, artifact_root: Path, output: Path) -> dict:
             if row["item_ids"] != panel_payload[panel_name]:
                 raise ValueError(f"frozen S1 panel item identity mismatch: {condition}/{panel_name}/{key['step']}")
             records_by_panel[panel_name].append(row)
+            condition_rows[panel_name] += 1
+            if condition_rows[panel_name] % 20 == 0:
+                print(json.dumps({"event": "s5_reaggregation_progress", "condition": condition,
+                    "panel": panel_name, "aggregates_reaggregated": condition_rows[panel_name],
+                    "expected_aggregates": len(dense_steps) if panel_name == "owt_dense64" else len(full_steps)},
+                    sort_keys=True), flush=True)
         expected_groups = {(step, name) for name, steps in (
             ("owt_dense64", dense_steps), ("owt_full300", full_steps)) for step in steps}
         if seen_groups[condition] != expected_groups:
             raise ValueError(f"S5 aggregate coverage differs for {condition}; missing={sorted(expected_groups-seen_groups[condition])}")
+        print(json.dumps({"event": "s5_reaggregation_complete", "condition": condition,
+            "dense64_aggregates": condition_rows["owt_dense64"],
+            "full300_aggregates": condition_rows["owt_full300"]}, sort_keys=True), flush=True)
 
     dense_join = join_s5(records_by_panel["owt_dense64"], device_role="rtx4080super",
         panel_sha256=panel_sha, steps=dense_steps, seeds=[0], compatibility_document=d26_document)
@@ -189,6 +212,9 @@ def run(*, runs_root: Path, artifact_root: Path, output: Path) -> dict:
     if (dense_join["status"] != "complete" or len(dense_join["joined"]) != len(dense_steps) or
             full_join["status"] != "complete" or len(full_join["joined"]) != len(full_steps)):
         raise ValueError("S5 condition/step join coverage incomplete")
+    print(json.dumps({"event": "s5_joins_complete", "dense64_steps": len(dense_join["joined"]),
+        "full300_steps": len(full_join["joined"]), "missing_dense64": dense_join["missing"],
+        "missing_full300": full_join["missing"]}, sort_keys=True), flush=True)
 
     source_rows_path = output / "S5_REAGGREGATED_SOURCE_ROWS.jsonl"
     with source_rows_path.open("xb") as stream:
