@@ -79,3 +79,10 @@ Real GPT-2-large S4 engineering qualification and compact probe evidence were co
 - User-visible communication stated S5 complete and S4/S6 runners prepared, with storage placed on D: due the limited E: free-space margin. No messages to others.
 - Next: commit/push runner and validation milestone, then run fixed S4 and retain incremental outputs. No training, S2, Stage09, source-run mutation, or S4 inference has occurred yet.
 - Milestone commit: pending.
+
+## 2026-10-04T20:43:34Z - Codex (GPT-6) - S4 runner milestone receipt
+
+- S4 runner code, exact checkpoint/source revalidation, FP32 guard, incremental record store, regression evidence, and campaign status were included in commit `8099e2ac4446e5ffb858b75ad7833832a5c9396b`.
+- The commit is pushed to `origin/main`; remote SHA matched. No S4 model load/inference had started at this receipt.
+- Next: execute the fixed S4 teacher battery and 35 seed0 state batteries from the external D: output path; preserve progress and resume only from matching run bindings.
+- Receipt commit: pending.

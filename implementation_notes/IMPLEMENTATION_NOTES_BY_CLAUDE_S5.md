@@ -103,3 +103,10 @@ Stage08 08.4 evidence was committed as `51e7903a0a400e2daac80e2aa0b295d8603dba42
 - User-visible communication reported S5 source and join completion before independent checksum verification. No messages sent to others. No training, S2, Stage09, GPU inference, or source-run modification.
 - Next: independently run fixed D24 S4 and D24/D25 S6, continuing S6 even if S4 blocks, then verify all outputs and update status.
 - Milestone commit: pending.
+
+## 2026-10-04T20:43:34Z - Codex (GPT-6) - S5 completion milestone receipt
+
+- The D26 mixed-root reaggregation and independent hash-verification evidence were committed with the Stage08 runner milestone as `8099e2ac4446e5ffb858b75ad7833832a5c9396b`.
+- `origin/main` matches that commit. The S5 scientific output remains external at `D:\KD-SINK-central\analysis\stage08_scientific_20261005\S5`; no model was loaded and no inference occurred.
+- Next: proceed with the independent S4 and S6 GPU studies.
+- Receipt commit: pending.

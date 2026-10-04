@@ -105,3 +105,10 @@ The paired 40/128-token RTX 4080 SUPER engineering smoke and report were committ
 - User-visible communication noted S6 is staged separately and not yet running; no messages to others.
 - Next: commit/push runner milestone, re-verify D25 panels immediately before S6 science, then execute after S4 or if S4 blocks. No training, S2 rerun, Stage09, HumanEval code execution, or source-run modification.
 - Milestone commit: pending.
+
+## 2026-10-04T20:43:34Z - Codex (GPT-6) - S6 runner milestone receipt
+
+- S6 driver, D25 panel/tokenizer verification path, FP32 execution lock, expected coverage audit, CPU regression suite, and current status were committed as `8099e2ac4446e5ffb858b75ad7833832a5c9396b` and pushed to `origin/main`.
+- Remote ref verification returned the same commit. S6 scientific inference had not started at this receipt.
+- Next: after S4 completes or blocks, re-verify D25 source/panel hashes and run S6 independently; optional contexts stay disabled.
+- Receipt commit: pending.

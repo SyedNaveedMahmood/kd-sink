@@ -816,3 +816,10 @@ A documentation-only milestone commit was attempted after git diff --cached --ch
 - Artifacts and current per-study state are summarized in `reports/stage08_scientific_execution_20261005.json`; NEXT_STEPS marks the S5 D26 audit/reaggregation completed and records S4/S6 as not yet started at this milestone.
 - No training, S2 rerun, S4/S6 inference, HumanEval code execution, Stage09, or source-run modification has occurred at this journal point. Next: commit/push the tested runner milestone, then execute S4 and S6 independently with incremental result stores and audit each completion.
 - Milestone commit: pending.
+
+## 2026-10-04T20:43:34Z - Codex (GPT-6) - Stage08 runner milestone receipt
+
+- The resumable S4/S6 scientific drivers, shared preflight module, probe progress callback, CPU regressions, truthful current Stage08 status, and updated S5 completion evidence were committed as `8099e2ac4446e5ffb858b75ad7833832a5c9396b` (`feat(stage08): add resumable S4 and S6 scientific runners`).
+- `git push origin main` exited0; `git ls-remote origin refs/heads/main` returned the same SHA. The worktree was clean after the milestone commit.
+- Next: execute S4, then execute S6 independently; no training, S2, or Stage09.
+- Receipt commit: pending.
