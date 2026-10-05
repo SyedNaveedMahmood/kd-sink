@@ -50,6 +50,20 @@ SOURCE_ROOTS = {
 }
 
 
+def _supplement_progress_event(*, condition: str, step: int, run_id: str,
+                              gpu_uuid: str, completed_items: int, total_items: int,
+                              item_id: str, elapsed_seconds: float,
+                              eta_seconds: float, cuda_allocated_bytes: int,
+                              cuda_reserved_bytes: int) -> dict:
+    """Build the flushed per-state telemetry consumed by the campaign monitor."""
+    return {"event": "s7_supplement_progress", "condition": condition,
+        "step": step, "run_id": run_id, "gpu_uuid": gpu_uuid,
+        "completed_items": completed_items, "total_items": total_items,
+        "item_id": item_id, "elapsed_seconds": elapsed_seconds,
+        "eta_seconds": eta_seconds, "cuda_allocated_bytes": cuda_allocated_bytes,
+        "cuda_reserved_bytes": cuda_reserved_bytes}
+
+
 def approved_lock_payload() -> dict:
     """The exact researcher-authorized scope and source bindings for S7."""
     return {
@@ -172,11 +186,12 @@ def run(*, condition: str, step: int, runs_root: Path, artifact_root: Path,
         def progress(done: int, total: int, item_id: str) -> None:
             if done % 10 == 0 or done == total:
                 elapsed = time.perf_counter() - started
-                print(json.dumps({"event": "s7_supplement_progress", "condition": condition,
-                    "step": step, "run_id": source["run_id"], "gpu_uuid": gpu["uuid"],
-                    "completed_items": done, "total_items": total, "item_id": item_id,
-                    "elapsed_seconds": elapsed, "eta_seconds": elapsed / done * (total - done),
-                    "cuda_allocated_bytes": torch.cuda.memory_allocated(0)},
+                print(json.dumps(_supplement_progress_event(condition=condition, step=step,
+                    run_id=source["run_id"], gpu_uuid=gpu["uuid"], completed_items=done,
+                    total_items=total, item_id=item_id, elapsed_seconds=elapsed,
+                    eta_seconds=elapsed / done * (total - done),
+                    cuda_allocated_bytes=torch.cuda.memory_allocated(0),
+                    cuda_reserved_bytes=torch.cuda.memory_reserved(0)),
                     sort_keys=True), flush=True)
         result = evaluate_clean_decomposition(adapter=student_adapter,
             teacher_adapter=teacher_adapter, teacher_map=list(_teacher_map("S1")),
