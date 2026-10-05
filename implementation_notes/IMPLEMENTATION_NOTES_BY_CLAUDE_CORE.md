@@ -1240,3 +1240,17 @@ S6 C0-C3 prefix audit PASSED: 16/16 stable states, 28,800 item-operation records
 - Artifacts: external S4 attempt02 and console JSONL.
 - Next: continue C5/C6 fixed batteries; independently audit S4 full output.
 - Milestone commit: pending.
+
+
+## 2026-10-05T06:11:07Z - Codex (GPT-6) - S4 C5 step-100 milestone
+
+- Starting branch/commit: main / 9faaac08d2a192f779af00e30262336209283d17.
+- Task: continue authorized Stage08 S4 seed0 evaluation; no training, S2 rerun, Stage09, optional contexts, HumanEval execution, or source S1 modifications.
+- Files changed: execution report, NEXT_STEPS, append-only CORE/S4 journals.
+- Result: C5/100 sealed300 items/3,000 records; summary SHA-256 b11b0eb788f2dd7bfe6e953df3d8d47b155f4f3c4e32904f6941939d51212374. C5/500 started. Overall27/35 student batteries complete; tree snapshot84,029 JSON files.
+- Verification: console completion and next-start events present, no errors. GPU sample38 C,2,221 MiB,2% utilization.
+- User communication: reported C5/100 seal and C5/500 start.
+- Validation: `git diff --check` plus JSON report invariant check; no scientific suite rerun for docs-only snapshot.
+- Artifacts: external S4 attempt02 and console JSONL.
+- Next: continue C5/C6 batteries; independently audit complete S4 output before completion claim.
+- Milestone commit: pending.
