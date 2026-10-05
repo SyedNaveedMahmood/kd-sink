@@ -287,3 +287,15 @@ S6 C0-C3 prefix audit PASSED: 16/16 stable states, 28,800 item-operation records
 - No prohibited tasks or S1 modifications.
 - Next: proceed through remaining C2 then C3-C6 batteries; independent audit pending.
 - Milestone commit: pending.
+
+
+## 2026-10-05T02:10:54Z - Codex (GPT-6) - S4 C2 step-500 completion
+
+- Starting branch/commit: main / 5bb615f4035c1968469ca1a092e6257b344ba284.
+- Scope: existing S4 attempt02, D24 designated seed0; C0-C6 at steps 0/100/500/2000/10000, with the fixed teacher reference battery. No training or source-run modification.
+- Result: C2/500 sealed 300/300 panel items and 3,000 result records; summary SHA-256 4e28c6cde8778f70ba15354670ae7728d58457f7e3404633f3f403660e783b49. C2/2000 began immediately afterward. Thirteen of 35 student batteries are complete; 42,015 JSON files were present in the result tree snapshot.
+- Integrity/health: console completion and next-battery events present; no error event. Latest sampled RTX 4080 SUPER status: 40 C, 2,228 MiB used, 0% instantaneous utilization. Full source/output audit remains pending.
+- No S1 sources modified; no training, S2 rerun, Stage09, optional long-context work or HumanEval code execution.
+- Next: continue the remaining fixed S4 batteries and independently audit all 35 plus the teacher reference.
+- Validation: `git diff --check` and report JSON invariant command, recorded in the CORE journal.
+- Milestone commit: pending.

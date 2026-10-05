@@ -1041,3 +1041,19 @@ S6 C0-C3 prefix audit PASSED: 16/16 stable states, 28,800 item-operation records
 - Verification: console showed completed battery and next fixed battery start; no errors. S5 and S6 remain complete by their recorded audits.
 - Next: continue S4 and require independent full-tree audit before final status.
 - Milestone commit: pending.
+
+
+## 2026-10-05T02:10:54Z - Codex (GPT-6) - S4 C2 step-500 milestone
+
+- Starting branch/commit: main / 5bb615f4035c1968469ca1a092e6257b344ba284.
+- Task: continue the explicitly authorized Stage08 S4/S5/S6 scientific campaign, preserving external outputs and limiting new inference to the fixed S4 D24 seed0 matrix.
+- Files changed: Stage08 execution report, NEXT_STEPS, append-only CORE/S4 journals.
+- Decision: no scope or provenance changes. Keep D24 checkpoint order and exact historical C3 transferred-log exception.
+- Progress: 13/35 student batteries complete. C2 step500 sealed 300/300 items and 3,000 records; summary SHA-256 4e28c6cde8778f70ba15354670ae7728d58457f7e3404633f3f403660e783b49. C2 step2000 started. Result tree snapshot: 42,015 JSON files.
+- Discoveries: live console recorded completion and fixed next-battery start; latest GPU sample 40 C, 2,228 MiB used, 0% instantaneous utilization; process remains alive. No error event. S5 and S6 retain their audited completion classifications; the preserved S6 runner receipt remains disclosed.
+- User communication: reported normal C2/500 progress and battery seal, followed by start of C2/2000.
+- Validation: `git diff --check` and JSON/report invariant check run after this entry; no science regression suite was rerun for this documentation-only progress snapshot.
+- Failures/skips: none in this S4 battery. Previously preserved S6 stale aggregate-count runner receipt is not changed or suppressed.
+- Artifacts: `D:\KD-SINK-central\analysis\stage08_scientific_20261005\S4_attempt02`; console `D:\KD-SINK-central\analysis\stage08_scientific_20261005\S4_attempt02.console.jsonl`.
+- Next: continue C2 step2000 then steps500/10000 and conditions C3-C6; independently audit complete S4 tree before final status.
+- Milestone commit: pending.
