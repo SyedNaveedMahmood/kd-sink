@@ -536,3 +536,17 @@ S6 C0-C3 prefix audit PASSED: 16/16 stable states, 28,800 item-operation records
 - Next: complete C6 fixed sequence and independently audit complete S4 output.
 - Validation: `git diff --check` passed; report JSON invariants passed. No scientific suite rerun for this documentation-only snapshot.
 - Milestone commit: pending.
+
+
+## 2026-10-05T07:56:35Z - Codex (GPT-6) - S4 C6 step-500 completion
+
+- Starting branch/commit: main / 4f7cfcae7dfab559acdb5287c7e23a0b320240fc.
+- Scope: fixed D24 S4 designated-seed0 inference, attempt02.
+- Result: C6/500 sealed 300/300 items and 3,000 records; summary SHA-256 f5ad5ea2d7935f4f1f470d3233515149fbda5c22207b379d6feebf913d9de8a8. 33/35 student batteries complete; C6/2000 active at 10/300. Result tree has 102,154 JSON files.
+- Integrity/health: expected transition and no errors observed; RTX 4080 SUPER 38 °C, 4,286 MiB, 20% utilization. Independent full-tree audit remains pending.
+- No prohibited work or S1 source changes.
+- User communication: reported C6/500 complete, next checkpoint active.
+- Artifacts: external S4 attempt02 output and console JSONL.
+- Next: complete the final two C6 checkpoints and independently audit full output.
+- Validation: `git diff --check` passed; report JSON invariants passed. No scientific suite rerun for this documentation-only snapshot.
+- Milestone commit: pending.
