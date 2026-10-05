@@ -963,3 +963,15 @@ S6 C0-C3 prefix audit PASSED: 16/16 stable states, 28,800 item-operation records
 - S5 remains complete. S6 remains independently audited complete, with stale-count runner receipt retained.
 - Next: keep the existing S4 process running and audit its full output only after completion.
 - Milestone commit: pending.
+
+
+## 2026-10-05T00:11:45Z - Codex (GPT-6) - S4 C1 step-0 milestone
+
+- Starting branch/commit: main / ed7de79b9444aa86e73cd3c3636b41f4f9c6f001.
+- Approved scope: continue the existing S4 seed0 inference; outputs external; no training, S2 rerun, Stage09, optional-context work or HumanEval code execution.
+- Files changed: Stage08 campaign report, NEXT_STEPS, append-only CORE/S4 journals.
+- Progress: six of35 student batteries completed. C1 step0 sealed300 items/3,000 records; summary SHA  dfd6842ce37b15952af94a7c0557e4effb3399362b1acc973a3c8eee20a54f10. C1 step100 started; result-tree count21,000 files. GPU had entered checkpoint-load transition at last check.
+- Verification: console showed complete then next fixed battery start; no error event. S5 remains complete, and S6 independent audit remains passed with runner false-count failure preserved.
+- No source-run modification or prohibited study occurred.
+- Next: continue S4; final S4 status waits for all35 student batteries and independent audit.
+- Milestone commit: pending.
