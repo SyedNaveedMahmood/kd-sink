@@ -26,10 +26,15 @@ def test_analysis_command_writes_traceable_external_result(tmp_path, monkeypatch
         run_stage08_s7.run(s5_bundle=source, output=output)
 
 
-def test_unapproved_draft_cannot_launch_new_s7_inference():
+def test_unapproved_draft_and_forged_lock_cannot_launch_new_s7_inference(tmp_path, monkeypatch):
     draft = json.loads(Path("protocols/s7_utility_analysis_draft.json").read_text())
     with pytest.raises(ValueError):
         validate_analysis_lock(draft)
-    forged = {**draft, "status": "approved_prospective"}
-    with pytest.raises(ValueError, match="checked in"):
-        validate_analysis_lock(seal_payload(forged))
+    approved = json.loads(Path("protocols/s7_utility_analysis_approved.json").read_text())
+    forged_payload = {**approved["payload"], "training_seed": 2}
+    forged = seal_payload(forged_payload)
+    fake_checked_in = tmp_path / "forged.json"
+    fake_checked_in.write_text(json.dumps(forged), encoding="utf-8")
+    monkeypatch.setattr("scripts.run_stage08_s7_supplement.APPROVED_LOCK_PATH", fake_checked_in)
+    with pytest.raises(ValueError, match="exact researcher-approved"):
+        validate_analysis_lock(forged)

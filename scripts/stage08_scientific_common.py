@@ -103,22 +103,32 @@ def source_run_directories() -> dict[str, Path]:
 
 def preflight_sources(*, steps: tuple[int, ...], study: str,
                       runs_root: Path | None = None,
+                      conditions: tuple[str, ...] = CONDITIONS,
                       progress=None) -> dict:
-    """Verify original run logs, protocol seals and every required checkpoint."""
+    """Verify selected original run logs, protocol seals and checkpoints.
+
+    S4/S6 retain the default C0-C6 scope. S7 supplies its explicitly approved
+    C1/C2/C5/C6 selection so unrelated runs cannot become hidden dependencies.
+    """
+    if (not isinstance(conditions, tuple) or not conditions or
+            len(conditions) != len(set(conditions)) or
+            any(condition not in CONDITIONS for condition in conditions)):
+        raise ValueError("source preflight requires a nonempty unique known condition tuple")
     d24_document = read_json(REPO / D24_PATH)
     d24_payload = validate_followup_amendment(d24_document)
     if d24_document["sha256"] != D24_SHA256:
         raise ValueError("D24 seal mismatch")
     exception_document = read_json(EXCEPTION_PATH)
     report_paths = source_run_directories()
+    selected_paths = {condition: report_paths[condition] for condition in conditions}
     if runs_root is not None:
         runs_root = runs_root.resolve()
-        if any(not path.is_relative_to(runs_root) for path in report_paths.values()):
+        if any(not path.is_relative_to(runs_root) for path in selected_paths.values()):
             raise ValueError("readiness source path escapes the requested central run root")
 
     sources = {}
-    for condition in CONDITIONS:
-        run_dir = report_paths[condition]
+    for condition in conditions:
+        run_dir = selected_paths[condition]
         if progress:
             progress({"event": "source_preflight_start", "study": study,
                       "condition": condition, "run": str(run_dir)})

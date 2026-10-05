@@ -404,10 +404,39 @@ def read_extended_s1_records(*, s5_bundle: Path, runs_root: Path) -> list[dict]:
     return records
 
 
-def add_clean_supplements(result: dict, panels: dict, supplements: list[dict]) -> dict:
+def validate_s7_teacher_receipt(receipt: dict, expected_teacher_identity: dict) -> None:
+    """Fail closed unless teacher and device provenance match the S7 lock."""
+    expected_fields = {
+        "followup_study": "S7",
+        "reference_model": expected_teacher_identity["id"],
+        "reference_revision": expected_teacher_identity["revision"],
+        "teacher_weights_sha256": expected_teacher_identity["weights_sha256"],
+        "teacher_config_sha256": expected_teacher_identity["config_sha256"],
+        "precision": expected_teacher_identity["precision"],
+        "D24_sha256": expected_teacher_identity["D24_sha256"],
+    }
+    device = receipt.get("device") if isinstance(receipt, dict) else None
+    if (not isinstance(receipt, dict) or
+            any(receipt.get(key) != value for key, value in expected_fields.items()) or
+            not isinstance(device, dict) or
+            device.get("name") != expected_teacher_identity["device_model"] or
+            device.get("uuid") != expected_teacher_identity["device_uuid"] or
+            any(key in receipt for key in
+                ("control_seed", "denominator_floor", "responsiveness_floor"))):
+        raise S7Error("S7 teacher receipt differs from the pinned teacher, D24, or inference GPU")
+
+
+def add_clean_supplements(result: dict, panels: dict, supplements: list[dict], *,
+                          expected_analysis_lock_sha256: str,
+                          expected_teacher_identity: dict) -> dict:
     """Join the complete 4x9 retained-state clean decomposition grid."""
     from .metrics import S7_DECOMPOSITION_VERSION
     from .training_entry import _teacher_map
+
+    if (not isinstance(expected_analysis_lock_sha256, str) or
+            len(expected_analysis_lock_sha256) != 64 or
+            not isinstance(expected_teacher_identity, dict)):
+        raise S7Error("S7 final join requires the approved lock digest and pinned teacher identity")
 
     indexed = {}
     expected = {(step, condition) for step in FULL_STEPS for condition in CONDITIONS}
@@ -431,9 +460,12 @@ def add_clean_supplements(result: dict, panels: dict, supplements: list[dict]) -
                 measure.get("item_count") != 300 or
                 len(measure.get("items", [])) != 300):
             raise S7Error("S7 supplement source, map, or item coverage differs")
+        if record.get("analysis_lock_sha256") != expected_analysis_lock_sha256:
+            raise S7Error("S7 supplement is not bound to the approved analysis lock")
+        validate_s7_teacher_receipt(record.get("teacher_receipt"), expected_teacher_identity)
         if lock_sha is None:
-            lock_sha = record["analysis_lock_sha256"]
-        elif lock_sha != record.get("analysis_lock_sha256"):
+            lock_sha = expected_analysis_lock_sha256
+        elif lock_sha != expected_analysis_lock_sha256:
             raise S7Error("S7 supplement analysis lock changed across states")
         items = measure["items"]
         if [item["item_id"] for item in items] != result["provenance"]["full300_item_ids"]:
@@ -484,6 +516,7 @@ def add_clean_supplements(result: dict, panels: dict, supplements: list[dict]) -
         raise S7Error("S7 clean decomposition grid incomplete")
     output = json.loads(json.dumps(result))
     output["clean_decomposition_analysis_lock_sha256"] = lock_sha
+    output["provenance"]["s7_teacher_identity"] = expected_teacher_identity
     output["retained_full300_decomposition"] = []
     for step in FULL_STEPS:
         values = {c: indexed[(step, c)]["result"]["aggregate"] for c in CONDITIONS}

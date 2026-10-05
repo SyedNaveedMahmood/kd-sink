@@ -162,6 +162,26 @@ def test_complete_supplement_grid_and_signed_mass_shape_gains(tmp_path):
     from sinklab.metrics import S7_DECOMPOSITION_VERSION
     from sinklab.training_entry import _teacher_map
 
+    lock_sha = "f" * 64
+    teacher_identity = {
+        "id": "openai-community/gpt2-large",
+        "revision": "32b71b12589c2f8d625668d2335a01cac3249519",
+        "weights_sha256": "5f47f3e12f91cd33b662ce7e433b6150ad5512b5884a2cee961b50e9c3bbebce",
+        "config_sha256": "7fccdcfd6622055342a734c663ee0b61ff4fd697f42467595df0bf4448c8c170",
+        "device_model": "NVIDIA GeForce RTX 4080 SUPER",
+        "device_uuid": "GPU-2a5c25d0-1f73-919b-fd8b-f6f0df709aaf",
+        "precision": "fp32",
+        "D24_sha256": "46351d8e32ef1ef6238af18c11676e45e3d439e0e46942d1e61e35b8001851e6",
+    }
+    teacher_receipt = {
+        "followup_study": "S7", "reference_model": teacher_identity["id"],
+        "reference_revision": teacher_identity["revision"],
+        "teacher_weights_sha256": teacher_identity["weights_sha256"],
+        "teacher_config_sha256": teacher_identity["config_sha256"],
+        "device": {"name": teacher_identity["device_model"],
+                   "uuid": teacher_identity["device_uuid"]},
+        "precision": "fp32", "D24_sha256": teacher_identity["D24_sha256"],
+    }
     root, d26 = _bundle(tmp_path)
     panels, provenance = read_s5_bundle(root, d26_path=d26)
     result = analyze_s7(panels, provenance)
@@ -193,17 +213,47 @@ def test_complete_supplement_grid_and_signed_mass_shape_gains(tmp_path):
                 "run_id": joined["source_run_ids"][condition],
                 "original_protocol_root_sha256": joined["source_protocol_roots"][condition],
                 "s5_source_audit_sha256": provenance["s5_audit_sha256"],
-                "analysis_lock_sha256": "f" * 64,
+                "analysis_lock_sha256": lock_sha,
+                "teacher_receipt": teacher_receipt,
                 "result": {"version": S7_DECOMPOSITION_VERSION, "precision": "fp32",
                     "teacher_map": teacher_map, "mapped_layer_count": 24,
                     "item_count": 300, "items": items, "aggregate": aggregate}})
-    enriched = add_clean_supplements(result, panels, supplements)
+    enriched = add_clean_supplements(result, panels, supplements,
+        expected_analysis_lock_sha256=lock_sha,
+        expected_teacher_identity=teacher_identity)
     gain = enriched["retained_full300_decomposition"][-1]["C1_relative_gains"]["C2_relative_to_C1"]
     assert gain["mass_jsd_nats"] > 0 and gain["shape_jsd_nats"] < 0
     assert gain["full_jsd_nats"] == pytest.approx(gain["mass_jsd_nats"] + gain["shape_jsd_nats"])
     assert "exact_mass_shape_decomposition" not in enriched["unavailable"]
     with pytest.raises(S7Error, match="incomplete"):
-        add_clean_supplements(result, panels, supplements[:-1])
+        add_clean_supplements(result, panels, supplements[:-1],
+            expected_analysis_lock_sha256=lock_sha,
+            expected_teacher_identity=teacher_identity)
+
+    wrong_teacher = copy.deepcopy(supplements)
+    wrong_teacher[0]["teacher_receipt"]["followup_study"] = "S4"
+    with pytest.raises(S7Error, match="teacher receipt"):
+        add_clean_supplements(result, panels, wrong_teacher,
+            expected_analysis_lock_sha256=lock_sha,
+            expected_teacher_identity=teacher_identity)
+    wrong_teacher = copy.deepcopy(supplements)
+    wrong_teacher[0]["teacher_receipt"]["teacher_weights_sha256"] = "0" * 64
+    with pytest.raises(S7Error, match="teacher receipt"):
+        add_clean_supplements(result, panels, wrong_teacher,
+            expected_analysis_lock_sha256=lock_sha,
+            expected_teacher_identity=teacher_identity)
+    wrong_teacher = copy.deepcopy(supplements)
+    wrong_teacher[0]["teacher_receipt"]["device"]["uuid"] = "GPU-other"
+    with pytest.raises(S7Error, match="teacher receipt"):
+        add_clean_supplements(result, panels, wrong_teacher,
+            expected_analysis_lock_sha256=lock_sha,
+            expected_teacher_identity=teacher_identity)
+    wrong_lock = copy.deepcopy(supplements)
+    wrong_lock[0]["analysis_lock_sha256"] = "a" * 64
+    with pytest.raises(S7Error, match="approved analysis lock"):
+        add_clean_supplements(result, panels, wrong_lock,
+            expected_analysis_lock_sha256=lock_sha,
+            expected_teacher_identity=teacher_identity)
 
 
 def test_lm2000_endpoint_rechecks_original_nll_items(tmp_path):

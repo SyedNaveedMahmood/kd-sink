@@ -1,0 +1,58 @@
+{
+  "schema_version": 1,
+  "study": "S7",
+  "status": "approved_lock_sealed_source_analysis_running",
+  "machine": "DESKTOP-GPO5752",
+  "repository": "E:\\kd-sink",
+  "origin_main_start_sha": "64ec99bb0da23b8ad05c827b6b27084468514f45",
+  "execution_source_commit": null,
+  "approved_lock_path": "protocols/s7_utility_analysis_approved.json",
+  "approved_lock_sha256": "696c9fc206efdb60b53120c411cc3089306048733829fc4762db41caf92917b7",
+  "D24_sha256": "46351d8e32ef1ef6238af18c11676e45e3d439e0e46942d1e61e35b8001851e6",
+  "D26_sha256": "888b21509000b570c83c2574f5a6bfbc3d1ec2dc197e88d841d085bac222f182",
+  "S5_audit_sha256": "09b3663cda822c7b5b3b697bbc3a44c4849b63e85f24b0a98abfce06c99dfa7c",
+  "source_roots": {
+    "s1_runs": "D:\\KD-SINK-central\\runs",
+    "s5_bundle": "D:\\KD-SINK-central\\analysis\\stage08_scientific_20261005\\S5",
+    "artifact_root": "E:\\KD-SINK-stage06-Adrita\\artifacts\\KD-SINK-stage06-production"
+  },
+  "selected_source_runs": {
+    "C1": {"run_id": "s1-c1-seed0-rtx4080super", "protocol_root_sha256": "48c39a25f640b90a70056e3c8f7308b66b9d635876e22c56f76516a09d2c9791"},
+    "C2": {"run_id": "s1-c2-seed0-rtx4080super", "protocol_root_sha256": "910961fcc53edaed0df48e3139dbb7ca2e058bf7480b67dab27bae0bcd90f26f"},
+    "C5": {"run_id": "s1-c5-seed0-rtx4080super", "protocol_root_sha256": "fccf4c14bc691e550c6304f4955b72037efb8d042b3e51afb70367920fff0552"},
+    "C6": {"run_id": "s1-c6-seed0-rtx4080super", "protocol_root_sha256": "48c39a25f640b90a70056e3c8f7308b66b9d635876e22c56f76516a09d2c9791"}
+  },
+  "host_environment": {
+    "gpu_uuid": "GPU-2a5c25d0-1f73-919b-fd8b-f6f0df709aaf",
+    "gpu_model": "NVIDIA GeForce RTX 4080 SUPER",
+    "driver": "591.86",
+    "python": "3.12.3",
+    "pytorch": "2.10.0+cu128",
+    "cuda_runtime": "12.8",
+    "transformers": "5.3.0",
+    "visible_cuda_device_count": 1
+  },
+  "validation": {
+    "focused_command": ".venv\\Scripts\\python.exe -m pytest -q tests\\unit\\test_stage08_s7_approval.py tests\\unit\\test_stage08_s7_preflight_scope.py tests\\unit\\test_s7_utility.py tests\\integration\\test_s7_commands.py",
+    "focused_exit_code": 0,
+    "focused_passed": 30,
+    "full_offline_command": ".venv\\Scripts\\python.exe -m pytest -q tests\\unit tests\\integration -m \"not gpu and not network\"",
+    "full_offline_exit_code": 0,
+    "full_offline_passed": 376,
+    "full_offline_warning_count": 1,
+    "warning": "third-party astor DeprecationWarning: ast.Num is deprecated",
+    "py_compile_exit_code": 0,
+    "lock_envelope_verified": true
+  },
+  "base_read_only_source_analysis": {
+    "path": "D:\\KD-SINK-central\\analysis\\S7_scientific_20261006\\analysis\\base_read_only",
+    "status": "running",
+    "model_loaded": false,
+    "source_trees_modified": false
+  },
+  "qualification": {"status": "pending", "scientific_inference_started": false},
+  "scientific_supplements": {"completed": 0, "expected": 36},
+  "source_trees_modified": false,
+  "training_started": false,
+  "stage09_started": false
+}

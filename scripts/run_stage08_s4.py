@@ -138,7 +138,22 @@ def _student_config(artifact_root: Path, artifact: dict):
     return load, model_sha
 
 
-def _teacher(artifact_root: Path, artifact: dict, gpu: dict):
+def _teacher_provenance(teacher_meta: dict, gpu: dict, *, study: str) -> dict:
+    if study not in {"S4", "S7"}:
+        raise ValueError("teacher provenance supports only the registered S4 and S7 follow-ups")
+    provenance = {"followup_study": study, "reference_model": teacher_meta["id"],
+        "reference_revision": teacher_meta["revision"],
+        "teacher_weights_sha256": teacher_meta["weights_sha256"],
+        "teacher_config_sha256": teacher_meta["config_sha256"],
+        "device": gpu, "precision": "fp32", "D24_sha256": D24_SHA256}
+    if study == "S4":
+        provenance.update({"control_seed": CONTROL_SEED,
+            "denominator_floor": DENOMINATOR_FLOOR,
+            "responsiveness_floor": RESPONSIVENESS_FLOOR})
+    return provenance
+
+
+def _teacher(artifact_root: Path, artifact: dict, gpu: dict, *, study: str = "S4"):
     import torch
     from transformers import GPT2LMHeadModel
 
@@ -159,14 +174,7 @@ def _teacher(artifact_root: Path, artifact: dict, gpu: dict):
         raise ValueError("S4 FP32 protocol requires an FP32 GPT-2-large teacher")
     model.to(device="cuda:0").eval().requires_grad_(False)
     adapter = GPT2Adapter(model, ModelShape(36, 20, 1280))
-    provenance = {"followup_study": "S4", "reference_model": teacher_meta["id"],
-        "reference_revision": teacher_meta["revision"],
-        "teacher_weights_sha256": teacher_meta["weights_sha256"],
-        "teacher_config_sha256": teacher_meta["config_sha256"],
-        "device": gpu, "precision": "fp32", "control_seed": CONTROL_SEED,
-        "denominator_floor": DENOMINATOR_FLOOR,
-        "responsiveness_floor": RESPONSIVENESS_FLOOR, "D24_sha256": D24_SHA256}
-    return adapter, model, provenance
+    return adapter, model, _teacher_provenance(teacher_meta, gpu, study=study)
 
 
 def _write_sums(root: Path, *, excluded: set[str]) -> tuple[Path, int, int]:

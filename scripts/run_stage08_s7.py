@@ -14,13 +14,15 @@ for path in (REPO / "src", REPO):
     if str(path) not in sys.path:
         sys.path.insert(0, str(path))
 
-from sinklab.provenance import _no_duplicate_keys, canonical_json_bytes  # noqa: E402
+from sinklab.provenance import (_no_duplicate_keys, canonical_json_bytes,
+                                verify_envelope)  # noqa: E402
 from sinklab.s5_compatibility import D26_PATH  # noqa: E402
 from sinklab.s7_utility import (add_extended_s1_records, analyze_s7,
                                 add_clean_supplements, add_lm2000_endpoints,
                                 read_extended_s1_records, read_lm2000_records,
                                 read_s5_bundle, S5_AUDIT_SHA256)  # noqa: E402
-from scripts.run_stage08_s7_supplement import validate_analysis_lock  # noqa: E402
+from scripts.run_stage08_s7_supplement import (validate_analysis_lock,
+    validate_source_roots)  # noqa: E402
 
 
 def run(*, s5_bundle: Path, output: Path, runs_root: Path | None = None,
@@ -42,9 +44,10 @@ def run(*, s5_bundle: Path, output: Path, runs_root: Path | None = None,
             raise ValueError("S7 lm2000 extraction requires original runs and separate artifact/output roots")
     if supplements_dir is not None:
         supplement_root = supplements_dir.resolve(strict=True)
-        if (analysis_lock is None or output == supplement_root or
+        if (analysis_lock is None or runs_root is None or artifact_root is None or
+                output == supplement_root or
                 supplement_root in output.parents or output in supplement_root.parents):
-            raise ValueError("S7 supplements require a separate output and approved lock")
+            raise ValueError("S7 final analysis requires separate output, approved lock, S1 runs, and artifacts")
     if output.exists() and any(output.iterdir()):
         raise FileExistsError("S7 output directory must be empty")
     panels, provenance = read_s5_bundle(source, d26_path=REPO / D26_PATH,
@@ -60,6 +63,8 @@ def run(*, s5_bundle: Path, output: Path, runs_root: Path | None = None,
     if supplements_dir is not None:
         approved = validate_analysis_lock(json.loads(analysis_lock.read_text(encoding="utf-8"),
                                                     object_pairs_hook=_no_duplicate_keys))
+        validate_source_roots(approved, runs_root=original, s5_bundle=source,
+                              artifact_root=artifacts)
         paths = sorted(supplement_root.rglob("S7_C*_STEP*_FULL300.json"))
         if len(paths) != 36:
             raise ValueError("S7 requires exactly 36 clean decomposition supplements")
@@ -67,7 +72,23 @@ def run(*, s5_bundle: Path, output: Path, runs_root: Path | None = None,
                                   object_pairs_hook=_no_duplicate_keys) for path in paths]
         if any(item.get("analysis_lock_sha256") != approved["sha256"] for item in supplements):
             raise ValueError("S7 supplement analysis lock seal mismatch")
-        result = add_clean_supplements(result, panels, supplements)
+        artifact_document = json.loads((REPO / "protocols" / "artifact.lock.json").read_text(
+            encoding="utf-8"), object_pairs_hook=_no_duplicate_keys)
+        artifact, artifact_lock_sha256 = verify_envelope(artifact_document)
+        teacher = artifact["teacher"]
+        expected_teacher = {
+            "id": teacher["id"], "revision": teacher["revision"],
+            "weights_sha256": teacher["weights_sha256"],
+            "config_sha256": teacher["config_sha256"],
+            "device_model": approved["device_model"],
+            "device_uuid": approved["device_uuid"],
+            "precision": approved["precision"],
+            "D24_sha256": approved["D24_sha256"],
+        }
+        result = add_clean_supplements(result, panels, supplements,
+            expected_analysis_lock_sha256=approved["sha256"],
+            expected_teacher_identity=expected_teacher)
+        result["provenance"]["artifact_lock_sha256"] = artifact_lock_sha256
         result["provenance"]["supplement_file_sha256"] = {
             path.name: hashlib.sha256(path.read_bytes()).hexdigest() for path in paths}
     data = canonical_json_bytes(result) + b"\n"

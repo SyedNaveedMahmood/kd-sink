@@ -22,10 +22,67 @@ from sinklab.followup_policy import D24_SHA256  # noqa: E402
 from sinklab.provenance import _no_duplicate_keys, canonical_json_bytes, verify_envelope  # noqa: E402
 from sinklab.s5_analysis import CONDITIONS  # noqa: E402
 from sinklab.s5_compatibility import D26_PATH  # noqa: E402
-from sinklab.s7_utility import (FULL_STEPS, S7Error, evaluate_clean_decomposition,
-                                read_s5_bundle, S5_AUDIT_SHA256)  # noqa: E402
+from sinklab.s7_utility import (FULL_STEPS, S7Error, S5_AUDIT_SHA256,
+                                evaluate_clean_decomposition,
+                                read_s5_bundle,
+                                validate_s7_teacher_receipt)  # noqa: E402
 
 APPROVED_LOCK_PATH = REPO / "protocols" / "s7_utility_analysis_approved.json"
+D26_SHA256 = "888b21509000b570c83c2574f5a6bfbc3d1ec2dc197e88d841d085bac222f182"
+SOURCE_RUNS = {
+    "C1": {"run_id": "s1-c1-seed0-rtx4080super",
+           "protocol_root_sha256": "48c39a25f640b90a70056e3c8f7308b66b9d635876e22c56f76516a09d2c9791",
+           "path": r"D:\KD-SINK-central\runs\s1-c1-seed0-rtx4080super"},
+    "C2": {"run_id": "s1-c2-seed0-rtx4080super",
+           "protocol_root_sha256": "910961fcc53edaed0df48e3139dbb7ca2e058bf7480b67dab27bae0bcd90f26f",
+           "path": r"D:\KD-SINK-central\runs\s1-c2-seed0-rtx4080super"},
+    "C5": {"run_id": "s1-c5-seed0-rtx4080super",
+           "protocol_root_sha256": "fccf4c14bc691e550c6304f4955b72037efb8d042b3e51afb70367920fff0552",
+           "path": r"D:\KD-SINK-central\runs\s1-c5-seed0-rtx4080super"},
+    "C6": {"run_id": "s1-c6-seed0-rtx4080super",
+           "protocol_root_sha256": "48c39a25f640b90a70056e3c8f7308b66b9d635876e22c56f76516a09d2c9791",
+           "path": r"D:\KD-SINK-central\runs\s1-c6-seed0-rtx4080super"},
+}
+SOURCE_ROOTS = {
+    "s1_runs": r"D:\KD-SINK-central\runs",
+    "s5_bundle": r"D:\KD-SINK-central\analysis\stage08_scientific_20261005\S5",
+    "artifact_root": r"E:\KD-SINK-stage06-Adrita\artifacts\KD-SINK-stage06-production",
+}
+
+
+def approved_lock_payload() -> dict:
+    """The exact researcher-authorized scope and source bindings for S7."""
+    return {
+        "study": "S7",
+        "kind": "s7-clean-attention-supplement-v1",
+        "status": "approved_prospective",
+        "approval_authority": "explicit prospective researcher approval dated 2026-10-06",
+        "training_seed": 0,
+        "conditions": list(CONDITIONS),
+        "steps": list(FULL_STEPS),
+        "panel": "owt_full300",
+        "precision": "fp32",
+        "device_model": "NVIDIA GeForce RTX 4080 SUPER",
+        "device_uuid": EXPECTED_GPU_UUID,
+        "D24_sha256": D24_SHA256,
+        "D26_sha256": D26_SHA256,
+        "S5_audit_sha256": S5_AUDIT_SHA256,
+        "source_roots": dict(SOURCE_ROOTS),
+        "source_runs": {condition: dict(value) for condition, value in SOURCE_RUNS.items()},
+        "analysis_contract": {
+            "supplement_operation": "clean_only",
+            "decomposition_version": "s7-head-mean-jsd-decomposition-v1",
+            "reduction": "equal_query_then_equal_item_layer",
+            "contrast_direction": "condition_A_minus_condition_B",
+            "primary_contrasts": ["C5_minus_C2", "C6_minus_C1"],
+            "reference_contrast": "C2_minus_C1",
+            "secondary_contrasts": ["C5_minus_C1", "C6_minus_C2"],
+            "training_seed_claim": "single designated seed; descriptive only",
+            "disabled": ["new_training", "seed1_or_seed2_inference", "new_conditions",
+                "other_checkpoints", "other_panels", "non_fp32_precision",
+                "long_context", "coefficient_retuning", "outcome_selection", "Stage09"],
+        },
+    }
 
 
 def validate_analysis_lock(document: dict) -> dict:
@@ -35,18 +92,19 @@ def validate_analysis_lock(document: dict) -> dict:
     if json.loads(APPROVED_LOCK_PATH.read_text(encoding="utf-8"),
                   object_pairs_hook=_no_duplicate_keys) != document:
         raise S7Error("S7 analysis lock differs from checked-in approved document")
-    if (payload.get("study") != "S7" or
-            payload.get("status") != "approved_prospective" or
-            payload.get("kind") != "s7-clean-attention-supplement-v1" or
-            payload.get("training_seed") != 0 or
-            payload.get("conditions") != list(CONDITIONS) or
-            payload.get("steps") != list(FULL_STEPS) or
-            payload.get("panel") != "owt_full300" or
-            payload.get("precision") != "fp32" or
-            payload.get("device_uuid") != EXPECTED_GPU_UUID or
-            payload.get("D24_sha256") != D24_SHA256):
-        raise S7Error("approved prospective S7 supplement lock required")
+    if payload != approved_lock_payload():
+        raise S7Error("S7 lock differs from the exact researcher-approved scope or source bindings")
     return {**payload, "sha256": digest}
+
+
+def validate_source_roots(lock: dict, *, runs_root: Path, s5_bundle: Path,
+                          artifact_root: Path) -> None:
+    supplied = {"s1_runs": runs_root, "s5_bundle": s5_bundle,
+                "artifact_root": artifact_root}
+    for name, path in supplied.items():
+        expected = Path(lock["source_roots"][name]).resolve()
+        if os.path.normcase(str(Path(path).resolve())) != os.path.normcase(str(expected)):
+            raise S7Error(f"S7 {name} differs from the approved source root")
 
 
 def run(*, condition: str, step: int, runs_root: Path, artifact_root: Path,
@@ -55,6 +113,8 @@ def run(*, condition: str, step: int, runs_root: Path, artifact_root: Path,
         raise S7Error("one explicit S7 condition and retained step required")
     lock = validate_analysis_lock(json.loads(analysis_lock.read_text(encoding="utf-8"),
                                              object_pairs_hook=_no_duplicate_keys))
+    validate_source_roots(lock, runs_root=runs_root, s5_bundle=s5_bundle,
+                          artifact_root=artifact_root)
     output = output.resolve()
     sources = [runs_root.resolve(), artifact_root.resolve(), s5_bundle.resolve()]
     if (output == REPO or REPO in output.parents or
@@ -72,7 +132,8 @@ def run(*, condition: str, step: int, runs_root: Path, artifact_root: Path,
     artifact, items, panel_sha, panel_receipt = _artifact_inputs(artifact_root)
     if panel_sha != joined["panel_sha256"] or len(items) != 300:
         raise S7Error("S7 frozen Full300 item identity differs from S5")
-    inventory = preflight_sources(steps=(step,), study="S7", runs_root=runs_root)
+    inventory = preflight_sources(steps=(step,), study="S7", runs_root=runs_root,
+                                  conditions=CONDITIONS)
     source = inventory["sources"][condition]
     checkpoint = source["checkpoints"][0]
     if (source["run_id"] != joined["source_run_ids"][condition] or
@@ -83,7 +144,17 @@ def run(*, condition: str, step: int, runs_root: Path, artifact_root: Path,
     student_load, expected_model_sha = _student_config(artifact_root, artifact)
     if source["identity"]["model_hash"] != expected_model_sha:
         raise S7Error("S7 student architecture differs from original S1 identity")
-    teacher_adapter, teacher_model, teacher_receipt = _teacher(artifact_root, artifact, gpu)
+    teacher_adapter, teacher_model, teacher_receipt = _teacher(
+        artifact_root, artifact, gpu, study="S7")
+    teacher_meta = artifact["teacher"]
+    expected_teacher_identity = {
+        "id": teacher_meta["id"], "revision": teacher_meta["revision"],
+        "weights_sha256": teacher_meta["weights_sha256"],
+        "config_sha256": teacher_meta["config_sha256"],
+        "device_model": lock["device_model"], "device_uuid": lock["device_uuid"],
+        "precision": lock["precision"], "D24_sha256": lock["D24_sha256"],
+    }
+    validate_s7_teacher_receipt(teacher_receipt, expected_teacher_identity)
     student_adapter, student_model = student_load(checkpoint)
     try:
         import torch
