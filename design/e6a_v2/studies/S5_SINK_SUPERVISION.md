@@ -18,3 +18,8 @@ Journal: `implementation_notes/IMPLEMENTATION_NOTES_BY_CLAUDE_S5.md`. Stage08, f
 Prospective scope: [D24](../S1_CHECKPOINT_FOLLOWUP_POLICY.md). Preserve each original source run/checkpoint/protocol identity and record the separate D24 follow-up policy SHA for new inference. Never relabel historical roots.
 
 **D26 S5 seed0 mixed-root admission:** the four primary reuse-only runs may be joined across their exact historical roots only after the sealed comparison-critical compatibility checks pass. D26 names only C1/C2/C5/C6 seed0 run IDs and roots, fixes the expected objective variant for each condition, and binds architecture, initialization, data/order/panel, schedule, evaluation/metric, numerical, scope, environment and device-role invariants. Each source root and physical GPU UUID remains attached to its rows; the three observed RTX 4080 SUPER UUIDs are reported as a hardware confound. This does not alter the S5 estimand, permit new seed1/2 inference, or generalize mixed-root permission to another run. See `protocols/s1_researcher_amendment_d26_s5_mixed_roots_20261005.json`.
+
+
+## Follow-on study S7
+
+The researcher named the separate sink-aware distillation utility experiment **S7**. Its design is [`S7_SINK_AWARE_DISTILLATION_UTILITY.md`](S7_SINK_AWARE_DISTILLATION_UTILITY.md). S5's completed D26 source reaggregation remains an input; S7 has its own analysis identity and evidence.

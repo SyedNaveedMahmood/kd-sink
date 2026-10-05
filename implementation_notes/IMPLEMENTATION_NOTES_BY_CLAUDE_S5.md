@@ -110,3 +110,26 @@ Stage08 08.4 evidence was committed as `51e7903a0a400e2daac80e2aa0b295d8603dba42
 - `origin/main` matches that commit. The S5 scientific output remains external at `D:\KD-SINK-central\analysis\stage08_scientific_20261005\S5`; no model was loaded and no inference occurred.
 - Next: proceed with the independent S4 and S6 GPU studies.
 - Receipt commit: pending.
+
+
+## 2026-10-05T03:40:12Z - Codex (GPT-6) - recovered design lineage for S7 merge
+
+Merged the local documentation commits `b2aa70ac9fa10988650a3084a1f6e3a6cef378c5` and `bbd330c8efd2f083e5b4efb19569e983ac4dc15a` into the updated origin history. The following append-only entries were authored on the older branch before D26 scientific S5 completion and are retained as historical planning evidence. Their status statements were accurate for that older checkout; the current S5/D26 source audit now takes precedence. The researcher subsequently renamed this utility experiment S7.
+
+## 2026-10-05T03:20:15Z - Codex (GPT-6) - S5 utility experiment design only
+
+- Starting branch/commit: main at `dceba4976c06399cffabdd50e80c41c94137a5e6`, with existing uncommitted Stage06 runtime-source work. User scope: read the complete attached Sink-Aware Distillation Utility proposal and add an exhaustive implementation design; no code or experiment execution.
+- Sources: attachment SHA-256 `4122d4d3342accf1316d8281ba020d6fd52314275706d76b5e5edd34c595e25c`; AGENTS, README, NEXT_STEPS, Stage06/08/09 contracts, S1/S3/S5 study definitions, objective/data/model/metric/training/hardware/software contracts, latest CORE/S1/S5 notes, and actual objective/evaluator/metric/S5/trainer/checkpoint/CLI implementations and relevant tests. No source code borrowed.
+- Files changed in this task: `design/e6a_v2/studies/S5_SINK_AWARE_DISTILLATION_UTILITY_PLAN.md`, S5 study cross-link, NEXT_STEPS planning pointer, and append-only CORE/S1/S5 journals. Pre-existing runtime repair files and earlier journal text preserved.
+- Decisions: implement later as an S5 extension over the same-device seed0 C1/C2/C5/C6 block; reuse recorded metrics first, with explicit retained-state supplementary evaluation for new decomposition fields. Specify exact head-mean JSD mass/shape and coordinate decompositions, versioned records, provenance checks, temporal summaries, controls, figures, staged work and required tests. Equivalence/noninferiority claims remain disabled without a justified approved design. This is a draft, not preregistration or execution approval.
+- Discoveries/limits: full and conditional JSD/MSE already exist; their difference is not additive sink attribution. S5 extraction omits several requested fields; actual trainer emits no run.json; evaluation tensor hashes differ from checkpoint-file hashes; panel hash can identify the shared bundle. Repository evidence says no S1 campaign has run. Stage06 remains blocked on executable-source/root repair; no external checkpoint inventory was performed.
+- User-visible communications: explained S5 fit, existing metrics and gaps, exact decomposition, seed/equivalence limits, artifact-binding details, and design-only delivery. No messages to others.
+- Validation: inline documentation audit via `.\.venv\Scripts\python.exe -` exited 0 (source attachment hash, 18 sections, nine pending tasks, all ten local links, balanced fences and no completed implementation checkboxes). `git diff --check` exited 0; existing LF/CRLF advisories only. No CPU unit/integration, GPU, network, training, scientific evaluation or analysis tests were run because this task changes documentation only. One read-only timestamp query `Get-Date -AsUTC -Format o` failed on the host PowerShell; `[DateTime]::UtcNow.ToString('o')` and Python UTC retrieval succeeded.
+- Artifacts: linked draft plan; source-preservation baseline is local temporary documentation evidence, not a scientific artifact. No datasets, weights or bulk logs added.
+- NEXT_STEPS: planning pointer only; no implementation/scientific checkbox changed. First future action is SU0/SU1 after a coding instruction, respecting the separate Stage06 blocker.
+- Milestone commit: documentation commit pending; append its SHA after creation.
+
+
+## 2026-10-05T03:22:16Z - Codex (GPT-6) - S5 utility design milestone SHA
+
+The design and its navigation/journal records were committed locally as `b2aa70ac9fa10988650a3084a1f6e3a6cef378c5` (`docs(s5): plan sink-aware distillation utility`). The final documentation audit passed: 18 sections, nine pending implementation tasks, valid local links/source hash, and preservation of all 17 snapshotted original file contents. `git diff --check` and `git diff --cached --check` exited 0. Only this task's six documentation paths were committed; pre-existing Stage06 edits remain uncommitted. No code, unit/GPU/network test, scientific run, production lock change or push occurred.
