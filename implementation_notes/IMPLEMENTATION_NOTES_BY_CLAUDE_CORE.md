@@ -1071,3 +1071,17 @@ S6 C0-C3 prefix audit PASSED: 16/16 stable states, 28,800 item-operation records
 - Artifacts: external S4 attempt02 output and `S4_attempt02.console.jsonl`; report stores only a progress snapshot.
 - Next: finish C2/10000 and continue C3-C6; run independent complete S4 audit before final status.
 - Milestone commit: pending.
+
+
+## 2026-10-05T02:44:34Z - Codex (GPT-6) - S4 C2 checkpoint-set completion
+
+- Starting branch/commit: main / 6854c46d1c90fb4be88740af8cfc948bbafa0cc5.
+- Task: continue the explicitly authorized Stage08 S4 seed0 matrix. S5 reuse-only and S6 independent audit remain complete; no S1 source modification, training, S2 rerun, Stage09, optional contexts, or HumanEval execution.
+- Files changed: execution report, NEXT_STEPS, append-only CORE/S4 journals.
+- Result: all five C2 checkpoints are now sealed. C2/10000 completed300 items/3,000 records; summary SHA-256 e60a11c2b0e01302232133fe9f4f0e01f27c33df559d910b10177934905d5c8c. C3/step0 began. Overall S4 student coverage is15/35; result tree snapshot48,017 JSON files.
+- Verification: live console showed the sealed C2 battery and fixed C3/step0 start; no error event. Latest GPU sample39 C,2,190 MiB,6% utilization. Exact C3 historical log exception remains unchanged.
+- User communication: reported C2 completion and C3 start.
+- Validation: `git diff --check`; report JSON parse/invariant check after this append; no additional science test suite for this documentation-only snapshot.
+- Artifacts: external `D:\KD-SINK-central\analysis\stage08_scientific_20261005\S4_attempt02` and console JSONL.
+- Next: continue C3 fixed checkpoint sequence; independent full S4 audit remains mandatory.
+- Milestone commit: pending.
