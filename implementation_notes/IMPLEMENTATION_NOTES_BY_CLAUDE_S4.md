@@ -277,3 +277,13 @@ S6 C0-C3 prefix audit PASSED: 16/16 stable states, 28,800 item-operation records
 - No S1 source changes or prohibited execution.
 - Next: continue fixed S4 checkpoints and independently audit the full result tree.
 - Milestone commit: pending.
+
+
+## 2026-10-05T01:53:12Z - Codex (GPT-6) - S4 C2 step-100 completion
+
+- Starting branch/commit: main / 0f3f38207ec50e011aa352f72007fd2a1b142766.
+- Scope: existing attempt02, D24 designated seed0.
+- Result: C2 step100 sealed300/300 items and3,000 records; summary SHA-256 1cb092c5e3260c24e2c2d396683959c5d8e615799a7a9a3bcb5463759834c4ba. Runner advanced to C2/step500. Twelve of35 student batteries complete;39,000 result files.
+- No prohibited tasks or S1 modifications.
+- Next: proceed through remaining C2 then C3-C6 batteries; independent audit pending.
+- Milestone commit: pending.
