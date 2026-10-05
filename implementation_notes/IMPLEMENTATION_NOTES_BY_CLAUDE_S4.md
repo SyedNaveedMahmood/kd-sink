@@ -564,3 +564,19 @@ S6 C0-C3 prefix audit PASSED: 16/16 stable states, 28,800 item-operation records
 - Next: finish C6/10000 then independently audit full S4 result tree.
 - Validation: `git diff --check` passed; report JSON invariants passed. No scientific suite rerun for this documentation-only snapshot.
 - Milestone commit: pending.
+
+
+## 2026-10-05T09:07:02Z - Codex (GPT-6) - Stage08 S4 final audit and campaign closeout
+
+- Starting branch/commit: main / 7930bd366bbdb5a9f225ca4905cd1d5855536949.
+- Task: complete the previously authorized Stage08 S4 inference audit and close the S4/S5/S6 execution report.
+- Files changed: `reports/stage08_scientific_execution_20261005.json`, `NEXT_STEPS.md`, CORE and S4 append-only journals.
+- Result: S4 COMPLETE, 35/35 seed0 batteries plus one teacher reference; 108,000 records (105,000 student, 3,000 teacher), 108,037 manifested files, 2,273,573,249 bytes. Independent audit passed every file hash, record envelope, identity, panel, and unique-coverage check; no tensor/state payloads. S5 remains COMPLETE; S6 remains independently audited COMPLETE with its stale runner aggregate-count failure disclosed.
+- Audit artifacts: runner receipt `D:\KD-SINK-central\analysis\stage08_scientific_20261005\S4_attempt02\S4_FINAL_AUDIT.json` file SHA-256 `9dbd52363926fa70c65da175b36e5989a449ccff7563f6e9dddf066e374c66ee`, envelope SHA-256 `cb89b249c86759b8ca5150ccd056e9bcedfeab48179bf8ad0d3db401ec2e3865`; independent receipt `D:\KD-SINK-central\analysis\stage08_scientific_20261005\audits\S4_FINAL_INDEPENDENT_AUDIT.json` file SHA-256 `9412d951974b7e286f245e9146e19fe2a0e8a281787a295867a78f7675b64ef3`, envelope SHA-256 `18a3a470e42b773850441693c81fe6d184de00bcc1d6c0e860c4c472086bd243`.
+- Runner status: emitted `s4_study_complete`, wrote COMPLETE sealed audit, and no failure receipt; enclosing exec session returned exit code 1. This wrapper-status discrepancy is retained explicitly and does not override the independently verified output.
+- C3 provenance: exact accepted missing transferred updates 1-2500 exception remains bound to SHA-256 `f021ac0441f775d45d19a8109d47c0f45a0b0bbfc025bbd2df35be688e291cd2`; no reconstruction or rerun.
+- User communication: reported S5/S6 completion and S4 completion after final independent audit.
+- Prohibited work/source changes: no training, S2 rerun, Stage09, optional contexts, HumanEval code execution, or changes to S1 sources.
+- Validation: independent S4 audit PASS; report status/identity/count invariants and external receipt file hashes passed using `.venv\Scripts\python.exe -` (PowerShell here-string); `git diff --check` passed. Existing regression gate remains 333 passed, 0 failed, 0 skipped (one external astor deprecation warning); no scientific suite rerun for this records-only closeout.
+- Next: commit and push the verified report/journal closeout; milestone commit SHA will be recorded in a follow-up journal bookkeeping commit.
+- Milestone commit: pending.
