@@ -776,7 +776,7 @@ A documentation-only milestone commit was attempted after git diff --cached --ch
 - Early panel-builder attempts stopped before output creation when input-key/source-ID assumptions were mismatched; corrections were made before the successful build. A preliminary tokenizer comparison used Git SHA-1 object IDs against file SHA-256 and was discarded; direct pinned revision bytes then matched all five local/S1-locked tokenizer files. No source run was touched.
 - User-visible communication: reported that D25 pinning/panel prep was complete and final audit/commit checks were underway. No messages were sent to others. No training, scientific evaluation, model load, GPU execution, S4/S5 science, Stage09, or active S1 run modification occurred.
 - Next: final `git diff --check`, inspect staged paths for raw data/tensor payloads, commit the preserved preparation milestone, push fast-forward to `origin/main`, verify remote SHA.
-- Milestone commit: pending.
+- Milestone commit: `b9a9d48` (`docs(stage08): record S4 S5 S6 scientific completion`); this SHA is recorded before pushing the closeout.
 
 ## 2026-10-04T18:32:54Z - Codex (GPT-6) - D25 S6 preparation milestone SHA
 
@@ -803,6 +803,7 @@ A documentation-only milestone commit was attempted after git diff --cached --ch
 - Validation: focused `tests/unit/test_stage08_readiness.py tests/unit/test_stage08_s5.py`, exit0, 15 passed; Python compile and `git diff --check` exit0. The four-condition S5 audit will be rerun from the beginning; C1's first traversal is not represented as a completed audit because the report return failed.
 - No checkpoint/model loaded; no GPU work, training, S2, S4/S6 or Stage09 started. Next: commit/push this narrow fix and rerun S5. Continue S4/S6 independently.
 - Milestone commit: pending.
+
 
 ## 2026-10-04T20:41:11Z - Codex (GPT-6) - Authorized Stage08 execution milestone, S5 complete
 
@@ -1128,6 +1129,252 @@ S6 C0-C3 prefix audit PASSED: 16/16 stable states, 28,800 item-operation records
 - Next: continue C3/2000,10000 and C4-C6; independently audit all results.
 - Milestone commit: pending.
 
+
+## 2026-10-05T03:52:23Z - Codex (GPT-6) - S4 C3 step-2000 milestone
+
+- Starting branch/commit: main / d8c700fe8e064d6aa69709a1defb991714be2f76.
+- Task: continue the explicitly authorized Stage08 S4 designated-seed0 inference; S5 reaggregation and S6 independent audit remain complete. No training, S2 rerun, Stage09, optional contexts, HumanEval execution, or S1 source modifications.
+- Files changed: execution report, NEXT_STEPS, append-only CORE/S4 journals.
+- Result: C3/2000 sealed300 panel items and3,000 records; summary SHA-256 dccfd2d016ba968f8211b78836ccd78467b946c6cd4f80f5ca88573fc50218a6. C3/10000 started. Nineteen of35 student batteries complete; output tree60,021 JSON files.
+- Verification: console completion and next-start events present; no errors. Latest GPU sample39 C,2,212 MiB,0% utilization. Exact C3 prefix-log exception unchanged.
+- User communication: reported C3/2000 seal and C3/10000 start.
+- Validation: `git diff --check`, report JSON parse/invariant check after edit; no science suite rerun for documentation-only snapshot.
+- Artifacts: external S4 attempt02 and console JSONL.
+- Next: complete C3/10000 then continue C4-C6; independently audit full tree.
+- Milestone commit: pending.
+
+
+## 2026-10-05T04:09:38Z - Codex (GPT-6) - S4 C3 checkpoint-set completion
+
+- Starting branch/commit: main / eb2504b6c59091a70d7ec8ef2743872bc2c65680.
+- Task: continue authorized Stage08 S4 seed0 campaign. No training, S2 rerun, Stage09, optional contexts, HumanEval execution, or source-run modification.
+- Files changed: execution report, NEXT_STEPS, append-only CORE/S4 journals.
+- Result: C3/10000 sealed300 items/3,000 records, summary SHA-256 278a54dc8ab02034eb1b84c44178c479ce854175a0f382bc823b8793b8287b84. C3's five-step set is complete. C4/step0 began; overall S4 20/35 student batteries complete and tree snapshot63,028 JSON files.
+- Device check: run manifest pins the inference device to the sole visible RTX4080 SUPER, UUID GPU-2a5c25d0-1f73-919b-fd8b-f6f0df709aaf. C4's training source is the RTX3090 run, while inference device follows the manifest. Latest GPU sample39 C,4,262 MiB,8% utilization.
+- Integrity: completion and next-start console events present; no error. C3 exception unchanged.
+- User communication: reported C3 completion, C4 start and pinned device confirmation.
+- Validation: `git diff --check`; report JSON parse/invariant check after update; no extra science tests for docs-only snapshot.
+- Artifacts: external S4 attempt02 result and console JSONL.
+- Next: continue C4 then C5/C6 and independently audit all 35 student batteries plus reference.
+- Milestone commit: pending.
+
+
+## 2026-10-05T04:26:10Z - Codex (GPT-6) - S4 C4 step-0 milestone
+
+- Starting branch/commit: main / b9abc424d5ef9350a6260a3789df86b4d4b20858.
+- Task: continue user-authorized Stage08 S4 designated-seed0 evaluation. No training, S2 rerun, Stage09, optional long-context work, HumanEval execution, or S1 source changes.
+- Files changed: execution report, NEXT_STEPS, append-only CORE/S4 journals.
+- Result: C4/0 sealed300 items/3,000 records; summary SHA-256 fdefd5613a9d222d105b4637879ff841f236daad4b9ed1e954d9ed5d8f6ba9dd. C4/100 started. Overall21/35 student batteries complete; tree66,023 JSON files.
+- Verification: console completion and next-start present, no errors. Run manifest pins inference to the only RTX4080 SUPER, GPU-2a5c25d0-1f73-919b-fd8b-f6f0df709aaf; latest sample39 C,2,217 MiB,0% utilization.
+- User communication: reported C4/0 seal and C4/100 start.
+- Validation: `git diff --check`; report JSON invariant check after update. No additional science tests for docs-only snapshot.
+- Artifacts: external S4 attempt02 and console JSONL.
+- Next: continue C4 fixed steps and C5/C6; then independently audit the complete tree.
+- Milestone commit: pending.
+
+
+## 2026-10-05T04:43:32Z - Codex (GPT-6) - S4 C4 step-100 milestone
+
+- Starting branch/commit: main / 4d319b30632744037457f57bd4fb451bef2c0417.
+- Task: continue authorized Stage08 S4 seed0 evaluation. No training, S2 rerun, Stage09, optional contexts, HumanEval execution, or S1 source modification.
+- Files changed: execution report, NEXT_STEPS, append-only CORE/S4 journals.
+- Result: C4/100 sealed300 items/3,000 records; summary SHA-256 c56fca392fa44bbde4cefd9270cf034993265d125fb93323c45c8851f3f64bb1. C4/500 started. Overall22/35 batteries complete; result tree snapshot69,024 JSON files.
+- Health/integrity: console showed completion and next fixed start; no errors. GPU sample39 C,2,213 MiB,0% utilization; manifest-pinned evaluation GPU unchanged.
+- User communication: reported C4/100 seal and C4/500 start.
+- Validation: `git diff --check`, report JSON parse/invariant check. No new science tests for docs-only snapshot.
+- Artifacts: external S4 attempt02 output and console JSONL.
+- Next: continue C4 steps500/2000/10000 then C5/C6; independent full audit pending.
+- Milestone commit: pending.
+
+
+## 2026-10-05T05:00:53Z - Codex (GPT-6) - S4 C4 step-500 milestone
+
+- Starting branch/commit: main / 74224eccc91c4b3874d470b92f5b6fa76e146914.
+- Task: continue explicitly authorized Stage08 S4 seed0 evaluation; no training, S2 rerun, Stage09, optional contexts, HumanEval execution, or source S1 changes.
+- Files changed: execution report, NEXT_STEPS, append-only CORE/S4 journals.
+- Result: C4/500 sealed300 panel items/3,000 records; summary SHA-256 2782e05358e065a0ce5e8bc139e5f910a9ae3e52e558f470b90aaee94c67af84. C4/2000 started. Overall23/35 student batteries complete; external tree snapshot72,025 JSON files.
+- Verification: console completion and next fixed start events present; no error. Latest RTX4080 SUPER sample38 C,2,213 MiB,2% utilization.
+- User communication: reported C4/500 seal and C4/2000 start.
+- Validation: `git diff --check`, report JSON parse/invariant check after update; no new science tests for docs-only progress.
+- Artifacts: external S4 attempt02 and console JSONL.
+- Next: continue C4/2000 and10000, then C5/C6; independently audit final tree.
+- Milestone commit: pending.
+
+
+## 2026-10-05T05:18:12Z - Codex (GPT-6) - S4 C4 step-2000 milestone
+
+- Starting branch/commit: main / 531984ce434c82bd1395b0b5edd683c3c8990b61.
+- Task: continue authorized Stage08 S4 designated-seed0 evaluation; no training, S2 rerun, Stage09, optional contexts, HumanEval execution, or source S1 modifications.
+- Files changed: execution report, NEXT_STEPS, append-only CORE/S4 journals.
+- Result: C4/2000 sealed300 items/3,000 records, summary SHA-256 362d0b126c47b2193c581f167dcb4e62bd08bcbfaf024c33b3928d5a039627e2. C4/10000 started. Overall24/35 student batteries complete; tree snapshot75,026 JSON files.
+- Verification: console completion and next battery start present, no errors. Latest RTX4080 SUPER sample38 C,2,213 MiB,0%.
+- User communication: reported C4/2000 completion and endpoint start.
+- Validation: `git diff --check`, report JSON parse/invariant check; no science suite rerun for docs-only milestone.
+- Artifacts: external S4 attempt02 result and console JSONL.
+- Next: complete C4/10000, continue C5/C6, independently audit the full tree.
+- Milestone commit: pending.
+
+
+## 2026-10-05T05:35:29Z - Codex (GPT-6) - S4 C4 checkpoint-set completion
+
+- Starting branch/commit: main / 8609fa374763bb581b47fb1588e6c8a56faad3d7.
+- Task: continue authorized Stage08 S4 designated-seed0 evaluation; no training, S2 rerun, Stage09, optional contexts, HumanEval execution, or S1 source changes.
+- Files changed: execution report, NEXT_STEPS, append-only CORE/S4 journals.
+- Result: all C4 checkpoints sealed. C4/10000 sealed300 items/3,000 records; summary SHA-256 cdad4fe486825ed1864d6e4539e16a300b51d5cf55d66288fc26fe2c2bcbf487. C5/0 started. Overall25/35 student batteries complete; tree snapshot78,027 JSON files.
+- Verification: live console completion and next fixed start; no errors. GPU sample38 C,2,221 MiB,2% utilization.
+- User communication: reported C4 set completion and C5 start.
+- Validation: `git diff --check`, report JSON parse/invariant check after update. No science test rerun for docs-only snapshot.
+- Artifacts: external S4 attempt02 result and console JSONL.
+- Next: continue C5/C6 fixed checkpoints; independent full-tree audit is required before S4 final status.
+- Milestone commit: pending.
+
+
+## 2026-10-05T05:53:14Z - Codex (GPT-6) - S4 C5 step-0 milestone
+
+- Starting branch/commit: main / 853d02e39ddb19bdc0964f4743307b51312af516.
+- Task: continue authorized Stage08 S4 designated-seed0 evaluation; no training, S2 rerun, Stage09, optional contexts, HumanEval execution, or source S1 changes.
+- Files changed: execution report, NEXT_STEPS, append-only CORE/S4 journals.
+- Result: C5/0 sealed300 panel items/3,000 records; summary SHA-256 6adbe0195f6edd88509a09d3e6b8237dbada63dd8c75a0a5cc46ae3758e763b1. C5/100 started. Overall26/35 batteries complete; tree snapshot81,028 JSON files.
+- Verification: completion and next fixed battery start present in console; no errors. GPU sample38 C,2,221 MiB,1% utilization.
+- User communication: reported C5/0 completion and C5/100 start.
+- Validation: `git diff --check`, report JSON parse/invariant check. No science tests rerun for documentation-only snapshot.
+- Artifacts: external S4 attempt02 and console JSONL.
+- Next: continue C5/C6 fixed batteries; independently audit S4 full output.
+- Milestone commit: pending.
+
+
+## 2026-10-05T06:11:07Z - Codex (GPT-6) - S4 C5 step-100 milestone
+
+- Starting branch/commit: main / 9faaac08d2a192f779af00e30262336209283d17.
+- Task: continue authorized Stage08 S4 seed0 evaluation; no training, S2 rerun, Stage09, optional contexts, HumanEval execution, or source S1 modifications.
+- Files changed: execution report, NEXT_STEPS, append-only CORE/S4 journals.
+- Result: C5/100 sealed300 items/3,000 records; summary SHA-256 b11b0eb788f2dd7bfe6e953df3d8d47b155f4f3c4e32904f6941939d51212374. C5/500 started. Overall27/35 student batteries complete; tree snapshot84,029 JSON files.
+- Verification: console completion and next-start events present, no errors. GPU sample38 C,2,221 MiB,2% utilization.
+- User communication: reported C5/100 seal and C5/500 start.
+- Validation: `git diff --check` plus JSON report invariant check; no scientific suite rerun for docs-only snapshot.
+- Artifacts: external S4 attempt02 and console JSONL.
+- Next: continue C5/C6 batteries; independently audit complete S4 output before completion claim.
+- Milestone commit: pending.
+
+## 2026-10-05T06:33:15Z - Codex (GPT-6) - S4 C5 step-500 milestone
+
+- Starting branch/commit: main / 011bbe8c577fef3325bd1a1cb5eff7b944e11424.
+- Task: continue the user-authorized Stage08 S4 designated-seed0 evaluation; S5 reaggregation and S6 independent audit remain complete. No training, S2 rerun, Stage09, optional contexts, HumanEval execution, or S1 source modifications.
+- Files changed: execution report, NEXT_STEPS, append-only CORE/S4 journals.
+- Result: C5/step500 sealed 300/300 items and 3,000 records; summary SHA-256 7b846ed0b76c442b7ad15fd180585d0703dfcc8e944600738cdcc3180fedd147. Student batteries: 28/35 complete. C5/step2000 is active at 80/300 items. Result tree count: 87,865 JSON files.
+- Integrity/health: expected fixed battery transition, no errors observed; GPU sample 39 °C, 4,290 MiB, 15% utilization. S4 independent full-output audit remains required.
+- User communication: reported S5/S6 completion and an estimated 2.5–3 hours for remaining S4 inference and final audit.
+- Prohibited activities/source changes: none observed; original S1 sources remain untouched.
+- Artifacts: external S4 attempt02 result tree and console JSONL.
+- Next: continue C5 step2000/10000 and C6 steps0/100/500/2000/10000, then independently audit all S4 outputs.
+- Validation: `git diff --check` passed; report JSON invariant check passed. No scientific suite rerun for this documentation-only progress snapshot.
+- Milestone commit: pending.
+
+
+## 2026-10-05T06:46:57Z - Codex (GPT-6) - S4 C5 step-2000 milestone
+
+- Starting branch/commit: main / 78c594e7d229ab16f43050da707d37e0a4fcd104.
+- Task: continue user-authorized Stage08 S4 designated-seed0 evaluation; S5 and S6 remain complete. No training, S2 rerun, Stage09, optional contexts, HumanEval execution, or S1 source modifications.
+- Files changed: execution report, NEXT_STEPS, append-only CORE/S4 journals.
+- Result: C5/step2000 sealed 300/300 items and 3,000 records; summary SHA-256 f5349b8e712e067f3c1da3bcc24782bf12c9f8b2533ae562a2eb1f7dce92a924. Student batteries: 29/35 complete. C5/step10000 is active at 10/300; result tree count 90,185 JSON files.
+- Integrity/health: fixed schedule transition and no errors observed; GPU sample 38 °C, 4,290 MiB, 13% utilization. S4 independent full-output audit remains required.
+- User communication: reported C5/step2000 completion, active C5/step10000, and six batteries remaining including the active one.
+- Prohibited activities/source changes: none; S1 source runs remain untouched.
+- Artifacts: external S4 attempt02 output and console JSONL.
+- Next: continue C5/step10000, then C6 steps0/100/500/2000/10000 and independently audit all S4 outputs.
+- Validation: `git diff --check` passed; report JSON invariant check passed. No scientific suite rerun for this documentation-only progress snapshot.
+- Milestone commit: pending.
+
+
+## 2026-10-05T07:04:42Z - Codex (GPT-6) - S4 C5 final checkpoint milestone
+
+- Starting branch/commit: main / 99660982e68ec43bf4c1c30f2d4065931229b8ec.
+- Task: continue user-authorized Stage08 S4 designated-seed0 evaluation. S5 and S6 remain complete; no training, S2 rerun, Stage09, optional contexts, HumanEval execution, or S1 source modifications.
+- Files changed: execution report, NEXT_STEPS, append-only CORE/S4 journals.
+- Result: C5/step10000 sealed 300/300 items and 3,000 records; summary SHA-256 87f706be681c985fd7ff00172c439476ec7ce3b9eecc7a5e61093582ecb5c7d3. Student batteries: 30/35 complete. C6/step0 is active at 10/300; result tree count 93,232 JSON files.
+- Integrity/health: fixed schedule transition, no errors observed; GPU sample 38 °C, 4,290 MiB, 14% utilization. Independent S4 full-output audit remains required.
+- User communication: reported C5 completion and C6 start; five batteries remain including active C6/0.
+- Prohibited activities/source changes: none observed; S1 source runs remain untouched.
+- Artifacts: external S4 attempt02 output and console JSONL.
+- Next: continue C6 steps0/100/500/2000/10000, then independently audit the complete S4 tree.
+- Validation: `git diff --check` passed; report JSON invariants passed. No scientific suite rerun for this documentation-only snapshot.
+- Milestone commit: pending.
+
+
+## 2026-10-05T07:21:53Z - Codex (GPT-6) - S4 C6 step-0 milestone
+
+- Starting branch/commit: main / 5a006d77732c51754a33b63236412eda4770f73b.
+- Task: continue user-authorized Stage08 S4 designated-seed0 evaluation; S5/S6 are complete. No training, S2 rerun, Stage09, optional contexts, HumanEval execution, or S1 source modifications.
+- Files changed: execution report, NEXT_STEPS, append-only CORE/S4 journals.
+- Result: C6/step0 sealed 300/300 items and 3,000 records; summary SHA-256 53a17c0058bc90f347021d8385fa6b8e1da6a69e8369a2a56d672c39b94fa5ad. Student batteries: 31/35 complete. C6/step100 active at 10/300; result tree count 96,181 JSON files.
+- Integrity/health: expected fixed transition and no errors observed; GPU sample 38 °C, 4,290 MiB, 11% utilization. Independent S4 output audit remains required.
+- User communication: reported C6/step0 completion and C6/step100 start; four batteries remain including active.
+- Prohibited activities/source changes: none observed; source S1 runs remain untouched.
+- Artifacts: external S4 attempt02 output and console JSONL.
+- Next: continue C6 steps100/500/2000/10000, then independently audit full S4 output.
+- Validation: `git diff --check` passed; report JSON invariants passed. No scientific suite rerun for this documentation-only snapshot.
+- Milestone commit: pending.
+
+
+## 2026-10-05T07:39:40Z - Codex (GPT-6) - S4 C6 step-100 milestone
+
+- Starting branch/commit: main / d458a8c14b66b3e8acbca3ab2dceeb4f59dd40f4.
+- Task: continue user-authorized Stage08 S4 designated-seed0 evaluation; S5/S6 remain complete. No training, S2 rerun, Stage09, optional contexts, HumanEval execution, or S1 source modifications.
+- Files changed: execution report, NEXT_STEPS, append-only CORE/S4 journals.
+- Result: C6/step100 sealed 300/300 items and 3,000 records; summary SHA-256 fbfff51f163de9d63f10ee0408e9932ee6d667278bfd63d6516983d55df51b4b. Student batteries: 32/35 complete. C6/step500 active at 10/300; result tree count 99,234 JSON files.
+- Integrity/health: expected fixed transition, no errors observed; GPU sample 39 °C, 4,286 MiB, 17% utilization. Independent S4 output audit remains required.
+- User communication: reported C6/step100 transition and three batteries left including active.
+- Prohibited activities/source changes: none; original S1 runs remain untouched.
+- Artifacts: external S4 attempt02 output and console JSONL.
+- Next: continue C6 steps500/2000/10000, then independently audit S4 outputs.
+- Validation: `git diff --check` passed; report JSON invariants passed. No scientific suite rerun for this documentation-only snapshot.
+- Milestone commit: pending.
+
+
+## 2026-10-05T07:56:35Z - Codex (GPT-6) - S4 C6 step-500 milestone
+
+- Starting branch/commit: main / 4f7cfcae7dfab559acdb5287c7e23a0b320240fc.
+- Task: continue the explicitly authorized Stage08 S4 designated-seed0 evaluation. S5/S6 remain complete; no training, S2 rerun, Stage09, optional contexts, HumanEval execution, or S1 source changes.
+- Files changed: execution report, NEXT_STEPS, append-only CORE/S4 journals.
+- Result: C6/step500 sealed 300/300 items and 3,000 records; summary SHA-256 f5ad5ea2d7935f4f1f470d3233515149fbda5c22207b379d6feebf913d9de8a8. Student batteries: 33/35 complete. C6/step2000 active at 10/300; result tree count 102,154 JSON files.
+- Integrity/health: expected transition, no errors observed; GPU sample 38 °C, 4,286 MiB, 20% utilization. Independent S4 audit remains required.
+- User communication: reported C6/step500 completion and two batteries left including the active one.
+- Prohibited activities/source changes: none observed; S1 sources remain untouched.
+- Artifacts: external S4 attempt02 results and console JSONL.
+- Next: finish C6/step2000 and step10000, then independently audit all S4 output.
+- Validation: `git diff --check` passed; report JSON invariants passed. No scientific suite rerun for this documentation-only snapshot.
+- Milestone commit: pending.
+
+
+## 2026-10-05T08:14:29Z - Codex (GPT-6) - S4 C6 step-2000 milestone
+
+- Starting branch/commit: main / 195faae1274b093db694d34a07d281c433c8c3b8.
+- Task: continue user-authorized Stage08 S4 designated-seed0 evaluation; S5/S6 remain complete. No training, S2 rerun, Stage09, optional contexts, HumanEval execution, or S1 source changes.
+- Files changed: execution report, NEXT_STEPS, append-only CORE/S4 journals.
+- Result: C6/step2000 sealed 300/300 items and 3,000 records; summary SHA-256 13da0c243e593b28b7ef7d26fda75fd97b4ce54b1297734ff68149564f056ed8. Student batteries: 34/35 complete. C6/step10000 active at 10/300; result tree count 105,236 JSON files.
+- Integrity/health: expected transition, no errors observed; GPU sample 39 °C, 4,286 MiB, 18% utilization. Independent S4 audit remains required.
+- User communication: reported final S4 battery start.
+- Prohibited activities/source changes: none observed; S1 sources remain untouched.
+- Artifacts: external S4 attempt02 results and console JSONL.
+- Next: complete C6/10000, then independently audit all S4 outputs.
+- Validation: `git diff --check` passed; report JSON invariants passed. No scientific suite rerun for this documentation-only snapshot.
+- Milestone commit: pending.
+
+
+## 2026-10-05T09:07:02Z - Codex (GPT-6) - Stage08 S4 final audit and campaign closeout
+
+- Starting branch/commit: main / 7930bd366bbdb5a9f225ca4905cd1d5855536949.
+- Task: complete the previously authorized Stage08 S4 inference audit and close the S4/S5/S6 execution report.
+- Files changed: `reports/stage08_scientific_execution_20261005.json`, `NEXT_STEPS.md`, CORE and S4 append-only journals.
+- Result: S4 COMPLETE, 35/35 seed0 batteries plus one teacher reference; 108,000 records (105,000 student, 3,000 teacher), 108,037 manifested files, 2,273,573,249 bytes. Independent audit passed every file hash, record envelope, identity, panel, and unique-coverage check; no tensor/state payloads. S5 remains COMPLETE; S6 remains independently audited COMPLETE with its stale runner aggregate-count failure disclosed.
+- Audit artifacts: runner receipt `D:\KD-SINK-central\analysis\stage08_scientific_20261005\S4_attempt02\S4_FINAL_AUDIT.json` file SHA-256 `9dbd52363926fa70c65da175b36e5989a449ccff7563f6e9dddf066e374c66ee`, envelope SHA-256 `cb89b249c86759b8ca5150ccd056e9bcedfeab48179bf8ad0d3db401ec2e3865`; independent receipt `D:\KD-SINK-central\analysis\stage08_scientific_20261005\audits\S4_FINAL_INDEPENDENT_AUDIT.json` file SHA-256 `9412d951974b7e286f245e9146e19fe2a0e8a281787a295867a78f7675b64ef3`, envelope SHA-256 `18a3a470e42b773850441693c81fe6d184de00bcc1d6c0e860c4c472086bd243`.
+- Runner status: emitted `s4_study_complete`, wrote COMPLETE sealed audit, and no failure receipt; enclosing exec session returned exit code 1. This wrapper-status discrepancy is retained explicitly and does not override the independently verified output.
+- C3 provenance: exact accepted missing transferred updates 1-2500 exception remains bound to SHA-256 `f021ac0441f775d45d19a8109d47c0f45a0b0bbfc025bbd2df35be688e291cd2`; no reconstruction or rerun.
+- User communication: reported S5/S6 completion and S4 completion after final independent audit.
+- Prohibited work/source changes: no training, S2 rerun, Stage09, optional contexts, HumanEval code execution, or changes to S1 sources.
+- Validation: independent S4 audit PASS; report status/identity/count invariants and external receipt file hashes passed using `.venv\Scripts\python.exe -` (PowerShell here-string); `git diff --check` passed. Existing regression gate remains 333 passed, 0 failed, 0 skipped (one external astor deprecation warning); no scientific suite rerun for this records-only closeout.
+- Next: commit and push the verified report/journal closeout; milestone commit SHA will be recorded in a follow-up journal bookkeeping commit.
+- Milestone commit: pending.
 
 ## 2026-10-05T03:40:12Z - Codex (GPT-6) - recovered design lineage for S7 merge
 
