@@ -997,3 +997,14 @@ S6 C0-C3 prefix audit PASSED: 16/16 stable states, 28,800 item-operation records
 - Verification: live console emitted completion and fixed next-battery start; no errors. S1 sources untouched. S5 reuse audit and S6 independent final audit remain complete.
 - Next: continue S4 sequentially and independently audit the final tree.
 - Milestone commit: pending.
+
+
+## 2026-10-05T01:02:33Z - Codex (GPT-6) - S4 C1 step-2000 milestone
+
+- Starting branch/commit: main / 73fc8e39de63399a541629c81b00e629cccc1030.
+- Authorized scope: continue existing S4 seed0 execution; S5 reuse-only work is complete, and S6 has passed independent final audit. No training, S2 rerun, Stage09 or HumanEval code execution.
+- Files changed: Stage08 report, NEXT_STEPS, append-only CORE/S4 journals.
+- Progress: nine of35 student batteries complete. C1 step2000 sealed300 items/3,000 records; summary SHA 0e63f1768c2f6621ab0d053241e21dddbc2f6464877730852238155645bdb2fa. C1 step10000 started. Result-tree file count30,000.
+- Verification: console showed completed battery and fixed step10000 start; no errors observed. Source S1 runs remain unchanged.
+- Next: continue the last C1 battery and proceed through remaining conditions; final S4 status awaits independent audit.
+- Milestone commit: pending.
