@@ -323,3 +323,15 @@ S6 C0-C3 prefix audit PASSED: 16/16 stable states, 28,800 item-operation records
 - Next: continue C3-C6 and independently audit all S4 outputs.
 - Validation: `git diff --check` and report JSON check recorded in CORE journal.
 - Milestone commit: pending.
+
+
+## 2026-10-05T03:01:24Z - Codex (GPT-6) - S4 C3 step-0 completion
+
+- Starting branch/commit: main / b2367776bd7d003d5f80c55e5684aa19a1cfeb3b.
+- Scope: fixed D24 S4 designated-seed0 execution, existing attempt02.
+- Result: C3/0 sealed300/300 items and3,000 records; summary SHA-256 b13fc419628551b8aace7a06f8d36a315f0efbfe3b3b8eb12da5b5087fd472b0. C3/100 started. Sixteen of35 student batteries complete; tree snapshot51,018 JSON files.
+- Integrity: complete/next-start events present, no error. Latest GPU sample39 C,2,211 MiB,0%. Exact exception remains scoped to missing transferred training updates1-2500; no reconstruction.
+- No prohibited task or S1 source changes.
+- Next: continue fixed checkpoint queue and run independent complete-tree audit on completion.
+- Validation: `git diff --check` and report JSON check recorded in CORE journal.
+- Milestone commit: pending.

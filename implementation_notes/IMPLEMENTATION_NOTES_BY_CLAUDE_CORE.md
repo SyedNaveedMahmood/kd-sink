@@ -1085,3 +1085,17 @@ S6 C0-C3 prefix audit PASSED: 16/16 stable states, 28,800 item-operation records
 - Artifacts: external `D:\KD-SINK-central\analysis\stage08_scientific_20261005\S4_attempt02` and console JSONL.
 - Next: continue C3 fixed checkpoint sequence; independent full S4 audit remains mandatory.
 - Milestone commit: pending.
+
+
+## 2026-10-05T03:01:24Z - Codex (GPT-6) - S4 C3 step-0 milestone
+
+- Starting branch/commit: main / b2367776bd7d003d5f80c55e5684aa19a1cfeb3b.
+- Task: continue user-authorized Stage08 S4 seed0 inference; S5 reuse-only and S6 independently audited outputs remain complete. No training, S2 rerun, Stage09, optional contexts, HumanEval execution, or S1 source modifications.
+- Files changed: execution report, NEXT_STEPS, append-only CORE/S4 journals.
+- Progress: 16/35 student batteries complete. C3/step0 sealed300 items and3,000 records, summary SHA-256 b13fc419628551b8aace7a06f8d36a315f0efbfe3b3b8eb12da5b5087fd472b0. C3/step100 began; external S4 tree snapshot51,018 JSON files.
+- Verification: console completion and next fixed start events present; no error. Latest GPU sample39 C,2,211 MiB,0% utilization. C3 historical log exception scope/hash unchanged.
+- User communication: reported C3/0 seal and C3/100 start.
+- Validation: `git diff --check`; report JSON parse/invariant command after append. No science regression suite rerun for this documentation-only snapshot.
+- Artifact location: external S4 attempt02 and its console JSONL.
+- Next: continue C3 at the remaining fixed steps, then C4-C6; independently audit complete S4 tree.
+- Milestone commit: pending.
