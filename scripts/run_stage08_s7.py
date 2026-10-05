@@ -87,7 +87,9 @@ def run(*, s5_bundle: Path, output: Path, runs_root: Path | None = None,
         }
         result = add_clean_supplements(result, panels, supplements,
             expected_analysis_lock_sha256=approved["sha256"],
-            expected_teacher_identity=expected_teacher)
+            expected_teacher_identity=expected_teacher,
+            expected_checkpoint_tensor_digests=provenance[
+                "s5_full300_checkpoint_tensor_sha256"])
         result["provenance"]["artifact_lock_sha256"] = artifact_lock_sha256
         result["provenance"]["supplement_file_sha256"] = {
             path.name: hashlib.sha256(path.read_bytes()).hexdigest() for path in paths}

@@ -115,11 +115,24 @@ def read_s5_bundle(root: Path, *, d26_path: Path,
         panels[panel] = rebuilt
     if audit.get("joined_row_count") != sum(len(p["joined"]) for p in panels.values()):
         raise S7Error("S5 joined-row audit count mismatch")
+    full300_tensor_digests = {condition: {} for condition in CONDITIONS}
+    for row in rows:
+        if row["panel"] != "owt_full300":
+            continue
+        condition, step = row["condition"], str(row["step"])
+        if step in full300_tensor_digests[condition]:
+            raise S7Error("duplicate S5 Full300 checkpoint tensor digest")
+        full300_tensor_digests[condition][step] = row["checkpoint_sha256"]
+    if (set(full300_tensor_digests) != set(CONDITIONS) or
+            any(set(states) != {str(step) for step in FULL_STEPS}
+                for states in full300_tensor_digests.values())):
+        raise S7Error("S5 Full300 checkpoint tensor digest grid incomplete")
     return panels, {"s5_audit_sha256": _sha(root / "STAGE08_S5_AUDIT.json"),
                     "d26_sha256": compatibility["sha256"],
                     "s5_source_rows_sha256": audit["source_rows_sha256"],
                     "full300_item_ids": next(row["item_ids"] for row in rows
                                              if row["panel"] == "owt_full300"),
+                    "s5_full300_checkpoint_tensor_sha256": full300_tensor_digests,
                     "source_gpu_uuids": {c: compatibility["allowed_runs"][c]["gpu_uuid"]
                                          for c in CONDITIONS}}
 
@@ -428,15 +441,25 @@ def validate_s7_teacher_receipt(receipt: dict, expected_teacher_identity: dict) 
 
 def add_clean_supplements(result: dict, panels: dict, supplements: list[dict], *,
                           expected_analysis_lock_sha256: str,
-                          expected_teacher_identity: dict) -> dict:
+                          expected_teacher_identity: dict,
+                          expected_checkpoint_tensor_digests: dict) -> dict:
     """Join the complete 4x9 retained-state clean decomposition grid."""
     from .metrics import S7_DECOMPOSITION_VERSION
     from .training_entry import _teacher_map
 
     if (not isinstance(expected_analysis_lock_sha256, str) or
             len(expected_analysis_lock_sha256) != 64 or
-            not isinstance(expected_teacher_identity, dict)):
+            not isinstance(expected_teacher_identity, dict) or
+            not isinstance(expected_checkpoint_tensor_digests, dict)):
         raise S7Error("S7 final join requires the approved lock digest and pinned teacher identity")
+    if (set(expected_checkpoint_tensor_digests) != set(CONDITIONS) or
+            any(not isinstance(states, dict) or
+                set(states) != {str(step) for step in FULL_STEPS} or
+                any(not isinstance(digest, str) or len(digest) != 64 or
+                    any(char not in "0123456789abcdef" for char in digest)
+                    for digest in states.values())
+                for states in expected_checkpoint_tensor_digests.values())):
+        raise S7Error("S7 expected checkpoint tensor digest grid is incomplete or malformed")
 
     indexed = {}
     expected = {(step, condition) for step in FULL_STEPS for condition in CONDITIONS}
@@ -448,10 +471,13 @@ def add_clean_supplements(result: dict, panels: dict, supplements: list[dict], *
             raise S7Error("unexpected or duplicate S7 supplement")
         joined = panels["owt_full300"]["joined"][FULL_STEPS.index(step)]
         measure = record.get("result", {})
+        expected_tensor_digest = (expected_checkpoint_tensor_digests
+            .get(condition, {}).get(str(step)))
         if (record.get("study") != "S7" or record.get("status") != "complete" or
                 record.get("training_seed") != 0 or record.get("panel") != "owt_full300" or
                 record.get("run_id") != joined["source_run_ids"][condition] or
                 record.get("original_protocol_root_sha256") != joined["source_protocol_roots"][condition] or
+                record.get("loaded_student_tensor_digest") != expected_tensor_digest or
                 record.get("s5_source_audit_sha256") != result["provenance"]["s5_audit_sha256"] or
                 measure.get("version") != S7_DECOMPOSITION_VERSION or
                 measure.get("precision") != "fp32" or
@@ -517,6 +543,7 @@ def add_clean_supplements(result: dict, panels: dict, supplements: list[dict], *
     output = json.loads(json.dumps(result))
     output["clean_decomposition_analysis_lock_sha256"] = lock_sha
     output["provenance"]["s7_teacher_identity"] = expected_teacher_identity
+    output["provenance"]["s7_loaded_student_tensor_digest_grid"] = expected_checkpoint_tensor_digests
     output["retained_full300_decomposition"] = []
     for step in FULL_STEPS:
         values = {c: indexed[(step, c)]["result"]["aggregate"] for c in CONDITIONS}

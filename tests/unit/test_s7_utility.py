@@ -163,6 +163,8 @@ def test_complete_supplement_grid_and_signed_mass_shape_gains(tmp_path):
     from sinklab.training_entry import _teacher_map
 
     lock_sha = "f" * 64
+    tensor_digests = {condition: {str(step): "a" * 64 for step in FULL_STEPS}
+                      for condition in CONDITIONS}
     teacher_identity = {
         "id": "openai-community/gpt2-large",
         "revision": "32b71b12589c2f8d625668d2335a01cac3249519",
@@ -213,6 +215,7 @@ def test_complete_supplement_grid_and_signed_mass_shape_gains(tmp_path):
                 "run_id": joined["source_run_ids"][condition],
                 "original_protocol_root_sha256": joined["source_protocol_roots"][condition],
                 "s5_source_audit_sha256": provenance["s5_audit_sha256"],
+                "loaded_student_tensor_digest": "a" * 64,
                 "analysis_lock_sha256": lock_sha,
                 "teacher_receipt": teacher_receipt,
                 "result": {"version": S7_DECOMPOSITION_VERSION, "precision": "fp32",
@@ -220,7 +223,8 @@ def test_complete_supplement_grid_and_signed_mass_shape_gains(tmp_path):
                     "item_count": 300, "items": items, "aggregate": aggregate}})
     enriched = add_clean_supplements(result, panels, supplements,
         expected_analysis_lock_sha256=lock_sha,
-        expected_teacher_identity=teacher_identity)
+        expected_teacher_identity=teacher_identity,
+        expected_checkpoint_tensor_digests=tensor_digests)
     gain = enriched["retained_full300_decomposition"][-1]["C1_relative_gains"]["C2_relative_to_C1"]
     assert gain["mass_jsd_nats"] > 0 and gain["shape_jsd_nats"] < 0
     assert gain["full_jsd_nats"] == pytest.approx(gain["mass_jsd_nats"] + gain["shape_jsd_nats"])
@@ -228,32 +232,52 @@ def test_complete_supplement_grid_and_signed_mass_shape_gains(tmp_path):
     with pytest.raises(S7Error, match="incomplete"):
         add_clean_supplements(result, panels, supplements[:-1],
             expected_analysis_lock_sha256=lock_sha,
-            expected_teacher_identity=teacher_identity)
+            expected_teacher_identity=teacher_identity,
+            expected_checkpoint_tensor_digests=tensor_digests)
 
     wrong_teacher = copy.deepcopy(supplements)
     wrong_teacher[0]["teacher_receipt"]["followup_study"] = "S4"
     with pytest.raises(S7Error, match="teacher receipt"):
         add_clean_supplements(result, panels, wrong_teacher,
             expected_analysis_lock_sha256=lock_sha,
-            expected_teacher_identity=teacher_identity)
+            expected_teacher_identity=teacher_identity,
+            expected_checkpoint_tensor_digests=tensor_digests)
     wrong_teacher = copy.deepcopy(supplements)
     wrong_teacher[0]["teacher_receipt"]["teacher_weights_sha256"] = "0" * 64
     with pytest.raises(S7Error, match="teacher receipt"):
         add_clean_supplements(result, panels, wrong_teacher,
             expected_analysis_lock_sha256=lock_sha,
-            expected_teacher_identity=teacher_identity)
+            expected_teacher_identity=teacher_identity,
+            expected_checkpoint_tensor_digests=tensor_digests)
     wrong_teacher = copy.deepcopy(supplements)
     wrong_teacher[0]["teacher_receipt"]["device"]["uuid"] = "GPU-other"
     with pytest.raises(S7Error, match="teacher receipt"):
         add_clean_supplements(result, panels, wrong_teacher,
             expected_analysis_lock_sha256=lock_sha,
-            expected_teacher_identity=teacher_identity)
+            expected_teacher_identity=teacher_identity,
+            expected_checkpoint_tensor_digests=tensor_digests)
     wrong_lock = copy.deepcopy(supplements)
     wrong_lock[0]["analysis_lock_sha256"] = "a" * 64
     with pytest.raises(S7Error, match="approved analysis lock"):
         add_clean_supplements(result, panels, wrong_lock,
             expected_analysis_lock_sha256=lock_sha,
-            expected_teacher_identity=teacher_identity)
+            expected_teacher_identity=teacher_identity,
+            expected_checkpoint_tensor_digests=tensor_digests)
+
+    wrong_tensor_digest = copy.deepcopy(supplements)
+    wrong_tensor_digest[0]["loaded_student_tensor_digest"] = "b" * 64
+    with pytest.raises(S7Error, match="source, map, or item coverage"):
+        add_clean_supplements(result, panels, wrong_tensor_digest,
+            expected_analysis_lock_sha256=lock_sha,
+            expected_teacher_identity=teacher_identity,
+            expected_checkpoint_tensor_digests=tensor_digests)
+    missing_tensor_digest = copy.deepcopy(supplements)
+    del missing_tensor_digest[0]["loaded_student_tensor_digest"]
+    with pytest.raises(S7Error, match="source, map, or item coverage"):
+        add_clean_supplements(result, panels, missing_tensor_digest,
+            expected_analysis_lock_sha256=lock_sha,
+            expected_teacher_identity=teacher_identity,
+            expected_checkpoint_tensor_digests=tensor_digests)
 
 
 def test_lm2000_endpoint_rechecks_original_nll_items(tmp_path):

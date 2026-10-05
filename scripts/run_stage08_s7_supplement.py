@@ -165,7 +165,8 @@ def run(*, condition: str, step: int, runs_root: Path, artifact_root: Path,
                        for line in stream if line.strip()]
         source_row = next(row for row in matches if row["condition"] == condition and
                           row["panel"] == "owt_full300" and row["step"] == step)
-        if _model_digest(student_model) != source_row["checkpoint_sha256"]:
+        loaded_student_tensor_digest = _model_digest(student_model)
+        if loaded_student_tensor_digest != source_row["checkpoint_sha256"]:
             raise S7Error("S7 loaded student tensors differ from S5 evaluation tensors")
         started = time.perf_counter()
         def progress(done: int, total: int, item_id: str) -> None:
@@ -192,6 +193,7 @@ def run(*, condition: str, step: int, runs_root: Path, artifact_root: Path,
             source["original_protocol_root_sha256"],
         "source_checkpoint_manifest_file_sha256": checkpoint["manifest_file_sha256"],
         "source_checkpoint_model_file_sha256": checkpoint["model_file_sha256"],
+        "loaded_student_tensor_digest": loaded_student_tensor_digest,
         "teacher_receipt": teacher_receipt, "inference_gpu": gpu,
         "source_runs_modified": False, "training": False, "result": result}
     output.mkdir(parents=True, exist_ok=True)
