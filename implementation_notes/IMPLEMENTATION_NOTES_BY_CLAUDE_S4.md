@@ -299,3 +299,15 @@ S6 C0-C3 prefix audit PASSED: 16/16 stable states, 28,800 item-operation records
 - Next: continue the remaining fixed S4 batteries and independently audit all 35 plus the teacher reference.
 - Validation: `git diff --check` and report JSON invariant command, recorded in the CORE journal.
 - Milestone commit: pending.
+
+
+## 2026-10-05T02:27:17Z - Codex (GPT-6) - S4 C2 step-2000 completion
+
+- Starting branch/commit: main / be2f91fc17805848b02e7911d828851defbff8d2.
+- Scope: fixed D24 S4 seed0 execution, existing attempt02.
+- Result: C2/2000 sealed300/300 items and3,000 records; summary SHA-256 76668abbb58215ea365c717ac34f1f674f9dd4f227979f8363f9f2c11249cdf1. C2/10000 started. Fourteen of35 student batteries complete; result tree45,016 JSON files.
+- Health/integrity: completion/next-start events present; no error. Latest GPU sample39 C and2,228 MiB used. No source changes.
+- Prohibited work: none; no training/S2/Stage09/HumanEval or optional contexts.
+- Next: continue fixed sequence and independently audit full tree.
+- Validation: `git diff --check` and report JSON invariant, recorded in CORE journal.
+- Milestone commit: pending.

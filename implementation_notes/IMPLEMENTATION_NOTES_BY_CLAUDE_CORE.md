@@ -1057,3 +1057,17 @@ S6 C0-C3 prefix audit PASSED: 16/16 stable states, 28,800 item-operation records
 - Artifacts: `D:\KD-SINK-central\analysis\stage08_scientific_20261005\S4_attempt02`; console `D:\KD-SINK-central\analysis\stage08_scientific_20261005\S4_attempt02.console.jsonl`.
 - Next: continue C2 step2000 then steps500/10000 and conditions C3-C6; independently audit complete S4 tree before final status.
 - Milestone commit: pending.
+
+
+## 2026-10-05T02:27:17Z - Codex (GPT-6) - S4 C2 step-2000 milestone
+
+- Starting branch/commit: main / be2f91fc17805848b02e7911d828851defbff8d2.
+- Task: continue explicitly authorized Stage08 S4 seed0 matrix; S5 reuse-only and S6 independent audit are complete. No training, S2 rerun, Stage09, optional long-context work, HumanEval execution, or source S1 modification.
+- Files changed: execution report, NEXT_STEPS, append-only CORE/S4 journals.
+- Progress: 14/35 student batteries complete. C2/2000 sealed300 panel items and3,000 records; summary SHA-256 76668abbb58215ea365c717ac34f1f674f9dd4f227979f8363f9f2c11249cdf1. Runner advanced to C2/10000. External S4 tree snapshot:45,016 JSON files.
+- Verification: live console showed completion and next fixed battery start, no errors. Latest GPU sample39 C,2,228 MiB,0% instantaneous utilization. S6's documented stale aggregate-count receipt remains preserved alongside its independent passing full audit.
+- User communication: reported C2/2000 seal and C2/10000 start.
+- Validation: `git diff --check`; Python report parse/invariant check after append; no scientific test suite rerun for documentation-only progress.
+- Artifacts: external S4 attempt02 output and `S4_attempt02.console.jsonl`; report stores only a progress snapshot.
+- Next: finish C2/10000 and continue C3-C6; run independent complete S4 audit before final status.
+- Milestone commit: pending.
