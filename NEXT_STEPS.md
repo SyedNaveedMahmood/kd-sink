@@ -104,3 +104,8 @@ Work order: [09_ANALYSIS_RELEASE](design/e6a_v2/stages/09_ANALYSIS_RELEASE.md).
 - [ ] Operator explicitly launches each approved study/condition/seed.
 - [ ] Actual completed coverage audited before paper claims.
 - [ ] Separate authorization obtained before eventual Upstream deletion.
+
+
+## Planned S5 utility extension (design only)
+
+The [Sink-Aware Distillation Utility implementation plan](design/e6a_v2/studies/S5_SINK_AWARE_DISTILLATION_UTILITY_PLAN.md) is the design handoff for reusing S1 C1/C2/C5/C6. It specifies existing-record analysis and explicitly scoped retained-checkpoint supplements. Its SU0-SU8 implementation tasks are pending; Stage06 readiness remains blocked and no scientific coverage or Stage09 completion is implied.

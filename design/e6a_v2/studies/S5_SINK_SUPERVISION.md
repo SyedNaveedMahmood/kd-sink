@@ -14,3 +14,8 @@ Conditional non-sink and binary targets change the auxiliary objective/informati
 No extra S5 training jobs or duplicated seed counts; every row points back to unique S1 run IDs and compatible versions.
 
 Journal: `implementation_notes/IMPLEMENTATION_NOTES_BY_CLAUDE_S5.md`. Stage08, final analysis09.
+
+
+## Sink-aware distillation utility extension
+
+The [detailed utility experiment implementation plan](S5_SINK_AWARE_DISTILLATION_UTILITY_PLAN.md) maps the researcher's reviewer-response proposal to this study, audits existing code, and specifies metric decomposition, provenance, analysis, validation and implementation milestones. It is a draft design only; no additional training or analysis execution is enabled.
