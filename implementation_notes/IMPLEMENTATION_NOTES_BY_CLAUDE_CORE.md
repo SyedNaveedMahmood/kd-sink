@@ -804,6 +804,7 @@ A documentation-only milestone commit was attempted after git diff --cached --ch
 - No checkpoint/model loaded; no GPU work, training, S2, S4/S6 or Stage09 started. Next: commit/push this narrow fix and rerun S5. Continue S4/S6 independently.
 - Milestone commit: pending.
 
+
 ## 2026-10-04T20:41:11Z - Codex (GPT-6) - Authorized Stage08 execution milestone, S5 complete
 
 - Starting branch/commit: `main` / `540ce065ab1be28196d5742a5e8b6b2ad5ac7196`; preserved the clean committed D24/D25/D26 tree. Read the latest user execution attachment, AGENTS.md, NEXT_STEPS, README/DECISIONS, Stage08 exit gates/test matrix, S4/S5/S6 contracts and latest relevant journals. The request authorizes independent S4/S5/S6 jobs, prohibits S1 training/S2 rerun/Stage09, and permits only conservative provenance/operational decisions that do not change scientific design.
@@ -1253,4 +1254,18 @@ S6 C0-C3 prefix audit PASSED: 16/16 stable states, 28,800 item-operation records
 - Validation: `git diff --check` plus JSON report invariant check; no scientific suite rerun for docs-only snapshot.
 - Artifacts: external S4 attempt02 and console JSONL.
 - Next: continue C5/C6 batteries; independently audit complete S4 output before completion claim.
+- Milestone commit: pending.
+
+## 2026-10-05T06:33:15Z - Codex (GPT-6) - S4 C5 step-500 milestone
+
+- Starting branch/commit: main / 011bbe8c577fef3325bd1a1cb5eff7b944e11424.
+- Task: continue the user-authorized Stage08 S4 designated-seed0 evaluation; S5 reaggregation and S6 independent audit remain complete. No training, S2 rerun, Stage09, optional contexts, HumanEval execution, or S1 source modifications.
+- Files changed: execution report, NEXT_STEPS, append-only CORE/S4 journals.
+- Result: C5/step500 sealed 300/300 items and 3,000 records; summary SHA-256 7b846ed0b76c442b7ad15fd180585d0703dfcc8e944600738cdcc3180fedd147. Student batteries: 28/35 complete. C5/step2000 is active at 80/300 items. Result tree count: 87,865 JSON files.
+- Integrity/health: expected fixed battery transition, no errors observed; GPU sample 39 °C, 4,290 MiB, 15% utilization. S4 independent full-output audit remains required.
+- User communication: reported S5/S6 completion and an estimated 2.5–3 hours for remaining S4 inference and final audit.
+- Prohibited activities/source changes: none observed; original S1 sources remain untouched.
+- Artifacts: external S4 attempt02 result tree and console JSONL.
+- Next: continue C5 step2000/10000 and C6 steps0/100/500/2000/10000, then independently audit all S4 outputs.
+- Validation: `git diff --check` passed; report JSON invariant check passed. No scientific suite rerun for this documentation-only progress snapshot.
 - Milestone commit: pending.

@@ -467,3 +467,16 @@ S6 C0-C3 prefix audit PASSED: 16/16 stable states, 28,800 item-operation records
 - Next: complete fixed C5/C6 sequence and independently audit full tree.
 - Validation: `git diff --check` and report invariant command, recorded in CORE note.
 - Milestone commit: pending.
+
+## 2026-10-05T06:33:15Z - Codex (GPT-6) - S4 C5 step-500 milestone
+
+- Starting branch/commit: main / 011bbe8c577fef3325bd1a1cb5eff7b944e11424.
+- Scope: fixed D24 S4 designated-seed0 inference, continuing attempt02.
+- Result: C5/500 sealed 300/300 items and 3,000 records; summary SHA-256 7b846ed0b76c442b7ad15fd180585d0703dfcc8e944600738cdcc3180fedd147. 28/35 student batteries complete; C5/2000 active at 80/300. Result tree has 87,865 JSON files.
+- Integrity/health: expected transition, no errors observed; RTX 4080 SUPER 39 °C, 4,290 MiB, 15% utilization. Independent full-tree audit remains pending.
+- No prohibited work or S1 source changes.
+- User communication: gave current campaign status and estimated remaining runtime.
+- Artifacts: external S4 attempt02 results and console JSONL.
+- Next: continue fixed C5/C6 batteries, then independently audit full S4 output.
+- Validation: `git diff --check` passed; report invariant check passed. No scientific suite rerun for documentation-only snapshot.
+- Milestone commit: pending.
