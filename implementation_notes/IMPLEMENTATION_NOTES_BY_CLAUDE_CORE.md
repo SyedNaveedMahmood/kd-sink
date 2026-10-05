@@ -1198,3 +1198,17 @@ S6 C0-C3 prefix audit PASSED: 16/16 stable states, 28,800 item-operation records
 - Artifacts: external S4 attempt02 and console JSONL.
 - Next: continue C4/2000 and10000, then C5/C6; independently audit final tree.
 - Milestone commit: pending.
+
+
+## 2026-10-05T05:18:12Z - Codex (GPT-6) - S4 C4 step-2000 milestone
+
+- Starting branch/commit: main / 531984ce434c82bd1395b0b5edd683c3c8990b61.
+- Task: continue authorized Stage08 S4 designated-seed0 evaluation; no training, S2 rerun, Stage09, optional contexts, HumanEval execution, or source S1 modifications.
+- Files changed: execution report, NEXT_STEPS, append-only CORE/S4 journals.
+- Result: C4/2000 sealed300 items/3,000 records, summary SHA-256 362d0b126c47b2193c581f167dcb4e62bd08bcbfaf024c33b3928d5a039627e2. C4/10000 started. Overall24/35 student batteries complete; tree snapshot75,026 JSON files.
+- Verification: console completion and next battery start present, no errors. Latest RTX4080 SUPER sample38 C,2,213 MiB,0%.
+- User communication: reported C4/2000 completion and endpoint start.
+- Validation: `git diff --check`, report JSON parse/invariant check; no science suite rerun for docs-only milestone.
+- Artifacts: external S4 attempt02 result and console JSONL.
+- Next: complete C4/10000, continue C5/C6, independently audit the full tree.
+- Milestone commit: pending.
