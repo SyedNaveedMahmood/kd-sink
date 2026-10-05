@@ -133,7 +133,7 @@ def run(*, condition: str, step: int, runs_root: Path, artifact_root: Path,
     if panel_sha != joined["panel_sha256"] or len(items) != 300:
         raise S7Error("S7 frozen Full300 item identity differs from S5")
     inventory = preflight_sources(steps=(step,), study="S7", runs_root=runs_root,
-                                  conditions=CONDITIONS)
+                                  conditions=(condition,))
     source = inventory["sources"][condition]
     checkpoint = source["checkpoints"][0]
     if (source["run_id"] != joined["source_run_ids"][condition] or
