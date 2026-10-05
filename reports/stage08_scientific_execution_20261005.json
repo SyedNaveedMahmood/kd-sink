@@ -53,30 +53,30 @@
         "teacher_reference_batteries_completed": 1,
         "teacher_completed_items": 300,
         "teacher_total_items": 300,
-        "student_batteries_completed": 30,
+        "student_batteries_completed": 31,
         "student_batteries_required": 35,
         "active_battery": {
           "condition": "C6",
-          "step": 0,
+          "step": 100,
           "model_role": "student",
           "panel": "owt_full300",
           "run_id": "s1-c6-seed0-rtx4080super"
         },
         "active_battery_completed_items": 10,
         "active_battery_total_items": 300,
-        "incremental_record_file_count": 93232,
+        "incremental_record_file_count": 96181,
         "console_log": "D:\\KD-SINK-central\\analysis\\stage08_scientific_20261005\\S4_attempt02.console.jsonl",
         "all_35_checkpoints_preflight_passed": true,
         "C3_training_log_status": "accepted_historical_prefix_gap",
         "C3_exception_sha256": "f021ac0441f775d45d19a8109d47c0f45a0b0bbfc025bbd2df35be688e291cd2",
-        "last_observed_utc": "2026-10-05T07:04:42Z",
+        "last_observed_utc": "2026-10-05T07:21:53Z",
         "last_completed_battery": {
-          "condition": "C5",
-          "step": 10000,
+          "condition": "C6",
+          "step": 0,
           "status": "complete",
           "items": 300,
           "record_count": 3000,
-          "summary_sha256": "87f706be681c985fd7ff00172c439476ec7ce3b9eecc7a5e61093582ecb5c7d3"
+          "summary_sha256": "53a17c0058bc90f347021d8385fa6b8e1da6a69e8369a2a56d672c39b94fa5ad"
         }
       },
       "repair": {
