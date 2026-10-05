@@ -1418,3 +1418,7 @@ The design and its navigation/journal records were committed locally as `b2aa70a
 ## 2026-10-05T20:23:20Z - Codex (GPT-6) - S7 approved campaign preparation
 
 The researcher prospectively authorized S7 C1/C2/C5/C6 seed0 Full300 FP32 inference on the designated Adrita RTX4080 SUPER. Starting clean main was fast-forwarded to `64ec99bb0da23b8ad05c827b6b27084468514f45`. Sealed `protocols/s7_utility_analysis_approved.json` (SHA-256 `696c9fc206efdb60b53120c411cc3089306048733829fc4762db41caf92917b7`) before inference. Closed three provenance gaps: S7 preflight now checks only its four authorized conditions, teacher receipt labels/fields are study-correct, and final joins verify lock and teacher identity. Focused tests 30 passed; full offline CPU/integration suite 376 passed (one third-party astor deprecation); changed Python files compile and diff check passes. Source-only D26/S5/S1 audit is running externally; no model load, checkpoint inference, training or source modification has occurred. See S7 journal and `reports/s7_campaign_20261006.json`. Next: finish source-only audit, commit/push approved source before GPU qualification and any inference.
+
+## 2026-10-05T20:28:57Z - Codex (GPT-6) - S7 execution source push receipt
+
+Approved S7 lock and admission implementation pushed to `origin/main` at `09c895586a18af229faf2560c7972429ee7a0251`. This commit is frozen as the campaign execution source before checkpoint inference. Base source reaggregation is running read-only; no S7 model has been loaded.
