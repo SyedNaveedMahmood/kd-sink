@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "study": "S7",
-  "status": "all_sources_and_checkpoints_passed_gpu_qualification_pending",
+  "status": "gpu_qualification_passed_scientific_supplements_pending",
   "machine": "DESKTOP-GPO5752",
   "repository": "E:\\kd-sink",
   "origin_main_start_sha": "64ec99bb0da23b8ad05c827b6b27084468514f45",
@@ -63,7 +63,25 @@
     "new_inference": false,
     "source_trees_modified": false
   },
-  "qualification": {"status": "pending", "scientific_inference_started": false},
+  "qualification": {
+    "status": "PASS",
+    "report_path": "D:\\KD-SINK-central\\analysis\\S7_scientific_20261006\\qualification\\s7_gpu_qualification.json",
+    "report_sha256": "071dd29a73b72d4500de67aaa17a8d937b29dfee7ee3204ef16cf50aa9aecf2a",
+    "invocation_receipt_path": "D:\\KD-SINK-central\\analysis\\S7_scientific_20261006\\qualification\\s7_gpu_qualification_invocation.json",
+    "invocation_receipt_sha256": "9c2c638327f4b165df8418675858854b1c9c82e92c9659898b21337993be7358",
+    "stdout_stderr_log_path": "D:\\KD-SINK-central\\analysis\\S7_scientific_20261006\\logs\\s7_gpu_qualification.log",
+    "stdout_stderr_log_sha256": "0557df65874eb7576faf2389a8b09a6a192d94e11becb8d9a49f633a7b860aa4",
+    "synthetic_smoke": true,
+    "smoke_sequence_length": 128,
+    "peak_allocated_bytes": 4954726400,
+    "peak_reserved_bytes": 4978638848,
+    "smoke_elapsed_seconds": 3.9324537999927998,
+    "max_closure_error_nats": 2.0122792321330962e-16,
+    "temperature_c_before_after": [42, 42],
+    "outer_command_exit_code": 1,
+    "outer_exit_discrepancy_preserved": true,
+    "scientific_inference_started": false
+  },
   "checkpoint_preflight": {
     "status": "passed_independent_manifest_audit",
     "path": "D:\\KD-SINK-central\\analysis\\S7_scientific_20261006\\qualification\\s7_checkpoint_preflight.json",
