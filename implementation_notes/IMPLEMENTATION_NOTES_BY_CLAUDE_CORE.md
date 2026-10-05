@@ -396,3 +396,8 @@ The tested final protocol-root/readiness milestone was committed as `a5518d40a9d
 - Artifacts: linked draft plan; source-preservation baseline is local temporary documentation evidence, not a scientific artifact. No datasets, weights or bulk logs added.
 - NEXT_STEPS: planning pointer only; no implementation/scientific checkbox changed. First future action is SU0/SU1 after a coding instruction, respecting the separate Stage06 blocker.
 - Milestone commit: documentation commit pending; append its SHA after creation.
+
+
+## 2026-10-05T03:22:16Z - Codex (GPT-6) - S5 utility design milestone SHA
+
+The design and its navigation/journal records were committed locally as `b2aa70ac9fa10988650a3084a1f6e3a6cef378c5` (`docs(s5): plan sink-aware distillation utility`). The final documentation audit passed: 18 sections, nine pending implementation tasks, valid local links/source hash, and preservation of all 17 snapshotted original file contents. `git diff --check` and `git diff --cached --check` exited 0. Only this task's six documentation paths were committed; pre-existing Stage06 edits remain uncommitted. No code, unit/GPU/network test, scientific run, production lock change or push occurred.
