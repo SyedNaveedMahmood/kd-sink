@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "study": "S7",
-  "status": "source_analysis_passed_full_checkpoint_preflight_pending",
+  "status": "all_sources_and_checkpoints_passed_gpu_qualification_pending",
   "machine": "DESKTOP-GPO5752",
   "repository": "E:\\kd-sink",
   "origin_main_start_sha": "64ec99bb0da23b8ad05c827b6b27084468514f45",
@@ -64,7 +64,22 @@
     "source_trees_modified": false
   },
   "qualification": {"status": "pending", "scientific_inference_started": false},
-  "checkpoint_preflight": {"status": "pending", "expected_checkpoints": 36},
+  "checkpoint_preflight": {
+    "status": "passed_independent_manifest_audit",
+    "path": "D:\\KD-SINK-central\\analysis\\S7_scientific_20261006\\qualification\\s7_checkpoint_preflight.json",
+    "sha256": "6a678a677685f83b7513b219bbce8ff4eb8e6fa710d06c7ccb080e879de5dd1f",
+    "independent_audit_path": "D:\\KD-SINK-central\\analysis\\S7_scientific_20261006\\audit\\s7_checkpoint_preflight_independent_audit.json",
+    "independent_audit_sha256": "31c3b09ca233c99bd5346f0e81b5eae3fca6cef00c0c9508936ff7f74876c7f7",
+    "progress_log_path": "D:\\KD-SINK-central\\analysis\\S7_scientific_20261006\\logs\\s7_checkpoint_preflight_progress.jsonl",
+    "progress_log_sha256": "c0c8fb96e3d8dbc3027d272b7a15e4aa285e8978d89e5dadd416234a7424fba0",
+    "checkpoint_count": 36,
+    "conditions": ["C1", "C2", "C5", "C6"],
+    "steps": [0, 100, 250, 500, 1000, 2000, 5000, 7500, 10000],
+    "execution_source_commit": "7bd4539bffd75619b20b02d6d7d8affea157390f",
+    "model_loaded": false,
+    "inference_started": false,
+    "training_started": false
+  },
   "scientific_supplements": {"completed": 0, "expected": 36},
   "source_trees_modified": false,
   "training_started": false,
