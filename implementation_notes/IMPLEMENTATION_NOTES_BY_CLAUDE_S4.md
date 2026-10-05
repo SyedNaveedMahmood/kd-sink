@@ -78,7 +78,7 @@ Real GPT-2-large S4 engineering qualification and compact probe evidence were co
 - Validation: focused Stage08 regression suite78 passed; full offline CPU/unit/integration suite333 passed, zero failures/skips, one external astor deprecation warning. Python compile and `git diff --check` passed. No S4 model load/inference has yet started at this milestone.
 - User-visible communication stated S5 complete and S4/S6 runners prepared, with storage placed on D: due the limited E: free-space margin. No messages to others.
 - Next: commit/push runner and validation milestone, then run fixed S4 and retain incremental outputs. No training, S2, Stage09, source-run mutation, or S4 inference has occurred yet.
-- Milestone commit: pending.
+- Milestone commit: `b9a9d48` (`docs(stage08): record S4 S5 S6 scientific completion`); this SHA is recorded before pushing the closeout.
 
 ## 2026-10-04T20:43:34Z - Codex (GPT-6) - S4 runner milestone receipt
 

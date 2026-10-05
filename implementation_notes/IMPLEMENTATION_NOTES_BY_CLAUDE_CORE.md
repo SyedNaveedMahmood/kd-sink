@@ -776,7 +776,7 @@ A documentation-only milestone commit was attempted after git diff --cached --ch
 - Early panel-builder attempts stopped before output creation when input-key/source-ID assumptions were mismatched; corrections were made before the successful build. A preliminary tokenizer comparison used Git SHA-1 object IDs against file SHA-256 and was discarded; direct pinned revision bytes then matched all five local/S1-locked tokenizer files. No source run was touched.
 - User-visible communication: reported that D25 pinning/panel prep was complete and final audit/commit checks were underway. No messages were sent to others. No training, scientific evaluation, model load, GPU execution, S4/S5 science, Stage09, or active S1 run modification occurred.
 - Next: final `git diff --check`, inspect staged paths for raw data/tensor payloads, commit the preserved preparation milestone, push fast-forward to `origin/main`, verify remote SHA.
-- Milestone commit: pending.
+- Milestone commit: `b9a9d48` (`docs(stage08): record S4 S5 S6 scientific completion`); this SHA is recorded before pushing the closeout.
 
 ## 2026-10-04T18:32:54Z - Codex (GPT-6) - D25 S6 preparation milestone SHA
 
