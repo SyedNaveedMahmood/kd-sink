@@ -1344,3 +1344,18 @@ S6 C0-C3 prefix audit PASSED: 16/16 stable states, 28,800 item-operation records
 - Next: finish C6/step2000 and step10000, then independently audit all S4 output.
 - Validation: `git diff --check` passed; report JSON invariants passed. No scientific suite rerun for this documentation-only snapshot.
 - Milestone commit: pending.
+
+
+## 2026-10-05T08:14:29Z - Codex (GPT-6) - S4 C6 step-2000 milestone
+
+- Starting branch/commit: main / 195faae1274b093db694d34a07d281c433c8c3b8.
+- Task: continue user-authorized Stage08 S4 designated-seed0 evaluation; S5/S6 remain complete. No training, S2 rerun, Stage09, optional contexts, HumanEval execution, or S1 source changes.
+- Files changed: execution report, NEXT_STEPS, append-only CORE/S4 journals.
+- Result: C6/step2000 sealed 300/300 items and 3,000 records; summary SHA-256 13da0c243e593b28b7ef7d26fda75fd97b4ce54b1297734ff68149564f056ed8. Student batteries: 34/35 complete. C6/step10000 active at 10/300; result tree count 105,236 JSON files.
+- Integrity/health: expected transition, no errors observed; GPU sample 39 °C, 4,286 MiB, 18% utilization. Independent S4 audit remains required.
+- User communication: reported final S4 battery start.
+- Prohibited activities/source changes: none observed; S1 sources remain untouched.
+- Artifacts: external S4 attempt02 results and console JSONL.
+- Next: complete C6/10000, then independently audit all S4 outputs.
+- Validation: `git diff --check` passed; report JSON invariants passed. No scientific suite rerun for this documentation-only snapshot.
+- Milestone commit: pending.
