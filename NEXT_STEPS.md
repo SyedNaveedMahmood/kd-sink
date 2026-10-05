@@ -306,4 +306,11 @@ Stage08 execution progress (2026-10-05T03:35:07Z): S5 remains COMPLETE for D26 s
 
 ## S7 - Sink-Aware Distillation Utility
 
-The researcher renamed the utility proposal to **S7**. Implement it over the preserved S1 C1/C2/C5/C6 records, keeping S5's completed D26 reaggregation unchanged. The previous local S5 utility design is being migrated to `design/e6a_v2/studies/S7_SINK_AWARE_DISTILLATION_UTILITY.md`. S7 implementation and scientific coverage have separate gates; no S7 result is claimed here.
+The researcher named this experiment **S7**. Implement it over the preserved S1 C1/C2/C5/C6 records, keeping S5's completed D26 reaggregation unchanged. Current design: `design/e6a_v2/studies/S7_SINK_AWARE_DISTILLATION_UTILITY.md`. S7 software and scientific coverage have separate gates; no S7 scientific result is claimed here.
+
+- [x] Implement and test a read-only audit of the exact sealed S5 bundle, D26 identities, all 440 source rows and both 101/9-step joins. The production command pins the published S5 audit digest.
+- [x] Implement and test prespecified seed-0 condition contrasts, Dense64 AUC/late-window summaries, optional reverified original S1 teacher-matching/accuracy extraction, and independent lm2000 NLL-only endpoint extraction. Preserve unavailable fields.
+- [x] Implement and test the exact head-mean JSD mass/shape and coordinate decomposition, including an independent analytic reference, undefined conditional cases, RNG-neutral tiny-model evaluation, and one RTX3090 synthetic length-128 CUDA smoke test. This is numerical capability evidence, not 4080 production qualification.
+- [x] Implement and test the single-checkpoint supplement command's draft-lock rejection and complete 4×9 supplement join. The command requires a checked-in researcher-approved sealed S7 lock before new inference; none is present.
+- [ ] Approve/freeze S7 analysis choices and exact source/runtime/hardware lock. Qualify real GPT-2-large/medium FP32 Full300 resource use on the designated RTX4080 SUPER. Missing device/source is **blocked**, not passed.
+- [ ] Execute original S1 item extraction, lm2000 corroboration, all 36 clean supplements, source/control/topology and publication figure gates as approved; verify external artifacts and report the actual scientific result. The S5 directory and 4080 device are unavailable on this host.

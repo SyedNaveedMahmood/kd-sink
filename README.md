@@ -4,7 +4,9 @@ The new implementation is specified in [the E6A v2 design pack](design/e6a_v2/RE
 
 The prospective [D24 follow-up policy](design/e6a_v2/S1_CHECKPOINT_FOLLOWUP_POLICY.md) makes all future S1 checkpoint-dependent work seed0-only. S4/S6 are designated-seed0 follow-ups; S5 may still reuse recorded seed1/2 numbers. S2 and historical training roots/results are unchanged. Current validation is in [the D24 report](reports/d24_seed0_followups_validation.json); earlier stage descriptions below are historical capability notes.
 
-Coding agents start with [AGENTS.md](AGENTS.md) and [NEXT_STEPS.md](NEXT_STEPS.md). Stages 00-03 provide CPU-tested preparation, model, intervention, and objective primitives; no training campaign has run. Production runs require approval and measured feasibility gates.
+Coding agents start with [AGENTS.md](AGENTS.md) and [NEXT_STEPS.md](NEXT_STEPS.md). Stages 00-03 provide CPU-tested preparation, model, intervention, and objective primitives. The later S1 seed-0 campaign and S5 read-only reaggregation are recorded in the journals and Stage08 reports; earlier stage descriptions below are historical capability notes. Production runs require approval and measured feasibility gates.
+
+[S7 Sink-Aware Distillation Utility](design/e6a_v2/studies/S7_SINK_AWARE_DISTILLATION_UTILITY.md) analyzes the sealed S5 C1/C2/C5/C6 source bundle and provides a separately locked one-checkpoint clean-attention decomposition supplement. S7 code can be tested locally; scientific execution requires the original external S1/S5 artifacts and an approved S7 analysis lock.
 
 `Upstream/` is the archived reference implementation. New code may borrow reviewed components with provenance, but must work when that directory is absent. Do not edit or delete it during this design handoff.
 

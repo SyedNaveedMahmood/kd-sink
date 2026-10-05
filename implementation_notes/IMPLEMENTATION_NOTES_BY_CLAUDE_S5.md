@@ -133,3 +133,11 @@ Merged the local documentation commits `b2aa70ac9fa10988650a3084a1f6e3a6cef378c5
 ## 2026-10-05T03:22:16Z - Codex (GPT-6) - S5 utility design milestone SHA
 
 The design and its navigation/journal records were committed locally as `b2aa70ac9fa10988650a3084a1f6e3a6cef378c5` (`docs(s5): plan sink-aware distillation utility`). The final documentation audit passed: 18 sections, nine pending implementation tasks, valid local links/source hash, and preservation of all 17 snapshotted original file contents. `git diff --check` and `git diff --cached --check` exited 0. Only this task's six documentation paths were committed; pre-existing Stage06 edits remain uncommitted. No code, unit/GPU/network test, scientific run, production lock change or push occurred.
+
+
+## 2026-10-05T04:22:03Z - Codex (GPT-6) - S7 derivation from sealed S5 evidence
+
+- Starting commit: `d4b725117902d8dfb17e9c2db769155818595c9c` in isolated `s7-utility`; new study name S7 requested by researcher. Completed S5 D26 output and historical S5 implementation are unchanged.
+- Files/rationale: `s7_utility.py` and two S7 scripts pin the published S5 audit SHA `09b3663cda822c7b5b3b697bbc3a44c4849b63e85f24b0a98abfce06c99dfa7c`, verify its byte checksums and D26 440-row/110-join grid, then compute separate signed S7 contrasts. New mass/shape metrics are separate supplements, never inferred by subtracting S5 full/conditional JSD. D26 remains S5-only; no amendment is silently expanded.
+- Communications/tests/evidence: limits and reuse strategy described to user. Focused S7 CPU 24 passed; offline CPU full suite 359 passed; clean wheel 1 passed; synthetic RTX3090 metric 1 passed. Exact commands, failed first attempts and D20 LF repair are in the S7 journal. `reports/s7_implementation_status.json` reports missing source S5 directory and scientific execution. No source read from `D:\KD-SINK-central` or scientific S7 claim on this host.
+- Next action/milestone: retain S5's completed status; separately approve/execute S7 on the source host. Commit SHA pending, to be appended.

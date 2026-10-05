@@ -1150,3 +1150,13 @@ Merged the local documentation commits `b2aa70ac9fa10988650a3084a1f6e3a6cef378c5
 ## 2026-10-05T03:22:16Z - Codex (GPT-6) - S5 utility design milestone SHA
 
 The design and its navigation/journal records were committed locally as `b2aa70ac9fa10988650a3084a1f6e3a6cef378c5` (`docs(s5): plan sink-aware distillation utility`). The final documentation audit passed: 18 sections, nine pending implementation tasks, valid local links/source hash, and preservation of all 17 snapshotted original file contents. `git diff --check` and `git diff --cached --check` exited 0. Only this task's six documentation paths were committed; pre-existing Stage06 edits remain uncommitted. No code, unit/GPU/network test, scientific run, production lock change or push occurred.
+
+
+## 2026-10-05T04:22:03Z - Codex (GPT-6) - S7 implementation and test gate
+
+- Starting commit/worktree: `d4b725117902d8dfb17e9c2db769155818595c9c` on isolated `s7-utility`, after fetching/pulling `origin/main` `d8c700fe8e064d6aa69709a1defb991714be2f76`; original dirty `E:\KD-SINK` preserved.
+- Task IDs/files: S7 audit/decomposition/supplement; new `s7_utility.py`, S7 scripts/tests/draft lock/reports/journal, `metrics.py`, design/README/NEXT_STEPS, narrow `.gitattributes` for D20 raw evidence. Existing S1/S5 scientific outputs and trainer remain unchanged.
+- Rationale/discoveries: S7 consumes the exact completed S5 audit under D26; S7 inference is separately locked under D24 seed0. Three source 4080 UUIDs confound condition/device. The initial full CPU run failed only because Windows checkout changed two sealed D20 raw JSON newline bytes; exact Git blobs matched approved hashes. Pinned LF and restored bytes, preserving integrity checks.
+- Communications: described remote reconciliation, completed S5 evidence, S7 source gates, D20 LF repair, tests and hardware limits. No third-party messages.
+- Tests/evidence: focused S7 24 passed; D20 successor 24 passed; offline CPU full suite 359 passed, one third-party warning; clean wheel 1 passed; synthetic RTX3090 S7 metric 1 passed; compileall/diff checks exit0. Exact commands and first failed attempts are in `IMPLEMENTATION_NOTES_BY_CLAUDE_S7.md`. Artifacts: `reports/s7_implementation_status.json`, `reports/s7_gpu3090_synthetic.json`.
+- Remaining: no original `D:\KD-SINK-central` S5/S1 files or approved 4080 device here; no S7 analysis lock approved; no long training or new scientific inference. Production S7 gates remain open. Milestone commit SHA pending, to be appended.

@@ -13,6 +13,7 @@ Status: partially amended research protocol, **not yet a fully approved preregis
 | S4 | Which positional anchors and parameter-level routes are inherited? | No; retained S1/S3 states |
 | S5 | What does full, excluded-sink, and sink-only supervision transfer? | No; reuse S1 C1/C2/C5/C6 |
 | S6 | Are findings robust across text domains and context lengths? | No; reuse retained states |
+| S7 | Does direct sink supervision improve distillation utility, and how much attention matching concerns sink mass? | No new training; reuse sealed S5/S1 evidence, with a separately locked clean-attention supplement |
 
 S1's mandatory campaign has **seven unique C0-C6 seed0 jobs**, each assigned a fixed approved GPU role; bridge replicas can raise the physical-job count. Optional seed1/seed2 campaigns add seven unique jobs each and require separate launches. Single-seed results cannot establish across-seed variance or reproducibility. S3 adds15 runs only if explicitly approved. S2 remains evaluation-only. See [hardware](HARDWARE_AND_EXECUTION.md) for the eligibility and batch gates.
 

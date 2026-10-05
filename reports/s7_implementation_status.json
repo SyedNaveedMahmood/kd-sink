@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "study": "S7",
+  "status": "software_implemented_scientific_execution_pending",
+  "source_s5_audit_sha256": "09b3663cda822c7b5b3b697bbc3a44c4849b63e85f24b0a98abfce06c99dfa7c",
+  "source_s5_audit_available_on_this_host": false,
+  "source_s1_run_directories_available_on_this_host": false,
+  "approved_s7_analysis_lock_present": false,
+  "rtx4080super_available_on_this_host": false,
+  "rtx3090_synthetic_gpu_evidence": "reports/s7_gpu3090_synthetic.json",
+  "cpu_offline_suite": {
+    "command": "python -m pytest -q tests/unit tests/integration -m 'not gpu and not network' --tb=short",
+    "environment": "Windows Python 3.12.3; CUDA_VISIBLE_DEVICES empty; HF_HUB_OFFLINE=1; TRANSFORMERS_OFFLINE=1; PYTHONPATH points to S7 worktree",
+    "exit_code": 0,
+    "passed": 359,
+    "warning_count": 1
+  },
+  "gpu_synthetic_suite": {
+    "command": "python -m pytest -q tests/gpu/test_s7_decomposition_gpu.py --device-role rtx3090 --evidence-out reports/s7_gpu3090_synthetic.json",
+    "exit_code": 0,
+    "passed": 1,
+    "scope": "synthetic metric smoke; no real model or RTX4080 SUPER qualification"
+  },
+  "scientific_result": null,
+  "unavailable_measurements": [
+    "lm2000 corroborating endpoint",
+    "topology and teacher causal reference",
+    "real source S1 extension extraction",
+    "36 retained-state attention supplements",
+    "approved control probes and publication figures"
+  ],
+  "source_runs_modified": false,
+  "training_started": false
+}

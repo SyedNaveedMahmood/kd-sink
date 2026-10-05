@@ -539,3 +539,11 @@ Merged the local documentation commits `b2aa70ac9fa10988650a3084a1f6e3a6cef378c5
 ## 2026-10-05T03:22:16Z - Codex (GPT-6) - S5 utility design milestone SHA
 
 The design and its navigation/journal records were committed locally as `b2aa70ac9fa10988650a3084a1f6e3a6cef378c5` (`docs(s5): plan sink-aware distillation utility`). The final documentation audit passed: 18 sections, nine pending implementation tasks, valid local links/source hash, and preservation of all 17 snapshotted original file contents. `git diff --check` and `git diff --cached --check` exited 0. Only this task's six documentation paths were committed; pre-existing Stage06 edits remain uncommitted. No code, unit/GPU/network test, scientific run, production lock change or push occurred.
+
+
+## 2026-10-05T04:22:03Z - Codex (GPT-6) - S7 follow-up over original S1 records
+
+- Starting commit: `d4b725117902d8dfb17e9c2db769155818595c9c` in isolated `s7-utility`; user requested S7 implementation/push. No original S1 source run or trainer file changed.
+- Scope/files/rationale: S7 read-only code reuses S1 seed0 C1/C2/C5/C6 through the sealed S5 D26 audit. It can reverify original S1 full evaluation items for teacher KL/agreement/accuracy and NLL-only lm2000 endpoints. New clean-attention inference requires a separately checked-in approved S7 lock and D24 seed0 preflight. Historical S1 root identities remain unchanged; three physical 4080 UUIDs are disclosed as a confound.
+- Communications/tests/evidence: user was told source/GPU limits. Focused S7 CPU 24 passed; offline CPU full suite 359 passed; clean wheel 1 passed; synthetic RTX3090 numerical smoke 1 passed; D20 integrity tests 24 passed after LF checkout correction. Exact commands/failures and evidence locations are in the S7 journal. No S1 checkpoint, data or source evaluation directory accessed on this host; missing RTX4080/S1 source remains blocked.
+- Next action/milestone: keep S1 source immutable; approve/qualify S7 analysis separately on the source machine. Commit SHA pending, to be appended.

@@ -1,8 +1,8 @@
-# S5 extension: Sink-Aware Distillation Utility
+# S7: Sink-Aware Distillation Utility
 
-Status: **draft implementation and analysis design; no implementation or research execution authorized by this file**.
+Status: **S7 implementation in progress; analysis choices remain draft and scientific execution is not approved by this file**. S7 is a separate study that reuses completed S1/S5 evidence. The S7 analysis lock must be approved prospectively before new checkpoint inference.
 
-Prepared by Codex (GPT-6), 2026-10-05 UTC. Repository HEAD at review: `dceba4976c06399cffabdd50e80c41c94137a5e6`. Review includes the existing, uncommitted Stage06 runtime-source repair. This document records proposals separately from already approved S1 requirements. Committing it does not make it a preregistration or approve new scientific choices.
+Original design prepared by Codex (GPT-6), 2026-10-05 UTC at `dceba4976c06399cffabdd50e80c41c94137a5e6`. Reconciled with the current remote history when the researcher named this **S7**. The original review predates completed S1/S5 work; the current state below supersedes its old execution assumptions. Committing this design does not make it a preregistration or approve new scientific choices.
 
 Source: the complete user attachment, **“REPLY TO REV 3 — Experiment: Sink-Aware Distillation Utility”**, including its purpose, interpretation, impact, and artifact requirements. Original attachment SHA-256: `4122d4d3342accf1316d8281ba020d6fd52314275706d76b5e5edd34c595e25c`. Its local filename was `Pasted text.txt`; its machine-specific attachment path is not an experiment dependency. References to “SinkWithoutPlumbing” in that text are motivation supplied by the researcher, not newly verified results from this implementation.
 
@@ -10,7 +10,7 @@ Source: the complete user attachment, **“REPLY TO REV 3 — Experiment: Sink-A
 
 The experiment asks whether directly supervising position-0 attention mass improves the usefulness of knowledge distillation, and whether a visually strong sink can inflate an impression of internal transfer without a corresponding behavioral benefit. It also asks whether those relationships change during 10,000 optimizer updates.
 
-This is an extension of [S5: sink supervision](S5_SINK_SUPERVISION.md), using the four existing conditions from [S1](S1_LONGITUDINAL_KD.md). It should extend the current S5 analysis and shared evaluator. It requires no C7 condition, new student architecture, new training objective, or additional training seed by default. S1 remains the source of training runs; S5 remains their analysis/evaluation study. S4 supplies separate mechanism probes if subsequently requested; this experiment alone does not identify a transferred circuit. S2, S3, and S6 are not prerequisites for its scientific contrasts.
+S7 builds on [S5: sink supervision](S5_SINK_SUPERVISION.md), using the four existing conditions from [S1](S1_LONGITUDINAL_KD.md). S5's completed reaggregation is immutable input; S7 has separate code, artifacts, and study status. It requires no C7 condition, new student architecture, new training objective, or additional training seed by default. S4 supplies separate mechanism probes if subsequently requested; S7 alone does not identify a transferred circuit. S2, S3, and S6 are not prerequisites for its scientific contrasts.
 
 | Condition | Existing objective | What its comparison can test |
 |---|---|---|
@@ -29,20 +29,18 @@ A change in output sensitivity is not automatically a change in predictive usefu
 
 ## 2. Current state and execution boundary
 
-As recorded in [NEXT_STEPS](../../../NEXT_STEPS.md) and [Stage06](../stages/06_S1_S3_INTEGRATION.md), no S1 scientific campaign has run. The attachment's “completed 10k S1 runs” are required future inputs, not artifacts whose existence this design assumes. This session reviewed repository records and implementation; it did not inventory external run directories or evaluate a checkpoint.
+The current remote history records completed S1 C1/C2/C5/C6 seed-0 training and a completed S5 read-only D26 reaggregation: 440 source rows, 101 Dense64 joined steps, nine Full300 joined steps, four conditions. The sealed S5 audit is SHA-256 `09b3663cda822c7b5b3b697bbc3a44c4849b63e85f24b0a98abfce06c99dfa7c`; the result directory is `D:\KD-SINK-central\analysis\stage08_scientific_20261005\S5` on the source machine. Those external files and the approved RTX 4080 SUPER are unavailable on this implementation host; repository tests cannot substitute for executing S7 on that evidence.
 
-The existing production root `2a11da9bb71957a4d6b3a2f93a34bd67491dd9d21d70577a7a10858930a8943e` is superseded and non-launchable. Its source identity points at calibration-era code. A repair is present in the working tree, but an executable-source milestone and replacement root/configs remain pending. Existing measured data, calibration, hardware, and environment evidence is preserved. This plan does not resolve that blocker or certify launch readiness.
+D26 permits only the four named historical seed-0 S1 roots for **S5** read-only reaggregation. S7 reads the exact sealed S5 output and records its own source digest; it does not reinterpret D26 as approval for S7 inference. Three physical RTX 4080 SUPER UUIDs appear across the four conditions, so device and condition are partly confounded. The result must keep that caveat and must not count devices as separate training seeds. D24 confines new S1 checkpoint follow-ups to seed 0. An approved, sealed S7 analysis lock is required before the separate clean-attention supplement is run.
 
-The authorized deliverable for this session is this design and its documentation records. No trainer, objective, evaluator, configuration, protocol lock, or test implementation is changed. No scientific task is marked complete. Future implementation follows an explicit S5 scope and the sequential stage rules; planning this extension does not complete Stage08 science or start the Stage09 release campaign.
+### Source identity during S7 implementation
 
-### Source identity when implementing later
+The S1 runtime-source policy covers **all** `src/sinklab/**`, `pyproject.toml`, and `uv.lock`. Adding S7 analysis functions under `src/sinklab` changes the analysis checkout identity, even when historical training numerics are untouched.
 
-The pending `s1-runtime-critical-v1` policy covers **all** `src/sinklab/**`, `pyproject.toml`, and `uv.lock`. Adding an analysis function under `src/sinklab` therefore changes that tree even if it does not affect training numerics.
-
-- Finish the separately scoped Stage06 source/protocol repair before treating an S1 checkout as launchable.
+- Preserve the historical S1 and S5 source identities and records; S7 code is a new derived analysis identity.
 - Prefer an isolated analysis checkout/worktree for S5 implementation and post-hoc evaluation. Keep the immutable training source and analysis source as separate identities in derived records.
 - A new analysis executable may read a completed run from an older approved source. It must record that fact and validate compatibility; it must not claim to be that training executable.
-- If S5 collection is instead integrated into production before any S1 run, amend and freeze the executable source, metric versions, evaluation contract, resource evidence, and replacement production root before launching the entire affected comparison.
+- No new S1 training is part of S7. Any prospective S7 inference requires its own approved lock and source/resource evidence.
 - Do not silently refresh an approved root to accept a changed package during ongoing paired training. Do not weaken the runtime-source guard to accommodate analysis work.
 
 ## 3. Code audit and concrete gaps
@@ -91,14 +89,14 @@ The controlling sources are [DECISIONS](../DECISIONS.md), [OBJECTIVES](../OBJECT
 | Numerics | Locked eager backend, FP32 student/master/Adam state, BF16 autocast, FP32 probability/loss reductions; fixed checkpointing policy |
 | Training base | CE/logit KD weights 0.5/0.5; training KD temperature 2 and one `T²` factor |
 | Attention coefficient | 1/9 for C2/C5/C6; scale 1 for all three; no new scale calibration or outcome-driven coefficient changes |
-| Primary S5 training block | Seed 0, RTX 4080 SUPER, exact approved UUID and environment for all C1/C2/C5/C6 |
+| Primary historical training block | Seed 0, RTX 4080 SUPER role; D26 records three actual UUIDs across C1/C2/C5/C6 and the comparison-critical invariant audit |
 | Teacher layer map | `[1,2,4,5,7,8,10,11,13,14,16,17,19,20,22,23,25,26,28,29,31,32,34,35]` corresponding to student `[0..23]` |
 | Dense evaluations | `0,100,...,10000`, 101 observations per condition on the same 64 blocks |
 | Retained/full evaluations | `0,100,250,500,1000,2000,5000,7500,10000`, nine per condition on the same 300 blocks |
 | Independent panel role | `owt_lm2000`: the following 2,000 validation blocks, clean evaluation at 0 and 10k; disjoint block IDs from full300, not necessarily independent documents |
 | Persistence | Existing retained weights and protected final full checkpoint remain available; analysis never prunes or rewrites them |
 
-The four primary run IDs are `s1-c1-seed0-rtx4080super`, `s1-c2-seed0-rtx4080super`, `s1-c5-seed0-rtx4080super`, and `s1-c6-seed0-rtx4080super`, as assigned in the reviewed S1 plan. Resolve these against the replacement approved production plan before use. C1/C2 RTX3090 bridge jobs are additional hardware observations of seed 0, not additional seeds or replacements for missing 4080 members.
+The four primary run IDs are `s1-c1-seed0-rtx4080super`, `s1-c2-seed0-rtx4080super`, `s1-c5-seed0-rtx4080super`, and `s1-c6-seed0-rtx4080super`, bound by D26 and the completed S5 audit. C1/C2 RTX3090 bridge jobs are additional hardware observations of seed 0, not additional seeds or replacements for the four selected source runs.
 
 C5 removes key 0 **before** both alignment and divergence using conditional probabilities from non-sink scores. It does not delete key 0 during training forward propagation. C6 uses `[P(0), sum(P(k>0))]` for both alignment and divergence. It never normalizes a singleton column or uses full-map alignment to select its binary target. A sink may emerge in C5 through shared parameters and the behavioral objective; this is a scientifically valid outcome.
 
@@ -225,7 +223,7 @@ Default reporting uses absolute gains in nats/query, not a ratio such as `G_mass
 
 ### 7.4 Numerical implementation contract
 
-Implement one pure, no-gradient descriptive primitive in `metrics.py`, with a distinct `s5-attention-decomposition-v1` ID. It accepts normalized probabilities, valid support, and optionally the corresponding scores for stable recovery. All reductions follow the same support and head-mean convention as the common metric.
+Implement one pure, no-gradient descriptive primitive in `metrics.py`, with a distinct `s7-head-mean-jsd-decomposition-v1` ID. It accepts normalized probabilities and valid support. All reductions follow the same support and head-mean convention as the common metric, with equal valid-query means per item/layer. Full production S1 blocks have equal lengths, so this agrees with S5's query-weighted aggregate; variable-length comparisons require a separate reduction version.
 
 Use zero-safe `x log x`/KL terms. Sum explicit residual entries rather than subtracting a rounded `p[0]` from 1. If one residual mass is exactly zero, the weighted shape remainder is zero by its limiting definition, while the symmetric conditional comparison is undefined. If both residual masses are zero, both distributions are pure sinks, the full/mass/shape divergence is zero, and conditional shape is unavailable. Never invent a conditional distribution for those probability-only cases.
 
@@ -355,9 +353,9 @@ Supplement keys include parent run/checkpoint, item token/mask identity, teacher
 
 Artifact manifest lists input/output digests, algorithm/source versions, statuses and creation time. Every figure names its source row IDs, source artifact digests, exact query/filter, units and caption. Large outputs remain external; commit only small sanitized evidence and documentation. Table exports cannot turn null into zero or omit unfavorable rows.
 
-## 12. Planned code changes
+## 12. Implementation map
 
-The following are future edits, not work performed by this document.
+The table below is the original scope map. The bounded implementation for this repository revision is documented after it. Items not present in the implementation remain future work and must not be described as completed S7 science.
 
 | File | Planned responsibility |
 |---|---|
@@ -380,16 +378,19 @@ Keep `extract_s1_record`/`join_s5` as compatibility interfaces or explicitly ver
 
 `train.py`, `make_objective_loss`, optimizer/scheduler/data-order logic, and the C1/C2/C5/C6 definitions require no planned scientific change. If the audit discovers a correctness defect there, record it as a separate prerequisite with affected runs and amendment/rerun requirements; do not conceal a trainer repair inside an analysis feature.
 
-### Proposed command surface — not implemented
+### Implemented command surface and execution gates
 
 ```text
-sinklab s5-utility-audit --inputs <paths.json> --analysis-plan <plan.json> --seed 0 --out-dir <external-audit-dir>
-sinklab s5-utility-evaluate --inputs <verified-inputs.json> --analysis-plan <approved-plan.json> --condition C5 --seed 0 --step 10000 --panel owt_full300 --device-role rtx4080super --out-dir <external-supplement-dir>
-sinklab s5-utility-analyze --inputs <verified-inputs.json> --analysis-plan <approved-plan.json> --seed 0 --out-dir <external-analysis-dir>
-sinklab s5-utility-plot --analysis-manifest <artifact-manifest.json> --out-dir <external-figures-dir>
+python scripts/run_stage08_s7.py --s5-bundle <sealed-S5-directory> --output <external-empty-S7-directory>
+python scripts/run_stage08_s7.py --s5-bundle <sealed-S5-directory> --runs-root <original-S1-runs-root> --output <external-empty-S7-directory>
+python scripts/run_stage08_s7.py --s5-bundle <sealed-S5-directory> --runs-root <original-S1-runs-root> --artifact-root <pinned-artifacts> --output <external-empty-S7-directory>
+python scripts/run_stage08_s7_supplement.py --condition C5 --step 10000 --runs-root <original-S1-runs-root> --artifact-root <pinned-artifacts> --s5-bundle <sealed-S5-directory> --analysis-lock <approved-sealed-S7-lock> --output <external-empty-one-state-directory>
+python scripts/run_stage08_s7.py --s5-bundle <sealed-S5-directory> --runs-root <original-S1-runs-root> --supplements-dir <36-complete-one-state-files> --analysis-lock <approved-sealed-S7-lock> --output <external-empty-S7-directory>
 ```
 
-`--inputs` maps explicit local paths to the four selected runs, locks, panels, corpus and optional supplements. Audit may operate against a draft plan and report missing inputs. Scientific evaluation/analysis requires the approved plan; tiny fixture tests use an explicit fixture mode and cannot emit production-ready status. Analyze reads all four conditions as one comparison, but it does not train/evaluate them. Evaluate handles one specified checkpoint only. Plot only consumes the verified analysis artifact. Unknown fields, implicit seed lists and automatic downloads fail. Use clear exit codes for complete, incomplete coverage and invalid inputs, frozen in CLI tests.
+The analysis command requires the pinned completed S5 audit SHA and rechecks its checksums, D26 allowlist, all 440 rows and both exact joins. `--runs-root` rechecks original item evidence to recover teacher KL, agreement, accuracy and relative intervention metrics. Adding `--artifact-root` verifies the frozen independent lm2000 panel and all eight original NLL-only endpoint aggregates/items. The supplement command accepts one explicit condition and retained step, verifies the D24 source/checkpoint, pinned teacher/panel, historical S5 model-content digest, and an approved prospective S7 lock. The checked-in `protocols/s7_utility_analysis_draft.json` deliberately fails that gate. The final analysis admits only a complete 4×9 supplement grid with the same lock, item order, teacher map and numerical closure. It writes external immutable new files and never trains or alters S1/S5 sources.
+
+The implementation includes `src/sinklab/s7_utility.py`, the pure decomposition in `metrics.py`, the two scripts above, and focused unit/integration tests. It currently emits machine-readable JSON, audit digests, exact contrasts, lm2000 corroboration when its pinned source is supplied, and temporal summaries. The requested publication figures, topology summaries, teacher causal reference, controls, and complete production science remain separate gates. They require their original source records or approved new inference and are never inferred from the 14 S5 scalar fields. The generated analysis marks their absence explicitly.
 
 ## 13. Figure and table plan
 
@@ -405,7 +406,7 @@ Generate standalone PDF/SVG scientific artifacts using the existing Matplotlib d
 
 ## 14. Implementation sequence and exit gates
 
-Each item is a future task. No checkbox below records completed implementation. Implement one bounded milestone at a time; keep CORE/S1/S5 append-only journals and small evidence reports with each milestone.
+The original SU checklist is retained as the full scientific scope. The current revision implements the read-only S5 audit/temporal summaries, original-item extension, numerical decomposition, one-state supplement path, and complete-grid supplement join. Its open items remain open; fixture tests do not establish GPU or scientific completion. Keep CORE/S1/S5/S7 append-only journals and small evidence reports with each milestone.
 
 - [ ] **SU0 — Freeze scope and resolve prerequisite status.** Recheck Stage06 and artifact availability. Review this draft's new analysis choices, preserving original S1 approvals. Record whether collection will be post-hoc in an analysis checkout or integrated before all affected runs. Exit: explicit analysis scope/decision record; production training still obeys its own readiness gate.
 - [ ] **SU1 — Input schemas and read-only audit.** Add strict plans/manifests, legacy schema readers, checkpoint/lock binding, panel-member verification and expected coverage inventory. Use local fixtures. Exit: corrupt/mixed/missing evidence is handled correctly; audit creates no source directories and cannot launch a model or training.
@@ -417,7 +418,7 @@ Each item is a future task. No checkbox below records completed implementation. 
 - [ ] **SU7 — Execute the approved analysis.** After the four approved S1 runs and required records exist, audit first, run only authorized missing supplementary evaluations, verify the complete quartet/coverage, then produce frozen analysis artifacts. Exit: actual coverage, limitations and protocol deviations recorded separately from software capability.
 - [ ] **SU8 — Scientific review and handoff.** Review claims against margins/seed limits/numerical controls and the contrary-outcome table; record analysis source, all artifacts and remaining gaps. Exit: a reproducible scoped S5 report. This does not automatically satisfy unrelated Stage09 release gates.
 
-Suggested milestone subjects: `feat(s5): audit utility analysis inputs`, `feat(s5): extract utility contrasts and temporal summaries`, `feat(s5): add exact attention divergence decomposition`, `feat(s5): evaluate retained-state attention supplements`, and `feat(s5): render traceable utility reports`. Commit code/tests/journals/evidence together at their actual passing gates; never mark the study scientifically complete because fixture tests pass.
+Milestone subjects use `s7`, for example `feat(s7): add sealed-source utility analysis` and `feat(s7): add clean-attention decomposition supplement`. Commit code/tests/journals/evidence together at their actual passing gates; never mark the study scientifically complete because fixture tests pass.
 
 ## 15. Required validation plan
 
@@ -455,14 +456,13 @@ Suggested milestone subjects: `feat(s5): audit utility analysis inputs`, `feat(s
 - Real full-size teacher/student test at128 on the intended GPU, fixed engineering inputs, finite metrics, measured closure/parity tolerances, memory headroom, walltime and disk growth. Test data and thresholds are selected before seeing S1 scientific outcomes.
 - If extra controls are collected, key0/key1 comparisons share q>=2 shifted-target masks, expose removed mass, and have distinct immutable record keys.
 
-Planned commands after the named tests exist; **none was executed as part of this design**:
+Implementation validation commands; record actual executed commands, exit codes, and skips in the S7 journal:
 
 ```powershell
-.\.venv\Scripts\python.exe -m pytest -q tests/unit/test_attention_decomposition.py tests/unit/test_s5_utility.py tests/unit/test_stage08_s5.py
-.\.venv\Scripts\python.exe -m pytest -q tests/unit/test_metrics_evaluate.py tests/unit/test_analysis_primitives.py tests/unit/test_train_resume.py tests/integration/test_s5_utility_cli.py
+.\.venv\Scripts\python.exe -m pytest -q tests/unit/test_s7_decomposition.py tests/unit/test_s7_utility.py tests/integration/test_s7_commands.py tests/unit/test_stage08_s5.py
+.\.venv\Scripts\python.exe -m pytest -q tests/unit/test_metrics_evaluate.py tests/unit/test_analysis_primitives.py tests/unit/test_train_resume.py
 .\.venv\Scripts\python.exe -m pytest -q tests/unit tests/integration -m "not gpu and not network"
 .\.venv\Scripts\python.exe -m pytest -q tests/integration/test_clean_wheel.py
-.\.venv\Scripts\python.exe -m pytest -q tests/gpu/test_s5_utility_gpu.py --device-role rtx4080super
 ```
 
 The final GPU command additionally needs explicitly supplied verified local model/fixture inputs and an external evidence directory under the existing GPU harness conventions. Test collection/passing counts, environment, command, exit status, failures/skips and evidence paths must be recorded at execution time. Missing required GPU inputs/hardware block that gate.
@@ -479,13 +479,13 @@ Use one resident student checkpoint and one pinned teacher if measured to fit. K
 
 | Decision | Proposed/default disposition | Authority/status |
 |---|---|---|
-| Study identity and source conditions | Extend S5, reuse S1 C1/C2/C5/C6 | Existing study definition; matches attachment |
-| Architecture, seed, objectives, batch, data, retention | Preserve Section4 settings | Existing researcher-approved S1 contract; production source blocker still open |
-| Primary hardware block | Seed0 RTX4080 SUPER quartet | Existing reviewed plan; validate replacement locks |
-| Endpoint/panel hierarchy and five contrasts | Section5; no panel substitution | Proposed S5 analysis specification to freeze |
+| Study identity and source conditions | New S7 study, reuse sealed S5 and historical S1 C1/C2/C5/C6 | Researcher-named S7; source S5 audit/D26 is complete |
+| Architecture, seed, objectives, batch, data, retention | Preserve Section4 settings | Existing historical S1 runs are complete; S7 does not change them |
+| Primary hardware block | Seed0 RTX4080 SUPER role, three physical UUIDs | D26 documents the hardware confound; no replica claim |
+| Endpoint/panel hierarchy and five contrasts | Section5; no panel substitution | Implemented descriptively, still requires an S7 analysis decision/lock for scientific claims |
 | Added similarity decomposition | Common head-mean JSD mass/shape and coordinate partitions | New descriptive measurement proposal; needs version/analysis approval |
 | Supplement scope | Nine retained states on full300; one explicit checkpoint per execution | Proposed bounded evaluation; operator scope and measured resources required |
-| New metric numerical variants/tolerances | FP32 production, independent FP64 reference; measured engineering tolerances | Pending implementation/measurement; no invented scientific threshold |
+| New metric numerical variants/tolerances | FP32 production, independent FP64 reference; measured engineering tolerances | Primitive and CPU tests implemented; real GPU qualification pending |
 | Formal quality-equivalence/noninferiority claim | Disabled | Practical margin and inferential design unresolved |
 | Item bootstrap, matched-CE analysis, doses, extra seeds, S4/S6 extensions | Disabled in this implementation's initial scientific scope | Separate prospective approval/budget if requested |
 | Reporting missing/contrary outcomes | Always explicit; no result-based acceptance gate | Existing project requirement |
@@ -494,10 +494,10 @@ The remaining decisions do not prevent implementation of formulas, schema valida
 
 ## 18. Definition of done
 
-**Design complete:** the requested experiment is mapped to S5; concrete implementation gaps, exact estimands/formulas, provenance, versioning, controls, tests, resource scope, interpretation and unresolved decisions are documented. This file satisfies that planning deliverable only.
+**Design complete:** the requested experiment is named S7 and mapped to the preserved S1/S5 evidence; concrete implementation gaps, exact estimands/formulas, provenance, versioning, controls, tests, resource scope, interpretation and unresolved decisions are documented.
 
-**Capability complete:** SU1–SU6 implementations and applicable gates actually pass with evidence, the source/version identities are frozen, and the approved analysis configuration is executable without training or modifying input artifacts. GPU skips do not establish GPU capability.
+**Capability complete:** SU1–SU6 implementations and applicable gates actually pass with evidence, the source/version identities are frozen, and the approved analysis configuration is executable without training or modifying input artifacts. GPU skips do not establish GPU capability. The current checked-in draft lock is deliberately non-executable.
 
-**Scientific experiment complete:** the selected four approved S1 runs and required checkpoint/record coverage exist; SU7–SU8 are executed under approved scope; all primary results and missingness are traceable; the report includes contrary findings and confines its claims to the actual seed/panel/horizon/numerical evidence. A zero or adverse benefit is a completed experiment, not a failed experiment.
+**Scientific experiment complete:** SU7–SU8 are executed under approved S7 scope on the selected four historical S1 runs and sealed S5 records; all primary results and missingness are traceable; the report includes contrary findings and confines its claims to the actual seed/panel/horizon/numerical evidence. A zero or adverse benefit is a completed experiment, not a failed experiment.
 
-The next implementation action, after a coding instruction, is SU0/SU1: reconcile the runtime-source prerequisite and define the strict input audit against tiny local fixtures. No scientific outcome or additional training launch is an implementation acceptance criterion.
+The next scientific action is to review/freeze the S7 analysis lock and qualify the exact supplement evaluator on the approved RTX 4080 SUPER before running all 36 retained-state supplements. The external S5/S1 source data are absent from this implementation host. No scientific outcome or additional training launch is an implementation acceptance criterion.

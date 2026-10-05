@@ -1,0 +1,13 @@
+{
+  "study": "S7",
+  "status": "draft",
+  "kind": "s7-clean-attention-supplement-v1",
+  "training_seed": 0,
+  "conditions": ["C1", "C2", "C5", "C6"],
+  "steps": [0, 100, 250, 500, 1000, 2000, 5000, 7500, 10000],
+  "panel": "owt_full300",
+  "precision": "fp32",
+  "device_uuid": "GPU-2a5c25d0-1f73-919b-fd8b-f6f0df709aaf",
+  "D24_sha256": "46351d8e32ef1ef6238af18c11676e45e3d439e0e46942d1e61e35b8001851e6",
+  "note": "Review and prospectively approve a sealed lock before any new S7 checkpoint inference. This draft does not authorize execution."
+}

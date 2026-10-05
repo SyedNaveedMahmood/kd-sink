@@ -16,6 +16,7 @@ class MetricError(ValueError):
 
 
 METRIC_VERSION = "e6a-v2-metrics-1"
+S7_DECOMPOSITION_VERSION = "s7-head-mean-jsd-decomposition-v1"
 
 
 def behavioral_item(clean: torch.Tensor, edited: torch.Tensor, ids: torch.Tensor,
@@ -191,3 +192,98 @@ def attention_similarity(teacher: torch.Tensor, student: torch.Tensor,
     return {"jsd_nats": float(jsd[rows].mean()),
             "mse_probability_cells": float(((t - s).square() * edge).sum() / edge.sum()),
             "valid_query_count": int(rows.sum()), "valid_edge_count": int(edge.sum())}
+
+
+def attention_jsd_decomposition(teacher: torch.Tensor, student: torch.Tensor,
+                                mask: torch.Tensor) -> dict:
+    """S7 descriptive head-mean JSD split into sink mass and residual shape.
+
+    Each example is reduced over its valid q>=1 rows before examples are
+    averaged. Native heads are averaged separately for teacher and student;
+    this is deliberately distinct from the C2/C5/C6 training alignments.
+    Undefined conditional comparisons remain unavailable, never zero-filled.
+    """
+    if (teacher.ndim != 4 or student.ndim != 4 or
+            teacher.shape[0] != student.shape[0] or
+            teacher.shape[-2:] != student.shape[-2:] or
+            mask.shape != teacher.shape[:1] + teacher.shape[-1:]):
+        raise MetricError("S7 attention/mask shapes disagree")
+    if mask.dtype != torch.bool:
+        raise MetricError("S7 requires a boolean right-padding mask")
+    if not torch.isfinite(teacher).all() or not torch.isfinite(student).all():
+        raise MetricError("S7 attention contains nonfinite values")
+    if (teacher < 0).any() or (student < 0).any():
+        raise MetricError("S7 attention contains negative probabilities")
+    length = mask.shape[1]
+    if length < 2:
+        raise MetricError("S7 needs at least two positions")
+    for item in mask:
+        count = int(item.sum())
+        if count < 2 or not item[:count].all() or item[count:].any():
+            raise MetricError("S7 requires right-padded real length >=2")
+    edge = torch.ones((length, length), dtype=torch.bool, device=mask.device).tril()
+    edge = edge[None] & mask[:, :, None] & mask[:, None, :]
+    rows = edge.any(-1)
+    rows[:, 0] = False
+    edge[:, 0] = False
+    for source in (teacher, student):
+        invalid = source.double().masked_fill(edge[:, None], 0)
+        # Query 0 is intentionally ignored, including its forced self-edge.
+        invalid[:, :, 0] = 0
+        if invalid.abs().max() > 2e-6:
+            raise MetricError("S7 attention has probability outside causal support")
+        sums = (source.double() * edge[:, None]).sum(-1)
+        if ((sums[rows[:, None].expand_as(sums)] - 1).abs() > 2e-6).any():
+            raise MetricError("S7 attention rows are not normalized")
+    t = teacher.double().mean(1) * edge
+    s = student.double().mean(1) * edge
+    # Correct sub-FP32 summation noise only after enforcing native row sums.
+    t = t / t.sum(-1, keepdim=True).clamp_min(1e-300)
+    s = s / s.sum(-1, keepdim=True).clamp_min(1e-300)
+    midpoint = (t + s) / 2
+    def kl_terms(p: torch.Tensor, q: torch.Tensor) -> torch.Tensor:
+        return torch.where(p > 0, p * (p.clamp_min(1e-300).log() -
+                                        q.clamp_min(1e-300).log()), 0.)
+    columns = .5 * (kl_terms(t, midpoint) + kl_terms(s, midpoint))
+    full = columns.sum(-1)
+    key0 = columns[..., 0]
+    other = columns[..., 1:].sum(-1)
+    rt, rs = t[..., 1:].sum(-1), s[..., 1:].sum(-1)
+    binary_mid = (rt + rs) / 2
+    mass = .5 * (kl_terms(t[..., 0], midpoint[..., 0]) +
+                 kl_terms(s[..., 0], midpoint[..., 0]) +
+                 kl_terms(rt, binary_mid) + kl_terms(rs, binary_mid))
+    ut = t[..., 1:] / rt.unsqueeze(-1).clamp_min(1e-300)
+    us = s[..., 1:] / rs.unsqueeze(-1).clamp_min(1e-300)
+    weighted_mid = (t[..., 1:] + s[..., 1:]) / (rt + rs).unsqueeze(-1).clamp_min(1e-300)
+    shape = .5 * (rt * kl_terms(ut, weighted_mid).sum(-1) +
+                  rs * kl_terms(us, weighted_mid).sum(-1))
+    both = (rt > 0) & (rs > 0) & rows
+    conditional_mid = (ut + us) / 2
+    conditional = .5 * (kl_terms(ut, conditional_mid) +
+                        kl_terms(us, conditional_mid)).sum(-1)
+    closure = torch.maximum((full - mass - shape).abs(),
+                            (full - key0 - other).abs())
+    values = {"full_jsd_nats": full, "mass_jsd_nats": mass,
+              "shape_jsd_nats": shape, "key0_jsd_nats": key0,
+              "other_columns_jsd_nats": other}
+    result = {"version": S7_DECOMPOSITION_VERSION,
+              "reduction": "head_mean_then_equal_queries_then_equal_items",
+              "valid_query_count": int(rows.sum()),
+              "conditional_valid_query_count": int(both.sum()),
+              "max_closure_error_nats": float(closure[rows].max())}
+    for name, tensor in values.items():
+        result[name] = float(torch.stack([tensor[b][rows[b]].mean()
+                                          for b in range(len(rows))]).mean())
+    result["conditional_jsd_nats"] = (
+        float(torch.stack([conditional[b][rows[b]].mean()
+                           for b in range(len(rows))]).mean())
+        if bool(torch.equal(both, rows)) else None)
+    result["conditional_unavailable_reason"] = (
+        None if result["conditional_jsd_nats"] is not None else
+        "zero_non_sink_mass_in_at_least_one_distribution")
+    if (result["max_closure_error_nats"] > 1e-8 or
+            any(not math.isfinite(value) or value < -1e-8 for value in
+                (result[name] for name in values))):
+        raise MetricError("S7 JSD decomposition failed numerical closure")
+    return result
