@@ -1141,3 +1141,18 @@ S6 C0-C3 prefix audit PASSED: 16/16 stable states, 28,800 item-operation records
 - Artifacts: external S4 attempt02 and console JSONL.
 - Next: complete C3/10000 then continue C4-C6; independently audit full tree.
 - Milestone commit: pending.
+
+
+## 2026-10-05T04:09:38Z - Codex (GPT-6) - S4 C3 checkpoint-set completion
+
+- Starting branch/commit: main / eb2504b6c59091a70d7ec8ef2743872bc2c65680.
+- Task: continue authorized Stage08 S4 seed0 campaign. No training, S2 rerun, Stage09, optional contexts, HumanEval execution, or source-run modification.
+- Files changed: execution report, NEXT_STEPS, append-only CORE/S4 journals.
+- Result: C3/10000 sealed300 items/3,000 records, summary SHA-256 278a54dc8ab02034eb1b84c44178c479ce854175a0f382bc823b8793b8287b84. C3's five-step set is complete. C4/step0 began; overall S4 20/35 student batteries complete and tree snapshot63,028 JSON files.
+- Device check: run manifest pins the inference device to the sole visible RTX4080 SUPER, UUID GPU-2a5c25d0-1f73-919b-fd8b-f6f0df709aaf. C4's training source is the RTX3090 run, while inference device follows the manifest. Latest GPU sample39 C,4,262 MiB,8% utilization.
+- Integrity: completion and next-start console events present; no error. C3 exception unchanged.
+- User communication: reported C3 completion, C4 start and pinned device confirmation.
+- Validation: `git diff --check`; report JSON parse/invariant check after update; no extra science tests for docs-only snapshot.
+- Artifacts: external S4 attempt02 result and console JSONL.
+- Next: continue C4 then C5/C6 and independently audit all 35 student batteries plus reference.
+- Milestone commit: pending.
