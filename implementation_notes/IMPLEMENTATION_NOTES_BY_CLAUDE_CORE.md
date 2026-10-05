@@ -1407,3 +1407,10 @@ The design and its navigation/journal records were committed locally as `b2aa70a
 - Communications: described remote reconciliation, completed S5 evidence, S7 source gates, D20 LF repair, tests and hardware limits. No third-party messages.
 - Tests/evidence: focused S7 24 passed; D20 successor 24 passed; offline CPU full suite 359 passed, one third-party warning; clean wheel 1 passed; synthetic RTX3090 S7 metric 1 passed; compileall/diff checks exit0. Exact commands and first failed attempts are in `IMPLEMENTATION_NOTES_BY_CLAUDE_S7.md`. Artifacts: `reports/s7_implementation_status.json`, `reports/s7_gpu3090_synthetic.json`.
 - Remaining: no original `D:\KD-SINK-central` S5/S1 files or approved 4080 device here; no S7 analysis lock approved; no long training or new scientific inference. Production S7 gates remain open. Milestone commit SHA pending, to be appended.
+
+
+## 2026-10-05T13:26:39Z - Codex (GPT-6) - S7 milestone SHAs and Stage08 merge
+
+- S7 implementation milestone: `0541e1fc1031b96a027794b0aa5dfb8fd9f131a1`; merged newer origin S4 closeout into S7 branch at `d33cec4d1302f74909dcf999bcfef0b45a4f9e73`. Remote S4 audit records, NEXT_STEPS progress, execution report and S4 journal were retained; S7 tasks/code/tests were retained. The source-code/test tree is unchanged by the merge.
+- Validation: pre-merge full offline CPU 359 passed, clean wheel 1 passed, RTX3090 synthetic 1 passed, focused S7 24 passed; merge `git diff --cached --check` and Stage08 JSON parse exit0. No S7 production inference or S1/S5 source edits. Detailed commands and source constraints: S7 journal.
+- Next: push fast-forward to origin/main after checking the remote tip; S7 scientific and 4080 gates remain open.

@@ -547,3 +547,8 @@ The design and its navigation/journal records were committed locally as `b2aa70a
 - Scope/files/rationale: S7 read-only code reuses S1 seed0 C1/C2/C5/C6 through the sealed S5 D26 audit. It can reverify original S1 full evaluation items for teacher KL/agreement/accuracy and NLL-only lm2000 endpoints. New clean-attention inference requires a separately checked-in approved S7 lock and D24 seed0 preflight. Historical S1 root identities remain unchanged; three physical 4080 UUIDs are disclosed as a confound.
 - Communications/tests/evidence: user was told source/GPU limits. Focused S7 CPU 24 passed; offline CPU full suite 359 passed; clean wheel 1 passed; synthetic RTX3090 numerical smoke 1 passed; D20 integrity tests 24 passed after LF checkout correction. Exact commands/failures and evidence locations are in the S7 journal. No S1 checkpoint, data or source evaluation directory accessed on this host; missing RTX4080/S1 source remains blocked.
 - Next action/milestone: keep S1 source immutable; approve/qualify S7 analysis separately on the source machine. Commit SHA pending, to be appended.
+
+
+## 2026-10-05T13:26:39Z - Codex (GPT-6) - S7 derived milestone recorded
+
+S7 software milestone `0541e1fc1031b96a027794b0aa5dfb8fd9f131a1` and Stage08 S4 completion-history merge `d33cec4d1302f74909dcf999bcfef0b45a4f9e73` preserve the historical S1 runs unchanged. S7 source re-extraction and new inference have not run on this host. Pre-merge S7 suite: 359 offline CPU, one clean wheel, one synthetic RTX3090 metric; details in the S7 journal. The approved S7 lock and source-machine GPU/source verification remain future gates.
