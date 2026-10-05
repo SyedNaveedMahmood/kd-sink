@@ -1019,3 +1019,14 @@ S6 C0-C3 prefix audit PASSED: 16/16 stable states, 28,800 item-operation records
 - Verification: console confirmed full C1 completion and next fixed checkpoint load. No errors; no source S1 changes.
 - Next: proceed with C2 battery sequence and preserve all outputs for final independent audit.
 - Milestone commit: pending.
+
+
+## 2026-10-05T01:36:18Z - Codex (GPT-6) - S4 C2 step-0 milestone
+
+- Starting branch/commit: main / 5e51409e3cc34f6ba90c514428e6f950638e8ad6.
+- Authorized scope: continue fixed Stage08 S4 seed0 inference. No training, S2 rerun, Stage09, HumanEval code execution or source-run modifications.
+- Files changed: Stage08 campaign report, NEXT_STEPS, append-only CORE/S4 journals.
+- Progress:11/35 student batteries complete. C2/step0 sealed300 items and3,000 records; summary SHA 87b6097ceda67156c1350910e31f4aeb3cbbac5a7b7f90f455ea709df22c15bd. C2/step100 started; tree count36,000.
+- Verification: completion and next battery start confirmed from console; no error event. S5 and independently audited S6 stay complete.
+- Next: continue the S4 matrix; complete audit required before classifying S4 final.
+- Milestone commit: pending.
