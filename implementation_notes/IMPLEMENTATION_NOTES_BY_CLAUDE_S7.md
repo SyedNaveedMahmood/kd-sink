@@ -90,3 +90,10 @@ The condition-specific source preflight and the passing source-analysis receipt 
 - Latest verification: focused S7 approval/preflight/utility/command tests 31 passed; full offline suite 377 passed with one third-party astor warning; external supervisor/audit scripts compile; report JSON parses; `git diff --check` passes.
 - User-facing status update: the prior seven-character qualification source prefix was retained but not admitted as exact-source qualification; full-SHA qualification and independent 14-check audit passed. No scientific panel inference, training, or Stage09 has started.
 - Next: push readiness docs, verify output roots are fresh and GPU is idle, then start the monitored sequential 36-state grid from the pinned worktree.
+
+## 2026-10-06T09:19:22Z - Codex (GPT-6) - S7 final-analysis completion metadata correction
+
+- Starting commit: `fb110b8baa1b7d15b708e1650ae25c6b0bc2902b`; clean tree. The frozen-source campaign supervisor reports all 36 authorized supplements complete and verified, with no recovery; independent final audit and analysis are next.
+- Fixed a post-campaign reporting defect: a complete supplement join now sets `descriptive_s5_plus_clean_supplements` and records its 36-state seed0 scope, lock SHA, and no-across-seed claim. `S7_AUDIT.json` distinguishes that scope from S5-only descriptive reuse, records analysis source commit, and marks completion only for the authorized S7 campaign grid. This is metadata only; inference code and scientific result files are untouched.
+- Focused unit/integration suite: 15 passed. The first run exposed two test-fixture mistakes (sequence type and mock signature); both were fixed, and the second run passed without changing validation.
+- Next: commit/push, perform a fresh analysis from the post-campaign reporting source, independently audit the full grid and source immutability, then archive.

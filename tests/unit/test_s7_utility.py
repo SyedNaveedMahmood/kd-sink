@@ -229,6 +229,17 @@ def test_complete_supplement_grid_and_signed_mass_shape_gains(tmp_path):
     assert gain["mass_jsd_nats"] > 0 and gain["shape_jsd_nats"] < 0
     assert gain["full_jsd_nats"] == pytest.approx(gain["mass_jsd_nats"] + gain["shape_jsd_nats"])
     assert "exact_mass_shape_decomposition" not in enriched["unavailable"]
+    assert enriched["status"] == "descriptive_s5_plus_clean_supplements"
+    assert enriched["s7_campaign"] == {
+        "status": "complete",
+        "scope": "authorized_seed0_clean_attention_full300_supplement_grid",
+        "training_seed": 0,
+        "conditions": list(CONDITIONS),
+        "retained_steps": list(FULL_STEPS),
+        "verified_supplement_count": 36,
+        "analysis_lock_sha256": lock_sha,
+        "across_training_seed_claims": False,
+    }
     with pytest.raises(S7Error, match="incomplete"):
         add_clean_supplements(result, panels, supplements[:-1],
             expected_analysis_lock_sha256=lock_sha,

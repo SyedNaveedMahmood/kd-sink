@@ -541,6 +541,17 @@ def add_clean_supplements(result: dict, panels: dict, supplements: list[dict], *
     if set(indexed) != expected:
         raise S7Error("S7 clean decomposition grid incomplete")
     output = json.loads(json.dumps(result))
+    output["status"] = "descriptive_s5_plus_clean_supplements"
+    output["s7_campaign"] = {
+        "status": "complete",
+        "scope": "authorized_seed0_clean_attention_full300_supplement_grid",
+        "training_seed": 0,
+        "conditions": list(CONDITIONS),
+        "retained_steps": list(FULL_STEPS),
+        "verified_supplement_count": len(indexed),
+        "analysis_lock_sha256": lock_sha,
+        "across_training_seed_claims": False,
+    }
     output["clean_decomposition_analysis_lock_sha256"] = lock_sha
     output["provenance"]["s7_teacher_identity"] = expected_teacher_identity
     output["provenance"]["s7_loaded_student_tensor_digest_grid"] = expected_checkpoint_tensor_digests

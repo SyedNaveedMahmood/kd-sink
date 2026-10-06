@@ -6,6 +6,7 @@ import argparse
 import hashlib
 import json
 import os
+import subprocess
 import sys
 from pathlib import Path
 
@@ -101,11 +102,21 @@ def run(*, s5_bundle: Path, output: Path, runs_root: Path | None = None,
         stream.flush()
         os.fsync(stream.fileno())
     digest = hashlib.sha256(data).hexdigest()
+    supplemented = supplements_dir is not None
+    analysis_source_commit = subprocess.run(
+        ["git", "rev-parse", "HEAD"], cwd=REPO, check=True,
+        capture_output=True, text=True).stdout.strip()
+    if len(analysis_source_commit) != 40:
+        raise ValueError("S7 final analysis requires a committed 40-character source revision")
     audit = {"schema_version": 1, "study": "S7", "status": result["status"],
+             "analysis_source_commit": analysis_source_commit,
              "s7_analysis_sha256": digest, "source": provenance,
              "source_modified": False, "model_loaded": False, "new_inference": False,
              "original_s1_items_reverified": runs_root is not None,
-             "training": False, "science_complete": False}
+             "training": False, "science_complete": supplemented,
+             "science_complete_scope": ("authorized seed0 clean-attention Full300 supplement grid only"
+                                        if supplemented else None),
+             "authorized_supplement_count": 36 if supplemented else 0}
     with (output / "S7_AUDIT.json").open("xb") as stream:
         stream.write(canonical_json_bytes(audit) + b"\n")
         stream.flush()

@@ -1457,3 +1457,10 @@ The authorized 4080 SUPER passed a synthetic FP32 128-token decomposition smoke 
 - Latest verification: focused S7 approval/preflight/utility/command tests 31 passed; full offline suite 377 passed with one third-party astor warning; external supervisor/audit scripts compile; report JSON parses; `git diff --check` passes.
 - User-facing status update: the prior seven-character qualification source prefix was retained but not admitted as exact-source qualification; full-SHA qualification and independent 14-check audit passed. No scientific panel inference, training, or Stage09 has started.
 - Next: push readiness docs, verify output roots are fresh and GPU is idle, then start the monitored sequential 36-state grid from the pinned worktree.
+
+## 2026-10-06T09:19:22Z - Codex (GPT-6) - S7 final-analysis completion metadata correction
+
+- Starting commit: `fb110b8baa1b7d15b708e1650ae25c6b0bc2902b`; working tree was clean. The authorized 36-state S7 supplement campaign has just reached 36/36 independently accepted by its supervisor; separate final grid audit and analysis remain pending.
+- Corrected final-analysis metadata so a successfully joined S7 supplement grid reports `descriptive_s5_plus_clean_supplements`, the exact authorized seed0/4-condition/9-step coverage, and the approved lock digest. `S7_AUDIT.json` now scopes `science_complete` explicitly to the authorized clean-attention Full300 grid and records the final-analysis Git revision. Base S5-only analysis remains `descriptive_s5_reuse_only` and incomplete.
+- Added unit and integration coverage for the completed and base-only states. First focused test attempt found only fixture assertion mismatches (tuple/list normalization and a mocked validator signature); corrected those fixtures without relaxing checks. Final focused result: 15 passed; `git diff --check` passed. No scientific input or supplement changed.
+- Next: commit/push this report-only correction, then run the final fresh analysis and independent audit against all 36 immutable outputs.
