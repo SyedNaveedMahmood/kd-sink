@@ -108,3 +108,11 @@ The condition-specific source preflight and the passing source-analysis receipt 
 - The campaign is one designated training seed, with three physical RTX4080 GPUs across historical S1 conditions. No across-seed, population, p-value, equivalence, noninferiority, or causal-mediation claims are made. No S1/S5 sources were modified; no training, seed1/seed2 inference, S2, or Stage09 was launched.
 - Next: complete artifact inventory, ZIP64 archive validation, and Git closeout.
 - Final report/archive commit SHA will be appended after that milestone is committed.
+
+
+## 2026-10-06T10:38:29Z - Codex (GPT-6) - S7 Git closeout and archive preparation
+
+- Campaign completion documentation and status updates were committed/pushed as `211d872` (`docs(s7): record completed scientific campaign`); the pushed branch was `origin/main`, and a post-analysis fetch found no remote advance. The independent final audit remains PASS at SHA `d24ccd2c913a8b7f54edb2f7ddf3d42a44bd225428a3fb8e0d02613ab2d97912`; no scientific result changed during closeout.
+- Confirmed the exact approved-lock, D24, and D26 envelopes against their pinned SHA-256 values. Campaign and implementation report JSON parsed; focused S7 tests: 15 passed; `git diff --check` passed. Earlier postcampaign full offline unit/integration result: 378 passed with one third-party deprecation warning.
+- Next action: create the ZIP64 archive at `D:\KD-SINK-central\archives\S7_scientific_20261006.zip`, include all campaign-generated outputs and recovery evidence plus committed relevant source files, verify CRC and every embedded hash, extraction-test, then record the outer SHA in the adjacent sidecar and final handoff.
+- Safety status remains: no S1/S5 source modifications, no training, no seed1/seed2 inference, and no Stage09.

@@ -1476,3 +1476,11 @@ The authorized 4080 SUPER passed a synthetic FP32 128-token decomposition smoke 
 - Source protection: no S1/S5 source files changed; no S1 training; no seed1/seed2 inference; no S2 or Stage09. Final analysis loaded no models and ran no new inference. Result summary: `D:\KD-SINK-central\analysis\S7_scientific_20261006\S7_FINAL_SUMMARY.md`.
 - Next action: finish artifact inventory and ZIP64 verification, then commit/push final closeout documentation and archive receipts.
 - Milestone commit for this entry will be recorded in an immediate follow-up journal entry after the closeout commit is created.
+
+
+## 2026-10-06T10:38:29Z - Codex (GPT-6) - S7 closeout report milestone
+
+- The final campaign completion report, `NEXT_STEPS.md`, and CORE/S7 journal updates were committed and pushed as `211d872` (`docs(s7): record completed scientific campaign`). Startup `origin/main` was `d40afe09cf49ca0d65686838711243d4ac217ff4`; fetch after analysis found no upstream advance.
+- Final envelope verification passed for the approved S7 lock (`696c9fc206efdb60b53120c411cc3089306048733829fc4762db41caf92917b7`), D24 (`46351d8e32ef1ef6238af18c11676e45e3d439e0e46942d1e61e35b8001851e6`), and D26 (`888b21509000b570c83c2574f5a6bfbc3d1ec2dc197e88d841d085bac222f182`). Campaign/implementation JSON parsed; focused postcampaign tests passed 15/15; `git diff --check` passed. The full offline unit/integration suite had already passed 378 tests after code changes (one external `astor` deprecation warning).
+- Archive preparation is the remaining handoff step. The package target is `D:\KD-SINK-central\archives\S7_scientific_20261006.zip`; it will include the S7 result tree, qualification and audit/recovery evidence, committed S7-relevant source snapshot, and file-level manifest/checksums. Original S1/S5 input trees and tensor payloads are excluded. The outer ZIP digest will be recorded by its adjacent `.sha256` sidecar.
+- Next action: finish ZIP64 CRC, member/hash, extraction, and sidecar verification. No new scientific inference or training is authorized or needed.
