@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "study": "S7",
-  "status": "gpu_qualification_passed_scientific_supplements_pending",
+  "status": "authorized_scientific_campaign_complete_independent_audit_passed",
   "machine": "DESKTOP-GPO5752",
   "repository": "E:\\kd-sink",
   "origin_main_start_sha": "64ec99bb0da23b8ad05c827b6b27084468514f45",
@@ -168,9 +168,36 @@
     "training_started": false
   },
   "scientific_supplements": {
-    "completed": 0,
+    "status": "complete_and_verified",
+    "completed": 36,
     "expected": 36,
-    "execution_started": false
+    "conditions": [
+      "C1",
+      "C2",
+      "C5",
+      "C6"
+    ],
+    "steps": [
+      0,
+      100,
+      250,
+      500,
+      1000,
+      2000,
+      5000,
+      7500,
+      10000
+    ],
+    "states_per_condition": {
+      "C1": 9,
+      "C2": 9,
+      "C5": 9,
+      "C6": 9
+    },
+    "retries_or_invalidated_scientific_states": 0,
+    "output_root": "D:\\KD-SINK-central\\analysis\\S7_scientific_20261006\\supplements",
+    "monitor_path": "D:\\KD-SINK-central\\analysis\\S7_scientific_20261006\\monitoring\\S7_MONITOR.jsonl",
+    "monitor_terminal_status": "36_states_present_and_verified"
   },
   "source_trees_modified": false,
   "training_started": false,
@@ -210,5 +237,93 @@
   "execution_worktree_receipt": {
     "path": "D:\\KD-SINK-central\\analysis\\S7_scientific_20261006\\campaign\\s7_execution_worktree_receipt.json",
     "sha256": "830f2750957d0a611b43358e3a3c5a0a26af235812cb2be32ba8bbdf7f350158"
-  }
+  },
+  "final_analysis_source_commit": "d40afe09cf49ca0d65686838711243d4ac217ff4",
+  "final_analysis": {
+    "path": "D:\\KD-SINK-central\\analysis\\S7_scientific_20261006\\analysis\\final_d40afe0\\S7_ANALYSIS.json",
+    "sha256": "58b5f72249f24cb4e602a0a4596752093984073b36e1196334f4a7254197a79c",
+    "bytes": 1547083,
+    "runner_audit_path": "D:\\KD-SINK-central\\analysis\\S7_scientific_20261006\\analysis\\final_d40afe0\\S7_AUDIT.json",
+    "runner_audit_sha256": "4df8ec9c439b2a95998961a9b88712169c160cc976fe736d5b3302f80e343016",
+    "analysis_source_commit": "d40afe09cf49ca0d65686838711243d4ac217ff4",
+    "status": "descriptive_s5_plus_clean_supplements",
+    "science_complete_scope": "authorized seed0 clean-attention Full300 supplement grid only",
+    "original_s1_items_reverified": true,
+    "model_loaded": false,
+    "new_inference_during_analysis": false,
+    "training": false
+  },
+  "independent_final_audit": {
+    "path": "D:\\KD-SINK-central\\analysis\\S7_scientific_20261006\\audit\\independent_final_audit.json",
+    "sha256": "d24ccd2c913a8b7f54edb2f7ddf3d42a44bd225428a3fb8e0d02613ab2d97912",
+    "sidecar_path": "D:\\KD-SINK-central\\analysis\\S7_scientific_20261006\\audit\\independent_final_audit.json.sha256",
+    "status": "PASS",
+    "audit_kind": "independent_read_only_final_campaign_audit",
+    "checkpoint_sets_rehashed": 36,
+    "checkpoint_payload_files_rehashed": 40,
+    "source_bytes_rehashed": 70890523602,
+    "maximum_decomposition_closure_error_nats": 3.400058012914542e-16,
+    "undefined_conditional_layer_count": 0,
+    "s5_source_rows": 440,
+    "full300_items_per_state": 300
+  },
+  "descriptive_step10000_primary_contrasts": {
+    "C2_minus_C1": {
+      "full_jsd_nats": -0.17840795018358435,
+      "key0_jsd_nats": -0.10775685084066221,
+      "mass_jsd_nats": -0.15100822989068294,
+      "other_columns_jsd_nats": -0.07065109934292216,
+      "shape_jsd_nats": -0.02739972029290142
+    },
+    "C5_minus_C2": {
+      "full_jsd_nats": 0.13727370288891402,
+      "key0_jsd_nats": 0.09564116398377798,
+      "mass_jsd_nats": 0.13635731802055562,
+      "other_columns_jsd_nats": 0.041632538905136046,
+      "shape_jsd_nats": 0.00091638486835844
+    },
+    "C6_minus_C1": {
+      "full_jsd_nats": -0.16197644298697436,
+      "key0_jsd_nats": -0.10902162506751012,
+      "mass_jsd_nats": -0.15337134329491287,
+      "other_columns_jsd_nats": -0.052954817919464256,
+      "shape_jsd_nats": -0.00860509969206151
+    }
+  },
+  "separate_scientific_questions": {
+    "sink_pattern_transfer": {
+      "measured_in": "S7 clean Full300 teacher/student attention-JSD decomposition across all nine retained steps",
+      "result_file": "D:\\KD-SINK-central\\analysis\\S7_scientific_20261006\\analysis\\final_d40afe0\\S7_ANALYSIS.json",
+      "claims": "descriptive single designated seed0; no across-seed reproducibility claim"
+    },
+    "distillation_utility": {
+      "measured_in": "reverified S5 clean CE/accuracy, teacher matching and attention structure records, with S7 clean-attention supplements",
+      "result_file": "D:\\KD-SINK-central\\analysis\\S7_scientific_20261006\\analysis\\final_d40afe0\\S7_ANALYSIS.json",
+      "claims": "within-seed descriptive contrasts only"
+    },
+    "inference_dependence": {
+      "measured_in": "already-recorded S5 delete/relocate intervention metrics reverified from original S1 records",
+      "new_intervention_in_S7": false,
+      "claims": "descriptive intervention sensitivity; no causal-mediation claim"
+    }
+  },
+  "audit_implementation_recovery": {
+    "attempt001": "all checkpoint and supplement checks passed; audit process then raised KeyError because its terminal-monitor parser expected training_started, while the recorded event field is scientific_training",
+    "attempt001_log": "D:\\KD-SINK-central\\analysis\\S7_scientific_20261006\\logs\\independent_final_audit_attempt001.log",
+    "attempt002": "corrected monitor field lookup; complete independent audit passed",
+    "attempt002_log": "D:\\KD-SINK-central\\analysis\\S7_scientific_20261006\\logs\\independent_final_audit_attempt002.log",
+    "scientific_data_invalidated": false
+  },
+  "postcampaign_validation": {
+    "focused_command": ".venv\\Scripts\\python.exe -m pytest -q tests/unit/test_s7_utility.py tests/integration/test_s7_commands.py --tb=short",
+    "focused_exit_code": 0,
+    "focused_passed": 15,
+    "full_offline_command": ".venv\\Scripts\\python.exe -m pytest -q tests\\unit tests\\integration -m \"not gpu and not network\" --tb=short",
+    "full_offline_exit_code": 0,
+    "full_offline_passed": 378,
+    "warning_count": 1,
+    "warning": "third-party astor DeprecationWarning: ast.Num is deprecated and will be removed in Python 3.14",
+    "training_or_evaluation_tests_launched": false
+  },
+  "seed1_seed2_inference": false
 }

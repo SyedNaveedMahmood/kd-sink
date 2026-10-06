@@ -1,34 +1,76 @@
 {
   "schema_version": 1,
   "study": "S7",
-  "status": "software_implemented_scientific_execution_pending",
+  "status": "authorized_seed0_clean_attention_supplement_campaign_complete",
   "source_s5_audit_sha256": "09b3663cda822c7b5b3b697bbc3a44c4849b63e85f24b0a98abfce06c99dfa7c",
-  "source_s5_audit_available_on_this_host": false,
-  "source_s1_run_directories_available_on_this_host": false,
-  "approved_s7_analysis_lock_present": false,
-  "rtx4080super_available_on_this_host": false,
+  "source_s5_audit_available_on_this_host": true,
+  "source_s1_run_directories_available_on_this_host": true,
+  "approved_s7_analysis_lock_present": true,
+  "approved_s7_analysis_lock_sha256": "696c9fc206efdb60b53120c411cc3089306048733829fc4762db41caf92917b7",
+  "rtx4080super_available_on_this_host": true,
   "rtx3090_synthetic_gpu_evidence": "reports/s7_gpu3090_synthetic.json",
+  "production_execution_source_commit": "9574a37348cf0e249457ead44ae4e75009f54e9d",
+  "final_analysis_source_commit": "d40afe09cf49ca0d65686838711243d4ac217ff4",
+  "production_gpu_uuid": "GPU-2a5c25d0-1f73-919b-fd8b-f6f0df709aaf",
   "cpu_offline_suite": {
-    "command": "python -m pytest -q tests/unit tests/integration -m 'not gpu and not network' --tb=short",
-    "environment": "Windows Python 3.12.3; CUDA_VISIBLE_DEVICES empty; HF_HUB_OFFLINE=1; TRANSFORMERS_OFFLINE=1; PYTHONPATH points to S7 worktree",
+    "command": ".venv\\Scripts\\python.exe -m pytest -q tests\\unit tests\\integration -m \"not gpu and not network\" --tb=short",
+    "environment": "Windows Python 3.12.3; CUDA_VISIBLE_DEVICES empty; HF_HUB_OFFLINE=1; TRANSFORMERS_OFFLINE=1; PYTHONPATH=src",
     "exit_code": 0,
-    "passed": 359,
-    "warning_count": 1
+    "passed": 378,
+    "warning_count": 1,
+    "warning": "third-party astor DeprecationWarning: ast.Num is deprecated and will be removed in Python 3.14"
   },
-  "gpu_synthetic_suite": {
-    "command": "python -m pytest -q tests/gpu/test_s7_decomposition_gpu.py --device-role rtx3090 --evidence-out reports/s7_gpu3090_synthetic.json",
+  "focused_postcampaign_suite": {
+    "command": ".venv\\Scripts\\python.exe -m pytest -q tests/unit/test_s7_utility.py tests/integration/test_s7_commands.py --tb=short",
     "exit_code": 0,
-    "passed": 1,
-    "scope": "synthetic metric smoke; no real model or RTX4080 SUPER qualification"
+    "passed": 15
   },
-  "scientific_result": null,
+  "production_gpu_qualification": {
+    "status": "passed",
+    "gpu_uuid": "GPU-2a5c25d0-1f73-919b-fd8b-f6f0df709aaf",
+    "report_path": "D:\\KD-SINK-central\\analysis\\S7_scientific_20261006\\qualification\\attempt_9574a373\\s7_gpu_qualification.json",
+    "report_sha256": "83654026d619bc2af2fac36af8c316c0a3c9f8ac2304e4b56b368c78fb00c1d2"
+  },
+  "scientific_result": {
+    "status": "descriptive_s5_plus_clean_supplements",
+    "path": "D:\\KD-SINK-central\\analysis\\S7_scientific_20261006\\analysis\\final_d40afe0\\S7_ANALYSIS.json",
+    "sha256": "58b5f72249f24cb4e602a0a4596752093984073b36e1196334f4a7254197a79c",
+    "runner_audit_sha256": "4df8ec9c439b2a95998961a9b88712169c160cc976fe736d5b3302f80e343016",
+    "independent_audit_path": "D:\\KD-SINK-central\\analysis\\S7_scientific_20261006\\audit\\independent_final_audit.json",
+    "independent_audit_sha256": "d24ccd2c913a8b7f54edb2f7ddf3d42a44bd225428a3fb8e0d02613ab2d97912",
+    "conditions": [
+      "C1",
+      "C2",
+      "C5",
+      "C6"
+    ],
+    "steps": [
+      0,
+      100,
+      250,
+      500,
+      1000,
+      2000,
+      5000,
+      7500,
+      10000
+    ],
+    "verified_supplements": 36,
+    "science_complete_scope": "authorized seed0 clean-attention Full300 supplement grid only",
+    "training_seed_count": 1,
+    "training_seeds": [
+      0
+    ]
+  },
   "unavailable_measurements": [
-    "lm2000 corroborating endpoint",
-    "topology and teacher causal reference",
-    "real source S1 extension extraction",
-    "36 retained-state attention supplements",
-    "approved control probes and publication figures"
+    "equivalence_or_noninferiority: no_approved_margin_or_multiseed_design",
+    "noop_key1_controls: not_in_selected_S5_bundle",
+    "publication_figures: not_generated_by_current_JSON_analysis",
+    "teacher_causal_reference: requires_separate_teacher_role_records",
+    "topology_profiles: requires_original_S1_item_extraction"
   ],
   "source_runs_modified": false,
-  "training_started": false
+  "training_started": false,
+  "seed1_seed2_inference": false,
+  "stage09_started": false
 }
