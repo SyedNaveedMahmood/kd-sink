@@ -5,8 +5,12 @@
   "machine": "DESKTOP-GPO5752",
   "repository": "E:\\kd-sink",
   "origin_main_start_sha": "64ec99bb0da23b8ad05c827b6b27084468514f45",
-  "execution_source_commit": "7bd4539bffd75619b20b02d6d7d8affea157390f",
-  "execution_source_push": {"remote": "origin/main", "status": "pushed", "commit": "7bd4539bffd75619b20b02d6d7d8affea157390f"},
+  "execution_source_commit": "9574a37348cf0e249457ead44ae4e75009f54e9d",
+  "execution_source_push": {
+    "remote": "origin/main",
+    "status": "pushed",
+    "commit": "9574a37348cf0e249457ead44ae4e75009f54e9d"
+  },
   "approved_lock_path": "protocols/s7_utility_analysis_approved.json",
   "approved_lock_sha256": "696c9fc206efdb60b53120c411cc3089306048733829fc4762db41caf92917b7",
   "D24_sha256": "46351d8e32ef1ef6238af18c11676e45e3d439e0e46942d1e61e35b8001851e6",
@@ -18,10 +22,22 @@
     "artifact_root": "E:\\KD-SINK-stage06-Adrita\\artifacts\\KD-SINK-stage06-production"
   },
   "selected_source_runs": {
-    "C1": {"run_id": "s1-c1-seed0-rtx4080super", "protocol_root_sha256": "48c39a25f640b90a70056e3c8f7308b66b9d635876e22c56f76516a09d2c9791"},
-    "C2": {"run_id": "s1-c2-seed0-rtx4080super", "protocol_root_sha256": "910961fcc53edaed0df48e3139dbb7ca2e058bf7480b67dab27bae0bcd90f26f"},
-    "C5": {"run_id": "s1-c5-seed0-rtx4080super", "protocol_root_sha256": "fccf4c14bc691e550c6304f4955b72037efb8d042b3e51afb70367920fff0552"},
-    "C6": {"run_id": "s1-c6-seed0-rtx4080super", "protocol_root_sha256": "48c39a25f640b90a70056e3c8f7308b66b9d635876e22c56f76516a09d2c9791"}
+    "C1": {
+      "run_id": "s1-c1-seed0-rtx4080super",
+      "protocol_root_sha256": "48c39a25f640b90a70056e3c8f7308b66b9d635876e22c56f76516a09d2c9791"
+    },
+    "C2": {
+      "run_id": "s1-c2-seed0-rtx4080super",
+      "protocol_root_sha256": "910961fcc53edaed0df48e3139dbb7ca2e058bf7480b67dab27bae0bcd90f26f"
+    },
+    "C5": {
+      "run_id": "s1-c5-seed0-rtx4080super",
+      "protocol_root_sha256": "fccf4c14bc691e550c6304f4955b72037efb8d042b3e51afb70367920fff0552"
+    },
+    "C6": {
+      "run_id": "s1-c6-seed0-rtx4080super",
+      "protocol_root_sha256": "48c39a25f640b90a70056e3c8f7308b66b9d635876e22c56f76516a09d2c9791"
+    }
   },
   "host_environment": {
     "gpu_uuid": "GPU-2a5c25d0-1f73-919b-fd8b-f6f0df709aaf",
@@ -36,14 +52,15 @@
   "validation": {
     "focused_command": ".venv\\Scripts\\python.exe -m pytest -q tests\\unit\\test_stage08_s7_approval.py tests\\unit\\test_stage08_s7_preflight_scope.py tests\\unit\\test_s7_utility.py tests\\integration\\test_s7_commands.py",
     "focused_exit_code": 0,
-    "focused_passed": 30,
+    "focused_passed": 31,
     "full_offline_command": ".venv\\Scripts\\python.exe -m pytest -q tests\\unit tests\\integration -m \"not gpu and not network\"",
     "full_offline_exit_code": 0,
-    "full_offline_passed": 376,
+    "full_offline_passed": 377,
     "full_offline_warning_count": 1,
     "warning": "third-party astor DeprecationWarning: ast.Num is deprecated",
     "py_compile_exit_code": 0,
-    "lock_envelope_verified": true
+    "lock_envelope_verified": true,
+    "git_diff_check_exit_code": 0
   },
   "base_read_only_source_analysis": {
     "path": "D:\\KD-SINK-central\\analysis\\S7_scientific_20261006\\analysis\\base_read_only",
@@ -57,7 +74,10 @@
     "source_rows_reverified": 440,
     "dense64_steps": 101,
     "full300_source_rows_per_condition": 9,
-    "lm2000_endpoint_steps": [0, 10000],
+    "lm2000_endpoint_steps": [
+      0,
+      10000
+    ],
     "full300_item_count": 300,
     "model_loaded": false,
     "new_inference": false,
@@ -65,22 +85,56 @@
   },
   "qualification": {
     "status": "PASS",
-    "report_path": "D:\\KD-SINK-central\\analysis\\S7_scientific_20261006\\qualification\\s7_gpu_qualification.json",
-    "report_sha256": "071dd29a73b72d4500de67aaa17a8d937b29dfee7ee3204ef16cf50aa9aecf2a",
-    "invocation_receipt_path": "D:\\KD-SINK-central\\analysis\\S7_scientific_20261006\\qualification\\s7_gpu_qualification_invocation.json",
-    "invocation_receipt_sha256": "9c2c638327f4b165df8418675858854b1c9c82e92c9659898b21337993be7358",
-    "stdout_stderr_log_path": "D:\\KD-SINK-central\\analysis\\S7_scientific_20261006\\logs\\s7_gpu_qualification.log",
-    "stdout_stderr_log_sha256": "0557df65874eb7576faf2389a8b09a6a192d94e11becb8d9a49f633a7b860aa4",
+    "report_path": "D:\\KD-SINK-central\\analysis\\S7_scientific_20261006\\qualification\\attempt_9574a373\\s7_gpu_qualification.json",
+    "report_sha256": "83654026d619bc2af2fac36af8c316c0a3c9f8ac2304e4b56b368c78fb00c1d2",
+    "invocation_receipt_path": "D:\\KD-SINK-central\\analysis\\S7_scientific_20261006\\qualification\\attempt_9574a373\\invocation_receipt.json",
+    "invocation_receipt_sha256": "00f8104e10b1ecb82c87e0af2130c1e8974d2b8bc44597b97982b14139e64428",
+    "stdout_stderr_log_path": "D:\\KD-SINK-central\\analysis\\S7_scientific_20261006\\qualification\\attempt_9574a373\\stdout_stderr.log",
+    "stdout_stderr_log_sha256": "b7d6ea6a5ced1741f02ffbf87add3a77cf9e15148b84d88f75baa7229312d8f9",
+    "independent_audit_path": "D:\\KD-SINK-central\\analysis\\S7_scientific_20261006\\audit\\s7_gpu_qualification_9574a373_independent_audit.json",
+    "independent_audit_sha256": "96128e446227da04feb4207b57fc1473e9917f84ef96e78834f5883c54531624",
+    "execution_source_commit": "9574a37348cf0e249457ead44ae4e75009f54e9d",
     "synthetic_smoke": true,
     "smoke_sequence_length": 128,
     "peak_allocated_bytes": 4954726400,
     "peak_reserved_bytes": 4978638848,
-    "smoke_elapsed_seconds": 3.9324537999927998,
+    "smoke_elapsed_seconds": 0.3691439999965951,
+    "qualification_total_elapsed_seconds": 234.35813230008353,
     "max_closure_error_nats": 2.0122792321330962e-16,
-    "temperature_c_before_after": [42, 42],
-    "outer_command_exit_code": 1,
-    "outer_exit_discrepancy_preserved": true,
-    "scientific_inference_started": false
+    "temperature_c_before_after": [
+      42,
+      43
+    ],
+    "outer_command_exit_code": 0,
+    "scientific_inference_started": false,
+    "prior_attempts_preserved": [
+      {
+        "execution_source_commit": "7bd4539bffd75619b20b02d6d7d8affea157390f",
+        "report_path": "D:\\KD-SINK-central\\analysis\\S7_scientific_20261006\\qualification\\attempt_c211d9d\\s7_gpu_qualification.json",
+        "report_sha256": "251d9a77c232616da2af45a4aa022f922ab3b08a85c276fb0448194f3837b186",
+        "invocation_receipt_path": "D:\\KD-SINK-central\\analysis\\S7_scientific_20261006\\qualification\\attempt_c211d9d\\invocation_receipt.json",
+        "invocation_receipt_sha256": "d93050da13fe0af16171749cbafab2562d0430b011dd117c5eeda68b1d6649be",
+        "outer_command_exit_code": 0,
+        "receipt_discrepancy_preserved": true
+      },
+      {
+        "execution_source_commit": "c211d9d9f6fbee56ff7eccffcf967c2ee7dbf58a",
+        "report_path": "D:\\KD-SINK-central\\analysis\\S7_scientific_20261006\\qualification\\attempt_c211d9d\\s7_gpu_qualification.json",
+        "report_sha256": "251d9a77c232616da2af45a4aa022f922ab3b08a85c276fb0448194f3837b186",
+        "invocation_receipt_path": "D:\\KD-SINK-central\\analysis\\S7_scientific_20261006\\qualification\\attempt_c211d9d\\invocation_receipt.json",
+        "invocation_receipt_sha256": "d93050da13fe0af16171749cbafab2562d0430b011dd117c5eeda68b1d6649be",
+        "outer_command_exit_code": 0
+      },
+      {
+        "execution_source_commit": "9574a37 (short prefix only; not accepted as exact binding)",
+        "report_path": "D:\\KD-SINK-central\\analysis\\S7_scientific_20261006\\qualification\\attempt_9574a37\\s7_gpu_qualification.json",
+        "report_sha256": "9c6d2e9a6de82ea881a56977c61ca9d697455134b840b456bda4353ae4cb6863",
+        "invocation_receipt_path": "D:\\KD-SINK-central\\analysis\\S7_scientific_20261006\\qualification\\attempt_9574a37\\invocation_receipt.json",
+        "invocation_receipt_sha256": "b17baf9dd99658599949807aa707aecf3046f516ffaad0172a15277541c3bbf4",
+        "outer_command_exit_code": 0,
+        "reason": "qualification result preserved but exact source SHA was abbreviated in the report; replaced by the full-SHA attempt"
+      }
+    ]
   },
   "checkpoint_preflight": {
     "status": "passed_independent_manifest_audit",
@@ -91,15 +145,70 @@
     "progress_log_path": "D:\\KD-SINK-central\\analysis\\S7_scientific_20261006\\logs\\s7_checkpoint_preflight_progress.jsonl",
     "progress_log_sha256": "c0c8fb96e3d8dbc3027d272b7a15e4aa285e8978d89e5dadd416234a7424fba0",
     "checkpoint_count": 36,
-    "conditions": ["C1", "C2", "C5", "C6"],
-    "steps": [0, 100, 250, 500, 1000, 2000, 5000, 7500, 10000],
+    "conditions": [
+      "C1",
+      "C2",
+      "C5",
+      "C6"
+    ],
+    "steps": [
+      0,
+      100,
+      250,
+      500,
+      1000,
+      2000,
+      5000,
+      7500,
+      10000
+    ],
     "execution_source_commit": "7bd4539bffd75619b20b02d6d7d8affea157390f",
     "model_loaded": false,
     "inference_started": false,
     "training_started": false
   },
-  "scientific_supplements": {"completed": 0, "expected": 36},
+  "scientific_supplements": {
+    "completed": 0,
+    "expected": 36,
+    "execution_started": false
+  },
   "source_trees_modified": false,
   "training_started": false,
-  "stage09_started": false
+  "stage09_started": false,
+  "loaded_student_tensor_digest_binding": {
+    "status": "implemented_and_tested",
+    "commit": "c211d9d9f6fbee56ff7eccffcf967c2ee7dbf58a",
+    "scope": "Each supplement stores the loaded student tensor digest; final 4x9 join requires exact agreement with the sealed S5 Full300 condition/step digest map.",
+    "rejects_missing_or_mismatched_digest": true,
+    "focused_tests_passed": 31,
+    "full_offline_tests_passed": 377
+  },
+  "progress_telemetry": {
+    "status": "implemented_and_tested",
+    "commit": "9574a37348cf0e249457ead44ae4e75009f54e9d",
+    "fields": [
+      "cuda_allocated_bytes",
+      "cuda_reserved_bytes",
+      "completed_items",
+      "elapsed_seconds",
+      "eta_seconds"
+    ],
+    "focused_tests_passed": 31,
+    "full_offline_tests_passed": 377
+  },
+  "execution_worktree": {
+    "path": "E:\\kd-sink-s7-execution-9574a373",
+    "head": "9574a37348cf0e249457ead44ae4e75009f54e9d",
+    "status": "clean",
+    "shared_python_environment": "E:\\kd-sink\\.venv\\Scripts\\python.exe"
+  },
+  "execution_source_receipt": {
+    "path": "D:\\KD-SINK-central\\analysis\\S7_scientific_20261006\\campaign\\s7_execution_source_receipt_9574a37348cf0e249457ead44ae4e75009f54e9d.json",
+    "sha256": "1e5e713df4abf0860f369c206f1df98da385b643eff6ba0b1a010cff7238f4df",
+    "sidecar_sha256": "e515b72655fdd0cbeb2bb9cc0895aada493e513ecc8a4a41d0567bab6022ebf5"
+  },
+  "execution_worktree_receipt": {
+    "path": "D:\\KD-SINK-central\\analysis\\S7_scientific_20261006\\campaign\\s7_execution_worktree_receipt.json",
+    "sha256": "830f2750957d0a611b43358e3a3c5a0a26af235812cb2be32ba8bbdf7f350158"
+  }
 }
