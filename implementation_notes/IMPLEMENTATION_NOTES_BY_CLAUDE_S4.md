@@ -630,3 +630,7 @@ S6 C0-C3 prefix audit PASSED: 16/16 stable states, 28,800 item-operation records
 - Interpretation: C2/C3/C6 high sink at step100 precedes their larger endpoint position-shift CE effects; C5's selected K-coordinate effect is comparatively large despite low S; teacher Q-bias/EPE responses do not imply student inheritance. Preserve the original C3 transferred-log exception, attempt01 pre-forward verifier failure, and attempt02 wrapper exit mismatch without inventing a new scientific failure or reconstructing logs.
 - Exact validation commands/results: the report extractor with `--report` exit 0; `py_compile scripts\report_stage08_s4.py` exit 0; focused Stage08 probe/runner/common CPU tests 10 passed, exit 0; `git diff --check` exit 0. No failures/skips. No new model evaluation, training, GPU code, source-run modification, or Stage09.
 - User-visible updates described audit/summary coverage and table verification. Next: commit/push the documentation milestone; commit SHA pending.
+
+## 2026-10-07T05:13:20Z - Codex (GPT-6) - S4 report commit receipt
+
+- Milestone commit: `59bf888` (`docs(s4): report audited positional and route probe results`), containing the comprehensive S4 report, read-only verifier, references, and evidence journals. Staged whitespace check exited 0. Push verification follows this receipt.
