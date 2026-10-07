@@ -1522,3 +1522,9 @@ The authorized 4080 SUPER passed a synthetic FP32 128-token decomposition smoke 
 - Staged `git diff --cached --check` initially found three trailing spaces in report metadata line breaks. They were removed; the rerun exited 0. The report content and source scientific values did not change.
 - The earlier failed self-hash assertion was an invalid validator expectation and is recorded above; section/coverage assertions passed after correction.
 - Commit/push remains pending.
+
+
+## 2026-10-07T02:03:54Z - Codex (GPT-6) - results report milestone commit
+
+- The consolidated experiment results report, NEXT_STEPS pointer, and CORE/S1-S7 journal updates were committed as `660fca963fbae8d33bf50f5c82be8d7bcebacd6c` (`docs: add consolidated experiment results report`).
+- Push status: pending final journal closeout.
