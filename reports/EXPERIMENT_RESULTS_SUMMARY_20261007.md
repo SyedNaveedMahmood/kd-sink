@@ -8,6 +8,8 @@
 
 **S6 detail update (2026-10-07):** See [the dedicated S6 results report](S6_RESULTS_20261007.md) for the 28-state domain/context trajectory, central 42-row endpoint table, paired-document context effects, intervention diagnostics, frozen panel/source identities, and the independently resolved runner count-gate discrepancy. The S6 results summarized below remain the same audited scientific records.
 
+**S7 detail update (2026-10-07):** See [the dedicated S7 results report](S7_RESULTS_20261007.md) for all 36 clean Full300 supplement states, the central pattern/utility/dependence table, exact mass/shape decomposition, prespecified contrasts, Dense64 temporal summaries, LM2000 endpoint, source identities, and independent audit. The S7 results summarized below remain the same audited scientific records.
+
 **Evidence cutoff:** 2026-10-07
 
 **Repository source:** e4cd7f2a25fcdcbcd85ca51b835c3a93cf71c69a

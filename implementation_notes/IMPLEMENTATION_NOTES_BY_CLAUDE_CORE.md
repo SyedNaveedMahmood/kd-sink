@@ -1606,3 +1606,10 @@ The authorized 4080 SUPER passed a synthetic FP32 128-token decomposition smoke 
 ## 2026-10-07T05:30:21Z - Codex (GPT-6) - S6 report milestone receipt
 
 - Staged diff check exited 0; `docs(s6): report audited domain and context results` committed as `7ca2b981f00deceae24bc9a08838faa6257bf581` and pushed to origin/main. The commit contains only the report, read-only derivation script, and documentation/journals. Worktree was clean after the push. This chronological receipt is being committed separately; no scientific source or record was modified.
+
+## 2026-10-07T07:48:57Z - Codex (GPT-6) - S7 results-report handoff
+
+- Starting commit `12722f093c56380d8c663b82f98c05e08dca6468`, clean and matching origin/main. User requested a comprehensive S7 report matching prior study reports. Read Stage08/S7 contracts, approved lock, completed S5 and S7 reports, journals, final analysis, 36 supplements, independent audit, and campaign receipts.
+- Added `reports/S7_RESULTS_20261007.md` and read-only verifier/deriver `scripts/report_stage08_s7.py`; updated consolidated-report and NEXT_STEPS pointers and S7/CORE journals. Derived external inventory SHA-256 `fb0e482e2d99f16955b3268d572b82e6917dd5e4ca3a5baaba34a16d0e276006`; report SHA-256 `9860aecf94ba9fcb5aa26f111b0b611bd2d29a2529cdb91507271ec56aead709`.
+- Findings and decision: 36/36 S7 clean Full300 states verified; S7 full/mass/shape JSD, source clean utility and source first-key edit dependence are distinct descriptive outcomes. Independent audit's `execution_source_commit` field copied its 7bd preflight source; actual frozen inference source 9574 is corroborated by worktree/source/terminal-monitor receipts. Both are disclosed without rewriting audit evidence.
+- Validation: final read-only extractor/table check and `py_compile` exit 0; focused S7 CPU unit/integration suite 43 passed; `git diff --check` exit 0. Existing S7 archive sidecar and CRC passed. User-facing updates described the evidence and provenance distinction. No source science/protocol file changed, and no GPU/inference/training/Stage09 work occurred. Next: staged check, commit and push report milestone; SHA pending.
