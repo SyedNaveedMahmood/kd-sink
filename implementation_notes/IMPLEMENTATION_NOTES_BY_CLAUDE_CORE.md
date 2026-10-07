@@ -1556,3 +1556,9 @@ The authorized 4080 SUPER passed a synthetic FP32 128-token decomposition smoke 
 
 - An additional read-only C4 seed2 versus C2 seed2 teacher Full300 endpoint check found exact agreement on 300 ordered item IDs, teacher model SHA, checkpoint SHA, panel SHA, and BF16 precision. The six 4080 condition teacher aggregates have CE `3.058685684239692`; C4 on the 3090 has `3.0585052756691384` (difference `-0.0001804085705536` nats/target). All 300 per-item CE values differ slightly; mean absolute item difference `0.0013994062005534885`, maximum `0.004478634811761811`. The evidence rules out an item/model/checkpoint identity mismatch and is consistent with hardware numerical variation; no new inference was run.
 - Report wording now records the exact discrepancy and bounded item differences. Current report SHA-256 `f7c702a90a8626588217f9d7b76300a9d424007f0181616fb8faeb0a1c5a5f1e` supersedes the earlier draft report hash. Derived JSON SHA remains `8506c1289f25b188b8a7f8c7e013369eede4ba0c44dc5e26793dd5dc2288253f`.
+
+## 2026-10-07T04:44:10Z - Codex (GPT-6) - S1 report milestone commit and push
+
+- Final read-only extractor/report verifier: exit 0, 21 runs and 4,662 sealed aggregates. Python compile: exit 0. Focused CPU metrics/S5/analysis tests: 19 passed, exit 0. `git diff --cached --check`: exit 0. No source scientific file was modified, and no training/evaluation/model inference/GPU command was launched.
+- Milestone commit `945be057ecdbed548fce88e8b4beedcaa5f268d9` (`docs(s1): report three-seed C0-C6 results`) contains report, reproducible read-only extractor, consolidated-report scope note, NEXT_STEPS pointer, and CORE/S1 evidence entries. `git push origin main` exited 0; origin/main advanced from `ba0a3e9cd67d078d978c424c98d90d1ad4382f0d` to that commit. Worktree was clean immediately after the push.
+- This receipt is appended as a separate journal-only closeout. Stage09 release tasks remain open.
