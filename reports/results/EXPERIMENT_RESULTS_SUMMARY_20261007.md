@@ -1,5 +1,7 @@
 # KD-SINK experiment results summary
 
+**S2 detail update (2026-10-07):** The earlier S2 zero-coverage statements in this historical central-results snapshot are superseded for the external AbdullahPC campaign. The [dedicated S2 report](S2_RESULTS_20261007.md) documents an independently audited common-intersection run: six Pythia series, 153 native steps each, 918/918 Dense64 and 42/42 Full300 evaluations. Its own audit, panel/tokenizer bindings, and interpretation limits are the authority for those external S2 results. The S1/S4/S5/S6/S7 numbers below retain their original evidence scope.
+
 **S1 coverage update (2026-10-07):** This consolidated report used the then-audited seven seed0 S1 runs. A later checksum-verified compact transfer established C0–C6 numeric records for seeds 0, 1, and 2. See [the dedicated three-seed S1 report](S1_C0_C6_RESULTS_20261007.md) for current S1 coverage, per-seed numbers, and the limits of the compact seed1/2 artifacts. The historical seed0 statements below retain their original evidence scope.
 
 **S4 detail update (2026-10-07):** See [the dedicated S4 results report](S4_RESULTS_20261007.md) for the complete 35-state seed0 trajectory, all ten endpoint probe families, teacher reference, source identities, full-tree audit, and interpretation limits. The S4 results summarized below remain the same audited scientific records.
