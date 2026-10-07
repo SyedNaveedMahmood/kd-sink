@@ -185,6 +185,7 @@ Current authorized execution campaign closeout (2026-10-05): the preceding parag
 
 ## Stage09 - Analysis and release
 Work order: [09_ANALYSIS_RELEASE](design/e6a_v2/stages/09_ANALYSIS_RELEASE.md).
+S1 C0–C6 three-seed numeric reporting update (2026-10-07): `reports/S1_C0_C6_RESULTS_20261007.md` summarizes all 21 checksum-verified compact condition/seed records, their historical roots, endpoint and trajectory metrics, and limitations. Derived read-only table inventory: `D:\KD-SINK-central\analysis\S1_C0_C6_REPORT_DERIVED_20261007.json` (SHA-256 `8506c1289f25b188b8a7f8c7e013369eede4ba0c44dc5e26793dd5dc2288253f`). This report does not complete the remaining Stage09 figure/release gates or authorize new checkpoint inference.
 - [ ]09.1 Prespecified paired analyses and completeness checks.
 - [ ]09.2 Traceable figure/table generation with raw seeds.
 - [ ]09.3 Complete tests and offline clean-wheel/no-Upstream gate.
