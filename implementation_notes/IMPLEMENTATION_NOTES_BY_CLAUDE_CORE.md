@@ -1602,3 +1602,7 @@ The authorized 4080 SUPER passed a synthetic FP32 128-token decomposition smoke 
 ## 2026-10-07T05:29:53Z - Codex (GPT-6) - S6 report validation closeout
 
 - Final read-only extractor/report-table verification exited 0 and reproduced derived inventory SHA-256 `70ae20b7474104c009ba824f5bafe40a56a9c850b32a5ed16240b7f6c2f87914` and report SHA-256 `6cb236a72683f2400b9619c40eb9705400f92e3f0ba929db5f711b784a1c52e2`. `git diff --check` exited 0 (line-ending notices only). Focused S6 CPU suite remains 17 passed. Commit/push pending.
+
+## 2026-10-07T05:30:21Z - Codex (GPT-6) - S6 report milestone receipt
+
+- Staged diff check exited 0; `docs(s6): report audited domain and context results` committed as `7ca2b981f00deceae24bc9a08838faa6257bf581` and pushed to origin/main. The commit contains only the report, read-only derivation script, and documentation/journals. Worktree was clean after the push. This chronological receipt is being committed separately; no scientific source or record was modified.

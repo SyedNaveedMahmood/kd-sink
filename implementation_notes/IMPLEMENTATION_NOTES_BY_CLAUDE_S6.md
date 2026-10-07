@@ -265,3 +265,7 @@ S6 C0-C3 prefix audit PASSED: 16/16 stable states, 28,800 item-operation records
 
 - Reran `.\.venv\Scripts\python.exe scripts\report_stage08_s6.py --root D:\KD-SINK-central\analysis\stage08_scientific_20261005\S6 --audit D:\KD-SINK-central\analysis\stage08_scientific_20261005\audits\S6_FINAL_INDEPENDENT_AUDIT.json --output D:\KD-SINK-central\analysis\S6_REPORT_DERIVED_20261007.json --report reports\S6_RESULTS_20261007.md`: exit 0, all 28 summaries, 168 aggregates, 16,800 clean item records, pooled arithmetic, and four report tables matched. Derived SHA remained `70ae20b7474104c009ba824f5bafe40a56a9c850b32a5ed16240b7f6c2f87914`; report SHA-256 `6cb236a72683f2400b9619c40eb9705400f92e3f0ba929db5f711b784a1c52e2`.
 - `git diff --check` exited 0; only Git line-ending normalization notices on existing Markdown files. Run-manifest file SHA was independently rechecked and matched the report. No scientific source was changed. Commit/push pending.
+
+## 2026-10-07T05:30:21Z - Codex (GPT-6) - S6 report commit and push receipt
+
+- `git diff --cached --check` exited 0. The six-file S6 report/extractor, NEXT_STEPS/consolidated pointers, and CORE/S6 journals were committed as `7ca2b981f00deceae24bc9a08838faa6257bf581` (`docs(s6): report audited domain and context results`). `git push origin main` exited 0, advancing origin/main from `fa1490d` to `7ca2b98`; the immediate worktree status was clean. This append-only receipt requires its own closeout commit. No scientific source or data changed.
