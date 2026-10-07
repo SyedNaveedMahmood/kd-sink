@@ -1591,3 +1591,14 @@ The authorized 4080 SUPER passed a synthetic FP32 128-token decomposition smoke 
 ## 2026-10-07T05:20:23Z - Codex (GPT-6) - S5 report milestone commit
 
 - Final staged `git diff --cached --check` exited 0. The comprehensive report, read-only verifier, NEXT_STEPS/consolidated-report pointers, and CORE/S5 evidence notes were committed as `6c8f58d` (`docs(s5): report sealed reuse analysis results`). The report verifier and compile checks passed again immediately before staging; the derived inventory SHA stayed unchanged. Push verification follows this receipt.
+## 2026-10-07T05:29:18Z - Codex (GPT-6) - S6 results-report handoff
+
+- Starting commit `fa1490d0e09d5233068d38e73823ab8d3f0ad1b7`; the user requested a dedicated S6 report matching the prior S1/S4/S5 reports. Read the current Stage08/S6 contracts, D24/D25, reports, independent audit, and relevant journals before working.
+- Added the read-only S6 report extractor and comprehensive `reports/S6_RESULTS_20261007.md`; updated consolidated-report and NEXT_STEPS pointers and the S6 journal. External unrounded inventory SHA-256 `70ae20b7474104c009ba824f5bafe40a56a9c850b32a5ed16240b7f6c2f87914`.
+- Full prior S6 audit: 28 seed0 states, 50,400 item-operation records, 168 aggregate documents. Fresh reporting checks: 28 summaries, 168 aggregates, 16,800 clean item records, item-to-aggregate CE and pooled arithmetic. The original 504-aggregate runner failure receipt remains intact and disclosed; the S6 ZIP sidecar/CRC and independent-audit sidecar passed.
+- Validation: `.\.venv\Scripts\python.exe -m py_compile scripts\report_stage08_s6.py` exit 0; `.\.venv\Scripts\python.exe -m pytest -q tests\unit\test_stage08_s6.py tests\unit\test_stage08_s6_d25.py tests\unit\test_stage08_scientific_runners.py` exit 0, 17 passed. Final report-table rerun and diff check pending. User-visible progress updates described the audit discrepancy, table derivation, and interpretation limits.
+- No source scientific artifact or protocol changed; no training, evaluation inference, GPU work, HumanEval execution, optional long-context work, S2 rerun, or Stage09. Next: complete verification, commit, and push this report milestone. Milestone SHA pending.
+
+## 2026-10-07T05:29:53Z - Codex (GPT-6) - S6 report validation closeout
+
+- Final read-only extractor/report-table verification exited 0 and reproduced derived inventory SHA-256 `70ae20b7474104c009ba824f5bafe40a56a9c850b32a5ed16240b7f6c2f87914` and report SHA-256 `6cb236a72683f2400b9619c40eb9705400f92e3f0ba929db5f711b784a1c52e2`. `git diff --check` exited 0 (line-ending notices only). Focused S6 CPU suite remains 17 passed. Commit/push pending.
