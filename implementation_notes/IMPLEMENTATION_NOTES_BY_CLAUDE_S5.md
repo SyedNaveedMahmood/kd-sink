@@ -197,3 +197,7 @@ S7 software milestone `0541e1fc1031b96a027794b0aa5dfb8fd9f131a1` and Stage08 S4 
 - Scientific interpretation: C2/C6 show high sink; C2 lower full-map JSD and greater endpoint deletion cost than C6; C5 best conditional non-sink JSD with low sink and comparatively small intervention cost. Clean CE differences are small without an approved equivalence margin. Three physical GPUs remain a hardware confound. S7's later decomposition is separate.
 - Exact tests: report extractor with `--report` exit 0; Python compile exit 0; focused S5/Stage08 runner/readiness CPU tests 17 passed, 0 failed/skipped, exit 0; `git diff --check` exit 0. One first table-verifier attempt failed on a textual contrast header and was repaired before final verification. No S1/S5 scientific source modified, no training/evaluation/GPU work, no Stage09.
 - User-facing updates described scope, provenance, and validation. Next: commit/push documentation milestone; commit SHA pending.
+
+## 2026-10-07T05:20:23Z - Codex (GPT-6) - S5 report commit receipt
+
+- Milestone commit `6c8f58d` (`docs(s5): report sealed reuse analysis results`) contains the S5 report, read-only numeric/source verifier, navigation pointers, and CORE/S5 journals. Final report-table/source verification, Python compile, and staged whitespace checks passed. Push verification follows this closeout entry.
