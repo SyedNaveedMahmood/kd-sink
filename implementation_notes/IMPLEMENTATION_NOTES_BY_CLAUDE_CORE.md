@@ -1484,3 +1484,41 @@ The authorized 4080 SUPER passed a synthetic FP32 128-token decomposition smoke 
 - Final envelope verification passed for the approved S7 lock (`696c9fc206efdb60b53120c411cc3089306048733829fc4762db41caf92917b7`), D24 (`46351d8e32ef1ef6238af18c11676e45e3d439e0e46942d1e61e35b8001851e6`), and D26 (`888b21509000b570c83c2574f5a6bfbc3d1ec2dc197e88d841d085bac222f182`). Campaign/implementation JSON parsed; focused postcampaign tests passed 15/15; `git diff --check` passed. The full offline unit/integration suite had already passed 378 tests after code changes (one external `astor` deprecation warning).
 - Archive preparation is the remaining handoff step. The package target is `D:\KD-SINK-central\archives\S7_scientific_20261006.zip`; it will include the S7 result tree, qualification and audit/recovery evidence, committed S7-relevant source snapshot, and file-level manifest/checksums. Original S1/S5 input trees and tensor payloads are excluded. The outer ZIP digest will be recorded by its adjacent `.sha256` sidecar.
 - Next action: finish ZIP64 CRC, member/hash, extraction, and sidecar verification. No new scientific inference or training is authorized or needed.
+
+
+## 2026-10-07T02:02:17Z - Codex (GPT-6) - consolidated experiment results report
+
+- Starting branch/commit: main at e4cd7f2a25fcdcbcd85ca51b835c3a93cf71c69a; origin/main matched after fetch.
+- User request and approved scope: create a full Markdown results summary for the current KD-SINK experiments and push the report; use existing evidence only.
+- Source files/functions read: user-provided AGENTS.md; NEXT_STEPS.md; e6a_v2 README, DECISIONS, Stage08 and S1-S7 study designs; OBJECTIVES.md; current Stage08/S7 reports and journals; D-drive S1 index and S4/S5/S6/S7 result/audit records.
+- Files changed: reports/EXPERIMENT_RESULTS_SUMMARY_20261007.md (SHA-256 5827c97af677d1077b858164763294ab9d3ec86b5e3815a3a8707d1ebf7fe556); NEXT_STEPS.md; CORE and affected S1-S7 journals.
+- Decisions: follow current repository numbering (S5 reuse-only reaggregation; attached earlier sink-aware utility framing is S7); separate measured results from non-runs; preserve single-seed and hardware caveats. The report changes no scientific data or protocol.
+- Discoveries: seven primary seed0 S1 runs are verified; S4/S5/S6/S7 have audited outputs; S2 has no trajectory outcome and S3 remains disabled. S4/S6 wrapper/runner discrepancies and the exact C3 log gap remain disclosed.
+- User-visible communications: progress updates reported the evidence scope and limitations; final response will link the report and pushed commit.
+- Tests/validation: read-only source extraction and report-section assertions passed; exact report validation used a PowerShell here-string piped to Python (exit 0). git diff --check passed before journal append and will be rerun after it. Pytest not run because this milestone changes documentation only.
+- Produced artifact: reports/EXPERIMENT_RESULTS_SUMMARY_20261007.md (SHA-256 5827c97af677d1077b858164763294ab9d3ec86b5e3815a3a8707d1ebf7fe556); external audit and archive hashes are enumerated in the report.
+- NEXT_STEPS: report pointer added; no implementation/scientific checkbox changed.
+- Remaining work: rerun git diff --check, commit and push the report/journal milestone; no scientific run is authorized or needed.
+- Milestone commit: pending; record report commit SHA in a follow-up journal entry.
+
+
+## 2026-10-07T02:03:02Z - Codex (GPT-6) - report evidence/hash correction
+
+- Addendum: the report now names the exact nine S5 Full300 steps and S7 frozen execution commit/GPU identity; earlier draft SHA references in this journal are superseded. Final report file SHA-256: 4fe02998febc4f632004df3a33256e8d64e9560ee4fa7142a4f23f9d3a434cb4.
+- Validation after the content update: git diff --check passed (exit 0; only Git CRLF-normalization notices on existing journals/NEXT_STEPS).
+- No scientific data, protocol, or source-run artifact was edited.
+
+
+## 2026-10-07T02:03:30Z - Codex (GPT-6) - report validation assertion correction
+
+- Validation attempt: a PowerShell report assertion exited nonzero because it expected the report to contain its own SHA-256. This was an invalid self-check, not a report/source mismatch. The checksum is recorded in journals and the report lists the source hashes.
+- Correction: removed the self-SHA assertion, retained checks for S1-S7 sections and key coverage statements; rerun exited 0. `git diff --check` also exited 0.
+- No report data or scientific result changed in this correction.
+
+
+## 2026-10-07T02:03:38Z - Codex (GPT-6) - final report validation
+
+- Final report file SHA-256: e4b99c480f262f020030d5a84b68891a63c731a425d22baac5190df5568344da. This supersedes the earlier draft hashes recorded above.
+- Staged `git diff --cached --check` initially found three trailing spaces in report metadata line breaks. They were removed; the rerun exited 0. The report content and source scientific values did not change.
+- The earlier failed self-hash assertion was an invalid validator expectation and is recorded above; section/coverage assertions passed after correction.
+- Commit/push remains pending.

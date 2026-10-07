@@ -59,3 +59,33 @@ Starting commit `0959501af6cd4a8285bd7eb9733cdcf6651e615b`. Read Stage06, S3, re
 ## 2026-09-27T16:28:14Z - Codex (GPT-6) - shared Stage06 push reference
 
 The S1-only RTX4080 continuation was pushed to `origin/main` as `afebe96eb4fb5fcbee910276684ca6d5e3cf54c6`; no S3 profile, enablement or calibration was added. Optional S3 remains blocked.
+
+
+## 2026-10-07T02:02:17Z - Codex (GPT-6) - consolidated experiment results report
+
+- Starting branch/commit: main at e4cd7f2a25fcdcbcd85ca51b835c3a93cf71c69a; origin/main matched after fetch.
+- User request and approved scope: create a full Markdown results summary for the current KD-SINK experiments and push the report; use existing evidence only.
+- Source files/functions read: user-provided AGENTS.md; NEXT_STEPS.md; e6a_v2 README, DECISIONS, Stage08 and S1-S7 study designs; OBJECTIVES.md; current Stage08/S7 reports and journals; D-drive S1 index and S4/S5/S6/S7 result/audit records.
+- Files changed: reports/EXPERIMENT_RESULTS_SUMMARY_20261007.md (SHA-256 5827c97af677d1077b858164763294ab9d3ec86b5e3815a3a8707d1ebf7fe556); NEXT_STEPS.md; CORE and affected S1-S7 journals.
+- Decisions: distinguish implemented/tested capability from optional scientific replication.
+- Discoveries: S3 remains disabled and 0/15 optional training jobs have scientific outputs.
+- User-visible communications: progress updates reported the evidence scope and limitations; final response will link the report and pushed commit.
+- Tests/validation: read-only source extraction and report-section assertions passed; exact report validation used a PowerShell here-string piped to Python (exit 0). git diff --check passed before journal append and will be rerun after it. Pytest not run because this milestone changes documentation only.
+- Produced artifact: reports/EXPERIMENT_RESULTS_SUMMARY_20261007.md (SHA-256 5827c97af677d1077b858164763294ab9d3ec86b5e3815a3a8707d1ebf7fe556); external audit and archive hashes are enumerated in the report.
+- NEXT_STEPS: report pointer added; no implementation/scientific checkbox changed.
+- Remaining work: rerun git diff --check, commit and push the report/journal milestone; no scientific run is authorized or needed.
+- Milestone commit: pending; record report commit SHA in a follow-up journal entry.
+
+
+## 2026-10-07T02:03:02Z - Codex (GPT-6) - report evidence/hash correction
+
+- Addendum: the report now names the exact nine S5 Full300 steps and S7 frozen execution commit/GPU identity; earlier draft SHA references in this journal are superseded. Final report file SHA-256: 4fe02998febc4f632004df3a33256e8d64e9560ee4fa7142a4f23f9d3a434cb4.
+- Validation after the content update: git diff --check passed (exit 0; only Git CRLF-normalization notices on existing journals/NEXT_STEPS).
+- No scientific data, protocol, or source-run artifact was edited.
+
+
+## 2026-10-07T02:03:38Z - Codex (GPT-6) - final report hash and formatting correction
+
+- Final report file SHA-256: e4b99c480f262f020030d5a84b68891a63c731a425d22baac5190df5568344da; this supersedes earlier draft hashes in this journal.
+- Staged `git diff --cached --check` first caught trailing spaces in three report metadata lines; these were removed and the check then exited 0. No scientific result changed.
+- Commit/push remains pending.
