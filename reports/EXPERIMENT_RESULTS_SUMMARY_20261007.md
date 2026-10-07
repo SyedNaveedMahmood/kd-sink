@@ -4,6 +4,8 @@
 
 **S4 detail update (2026-10-07):** See [the dedicated S4 results report](S4_RESULTS_20261007.md) for the complete 35-state seed0 trajectory, all ten endpoint probe families, teacher reference, source identities, full-tree audit, and interpretation limits. The S4 results summarized below remain the same audited scientific records.
 
+**S5 detail update (2026-10-07):** See [the dedicated S5 results report](S5_RESULTS_20261007.md) for the complete D26 seed0 reuse join, Full300 trajectory, Dense64 time summaries, all endpoint measures, source identities, and limits. The S5 results summarized below remain the same sealed scientific records.
+
 **Evidence cutoff:** 2026-10-07
 
 **Repository source:** e4cd7f2a25fcdcbcd85ca51b835c3a93cf71c69a

@@ -188,3 +188,12 @@ S7 software milestone `0541e1fc1031b96a027794b0aa5dfb8fd9f131a1` and Stage08 S4 
 
 - Push verification: report milestone commit `660fca963fbae8d33bf50f5c82be8d7bcebacd6c` and journal SHA closeout `9a4ea57b19d6737f7cd21b3ed258ac850e16510a` were pushed to origin/main. Remote advanced from starting commit e4cd7f2a25fcdcbcd85ca51b835c3a93cf71c69a.
 - Final documentation closeout is being committed and pushed with this receipt; no source or scientific result changed.
+
+## 2026-10-07T05:19:30Z - Codex (GPT-6) - audited S5 results report
+
+- Starting `main` commit: `2d82a57ab50e5fdecde8c0c8daf2a1b85249d3e1`. Read AGENTS/NEXT_STEPS, S5 design and Stage08/metric/objective contracts, D24/D26 approval and compatibility, execution report, latest S5/CORE journals, all sealed S5 bundle files and prior source reports.
+- New report `reports/S5_RESULTS_20261007.md` (SHA-256 `9769977bde63d512ea2000a8228e1f994e4de6a8d61496b0093bc52afc759355`) and verifier `scripts/report_stage08_s5.py`; unrounded derivations at `D:\KD-SINK-central\analysis\S5_REPORT_DERIVED_20261007.json` (SHA-256 `bb91cd6dd17e0cd06b9f2894f609faf59849a2e31ddae9cafd847bd147f38c02`). NEXT_STEPS and consolidated-report links updated.
+- Read-only audit: exact four D26 seed0 runs/roots/UUIDs, 440 source rows, 101 Dense64 plus nine Full300 joined steps, common item hashes, all 14 finite measures, every signed comparison arithmetic, S5 file hashes/audit sidecar. Prior source verifier establishes 235,936 source S1 item records; no model was loaded. Existing archived S5 ZIP SHA sidecar and CRC passed.
+- Scientific interpretation: C2/C6 show high sink; C2 lower full-map JSD and greater endpoint deletion cost than C6; C5 best conditional non-sink JSD with low sink and comparatively small intervention cost. Clean CE differences are small without an approved equivalence margin. Three physical GPUs remain a hardware confound. S7's later decomposition is separate.
+- Exact tests: report extractor with `--report` exit 0; Python compile exit 0; focused S5/Stage08 runner/readiness CPU tests 17 passed, 0 failed/skipped, exit 0; `git diff --check` exit 0. One first table-verifier attempt failed on a textual contrast header and was repaired before final verification. No S1/S5 scientific source modified, no training/evaluation/GPU work, no Stage09.
+- User-facing updates described scope, provenance, and validation. Next: commit/push documentation milestone; commit SHA pending.
