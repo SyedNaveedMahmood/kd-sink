@@ -1617,3 +1617,11 @@ The authorized 4080 SUPER passed a synthetic FP32 128-token decomposition smoke 
 ## 2026-10-07T07:50:29Z - Codex (GPT-6) - S7 report milestone receipt
 
 - Staged diff check exited 0; `docs(s7): report audited sink utility and decomposition results` committed as `49eafc7127066539a2a45fdc027de5f4a9715cca` and pushed to origin/main. The six-file milestone contains only the report, read-only derivation script, and documentation/journals. Worktree was clean after push. This chronological receipt is being committed separately; no scientific source or record was modified.
+
+## 2026-10-07T07:52:51Z - Codex (GPT-6) - group completed results reports
+
+- Starting commit: clean `main` at `6b40a6a295dea4d5a32dee73016aba2720369941`, matching `origin/main`. User requested all completed experiment results reports in a new folder and a push to origin.
+- Read AGENTS, NEXT_STEPS, e6a_v2 README/DECISIONS, current Stage09 file, and relevant CORE notes. Moved the six completed narrative reports into `reports/results/`, added its README index, updated relative Markdown links and six NEXT_STEPS pointers. Historical status/audit JSON and Stage06 handoff records remain at their existing paths; historical journal entries remain append-only.
+- Decision rationale: keep the six reader-facing scientific summaries together without moving operational receipts or changing scientific source records. Report text, numbers, and conclusions are unchanged; only links needed for the new location were edited.
+- Validation: normalized-byte comparison against `HEAD` passed for all six reports with only the expected link transformations; all 39 local Markdown links in the new folder resolve; all six NEXT_STEPS pointers resolve. Initial link check found three JSON links still pointing to the old report directory; corrected them and reran the check successfully. `git diff --check` and `git diff --cached --check` both exited 0. No scientific tests were run for this documentation-only move.
+- User-visible communications: described the six-report scope, preserved status/audit files, and link/content verification. No training, evaluation, GPU work, source-artifact modification, or Stage09 execution. Next action: stage, commit, push, and verify the final worktree. Milestone SHA pending.
