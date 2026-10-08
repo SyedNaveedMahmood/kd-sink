@@ -128,3 +128,24 @@ automatic inheritance, equivalence, onset or mediation verdict is generated.
 CPU tests, synthetic GPU tests, real production qualification and scientific
 inference are separate evidence categories. Passing tests cannot guarantee
 absence of bugs or establish a scientific conclusion.
+
+## Preparation update, 2026-10-08
+
+The [preparation report](../../reports/results/MECHANISTIC_PREPARATION_20261008.md)
+records the fresh E0 audit, complete common/E1/E2/E3 v1 specifications and
+qualification-bound v2 candidate envelopes. Source-only confirmation selection
+has been prepared and independently checked; its proposed count and the exact
+decision table still require whole-lock researcher approval. Full-sized
+GPT-2-large/medium synthetic qualification on the fixed Adrita UUID passed;
+this is engineering evidence, not registered scientific-panel inference.
+
+Strict candidates require `--disable-tf32` to establish highest FP32 precision
+and both disabled TF32 flags before runtime admission. The pinned original
+teacher's base-model safetensor names are mapped to the LM wrapper; legacy
+causal masks are verified exactly before removal. Learned tensor coverage,
+FP32 dtype, tied embeddings and all original source hashes remain strict.
+
+Approve into a new envelope with an explicit approval record; preserve the
+draft. Execution also requires a new explicit operator scope lifting the
+current prohibition on scientific-panel inference. No command in this update
+has launched a scientific state, training, E4/E5 or Stage09.

@@ -12,7 +12,7 @@ evidence, D24, S1/S4/S5 reports and CORE/S4/S5 journals. Work sequentially.
   document-disjoint confirmation candidate from eligible LM2000 where possible;
   approval-ready content-hashed candidates and exact unresolved decision table.
   Seal approval only for completely researcher-authorized specifications.
-- [ ] P2: pinned-source/checkpoint availability and hash checks; full GPT-2-large
+- [x] P2: pinned-source/checkpoint availability and hash checks; full GPT-2-large
   and medium128-token synthetic execution on the exact Adrita GPU; live E1/E2/E3
   interfaces, parity/selectivity/exception restoration, full-vocabulary geometry,
   measured errors/resources and independently checked external receipts.

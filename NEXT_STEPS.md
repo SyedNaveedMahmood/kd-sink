@@ -9,6 +9,18 @@ E1-E3 checkpoint/panel inference remains explicitly unauthorized. Work order:
 `design/e6a_v2/stages/MECHANISTIC_PREPARATION.md`; begin P0 in a new external
 directory, preserving all earlier E0/E1-E3 artifacts and historical science.
 
+Preparation evidence: [complete report](reports/results/MECHANISTIC_PREPARATION_20261008.md).
+Fresh E0 is COMPLETE:108000 S4 records/35 students plus teacher, with complete
+recorded S1 deletion context and independent archive closure. Trajectories are
+mixed/nonmonotonic; the unscaled composite is insufficient. E1/E2/E3 v2
+qualification-bound candidates remain PROTOCOL_FREEZE_PENDING_RESEARCHER_APPROVAL.
+The source-only confirmation candidate has300 blocks/32 documents disjoint
+from Full300, panel SHA509a90c6039cd90d7d4f6986ac7fe3b75468609073b4808baa8b5bae5294c7f7.
+Real GPT-2-large/medium engineering qualification PASSED on exact Adrita UUID,
+with six independently audited synthetic bundles and5.637GiB peak reserved.
+No scientific checkpoint/panel inference is authorized or executed. P3 final
+validation/delivery status is in the preparation work order and append-only journals.
+
 ## Mechanistic follow-up E0 (2026-10-08; independent worktree)
 
 User authorized implementation of the mechanism proposal. Work proceeds one

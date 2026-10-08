@@ -1,0 +1,1041 @@
+{
+  "E0": {
+    "D24_sha256": "46351d8e32ef1ef6238af18c11676e45e3d439e0e46942d1e61e35b8001851e6",
+    "S1_compact_transfer_receipt_sha256": "5ed5bbbdaf207ae24ab3826ae8c41bb6cac24a01ee005204ab8c2bd303c636dd",
+    "S1_context_records": 31500,
+    "S1_context_states": 35,
+    "S4_records": 108000,
+    "S4_student_batteries": 35,
+    "artifact": "D:\\KD-SINK-central\\analysis\\mechanistic_preparation_20261008\\attempt01\\E0_SCIENTIFIC_AUDIT.json",
+    "artifact_sha256": "7a8c86b84c242ea240ee1a2e80f24dff54260fec40e762d7cfa0b7d66857b0c3",
+    "audit_source_commit": "eefd05ea0dd9f9135cd4d32db2791c959b7493ca",
+    "composite_status": "insufficient evidence: no independently specified scaling recipe; individual component values and units retained, no zero-vector cosine or fitted normalization",
+    "context_independent_item_reaggregation": "PASS",
+    "endpoint_gap_directions": {
+      "away_from_teacher": 80,
+      "toward_teacher": 269,
+      "unchanged": 1
+    },
+    "new_inference": false,
+    "original_transfer_inventory_hashes": {
+      "D:\\S1_C0_artifacts.zip": "8690518cd7bd72188cc0c1328e87080d1d8abc8d9b66f260479f0f17bec70ea0",
+      "D:\\S1_C1_artifacts.zip": "46ca9bb5f0a6f274215db380aa5d182a45e173412c4f5f3065198dacfb656e2d",
+      "D:\\S1_C2_artifacts.zip": "4108048caa39862ada1708a3d16ac2a67ad2a9dffae246f16756a0310897737b",
+      "D:\\S1_C3_artifacts.zip": "3ebc6c673b21e82432f7bf240904ef502322f00a442acff5609db58fc1b29ebc",
+      "D:\\S1_C4_artifacts.zip": "803f2c0f6504ecc4e7624ebc2c1966bfa2f5a7d6e2230999d819ba1d23518b29",
+      "D:\\S1_C5_artifacts.zip": "4d1855f357fd513d792620d569b4f99b5c06ac05265cc829e21441885d97ae86",
+      "D:\\S1_C6_artifacts.zip": "f2186856f22935fb3fce520e90b3d12d93f3a413207e5910e6d790b71845f215"
+    },
+    "precision_limit": "S4 FP32 and S1/S5 BF16 remain separately labeled",
+    "probes_per_battery": 10,
+    "retrospective_exploratory": true,
+    "separate_random_K_controls": 5,
+    "source_commit": "f1de30c24869decf2329aa199866a0012301598a",
+    "source_file_inventory_count": 31535,
+    "status": "COMPLETE",
+    "teacher_batteries": 1,
+    "training": false,
+    "trajectory_classification": "mixed/nonmonotonic",
+    "validation_script_sha256": "d15b807c03be9565adbb9fc980428d21e5a0d8cf19ac53628f5e2e60b352bf75"
+  },
+  "RNG_amendment_comparison": {
+    "comparison": "Exact serialized operations and diagnostics; identities/seals/resource clocks appropriately changed",
+    "counts": {
+      "E1_student": 94,
+      "E1_teacher": 166,
+      "E2_student": 48,
+      "E2_teacher": 72,
+      "E3_student": 120,
+      "E3_teacher": 120
+    },
+    "engineering_only": true,
+    "item_operation_records_unchanged": 620,
+    "scientific_panel_inference": false,
+    "status": "PASS"
+  },
+  "agent": "Codex (GPT-6)",
+  "artifact_inventory": {
+    "files": 241,
+    "path": "D:\\KD-SINK-central\\analysis\\mechanistic_preparation_20261008\\attempt01\\PREPARATION_ARTIFACT_INVENTORY.json",
+    "sha256": "15a1743e880b5ac4fc78f99ee06621e7d1916dc93ac918386d9415b39adb6e40"
+  },
+  "branch": "mechanistic-e0",
+  "candidates": {
+    "E1": {
+      "envelope_sha256": "424739bcf88f2949023dc5b369c234715aae1b96fa8e5193cd0240f61336530b",
+      "file_sha256": "b6b819ad16e2cc68e5ddb3cddb862439b46ad7493507f748b20728c54e8a1111",
+      "state_count": 14
+    },
+    "E2": {
+      "envelope_sha256": "d6b49094f43a7814b3d60217f31dcfac51c93df320984d12469ce258fb31df52",
+      "file_sha256": "ab4deb61cff755d6804fb1ae72e1af5278ba21c6c9f5c6c7411378b069ab94fb",
+      "state_count": 16
+    },
+    "E3": {
+      "envelope_sha256": "3001fd3aad8f6a634f949b41b217f17972610a139fbd388bbb4c7dfb712252eb",
+      "file_sha256": "f5409aff1031210c074d1639a4decc29df040d98995166b63a12157111a2997a",
+      "state_count": 16
+    }
+  },
+  "confirmation": {
+    "confirmation_blocks_documents": [
+      300,
+      32
+    ],
+    "count_rule_approval": false,
+    "discovery_blocks_documents": [
+      300,
+      46
+    ],
+    "document_ID_and_text_SHA_disjoint": true,
+    "eligible_excluded": [
+      1979,
+      21
+    ],
+    "historical_clean_LM2000_exposure": true,
+    "path": "D:\\KD-SINK-central\\analysis\\mechanistic_preparation_20261008\\attempt01\\P1_panel_retry02\\panel.json",
+    "selected_LM_indices": [
+      21,
+      320
+    ],
+    "sha256": "509a90c6039cd90d7d4f6986ac7fe3b75468609073b4808baa8b5bae5294c7f7"
+  },
+  "delivery": "Final commit/push receipt follows externally; no approval or scientific execution authorized.",
+  "executable_qualification_source": "70325fad19926fc6aae4e4a412a4ebb51fe8ddde",
+  "external_root": "D:\\KD-SINK-central\\analysis\\mechanistic_preparation_20261008\\attempt01",
+  "loading": {
+    "allocated_peak": 4591544320,
+    "python_numpy_cpu_cuda_rng": "restored",
+    "reserved_peak": 4659871744,
+    "seconds": 12.002379099954851
+  },
+  "original_results_and_locks_unchanged": true,
+  "proposed_numerical_gates": {
+    "FP32_output": {
+      "atol": 0.001,
+      "rtol": 0.0001
+    },
+    "double_geometry": {
+      "atol": 1e-10,
+      "rtol": 0
+    },
+    "injection_norm": {
+      "atol": 1e-06,
+      "rtol": 1e-06
+    }
+  },
+  "qualification": {
+    "bundles": {
+      "E1_student": {
+        "items": 2,
+        "manifest_sha256": "55fb0caea9c8d4423875df2fd26747cb82c293dfa265adfad61aa676788cc113",
+        "max_fp32_behavior_vs_double_geometry_deltaCE_difference": 4.3509551118816985e-07,
+        "max_geometry_error": 4.718447854656915e-15,
+        "max_norm_error": 0,
+        "max_parity_error": 0,
+        "operations": 47,
+        "valid_targets_per_operation": 243
+      },
+      "E1_teacher": {
+        "items": 2,
+        "manifest_sha256": "dc2135881b7e6bc97b581c438b19863b6d8d05ae0f8b9799cfe84f2ce8f9f255",
+        "max_fp32_behavior_vs_double_geometry_deltaCE_difference": 3.801612882547989e-07,
+        "max_geometry_error": 3.6637359812630166e-15,
+        "max_norm_error": 0,
+        "max_parity_error": 0,
+        "operations": 83,
+        "valid_targets_per_operation": 243
+      },
+      "E2_student": {
+        "items": 2,
+        "manifest_sha256": "587d017b487a097cbe5c603f7a673398b84cfa21006b801f1caf8f9b4a521650",
+        "max_fp32_behavior_vs_double_geometry_deltaCE_difference": 3.1731889196806584e-07,
+        "max_geometry_error": 3.552713678800501e-15,
+        "max_norm_error": 0,
+        "max_parity_error": 4.38690185546875e-05,
+        "operations": 24,
+        "valid_targets_per_operation": 243
+      },
+      "E2_teacher": {
+        "items": 2,
+        "manifest_sha256": "7fccf9ef1a7268a02d8c612e373e42c733c354f2c10a4fa1d6a4fe2a59b45a5c",
+        "max_fp32_behavior_vs_double_geometry_deltaCE_difference": 3.118382604686519e-07,
+        "max_geometry_error": 3.913536161803677e-15,
+        "max_norm_error": 0,
+        "max_parity_error": 3.814697265625e-05,
+        "operations": 36,
+        "valid_targets_per_operation": 243
+      },
+      "E3_student": {
+        "items": 2,
+        "manifest_sha256": "8b7d93c567153f76e70ecc7df7dfc3d9fcafd56c460b13b6329f26a2a1abba05",
+        "max_fp32_behavior_vs_double_geometry_deltaCE_difference": 2.9484328550855553e-07,
+        "max_geometry_error": 3.70536934468646e-15,
+        "max_norm_error": 1.3211151461689497e-07,
+        "max_parity_error": 4.38690185546875e-05,
+        "operations": 60,
+        "valid_targets_per_operation": 243
+      },
+      "E3_teacher": {
+        "items": 2,
+        "manifest_sha256": "2be8547377ecdf51743b538f902bc54d8b4f735783ab0e2953235deb9d9f0a9f",
+        "max_fp32_behavior_vs_double_geometry_deltaCE_difference": 4.3491375986779574e-07,
+        "max_geometry_error": 3.774758283725532e-15,
+        "max_norm_error": 2.530010689838491e-07,
+        "max_parity_error": 3.4332275390625e-05,
+        "operations": 60,
+        "valid_targets_per_operation": 243
+      }
+    },
+    "engineering_only": true,
+    "max_geometry_error": 4.718447854656915e-15,
+    "max_norm_error": 2.530010689838491e-07,
+    "max_parity_error": 4.38690185546875e-05,
+    "new_scientific_inference": false,
+    "qualification_complete_sha256": "f6fc486dfc9656291b6ba1480bedb0efcf3db9a13df75e032681e2b180562239",
+    "resources": {
+      "baseline_nv_used_bytes": 2085617664,
+      "conservative_peak_total_use_bytes": 8137998336,
+      "disk_min_free_bytes": {
+        "C:/": 529118408704,
+        "D:/": 74335883264,
+        "E:/": 9093226496
+      },
+      "minimum_sampled_gpu_free_bytes": 8712617984,
+      "peak_allocated_bytes": 5740827136,
+      "peak_reserved_bytes": 6052380672,
+      "process_peak_sampled_rss_bytes": 4100005888,
+      "psutil_version": "7.2.2",
+      "ram_min_available_bytes": 46438277120,
+      "required_gpu_headroom_bytes": 1717095628,
+      "samples": 115,
+      "temperature_max_c": 58,
+      "wall_seconds": 119.71912829997018
+    },
+    "source_commit": "70325fad19926fc6aae4e4a412a4ebb51fe8ddde",
+    "status": "PASS",
+    "validator_sha256": "1a092557db8443e83ee2a0d7bd15e84d3dbeac2d25389765a8b305e93d464cf6"
+  },
+  "qualification_phase_metrics": {
+    "E1_student": {
+      "allocated_peak": 4991239168,
+      "bundle_complete_sha256": "618d78b398ae6a0e06e72d345d35a0718633698d8e1d19baef431d97082717a5",
+      "item_count": 2,
+      "operation_count": 47,
+      "reserved_peak": 6052380672,
+      "seconds": 8.012066199909896
+    },
+    "E1_teacher": {
+      "allocated_peak": 5141146624,
+      "bundle_complete_sha256": "b3b36bf99a2cc43875246ddb39e64a908c8dbf65989bf47132998aa4db34aef4",
+      "item_count": 2,
+      "operation_count": 83,
+      "reserved_peak": 5324668928,
+      "seconds": 17.88816999993287
+    },
+    "E2_student": {
+      "allocated_peak": 4978400256,
+      "bundle_complete_sha256": "ce58c6147dece3cc1b84d323bf5d90d57373d4817a7c14bd874e63a2c4854990",
+      "item_count": 2,
+      "operation_count": 24,
+      "reserved_peak": 6052380672,
+      "seconds": 4.829010499990545
+    },
+    "E2_teacher": {
+      "allocated_peak": 4989708288,
+      "bundle_complete_sha256": "b5c5925317c336d64666052ba212aef0e562c21baefebe18f46a71166eb9d36f",
+      "item_count": 2,
+      "operation_count": 36,
+      "reserved_peak": 5324668928,
+      "seconds": 8.663872699951753
+    },
+    "E3_student": {
+      "allocated_peak": 5170912256,
+      "bundle_complete_sha256": "33ed85831b0b5c01e7b735c6265f0fd5255ce9df71620b54b7db0b29a161e191",
+      "item_count": 2,
+      "operation_count": 60,
+      "reserved_peak": 6052380672,
+      "seconds": 8.568375600036234
+    },
+    "E3_teacher": {
+      "allocated_peak": 5190036480,
+      "bundle_complete_sha256": "f02468fd783b0d6dda10ac2a73bb47659d0d3da29e6340646fd3ef12e72f4508",
+      "item_count": 2,
+      "operation_count": 60,
+      "reserved_peak": 5534384128,
+      "seconds": 12.009737299988046
+    }
+  },
+  "receipt_files": {
+    "E0_INDEPENDENT_DERIVED_AUDIT.json": {
+      "path": "D:\\KD-SINK-central\\analysis\\mechanistic_preparation_20261008\\attempt01\\E0_INDEPENDENT_DERIVED_AUDIT.json",
+      "sha256": "0de99b66c5451077dd5e4ed995f4d5250d515714f215a969e1dea838dbbd06d2"
+    },
+    "E0_SCIENTIFIC_AUDIT.json": {
+      "path": "D:\\KD-SINK-central\\analysis\\mechanistic_preparation_20261008\\attempt01\\E0_SCIENTIFIC_AUDIT.json",
+      "sha256": "7a8c86b84c242ea240ee1a2e80f24dff54260fec40e762d7cfa0b7d66857b0c3"
+    },
+    "P1_V2_CANDIDATE_AUDIT_retry02.json": {
+      "path": "D:\\KD-SINK-central\\analysis\\mechanistic_preparation_20261008\\attempt01\\P1_V2_CANDIDATE_AUDIT_retry02.json",
+      "sha256": "b618fd754e9ff2f9c9968a38d00f5d3c0a3299300662499185972f08a7f7ef38"
+    },
+    "P1_candidates_v2_retry02/CANDIDATE_INVENTORY.json": {
+      "path": "D:\\KD-SINK-central\\analysis\\mechanistic_preparation_20261008\\attempt01\\P1_candidates_v2_retry02\\CANDIDATE_INVENTORY.json",
+      "sha256": "5e32279b78af222f965dd463dc079fe79acdc5278da2c07cffa2350c6bb4d214"
+    },
+    "P1_panel_retry02/PANEL_PREPARATION.json": {
+      "path": "D:\\KD-SINK-central\\analysis\\mechanistic_preparation_20261008\\attempt01\\P1_panel_retry02\\PANEL_PREPARATION.json",
+      "sha256": "416f44780b56909019c4e38a1998f4cbbbe630ec657532aac4e73f692c4cec61"
+    },
+    "P1_panel_retry02/confirmation_ids.json": {
+      "path": "D:\\KD-SINK-central\\analysis\\mechanistic_preparation_20261008\\attempt01\\P1_panel_retry02\\confirmation_ids.json",
+      "sha256": "5a219bb91a1471eb1e4ec824b05d4be29a15fe6ff5dadfc4a12dbfd672981a8a"
+    },
+    "P1_panel_retry02/selection.json": {
+      "path": "D:\\KD-SINK-central\\analysis\\mechanistic_preparation_20261008\\attempt01\\P1_panel_retry02\\selection.json",
+      "sha256": "cbb973e0fbad7f360f51fbd4a6e68793a6caa5b43efe102698b570ec924d52dc"
+    },
+    "P2_FAILED_ATTEMPT_PROVENANCE.json": {
+      "path": "D:\\KD-SINK-central\\analysis\\mechanistic_preparation_20261008\\attempt01\\P2_FAILED_ATTEMPT_PROVENANCE.json",
+      "sha256": "aac68dd6b778f53a8ab44abacbbec07e000c4102f699780f55cf3715d04de3ae"
+    },
+    "P2_INDEPENDENT_QUALIFICATION_AUDIT_retry03.json": {
+      "path": "D:\\KD-SINK-central\\analysis\\mechanistic_preparation_20261008\\attempt01\\P2_INDEPENDENT_QUALIFICATION_AUDIT_retry03.json",
+      "sha256": "750a766ce4ec95dda0afd877fb144f0d365273aa8a6813dcf053cab4eb26e4c9"
+    },
+    "P2_LOADER_TEST_FAILURE.json": {
+      "path": "D:\\KD-SINK-central\\analysis\\mechanistic_preparation_20261008\\attempt01\\P2_LOADER_TEST_FAILURE.json",
+      "sha256": "18c48be7906bcd96f9b5d38149f3a0e86e2b196b10d4e5aadc122dbfa8dc6dec"
+    },
+    "P2_RNG_LOADING_FAILURE.xml": {
+      "path": "D:\\KD-SINK-central\\analysis\\mechanistic_preparation_20261008\\attempt01\\P2_RNG_LOADING_FAILURE.xml",
+      "sha256": "51e93f7c81384d923a0cdeb2b52020cb5461193a36c8b4743b14a7e1051db23b"
+    },
+    "P2_RNG_LOADING_FIXED.xml": {
+      "path": "D:\\KD-SINK-central\\analysis\\mechanistic_preparation_20261008\\attempt01\\P2_RNG_LOADING_FIXED.xml",
+      "sha256": "f4de4aed45158f2cf0f84635ec4ed38e3d4f261b60b0ed8912b2a703d4633d55"
+    },
+    "P2_qualification03/E1_QUALIFICATION.json": {
+      "path": "D:\\KD-SINK-central\\analysis\\mechanistic_preparation_20261008\\attempt01\\P2_qualification03\\E1_QUALIFICATION.json",
+      "sha256": "7300483dea309492da3bb7f588cf56be5fd228a89e74cc308471316a47f7ff78"
+    },
+    "P2_qualification03/E2_QUALIFICATION.json": {
+      "path": "D:\\KD-SINK-central\\analysis\\mechanistic_preparation_20261008\\attempt01\\P2_qualification03\\E2_QUALIFICATION.json",
+      "sha256": "bff97ad67ee203668abd85069928e0314f8100f5b425b812b3d6c9e1b8552c3d"
+    },
+    "P2_qualification03/E3_QUALIFICATION.json": {
+      "path": "D:\\KD-SINK-central\\analysis\\mechanistic_preparation_20261008\\attempt01\\P2_qualification03\\E3_QUALIFICATION.json",
+      "sha256": "a73a75f901ce8dca5dce4d0ce5896f66ce70dafe2f43d51ad1ca4b1b8fab8aac"
+    },
+    "P2_qualification03/NUMERICAL_DIAGNOSTICS.json": {
+      "path": "D:\\KD-SINK-central\\analysis\\mechanistic_preparation_20261008\\attempt01\\P2_qualification03\\NUMERICAL_DIAGNOSTICS.json",
+      "sha256": "730a9ff647c6adcfc3df8c23222e00461a4a71ea80a762f90391130ec43f23da"
+    },
+    "P2_qualification03/QUALIFICATION_COMPLETE.json": {
+      "path": "D:\\KD-SINK-central\\analysis\\mechanistic_preparation_20261008\\attempt01\\P2_qualification03\\QUALIFICATION_COMPLETE.json",
+      "sha256": "f6fc486dfc9656291b6ba1480bedb0efcf3db9a13df75e032681e2b180562239"
+    },
+    "P2_qualification03/RESOURCE_SUMMARY.json": {
+      "path": "D:\\KD-SINK-central\\analysis\\mechanistic_preparation_20261008\\attempt01\\P2_qualification03\\RESOURCE_SUMMARY.json",
+      "sha256": "b6d30009b8b34965c6a72de03326d177206d3e5434969a49c008d2e10a402e00"
+    },
+    "P2_qualification03/SOURCE_AVAILABILITY.json": {
+      "path": "D:\\KD-SINK-central\\analysis\\mechanistic_preparation_20261008\\attempt01\\P2_qualification03\\SOURCE_AVAILABILITY.json",
+      "sha256": "d574fd833e8bc80ad5201ea8cf21b46e5dfa9a08128f12b53313a8b189eae8c7"
+    },
+    "P2_reports_retry03/REPORT_EXPORT_AUDIT.json": {
+      "path": "D:\\KD-SINK-central\\analysis\\mechanistic_preparation_20261008\\attempt01\\P2_reports_retry03\\REPORT_EXPORT_AUDIT.json",
+      "sha256": "7db81fdb13342aa432c9edd92494ca51ebeb054d3f033ef8d22747f5a07486a1"
+    },
+    "P3_TEST_AUDIT_retry03.json": {
+      "path": "D:\\KD-SINK-central\\analysis\\mechanistic_preparation_20261008\\attempt01\\P3_TEST_AUDIT_retry03.json",
+      "sha256": "3c040d9371a8b1c3a69c1c31be859adb2218acacf873b5df5b5510799c37ecd5"
+    },
+    "PANEL_INDEPENDENT_AUDIT.json": {
+      "path": "D:\\KD-SINK-central\\analysis\\mechanistic_preparation_20261008\\attempt01\\PANEL_INDEPENDENT_AUDIT.json",
+      "sha256": "6a829b7285e82e9c5c04b6f153f1c3fa55644de6a318ad4d05bf9037c6374460"
+    },
+    "RNG_AMENDMENT_OUTPUT_COMPARISON.json": {
+      "path": "D:\\KD-SINK-central\\analysis\\mechanistic_preparation_20261008\\attempt01\\RNG_AMENDMENT_OUTPUT_COMPARISON.json",
+      "sha256": "78b726bfd6147e40d1a27ad1586759e24536a1b9c291365664f819c0d364ddcb"
+    },
+    "S1_context/E0_S1_CONTEXT_AUDIT.json": {
+      "path": "D:\\KD-SINK-central\\analysis\\mechanistic_preparation_20261008\\attempt01\\S1_context\\E0_S1_CONTEXT_AUDIT.json",
+      "sha256": "4545392cf1688ea20b8ef9f15d33731c053a7d4e1038ffebd97c5ccfa2b55184"
+    },
+    "SOURCE_PRESERVATION_FINAL_retry03.json": {
+      "path": "D:\\KD-SINK-central\\analysis\\mechanistic_preparation_20261008\\attempt01\\SOURCE_PRESERVATION_FINAL_retry03.json",
+      "sha256": "c5affedd238c49e2ffa5eb43d7e5c0e1fbff0036728b5ebacde661c1e2558cb7"
+    }
+  },
+  "remaining_researcher_decisions": "Exact table in reports/results/MECHANISTIC_PREPARATION_20261008.md; all phase candidates are draft and scientific admission rejects them.",
+  "runtime": {
+    "backend": "eager",
+    "code_files": {
+      "pyproject.toml": "b65d28612bd8af5ae33908b2b66540af9f73752db67e9dc4993dec991c88bf6f",
+      "scripts/report_mechanistic.py": "d6246d46a77b070f67bc993e192b7eb0298b83f6ad6fa9c37523cdcb56a12bd7",
+      "scripts/run_mechanistic.py": "3c60ef780a7724e8f2c3f9db5586b3c7d0f080ccd6ce52920f22a197ef1c5da3",
+      "src/sinklab/__init__.py": "4957f8de000d279f5ecf684ba9f10371829a23496a6f0304ad6531bd7f13966b",
+      "src/sinklab/__main__.py": "935a1c1166b0c1ea35a82256345000bf2c73ded718d77773bc27a71ecce28f7d",
+      "src/sinklab/analysis.py": "8296038d2f3f734e12247b93f7ad31b6721eceb9f3ed739514909e97e311a42a",
+      "src/sinklab/calibrated_probes.py": "065055bb118f83272514c168d8c66cf7c5934bd1a537bdf1c9ca322d66144877",
+      "src/sinklab/calibration.py": "e4690834d0d26149c02190db39012d24a39d314ad25facbadd7acecd4b1dbeb1",
+      "src/sinklab/checkpoint.py": "332f131be9cf15236fd4fa8b29d406ab8cfb61086f230f27d536a35f4899ba38",
+      "src/sinklab/cli.py": "f90eb99519a7d88efa900a2bab7f812a94ac88f6e59b86e33df223f754dd3217",
+      "src/sinklab/config.py": "b80a4a47496765ec5fb076038953e23a2a4ceb4146ff0f1bc38cfd242b42baab",
+      "src/sinklab/data.py": "8c5947452d7c01687db38e356be8a58ffbb070ef4380e63cefea86ab508a7599",
+      "src/sinklab/evaluate.py": "36e4ce5cd13c6e32d0beaf1726e6c072dbca6d0b5dbbd497c637c0e5686051c9",
+      "src/sinklab/followup_policy.py": "a86fa85487f7de2a58c51e14711921d54a68c85e4ad13b3c6374dfda4b802c9d",
+      "src/sinklab/hardware.py": "6139236da72797f26a5e7142f55364e4f97dcc5f92956e5a751f5f3f193d24b1",
+      "src/sinklab/initialization.py": "7123ae502aa64c9906aeffc939b2b5d27c9074b66d61972c167e01824128648c",
+      "src/sinklab/interventions.py": "7caacb3f0c98ea67c30b460de2a67abe7271c14d598f5909578ab2f3ca3ba938",
+      "src/sinklab/job_plan.py": "eb3a47bc1367f5da46de6ac4096b88a070f548f3f4bfa8ff1bea23a77443a191",
+      "src/sinklab/mechanism_injection.py": "985f59b2b17f7cada00a2982690fc1a04f6d99a7bd25e5ec18f7262ccd6abd13",
+      "src/sinklab/mechanism_trace.py": "c5348dde4ccb094d51ea3d00d9c29645c22d2fb3e5fabddaa44ef484f9b7171f",
+      "src/sinklab/mechanistic_admission.py": "f67a7ca0f01e9bdaeed0d8a435d5e3faa5c9ebf51dc8580fa82efc5daab70b0c",
+      "src/sinklab/mechanistic_e0.py": "754b557a7a9a3aac20da75f7d1f455daa9dff8f8f5142844196352d582152a33",
+      "src/sinklab/mechanistic_panel.py": "2bba60bde44e1e029cb8ac1e447e272f16c5609ef4d3b28b9d897615a8044edf",
+      "src/sinklab/mechanistic_run.py": "9999edeed52e1f86e61022d9cef9d5ec0d15b4b4079fab57c352549790bcccfc",
+      "src/sinklab/metrics.py": "4929cecfb641a132eca073ba027d37c162c8f15ad38926199dec3c100ee7a36d",
+      "src/sinklab/models.py": "ccaa923c0029aa482883b5d0174a449f07e9a0516fc32f6422bf63d2faba236d",
+      "src/sinklab/objectives.py": "c7064ced3b8c02a6457be047dc60e93d87b2e8b9d21fdc9af60ea0ab261c940d",
+      "src/sinklab/order.py": "a1dfaa21e98af7d45711ff06b736affd3dea45141658a4e6a3c04e989d80c328",
+      "src/sinklab/owt_compat.py": "81c04b9dc2a4faab7af34de0a8f42e4084ea82267a2ea5c16f244ebd1144493d",
+      "src/sinklab/owt_source.py": "237c5d6eb2f378b4d6eaffb8c060e92a6af2dcb91f944d904f260589b52df129",
+      "src/sinklab/panels.py": "e8ce1642af8e35d4f5ec4bab122786e78090ab0e40c3c7136aa4a967ef6e64b3",
+      "src/sinklab/probes.py": "b0a98e4b37f93e0845924e92efc6a7c714adc9e3f19fef46e76d2890fbbfcd7e",
+      "src/sinklab/provenance.py": "cd875f8ed321895fe2462192c554304c48dc395914edc9cc05d0b10e5f894533",
+      "src/sinklab/pythia.py": "301fc2cdf34133b3a69a61268c52f50f62cf86bc5e6a9ef21ef20d69b7acae3d",
+      "src/sinklab/runtime_provenance.py": "747a4f8743b1aceb5b86143688049afa8c244d875c91da1dd560ba9d34dbb3ee",
+      "src/sinklab/s5_analysis.py": "a6c8ab52e29e3ab90e823c63a2aee67c2ad967b6fa344038963a2a8a4ffdf1be",
+      "src/sinklab/s5_compatibility.py": "09c9f9caecf65fa872090c9dc965e4fe49c41cc57ed554431b47854f80406085",
+      "src/sinklab/s6.py": "ae3daffcde8ff0e62a496cdea34212a60580dce29efddda79e95a7563851255d",
+      "src/sinklab/s7_utility.py": "35b27100842c11f4332f5fd68da625ff03ce65f8b565c39d05dd745fee806b13",
+      "src/sinklab/stage06_artifacts.py": "1d530c491f27df23702c2d93348b28ca7c7977fd6682d356c6e823914e10f045",
+      "src/sinklab/stage06_calibration_entry.py": "51da6dfd62f62179b0ef345e0b791e25e21f03ec7c41b0716ef2e86bf02b70e5",
+      "src/sinklab/stage06_evidence.py": "2881a73606859d2262968505ba20a6d479741e45df249c09eb1e3650fac65f0a",
+      "src/sinklab/stage06_readiness.py": "1d869b6af6f859448d118b5a0fbd7dc3b12f5473183a03870271b9867cf4ec10",
+      "src/sinklab/train.py": "bd06b728df29abbbdb9305b2318ebd716bb5fdfe3dd2e383ce2b45ac667ba07f",
+      "src/sinklab/training_entry.py": "9dc8ad13d681359991a3e03ac98933da9047750af0af04cfdab1d300fcc146d5",
+      "uv.lock": "b71f143ff21a0ccdd45e995b006430399134bb1564b1210bdc70fb3c67f4c3d5"
+    },
+    "code_sha256": "74629cd54aa7a7aaa533caf7b30d381225592b65c904f5f3255c54feef7f2913",
+    "context_length": 128,
+    "environment": {
+      "float32_matmul_precision": "highest",
+      "packages": {
+        "numpy": "2.4.3",
+        "safetensors": "0.8.0",
+        "scipy": "1.17.1",
+        "torch": "2.10.0+cu128",
+        "tqdm": "4.67.3",
+        "transformers": "5.3.0"
+      },
+      "platform": "Windows-11-10.0.26200-SP0",
+      "python": "3.12.3",
+      "tf32_cudnn": false,
+      "tf32_matmul": false,
+      "torch_cuda": "12.8"
+    },
+    "hardware": {
+      "device": "cuda:0",
+      "name": "NVIDIA GeForce RTX 4080 SUPER",
+      "total_memory_bytes": 17170956288,
+      "uuid": "2a5c25d0-1f73-919b-fd8b-f6f0df709aaf"
+    },
+    "precision": "float32",
+    "use_cache": false
+  },
+  "scientific_panel_inference": false,
+  "source_availability": {
+    "sources": {
+      "C1/step10000": {
+        "config_path": "E:\\KD-SINK-stage06-Adrita\\artifacts\\KD-SINK-stage06-production\\student-config\\config.json",
+        "config_sha256": "ef1a44d889ad1a0acc7731c78134f1b87d2d222f110e97dd10fd4117331caf22",
+        "followup_policy": {
+          "amendment_sha256": "46351d8e32ef1ef6238af18c11676e45e3d439e0e46942d1e61e35b8001851e6",
+          "interpretation": "designated-seed0 follow-up; no across-training-seed reproducibility claim",
+          "source_protocol_sha256": "48c39a25f640b90a70056e3c8f7308b66b9d635876e22c56f76516a09d2c9791",
+          "study": "mechanistic_followup",
+          "training_seed": 0
+        },
+        "role": "student",
+        "source_identity": {
+          "backend": "eager",
+          "calibration_hash": "fa031af3de63832e054b89539d3867c2904c9b592b1e7a8b3e4ca3e3676c532f",
+          "condition": "C1",
+          "data_hash": "76dcdc819b97ecff4d3c458bdf4dbd7c1a5dc2a525541e29099e6a6ac760d700",
+          "device_role": "rtx4080super",
+          "gpu_uuid": "GPU-f6ff547d-b5cb-c2b8-ca56-ef87e6c18af0",
+          "hardware_hash": "e7e76acf4421b553ed94689e218da674a8d57cbd66405271583fdff41354f80b",
+          "init_hash": "1a27890c588f317a4ae5523430f8af53c591bca29c9a78d13bf182c9c145fc09",
+          "microbatch": 4,
+          "model_hash": "b21bb330c10c1f9e324f487bb403d1629adf66f5643cfc19df8bbe5914d51358",
+          "precision": "bf16",
+          "protocol_hash": "48c39a25f640b90a70056e3c8f7308b66b9d635876e22c56f76516a09d2c9791",
+          "run_id": "s1-c1-seed0-rtx4080super",
+          "seed": 0,
+          "study": "S1"
+        },
+        "weights_path": "D:\\KD-SINK-central\\runs\\s1-c1-seed0-rtx4080super\\checkpoints\\final-010000\\model.safetensors",
+        "weights_sha256": "e9475c366ce813464ad577d83411302e9812cad2cba6e4c0fa6b829a50bc27ad"
+      },
+      "C1/step2000": {
+        "config_path": "E:\\KD-SINK-stage06-Adrita\\artifacts\\KD-SINK-stage06-production\\student-config\\config.json",
+        "config_sha256": "ef1a44d889ad1a0acc7731c78134f1b87d2d222f110e97dd10fd4117331caf22",
+        "followup_policy": {
+          "amendment_sha256": "46351d8e32ef1ef6238af18c11676e45e3d439e0e46942d1e61e35b8001851e6",
+          "interpretation": "designated-seed0 follow-up; no across-training-seed reproducibility claim",
+          "source_protocol_sha256": "48c39a25f640b90a70056e3c8f7308b66b9d635876e22c56f76516a09d2c9791",
+          "study": "mechanistic_followup",
+          "training_seed": 0
+        },
+        "role": "student",
+        "source_identity": {
+          "backend": "eager",
+          "calibration_hash": "fa031af3de63832e054b89539d3867c2904c9b592b1e7a8b3e4ca3e3676c532f",
+          "condition": "C1",
+          "data_hash": "76dcdc819b97ecff4d3c458bdf4dbd7c1a5dc2a525541e29099e6a6ac760d700",
+          "device_role": "rtx4080super",
+          "gpu_uuid": "GPU-f6ff547d-b5cb-c2b8-ca56-ef87e6c18af0",
+          "hardware_hash": "e7e76acf4421b553ed94689e218da674a8d57cbd66405271583fdff41354f80b",
+          "init_hash": "1a27890c588f317a4ae5523430f8af53c591bca29c9a78d13bf182c9c145fc09",
+          "microbatch": 4,
+          "model_hash": "b21bb330c10c1f9e324f487bb403d1629adf66f5643cfc19df8bbe5914d51358",
+          "precision": "bf16",
+          "protocol_hash": "48c39a25f640b90a70056e3c8f7308b66b9d635876e22c56f76516a09d2c9791",
+          "run_id": "s1-c1-seed0-rtx4080super",
+          "seed": 0,
+          "study": "S1"
+        },
+        "weights_path": "D:\\KD-SINK-central\\runs\\s1-c1-seed0-rtx4080super\\checkpoints\\weights-002000\\model.safetensors",
+        "weights_sha256": "d9e4c30bc23497410ca3e57134f9ec337220ae38c8fe441888a5ae04a0123c14"
+      },
+      "C1/step500": {
+        "config_path": "E:\\KD-SINK-stage06-Adrita\\artifacts\\KD-SINK-stage06-production\\student-config\\config.json",
+        "config_sha256": "ef1a44d889ad1a0acc7731c78134f1b87d2d222f110e97dd10fd4117331caf22",
+        "followup_policy": {
+          "amendment_sha256": "46351d8e32ef1ef6238af18c11676e45e3d439e0e46942d1e61e35b8001851e6",
+          "interpretation": "designated-seed0 follow-up; no across-training-seed reproducibility claim",
+          "source_protocol_sha256": "48c39a25f640b90a70056e3c8f7308b66b9d635876e22c56f76516a09d2c9791",
+          "study": "mechanistic_followup",
+          "training_seed": 0
+        },
+        "role": "student",
+        "source_identity": {
+          "backend": "eager",
+          "calibration_hash": "fa031af3de63832e054b89539d3867c2904c9b592b1e7a8b3e4ca3e3676c532f",
+          "condition": "C1",
+          "data_hash": "76dcdc819b97ecff4d3c458bdf4dbd7c1a5dc2a525541e29099e6a6ac760d700",
+          "device_role": "rtx4080super",
+          "gpu_uuid": "GPU-f6ff547d-b5cb-c2b8-ca56-ef87e6c18af0",
+          "hardware_hash": "e7e76acf4421b553ed94689e218da674a8d57cbd66405271583fdff41354f80b",
+          "init_hash": "1a27890c588f317a4ae5523430f8af53c591bca29c9a78d13bf182c9c145fc09",
+          "microbatch": 4,
+          "model_hash": "b21bb330c10c1f9e324f487bb403d1629adf66f5643cfc19df8bbe5914d51358",
+          "precision": "bf16",
+          "protocol_hash": "48c39a25f640b90a70056e3c8f7308b66b9d635876e22c56f76516a09d2c9791",
+          "run_id": "s1-c1-seed0-rtx4080super",
+          "seed": 0,
+          "study": "S1"
+        },
+        "weights_path": "D:\\KD-SINK-central\\runs\\s1-c1-seed0-rtx4080super\\checkpoints\\weights-000500\\model.safetensors",
+        "weights_sha256": "05a0ae40f736447c2011d3ca754d40a9aeb08e9a2ddb022e33c163de766cb529"
+      },
+      "C2/step10000": {
+        "config_path": "E:\\KD-SINK-stage06-Adrita\\artifacts\\KD-SINK-stage06-production\\student-config\\config.json",
+        "config_sha256": "ef1a44d889ad1a0acc7731c78134f1b87d2d222f110e97dd10fd4117331caf22",
+        "followup_policy": {
+          "amendment_sha256": "46351d8e32ef1ef6238af18c11676e45e3d439e0e46942d1e61e35b8001851e6",
+          "interpretation": "designated-seed0 follow-up; no across-training-seed reproducibility claim",
+          "source_protocol_sha256": "910961fcc53edaed0df48e3139dbb7ca2e058bf7480b67dab27bae0bcd90f26f",
+          "study": "mechanistic_followup",
+          "training_seed": 0
+        },
+        "role": "student",
+        "source_identity": {
+          "backend": "eager",
+          "calibration_hash": "fa031af3de63832e054b89539d3867c2904c9b592b1e7a8b3e4ca3e3676c532f",
+          "condition": "C2",
+          "data_hash": "76dcdc819b97ecff4d3c458bdf4dbd7c1a5dc2a525541e29099e6a6ac760d700",
+          "device_role": "rtx4080super",
+          "gpu_uuid": "GPU-72b4b307-b613-c35e-ea32-53f4431de9ee",
+          "hardware_hash": "c284abebf7b9915053c282d57555a1a28cf9ad8250f3c402a3f313207eaae138",
+          "init_hash": "1a27890c588f317a4ae5523430f8af53c591bca29c9a78d13bf182c9c145fc09",
+          "microbatch": 4,
+          "model_hash": "b21bb330c10c1f9e324f487bb403d1629adf66f5643cfc19df8bbe5914d51358",
+          "precision": "bf16",
+          "protocol_hash": "910961fcc53edaed0df48e3139dbb7ca2e058bf7480b67dab27bae0bcd90f26f",
+          "run_id": "s1-c2-seed0-rtx4080super",
+          "seed": 0,
+          "study": "S1"
+        },
+        "weights_path": "D:\\KD-SINK-central\\runs\\s1-c2-seed0-rtx4080super\\checkpoints\\final-010000\\model.safetensors",
+        "weights_sha256": "fbe9f8a408c7e70495ecd93fbd06cf88728fa369976e766216edf37f2c07e298"
+      },
+      "C2/step2000": {
+        "config_path": "E:\\KD-SINK-stage06-Adrita\\artifacts\\KD-SINK-stage06-production\\student-config\\config.json",
+        "config_sha256": "ef1a44d889ad1a0acc7731c78134f1b87d2d222f110e97dd10fd4117331caf22",
+        "followup_policy": {
+          "amendment_sha256": "46351d8e32ef1ef6238af18c11676e45e3d439e0e46942d1e61e35b8001851e6",
+          "interpretation": "designated-seed0 follow-up; no across-training-seed reproducibility claim",
+          "source_protocol_sha256": "910961fcc53edaed0df48e3139dbb7ca2e058bf7480b67dab27bae0bcd90f26f",
+          "study": "mechanistic_followup",
+          "training_seed": 0
+        },
+        "role": "student",
+        "source_identity": {
+          "backend": "eager",
+          "calibration_hash": "fa031af3de63832e054b89539d3867c2904c9b592b1e7a8b3e4ca3e3676c532f",
+          "condition": "C2",
+          "data_hash": "76dcdc819b97ecff4d3c458bdf4dbd7c1a5dc2a525541e29099e6a6ac760d700",
+          "device_role": "rtx4080super",
+          "gpu_uuid": "GPU-72b4b307-b613-c35e-ea32-53f4431de9ee",
+          "hardware_hash": "c284abebf7b9915053c282d57555a1a28cf9ad8250f3c402a3f313207eaae138",
+          "init_hash": "1a27890c588f317a4ae5523430f8af53c591bca29c9a78d13bf182c9c145fc09",
+          "microbatch": 4,
+          "model_hash": "b21bb330c10c1f9e324f487bb403d1629adf66f5643cfc19df8bbe5914d51358",
+          "precision": "bf16",
+          "protocol_hash": "910961fcc53edaed0df48e3139dbb7ca2e058bf7480b67dab27bae0bcd90f26f",
+          "run_id": "s1-c2-seed0-rtx4080super",
+          "seed": 0,
+          "study": "S1"
+        },
+        "weights_path": "D:\\KD-SINK-central\\runs\\s1-c2-seed0-rtx4080super\\checkpoints\\weights-002000\\model.safetensors",
+        "weights_sha256": "a6daa03e23798894ad7b2dc6a18c40c3d1184ada2e9e31f70d909e605aa0e85b"
+      },
+      "C2/step500": {
+        "config_path": "E:\\KD-SINK-stage06-Adrita\\artifacts\\KD-SINK-stage06-production\\student-config\\config.json",
+        "config_sha256": "ef1a44d889ad1a0acc7731c78134f1b87d2d222f110e97dd10fd4117331caf22",
+        "followup_policy": {
+          "amendment_sha256": "46351d8e32ef1ef6238af18c11676e45e3d439e0e46942d1e61e35b8001851e6",
+          "interpretation": "designated-seed0 follow-up; no across-training-seed reproducibility claim",
+          "source_protocol_sha256": "910961fcc53edaed0df48e3139dbb7ca2e058bf7480b67dab27bae0bcd90f26f",
+          "study": "mechanistic_followup",
+          "training_seed": 0
+        },
+        "role": "student",
+        "source_identity": {
+          "backend": "eager",
+          "calibration_hash": "fa031af3de63832e054b89539d3867c2904c9b592b1e7a8b3e4ca3e3676c532f",
+          "condition": "C2",
+          "data_hash": "76dcdc819b97ecff4d3c458bdf4dbd7c1a5dc2a525541e29099e6a6ac760d700",
+          "device_role": "rtx4080super",
+          "gpu_uuid": "GPU-72b4b307-b613-c35e-ea32-53f4431de9ee",
+          "hardware_hash": "c284abebf7b9915053c282d57555a1a28cf9ad8250f3c402a3f313207eaae138",
+          "init_hash": "1a27890c588f317a4ae5523430f8af53c591bca29c9a78d13bf182c9c145fc09",
+          "microbatch": 4,
+          "model_hash": "b21bb330c10c1f9e324f487bb403d1629adf66f5643cfc19df8bbe5914d51358",
+          "precision": "bf16",
+          "protocol_hash": "910961fcc53edaed0df48e3139dbb7ca2e058bf7480b67dab27bae0bcd90f26f",
+          "run_id": "s1-c2-seed0-rtx4080super",
+          "seed": 0,
+          "study": "S1"
+        },
+        "weights_path": "D:\\KD-SINK-central\\runs\\s1-c2-seed0-rtx4080super\\checkpoints\\weights-000500\\model.safetensors",
+        "weights_sha256": "a516da635a798b90f3fd0fc6f0d2dfb3d44f89dcfa30663ee7309a5ceb4649bb"
+      },
+      "C3/step10000": {
+        "config_path": "E:\\KD-SINK-stage06-Adrita\\artifacts\\KD-SINK-stage06-production\\student-config\\config.json",
+        "config_sha256": "ef1a44d889ad1a0acc7731c78134f1b87d2d222f110e97dd10fd4117331caf22",
+        "followup_policy": {
+          "amendment_sha256": "46351d8e32ef1ef6238af18c11676e45e3d439e0e46942d1e61e35b8001851e6",
+          "interpretation": "designated-seed0 follow-up; no across-training-seed reproducibility claim",
+          "source_protocol_sha256": "fccf4c14bc691e550c6304f4955b72037efb8d042b3e51afb70367920fff0552",
+          "study": "mechanistic_followup",
+          "training_seed": 0
+        },
+        "role": "student",
+        "source_identity": {
+          "backend": "eager",
+          "calibration_hash": "fa031af3de63832e054b89539d3867c2904c9b592b1e7a8b3e4ca3e3676c532f",
+          "condition": "C3",
+          "data_hash": "76dcdc819b97ecff4d3c458bdf4dbd7c1a5dc2a525541e29099e6a6ac760d700",
+          "device_role": "rtx4080super",
+          "gpu_uuid": "GPU-72b4b307-b613-c35e-ea32-53f4431de9ee",
+          "hardware_hash": "fc410cd3d01505d0cd7b9ffdda98caaf070bfd2524ca7ac7841a0c78e60aa593",
+          "init_hash": "1a27890c588f317a4ae5523430f8af53c591bca29c9a78d13bf182c9c145fc09",
+          "microbatch": 4,
+          "model_hash": "b21bb330c10c1f9e324f487bb403d1629adf66f5643cfc19df8bbe5914d51358",
+          "precision": "bf16",
+          "protocol_hash": "fccf4c14bc691e550c6304f4955b72037efb8d042b3e51afb70367920fff0552",
+          "run_id": "s1-c3-seed0-rtx4080super",
+          "seed": 0,
+          "study": "S1"
+        },
+        "weights_path": "D:\\KD-SINK-central\\runs\\s1-c3-seed0-rtx4080super\\checkpoints\\final-010000\\model.safetensors",
+        "weights_sha256": "b1d171453101a2549878e795788873ef1e4f82e2ab8c64bc4f3cc72aa314f03c"
+      },
+      "C3/step2000": {
+        "config_path": "E:\\KD-SINK-stage06-Adrita\\artifacts\\KD-SINK-stage06-production\\student-config\\config.json",
+        "config_sha256": "ef1a44d889ad1a0acc7731c78134f1b87d2d222f110e97dd10fd4117331caf22",
+        "followup_policy": {
+          "amendment_sha256": "46351d8e32ef1ef6238af18c11676e45e3d439e0e46942d1e61e35b8001851e6",
+          "interpretation": "designated-seed0 follow-up; no across-training-seed reproducibility claim",
+          "source_protocol_sha256": "fccf4c14bc691e550c6304f4955b72037efb8d042b3e51afb70367920fff0552",
+          "study": "mechanistic_followup",
+          "training_seed": 0
+        },
+        "role": "student",
+        "source_identity": {
+          "backend": "eager",
+          "calibration_hash": "fa031af3de63832e054b89539d3867c2904c9b592b1e7a8b3e4ca3e3676c532f",
+          "condition": "C3",
+          "data_hash": "76dcdc819b97ecff4d3c458bdf4dbd7c1a5dc2a525541e29099e6a6ac760d700",
+          "device_role": "rtx4080super",
+          "gpu_uuid": "GPU-72b4b307-b613-c35e-ea32-53f4431de9ee",
+          "hardware_hash": "fc410cd3d01505d0cd7b9ffdda98caaf070bfd2524ca7ac7841a0c78e60aa593",
+          "init_hash": "1a27890c588f317a4ae5523430f8af53c591bca29c9a78d13bf182c9c145fc09",
+          "microbatch": 4,
+          "model_hash": "b21bb330c10c1f9e324f487bb403d1629adf66f5643cfc19df8bbe5914d51358",
+          "precision": "bf16",
+          "protocol_hash": "fccf4c14bc691e550c6304f4955b72037efb8d042b3e51afb70367920fff0552",
+          "run_id": "s1-c3-seed0-rtx4080super",
+          "seed": 0,
+          "study": "S1"
+        },
+        "weights_path": "D:\\KD-SINK-central\\runs\\s1-c3-seed0-rtx4080super\\checkpoints\\weights-002000\\model.safetensors",
+        "weights_sha256": "f434bde065a6073b54f44c9f45fbc759690b4a1b0a027e9394047735b82f330a"
+      },
+      "C3/step500": {
+        "config_path": "E:\\KD-SINK-stage06-Adrita\\artifacts\\KD-SINK-stage06-production\\student-config\\config.json",
+        "config_sha256": "ef1a44d889ad1a0acc7731c78134f1b87d2d222f110e97dd10fd4117331caf22",
+        "followup_policy": {
+          "amendment_sha256": "46351d8e32ef1ef6238af18c11676e45e3d439e0e46942d1e61e35b8001851e6",
+          "interpretation": "designated-seed0 follow-up; no across-training-seed reproducibility claim",
+          "source_protocol_sha256": "fccf4c14bc691e550c6304f4955b72037efb8d042b3e51afb70367920fff0552",
+          "study": "mechanistic_followup",
+          "training_seed": 0
+        },
+        "role": "student",
+        "source_identity": {
+          "backend": "eager",
+          "calibration_hash": "fa031af3de63832e054b89539d3867c2904c9b592b1e7a8b3e4ca3e3676c532f",
+          "condition": "C3",
+          "data_hash": "76dcdc819b97ecff4d3c458bdf4dbd7c1a5dc2a525541e29099e6a6ac760d700",
+          "device_role": "rtx4080super",
+          "gpu_uuid": "GPU-72b4b307-b613-c35e-ea32-53f4431de9ee",
+          "hardware_hash": "fc410cd3d01505d0cd7b9ffdda98caaf070bfd2524ca7ac7841a0c78e60aa593",
+          "init_hash": "1a27890c588f317a4ae5523430f8af53c591bca29c9a78d13bf182c9c145fc09",
+          "microbatch": 4,
+          "model_hash": "b21bb330c10c1f9e324f487bb403d1629adf66f5643cfc19df8bbe5914d51358",
+          "precision": "bf16",
+          "protocol_hash": "fccf4c14bc691e550c6304f4955b72037efb8d042b3e51afb70367920fff0552",
+          "run_id": "s1-c3-seed0-rtx4080super",
+          "seed": 0,
+          "study": "S1"
+        },
+        "weights_path": "D:\\KD-SINK-central\\runs\\s1-c3-seed0-rtx4080super\\checkpoints\\weights-000500\\model.safetensors",
+        "weights_sha256": "412003a01c66959a618890f23ec3c775a115f567a4bcd95324af5097c3d6d5eb"
+      },
+      "C5/step10000": {
+        "config_path": "E:\\KD-SINK-stage06-Adrita\\artifacts\\KD-SINK-stage06-production\\student-config\\config.json",
+        "config_sha256": "ef1a44d889ad1a0acc7731c78134f1b87d2d222f110e97dd10fd4117331caf22",
+        "followup_policy": {
+          "amendment_sha256": "46351d8e32ef1ef6238af18c11676e45e3d439e0e46942d1e61e35b8001851e6",
+          "interpretation": "designated-seed0 follow-up; no across-training-seed reproducibility claim",
+          "source_protocol_sha256": "fccf4c14bc691e550c6304f4955b72037efb8d042b3e51afb70367920fff0552",
+          "study": "mechanistic_followup",
+          "training_seed": 0
+        },
+        "role": "student",
+        "source_identity": {
+          "backend": "eager",
+          "calibration_hash": "fa031af3de63832e054b89539d3867c2904c9b592b1e7a8b3e4ca3e3676c532f",
+          "condition": "C5",
+          "data_hash": "76dcdc819b97ecff4d3c458bdf4dbd7c1a5dc2a525541e29099e6a6ac760d700",
+          "device_role": "rtx4080super",
+          "gpu_uuid": "GPU-2a5c25d0-1f73-919b-fd8b-f6f0df709aaf",
+          "hardware_hash": "fc410cd3d01505d0cd7b9ffdda98caaf070bfd2524ca7ac7841a0c78e60aa593",
+          "init_hash": "1a27890c588f317a4ae5523430f8af53c591bca29c9a78d13bf182c9c145fc09",
+          "microbatch": 4,
+          "model_hash": "b21bb330c10c1f9e324f487bb403d1629adf66f5643cfc19df8bbe5914d51358",
+          "precision": "bf16",
+          "protocol_hash": "fccf4c14bc691e550c6304f4955b72037efb8d042b3e51afb70367920fff0552",
+          "run_id": "s1-c5-seed0-rtx4080super",
+          "seed": 0,
+          "study": "S1"
+        },
+        "weights_path": "D:\\KD-SINK-central\\runs\\s1-c5-seed0-rtx4080super\\checkpoints\\final-010000\\model.safetensors",
+        "weights_sha256": "e8c85cec2e24174180d5fbf5f49976de7901281f9f3caa82f79dc3ee47f38578"
+      },
+      "C5/step2000": {
+        "config_path": "E:\\KD-SINK-stage06-Adrita\\artifacts\\KD-SINK-stage06-production\\student-config\\config.json",
+        "config_sha256": "ef1a44d889ad1a0acc7731c78134f1b87d2d222f110e97dd10fd4117331caf22",
+        "followup_policy": {
+          "amendment_sha256": "46351d8e32ef1ef6238af18c11676e45e3d439e0e46942d1e61e35b8001851e6",
+          "interpretation": "designated-seed0 follow-up; no across-training-seed reproducibility claim",
+          "source_protocol_sha256": "fccf4c14bc691e550c6304f4955b72037efb8d042b3e51afb70367920fff0552",
+          "study": "mechanistic_followup",
+          "training_seed": 0
+        },
+        "role": "student",
+        "source_identity": {
+          "backend": "eager",
+          "calibration_hash": "fa031af3de63832e054b89539d3867c2904c9b592b1e7a8b3e4ca3e3676c532f",
+          "condition": "C5",
+          "data_hash": "76dcdc819b97ecff4d3c458bdf4dbd7c1a5dc2a525541e29099e6a6ac760d700",
+          "device_role": "rtx4080super",
+          "gpu_uuid": "GPU-2a5c25d0-1f73-919b-fd8b-f6f0df709aaf",
+          "hardware_hash": "fc410cd3d01505d0cd7b9ffdda98caaf070bfd2524ca7ac7841a0c78e60aa593",
+          "init_hash": "1a27890c588f317a4ae5523430f8af53c591bca29c9a78d13bf182c9c145fc09",
+          "microbatch": 4,
+          "model_hash": "b21bb330c10c1f9e324f487bb403d1629adf66f5643cfc19df8bbe5914d51358",
+          "precision": "bf16",
+          "protocol_hash": "fccf4c14bc691e550c6304f4955b72037efb8d042b3e51afb70367920fff0552",
+          "run_id": "s1-c5-seed0-rtx4080super",
+          "seed": 0,
+          "study": "S1"
+        },
+        "weights_path": "D:\\KD-SINK-central\\runs\\s1-c5-seed0-rtx4080super\\checkpoints\\weights-002000\\model.safetensors",
+        "weights_sha256": "ad020067df5f66cc6719641c900988670ad19618ac4dffddc6b0a48d15fcf78a"
+      },
+      "C5/step500": {
+        "config_path": "E:\\KD-SINK-stage06-Adrita\\artifacts\\KD-SINK-stage06-production\\student-config\\config.json",
+        "config_sha256": "ef1a44d889ad1a0acc7731c78134f1b87d2d222f110e97dd10fd4117331caf22",
+        "followup_policy": {
+          "amendment_sha256": "46351d8e32ef1ef6238af18c11676e45e3d439e0e46942d1e61e35b8001851e6",
+          "interpretation": "designated-seed0 follow-up; no across-training-seed reproducibility claim",
+          "source_protocol_sha256": "fccf4c14bc691e550c6304f4955b72037efb8d042b3e51afb70367920fff0552",
+          "study": "mechanistic_followup",
+          "training_seed": 0
+        },
+        "role": "student",
+        "source_identity": {
+          "backend": "eager",
+          "calibration_hash": "fa031af3de63832e054b89539d3867c2904c9b592b1e7a8b3e4ca3e3676c532f",
+          "condition": "C5",
+          "data_hash": "76dcdc819b97ecff4d3c458bdf4dbd7c1a5dc2a525541e29099e6a6ac760d700",
+          "device_role": "rtx4080super",
+          "gpu_uuid": "GPU-2a5c25d0-1f73-919b-fd8b-f6f0df709aaf",
+          "hardware_hash": "fc410cd3d01505d0cd7b9ffdda98caaf070bfd2524ca7ac7841a0c78e60aa593",
+          "init_hash": "1a27890c588f317a4ae5523430f8af53c591bca29c9a78d13bf182c9c145fc09",
+          "microbatch": 4,
+          "model_hash": "b21bb330c10c1f9e324f487bb403d1629adf66f5643cfc19df8bbe5914d51358",
+          "precision": "bf16",
+          "protocol_hash": "fccf4c14bc691e550c6304f4955b72037efb8d042b3e51afb70367920fff0552",
+          "run_id": "s1-c5-seed0-rtx4080super",
+          "seed": 0,
+          "study": "S1"
+        },
+        "weights_path": "D:\\KD-SINK-central\\runs\\s1-c5-seed0-rtx4080super\\checkpoints\\weights-000500\\model.safetensors",
+        "weights_sha256": "d7c1e885286c792cf51d69e1610148caeb067d93d549b9e03a284b4ede492ece"
+      },
+      "C6/step10000": {
+        "config_path": "E:\\KD-SINK-stage06-Adrita\\artifacts\\KD-SINK-stage06-production\\student-config\\config.json",
+        "config_sha256": "ef1a44d889ad1a0acc7731c78134f1b87d2d222f110e97dd10fd4117331caf22",
+        "followup_policy": {
+          "amendment_sha256": "46351d8e32ef1ef6238af18c11676e45e3d439e0e46942d1e61e35b8001851e6",
+          "interpretation": "designated-seed0 follow-up; no across-training-seed reproducibility claim",
+          "source_protocol_sha256": "48c39a25f640b90a70056e3c8f7308b66b9d635876e22c56f76516a09d2c9791",
+          "study": "mechanistic_followup",
+          "training_seed": 0
+        },
+        "role": "student",
+        "source_identity": {
+          "backend": "eager",
+          "calibration_hash": "fa031af3de63832e054b89539d3867c2904c9b592b1e7a8b3e4ca3e3676c532f",
+          "condition": "C6",
+          "data_hash": "76dcdc819b97ecff4d3c458bdf4dbd7c1a5dc2a525541e29099e6a6ac760d700",
+          "device_role": "rtx4080super",
+          "gpu_uuid": "GPU-2a5c25d0-1f73-919b-fd8b-f6f0df709aaf",
+          "hardware_hash": "e7e76acf4421b553ed94689e218da674a8d57cbd66405271583fdff41354f80b",
+          "init_hash": "1a27890c588f317a4ae5523430f8af53c591bca29c9a78d13bf182c9c145fc09",
+          "microbatch": 4,
+          "model_hash": "b21bb330c10c1f9e324f487bb403d1629adf66f5643cfc19df8bbe5914d51358",
+          "precision": "bf16",
+          "protocol_hash": "48c39a25f640b90a70056e3c8f7308b66b9d635876e22c56f76516a09d2c9791",
+          "run_id": "s1-c6-seed0-rtx4080super",
+          "seed": 0,
+          "study": "S1"
+        },
+        "weights_path": "D:\\KD-SINK-central\\runs\\s1-c6-seed0-rtx4080super\\checkpoints\\final-010000\\model.safetensors",
+        "weights_sha256": "22ee796957ef17cefa64b9a7e5831440e2aef3ea8a4183fe0bfd431319b206e4"
+      },
+      "C6/step2000": {
+        "config_path": "E:\\KD-SINK-stage06-Adrita\\artifacts\\KD-SINK-stage06-production\\student-config\\config.json",
+        "config_sha256": "ef1a44d889ad1a0acc7731c78134f1b87d2d222f110e97dd10fd4117331caf22",
+        "followup_policy": {
+          "amendment_sha256": "46351d8e32ef1ef6238af18c11676e45e3d439e0e46942d1e61e35b8001851e6",
+          "interpretation": "designated-seed0 follow-up; no across-training-seed reproducibility claim",
+          "source_protocol_sha256": "48c39a25f640b90a70056e3c8f7308b66b9d635876e22c56f76516a09d2c9791",
+          "study": "mechanistic_followup",
+          "training_seed": 0
+        },
+        "role": "student",
+        "source_identity": {
+          "backend": "eager",
+          "calibration_hash": "fa031af3de63832e054b89539d3867c2904c9b592b1e7a8b3e4ca3e3676c532f",
+          "condition": "C6",
+          "data_hash": "76dcdc819b97ecff4d3c458bdf4dbd7c1a5dc2a525541e29099e6a6ac760d700",
+          "device_role": "rtx4080super",
+          "gpu_uuid": "GPU-2a5c25d0-1f73-919b-fd8b-f6f0df709aaf",
+          "hardware_hash": "e7e76acf4421b553ed94689e218da674a8d57cbd66405271583fdff41354f80b",
+          "init_hash": "1a27890c588f317a4ae5523430f8af53c591bca29c9a78d13bf182c9c145fc09",
+          "microbatch": 4,
+          "model_hash": "b21bb330c10c1f9e324f487bb403d1629adf66f5643cfc19df8bbe5914d51358",
+          "precision": "bf16",
+          "protocol_hash": "48c39a25f640b90a70056e3c8f7308b66b9d635876e22c56f76516a09d2c9791",
+          "run_id": "s1-c6-seed0-rtx4080super",
+          "seed": 0,
+          "study": "S1"
+        },
+        "weights_path": "D:\\KD-SINK-central\\runs\\s1-c6-seed0-rtx4080super\\checkpoints\\weights-002000\\model.safetensors",
+        "weights_sha256": "c7e59934849e5fca4ea64ed7c0d672c3f0bd5dfd16de7e9d19bb4fbf23ee2d90"
+      },
+      "C6/step500": {
+        "config_path": "E:\\KD-SINK-stage06-Adrita\\artifacts\\KD-SINK-stage06-production\\student-config\\config.json",
+        "config_sha256": "ef1a44d889ad1a0acc7731c78134f1b87d2d222f110e97dd10fd4117331caf22",
+        "followup_policy": {
+          "amendment_sha256": "46351d8e32ef1ef6238af18c11676e45e3d439e0e46942d1e61e35b8001851e6",
+          "interpretation": "designated-seed0 follow-up; no across-training-seed reproducibility claim",
+          "source_protocol_sha256": "48c39a25f640b90a70056e3c8f7308b66b9d635876e22c56f76516a09d2c9791",
+          "study": "mechanistic_followup",
+          "training_seed": 0
+        },
+        "role": "student",
+        "source_identity": {
+          "backend": "eager",
+          "calibration_hash": "fa031af3de63832e054b89539d3867c2904c9b592b1e7a8b3e4ca3e3676c532f",
+          "condition": "C6",
+          "data_hash": "76dcdc819b97ecff4d3c458bdf4dbd7c1a5dc2a525541e29099e6a6ac760d700",
+          "device_role": "rtx4080super",
+          "gpu_uuid": "GPU-2a5c25d0-1f73-919b-fd8b-f6f0df709aaf",
+          "hardware_hash": "e7e76acf4421b553ed94689e218da674a8d57cbd66405271583fdff41354f80b",
+          "init_hash": "1a27890c588f317a4ae5523430f8af53c591bca29c9a78d13bf182c9c145fc09",
+          "microbatch": 4,
+          "model_hash": "b21bb330c10c1f9e324f487bb403d1629adf66f5643cfc19df8bbe5914d51358",
+          "precision": "bf16",
+          "protocol_hash": "48c39a25f640b90a70056e3c8f7308b66b9d635876e22c56f76516a09d2c9791",
+          "run_id": "s1-c6-seed0-rtx4080super",
+          "seed": 0,
+          "study": "S1"
+        },
+        "weights_path": "D:\\KD-SINK-central\\runs\\s1-c6-seed0-rtx4080super\\checkpoints\\weights-000500\\model.safetensors",
+        "weights_sha256": "6eaa1ac2dca42a0a0a8c8111f1b74545e0f6f478ab54af533f4e2952afac8859"
+      },
+      "teacher": {
+        "config_path": "E:\\KD-SINK-stage06-Adrita\\artifacts\\KD-SINK-stage06-production\\teacher\\config.json",
+        "config_sha256": "7fccdcfd6622055342a734c663ee0b61ff4fd697f42467595df0bf4448c8c170",
+        "followup_policy": {
+          "role": "frozen_teacher",
+          "static_reference": true
+        },
+        "role": "teacher",
+        "source_identity": null,
+        "weights_path": "E:\\KD-SINK-stage06-Adrita\\artifacts\\KD-SINK-stage06-production\\teacher\\model.safetensors",
+        "weights_sha256": "5f47f3e12f91cd33b662ce7e433b6150ad5512b5884a2cee961b50e9c3bbebce"
+      }
+    },
+    "tokenizer": {
+      "file_sha256": {
+        "config.json": "0daed7749b4f02b8f76240d5444551d7b08712dab4d0adb8239c56ba823bb7b4",
+        "merges.txt": "1ce1664773c50f3e0cc8842619a93edc4624525b728b188a9e0be33b7726adc5",
+        "tokenizer.json": "8414cab924d8b9b33013f0d221c5862f365ee9be39c5c2bfae8a5a9e970478a6",
+        "tokenizer_config.json": "5e04eb606e3a1583530a42e36c2a6b6615c86f34fe77e44d9ddeb43ff940931f",
+        "vocab.json": "196139668be63f3b5d6574427317ae82f612a97c5d1cdaf36ed2256dbf636783"
+      },
+      "files_sha256": "68bfbc36e7d352017e23168f34c98b3b92a18bdcb658c163dea499d8d690c580",
+      "id": "openai-community/gpt2",
+      "license": "mit",
+      "revision": "607a30d783dfa663caf39e06633721c8d4cfcd7e"
+    },
+    "verified_students": 15
+  },
+  "source_preservation": {
+    "baseline_inventory_sha256": "a0618ee9dd46c477dd180df4d0652ea05ac1cd3f6fb388ae0112ef9e299b906d",
+    "mechanistic_commit": "70325fad19926fc6aae4e4a412a4ebb51fe8ddde",
+    "new_historical_runtime_or_result_change": false,
+    "original_worktree_unchanged": true,
+    "protected_tracked_files": 437,
+    "status": "PASS"
+  },
+  "statuses": {
+    "E0_SCIENTIFIC_AUDIT": "COMPLETE",
+    "E1_E3_PRODUCTION_SHAPE_QUALIFICATION": "PASSED",
+    "E1_E3_PROTOCOL_FREEZE": "PENDING_RESEARCHER_APPROVAL"
+  },
+  "tests": {
+    "agent": "Codex (GPT-6)",
+    "clean_wheel_test_sha256": "63542fc4df9aeb7c118a8919468396e6465f401537987e770f1af893ecfb9aee",
+    "command": "E:/kd-sink/.venv/Scripts/python.exe -m pytest -q tests/unit tests/integration --junitxml=D:\\KD-SINK-central\\analysis\\mechanistic_preparation_20261008\\attempt01\\P3_OFFLINE_REGRESSION_retry03.xml",
+    "final_exit_code": 0,
+    "final_passed": 567,
+    "final_stdout_seconds": 210.8,
+    "first_full_stdout_seconds": 213.56,
+    "offline_environment": {
+      "HF_HUB_OFFLINE": "1",
+      "PIP_NO_INDEX": "1",
+      "PYTHONPATH": "E:/kd-sink-mechanistic-e0/src",
+      "TRANSFORMERS_OFFLINE": "1",
+      "UV_OFFLINE": "1"
+    },
+    "qualification_source_commit": "70325fad19926fc6aae4e4a412a4ebb51fe8ddde",
+    "qualified_runtime_still_matches": true,
+    "results": {
+      "P2_RNG_LOADING_FAILURE.xml": {
+        "errors": 0,
+        "failures": 1,
+        "reported_seconds": 4.131,
+        "sha256": "51e93f7c81384d923a0cdeb2b52020cb5461193a36c8b4743b14a7e1051db23b",
+        "skipped": 0,
+        "tests": 1
+      },
+      "P2_RNG_LOADING_FIXED.xml": {
+        "errors": 0,
+        "failures": 0,
+        "reported_seconds": 7.706,
+        "sha256": "f4de4aed45158f2cf0f84635ec4ed38e3d4f261b60b0ed8912b2a703d4633d55",
+        "skipped": 0,
+        "tests": 42
+      },
+      "P3_OFFLINE_REGRESSION.xml": {
+        "errors": 0,
+        "failures": 0,
+        "reported_seconds": 212.797,
+        "sha256": "97258d0cf1e7c87ff0349dbe1216c6b1904d1152582956cd06668b4f3be99790",
+        "skipped": 0,
+        "tests": 566
+      },
+      "P3_OFFLINE_REGRESSION_retry02.xml": {
+        "errors": 0,
+        "failures": 0,
+        "reported_seconds": 207.52,
+        "sha256": "3e6d86a92ac5aea7c73c47a364742230d6c9c0292382471d0f8408acf76d4e35",
+        "skipped": 0,
+        "tests": 566
+      },
+      "P3_OFFLINE_REGRESSION_retry03.xml": {
+        "errors": 0,
+        "failures": 0,
+        "reported_seconds": 206.55,
+        "sha256": "d20c72133e2998d95716f5b505ff72ce5b8972b27778e43144f0097b471b6b76",
+        "skipped": 0,
+        "tests": 567
+      },
+      "P3_WHEEL_SMOKE.xml": {
+        "errors": 0,
+        "failures": 1,
+        "reported_seconds": 11.484,
+        "sha256": "2b20f90b40e2dc75e1131e94abecbc739416331028e09ca4914fce3f47953849",
+        "skipped": 0,
+        "tests": 1
+      },
+      "P3_WHEEL_SMOKE_retry02.xml": {
+        "errors": 0,
+        "failures": 0,
+        "reported_seconds": 11.926,
+        "sha256": "428b9d8f6054a716989816a601146b69d5bd6eee53248b82b5500f3a4ff435c1",
+        "skipped": 0,
+        "tests": 1
+      }
+    },
+    "status": "PASS",
+    "utc": "2026-10-08T18:33:49.565162+00:00",
+    "warnings": [
+      "preexisting third-party astor ast.Num deprecation"
+    ],
+    "wheel_api_smoke": "installed E1/E2/E3 run_state and verify_bundle; socket connect/connect_ex/create_connection blocked; no reference tree; pinned dependencies shared without editable pth processing"
+  },
+  "training_E4_E5_Stage09": false
+}
