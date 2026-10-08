@@ -8,8 +8,8 @@ does not approve scientific inference or silently resolve the pending choices.
 
 - [x] E1 versioned continuous Q/K/EPE/anchor probes, exact restoration and legacy parity.
 - [x] E1 live activation/parameter doses, explicit native/mapped scopes, document-disjoint panel checks and observed-dose matching.
-- [ ] E2 live cache-free FP32 eager trace, stable conditional deletion and exact local/output algebra.
-- [ ] E2 direct single-layer deletion versus reconstructed injection and no-op parity.
+- [x] E2 live cache-free FP32 eager trace, stable conditional deletion and exact local/output algebra.
+- [x] E2 direct single-layer deletion versus reconstructed injection and no-op parity.
 - [ ] E3 equal-relative-norm sink/random/orthogonal/non-sink directions with degeneracy reporting.
 - [ ] E3 single-layer restoration, all-layer conditional rescue, explicit-order telescoping and exact loss geometry.
 - [ ] Versioned per-item records, complete aggregation and strict source/lock/panel admission, external artifacts and failure receipts.

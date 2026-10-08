@@ -662,3 +662,7 @@ S6 C0-C3 prefix audit PASSED: 16/16 stable states, 28,800 item-operation records
 
 - User authorized E1-E3 implementation, starting isolated `28d6851`. Added separately versioned continuous route module; original S4 code/version/records/locks unchanged. Resolved E2 grid15 and E3 entering-residual norm via explicit researcher answer. Production choices/locks still pending.
 - Exact command/failed evidence/fixes in CORE entry: focused calibrated-probe + historical S4 suite first3 failed/21 passed, then24 passed after exact anchor-copy fix and appropriate legacy inference/hook assertions. No scientific inference/GPU/weights loaded or source-result edits. New CPU capability covers exact legacy alpha1 parity, zero no-op, selective Q/K slices, conservation, restoration, live doses, no extrapolation and document overlap. Next E2/E3 capability, milestone follows.
+
+## 2026-10-08T15:50:34Z - Codex (GPT-6) - E2 independent live adapter
+
+- Starting E1 milestone `2ee2832`. Added live GPT2Adapter subclass and CPU tests, preserving original S4 runtime and records. Exact test command in CORE entry passed6 twice, no failures/skips; captures actual native A/V and projection, verifies isolated deletion vs delta insertion and final logits, gradients, masks/q0, saturated sink mass, transactional cleanup and strict FP32/eval/autocast rejection. Capability only; no production model load/GPU/inference campaign. E2 gate checked after tests, scientific tolerance/locks pending. Next E3; milestone follows.
