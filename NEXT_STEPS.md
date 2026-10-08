@@ -1,5 +1,14 @@
 # Sequential implementation worklist
 
+## Current operator scope: mechanistic preparation (2026-10-08)
+
+The attached operator request authorizes a fresh E0 read-only audit, prospective
+E1-E3 specifications/candidate locks, full-model synthetic qualification on
+Adrita-PC, bug fixes/tests/reports and commit/push to mechanistic-e0. Scientific
+E1-E3 checkpoint/panel inference remains explicitly unauthorized. Work order:
+`design/e6a_v2/stages/MECHANISTIC_PREPARATION.md`; begin P0 in a new external
+directory, preserving all earlier E0/E1-E3 artifacts and historical science.
+
 ## Mechanistic follow-up E0 (2026-10-08; independent worktree)
 
 User authorized implementation of the mechanism proposal. Work proceeds one
