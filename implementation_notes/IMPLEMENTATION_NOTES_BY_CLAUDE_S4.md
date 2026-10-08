@@ -657,3 +657,8 @@ S6 C0-C3 prefix audit PASSED: 16/16 stable states, 28,800 item-operation records
 ## 2026-10-08T15:20:12Z - Codex (GPT-6) - E0 stage commit receipt
 
 - E0 completion milestone `c98aee7c2ac44d5567f7cd499770025e3df13f8e`, execution source `af736c2a34afacd170fbd2379f352637041b4672`, local isolated branch `mechanistic-e0`. Whitespace/source-preservation checks passed; original main and all historical scientific definitions/roots/results unchanged. No remote Git action or merge. All E0 gates complete; E1-E3 choices and separate locks pending. Final receipt-only whitespace/status check follows.
+
+## 2026-10-08T15:44:28Z - Codex (GPT-6) - separate E1 capability
+
+- User authorized E1-E3 implementation, starting isolated `28d6851`. Added separately versioned continuous route module; original S4 code/version/records/locks unchanged. Resolved E2 grid15 and E3 entering-residual norm via explicit researcher answer. Production choices/locks still pending.
+- Exact command/failed evidence/fixes in CORE entry: focused calibrated-probe + historical S4 suite first3 failed/21 passed, then24 passed after exact anchor-copy fix and appropriate legacy inference/hook assertions. No scientific inference/GPU/weights loaded or source-result edits. New CPU capability covers exact legacy alpha1 parity, zero no-op, selective Q/K slices, conservation, restoration, live doses, no extrapolation and document overlap. Next E2/E3 capability, milestone follows.
