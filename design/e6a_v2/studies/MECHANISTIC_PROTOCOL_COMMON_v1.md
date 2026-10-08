@@ -78,6 +78,13 @@ The candidate decision table must include confirmation300, control seed20260927,
 descriptive-only statistics, E1 matched-dose targets, E3 grid/doses/coarse/fine
 rules, numerical floors/tolerances and fixed execution/headroom policy. Numerical
 threshold proposals may use engineering-only synthetic evidence before science.
+The initial engineering gate proposals are componentwise FP32 parity
+abs1e-3+rel1e-4*|reference|, double target-loss geometry abs1e-10 with zero
+relative slack, and delivered injection norm abs1e-6+rel1e-6*requested norm.
+Geometry/norm checks use their separate explicit settings, rather than inheriting
+the larger FP32 matrix/output tolerance. These are candidate numerical closure
+gates, not practical scientific null/equivalence margins. Real-shape qualification
+records error distributions and headroom before their approval.
 After approval, reissue a new approved envelope with the approval record; do not
 edit a hashed candidate in place. The approved grid/panel/settings/runtime must
 match the measured qualification; changes require fresh affected qualification.

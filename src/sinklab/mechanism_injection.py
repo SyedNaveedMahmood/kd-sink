@@ -33,7 +33,7 @@ def evaluation_mode(model):
 
 
 def equal_norm_injections(trace, mask, *, eta: float, norm_floor: float, control_seed: int,
-                          query_min: int, nonsink_keys: tuple[int,int]) -> tuple[dict, dict]:
+                          query_min: int, nonsink_keys: tuple[int,int], tolerance: ParityTolerance | None = None) -> tuple[dict, dict]:
     """Entering-residual reference fixed by researcher; causal common control support."""
     require(type(eta) in (int,float) and math.isfinite(eta) and eta >= 0, "explicit nonnegative relative dose required")
     require(type(norm_floor) in (int,float) and math.isfinite(norm_floor) and norm_floor > 0, "positive norm floor required")
@@ -67,6 +67,8 @@ def equal_norm_injections(trace, mask, *, eta: float, norm_floor: float, control
         require(torch.isfinite(change).all(), "nonfinite normalized injection")
         edits[name] = change
         actual = change.double().norm(dim=-1)
+        if tolerance is not None and common.any():
+            tolerance.check(actual[common], requested_norm[common], "equal_relative_norm_injection")
         rows[name] = {"unavailable_direction_positions":int((eligible & ~available[name]).sum()),
             "injected_positions":int(common.sum()), "actual_norm_sum":float(actual[common].sum()),
             "requested_norm_sum":float(requested_norm[common].sum()),

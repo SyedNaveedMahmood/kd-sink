@@ -58,6 +58,9 @@ def validate_items(items, *, length, vocab_size):
 def validate_settings(phase, settings, layers):
     require(phase in {"E1", "E2", "E3"}, "explicit E1/E2/E3 phase required")
     tolerance = ParityTolerance(settings["atol"], settings["rtol"])
+    for prefix in ("geometry", "norm"):
+        if f"{prefix}_atol" in settings or f"{prefix}_rtol" in settings:
+            ParityTolerance(settings[f"{prefix}_atol"], settings[f"{prefix}_rtol"])
     require(type(settings["token_chunk"]) is int and settings["token_chunk"] > 0,
             "explicit positive token chunk required")
     require(type(settings["denominator_floor"]) in (int,float) and
@@ -138,10 +141,11 @@ def operation_ids(phase, settings):
 
 
 def _effect(clean, edited, ids, mask, settings, tolerance, teacher=None):
+    geometry_tolerance = ParityTolerance(settings.get("geometry_atol", tolerance.atol), settings.get("geometry_rtol", tolerance.rtol))
     return {"status": "measured", "behavior": behavioral_item(clean, edited, ids, mask,
             teacher=teacher, token_chunk=settings["token_chunk"]),
         "teacher_reference_status": "available" if teacher is not None else "not_supplied",
-        "geometry": loss_geometry(clean, edited, ids, mask, tolerance=tolerance, token_chunk=settings["token_chunk"])}
+        "geometry": loss_geometry(clean, edited, ids, mask, tolerance=geometry_tolerance, token_chunk=settings["token_chunk"])}
 
 
 def evaluate_item(adapter, item, phase, settings, *, teacher_logits=None):
@@ -199,7 +203,8 @@ def evaluate_item(adapter, item, phase, settings, *, teacher_logits=None):
                 for eta in settings["etas"]:
                     edits, metadata = equal_norm_injections(clean.traces[layer], mask, eta=eta,
                         norm_floor=settings["norm_floor"], control_seed=settings["control_seed"],
-                        query_min=settings["query_min"], nonsink_keys=tuple(settings["nonsink_keys"]))
+                        query_min=settings["query_min"], nonsink_keys=tuple(settings["nonsink_keys"]),
+                        tolerance=ParityTolerance(settings.get("norm_atol", tolerance.atol), settings.get("norm_rtol", tolerance.rtol)))
                     for direction, delta in edits.items():
                         effect = {"status": "unavailable", "behavior": None, "geometry": None,
                                   "reason": "no_common_normalizable_direction_support"}

@@ -99,3 +99,16 @@ def test_projected_head_orientation_matches_independent_head_loop():
     undefined=factor_summary(zero,mask,denominator_floor=1e-8)['all_q_ge1']
     assert undefined['per_head_cosine_with_projected_sum_mean']==[None]*heads
     assert undefined['per_head_cosine_defined_queries']==[0]*heads
+
+
+@torch.no_grad()
+def test_norm_accuracy_gate_is_enforced_before_delivery():
+    from sinklab.mechanism_injection import equal_norm_injections
+    model=model_fixture();adapter=MechanisticGPT2Adapter(model);ids,mask=inputs()
+    trace=adapter.traced_forward(input_ids=ids,attention_mask=mask,trace_layers=(0,)).traces[0]
+    with pytest.raises(ValueError,match='equal_relative_norm_injection'):
+        equal_norm_injections(trace,mask,eta=.037,norm_floor=1e-8,control_seed=17,query_min=2,
+                              nonsink_keys=(1,2),tolerance=ParityTolerance(0.,0.))
+    edits,metadata=equal_norm_injections(trace,mask,eta=.037,norm_floor=1e-8,control_seed=17,query_min=2,
+                                        nonsink_keys=(1,2),tolerance=ParityTolerance(1e-6,1e-6))
+    assert metadata['common_available_positions']>0 and set(edits)=={'sink','random','orthogonal','non_sink'}

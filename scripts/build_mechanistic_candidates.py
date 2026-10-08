@@ -15,7 +15,8 @@ from sinklab.training_entry import _teacher_map
 
 def phase_settings(phase, state):
     layers = 36 if state == "teacher" else 24
-    settings = {"atol": 1e-3, "rtol": 1e-4, "token_chunk": 16, "denominator_floor": 1e-8}
+    settings = {"atol": 1e-3, "rtol": 1e-4, "token_chunk": 16, "denominator_floor": 1e-8,
+        "geometry_atol": 1e-10, "geometry_rtol": 0.}
     if phase == "E1":
         scopes = [{"name": "native", "layers": list(range(layers))}]
         if state == "teacher": scopes.append({"name": "mapped_teacher", "layers": list(_teacher_map("S1"))})
@@ -24,6 +25,7 @@ def phase_settings(phase, state):
     if phase == "E3":
         settings.update(layers=[5, 17, 29] if state == "teacher" else [3, 11, 19],
             etas=[0., .01, .03, .10], norm_floor=1e-8, control_seed=20260927,
+            norm_atol=1e-6, norm_rtol=1e-6,
             reference="clean_residual_input_before_ln_1", query_min=2, nonsink_keys=[1, 2],
             orders=[list(range(layers)), list(reversed(range(layers)))])
     validate_settings(phase, settings, layers)
