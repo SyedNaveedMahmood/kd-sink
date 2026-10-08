@@ -146,8 +146,11 @@ def _effect(clean, edited, ids, mask, settings, tolerance, teacher=None):
 
 def evaluate_item(adapter, item, phase, settings, *, teacher_logits=None):
     """One item; live forwards only, no layer/head/query/key matrices serialized."""
+    require(adapter.model.config._attn_implementation == "eager" and
+            all(p.dtype == torch.float32 for p in adapter.model.parameters()), "all phases require FP32 eager models")
     tolerance = validate_settings(phase, settings, adapter.layer_count)
     device = next(adapter.model.parameters()).device
+    require(not torch.is_autocast_enabled(device.type), "all phases forbid autocast")
     ids = torch.tensor([item["input_ids"]], dtype=torch.long, device=device)
     mask = torch.tensor([item["attention_mask"]], dtype=torch.bool, device=device)
     rows, diagnostics = [], {}

@@ -17,7 +17,7 @@ def write(path,data):
 def protocol(tmp_path,monkeypatch,phase="E2"):
     runtime = {"engineering_test_runtime_only":True}
     monkeypatch.setattr("sinklab.mechanistic_admission.runtime_identity",lambda *args:runtime)
-    monkeypatch.setattr("sinklab.mechanistic_admission.read_json",lambda path: {"test":True} if str(path).endswith("artifact.lock.json") else json.loads(path.read_text()))
+    monkeypatch.setattr("sinklab.mechanistic_admission.read_json",lambda path: artifact_document if str(path).endswith("artifact.lock.json") else json.loads(path.read_text()))
     monkeypatch.setattr("sinklab.mechanistic_panel.prepare_frozen_panel",lambda **kwargs:json.loads((tmp_path/"panel.json").read_text()))
     grid = ["teacher",*(E1_GRID if phase=="E1" else E2_GRID)]
     if phase=="E3": grid=["teacher","C2/step500"]
@@ -47,6 +47,9 @@ def protocol(tmp_path,monkeypatch,phase="E2"):
             current.update(etas=[0.,.01],norm_floor=1e-10,control_seed=23,reference="clean_residual_input_before_ln_1",
                 nonsink_keys=[1,2],query_min=2,orders=[list(range(36 if teacher else 24)),list(reversed(range(36 if teacher else 24)))])
         settings[state]=current
+    artifact_document=seal_payload({"teacher":{"weights_sha256":sources["teacher"]["weights"]["sha256"],
+        "config_sha256":sources["teacher"]["config"]["sha256"],"revision":sources["teacher"]["revision"]},
+        "student_config":{"sha256":sources["C2/step500"]["config"]["sha256"]}})
     panel = {"context_length":128,"tokenizer":{"model_id":"gpt2","artifact_sha256":"b"*64},
              "preparation":{"corpus":{},"registered_panels":{}}}
     for i,name in enumerate(("discovery","confirmation")):
@@ -83,7 +86,7 @@ def test_declared_complete_grid_admitted_metadata_only(tmp_path,monkeypatch,phas
 
 
 @pytest.mark.parametrize("mutation",["draft","scope","seed","d24","runtime","qualification","panel_overlap",
-    "panel_count","missing_source","wrong_step","source_seed","pretrained","weights","complete","config","settings"])
+    "panel_count","missing_source","wrong_step","source_seed","pretrained","weights","complete","config","settings","teacher_reference"])
 def test_gate_rejects_changed_or_unapproved_scope_before_model_load(tmp_path,monkeypatch,mutation):
     payload=protocol(tmp_path,monkeypatch)
     source=payload["sources"]["C2/step500"]
@@ -111,6 +114,7 @@ def test_gate_rejects_changed_or_unapproved_scope_before_model_load(tmp_path,mon
     elif mutation=="pretrained": source["initialization"]="pretrained"
     elif mutation=="weights": (tmp_path/"C2_step500/model.safetensors").write_bytes(b"tamper")
     elif mutation=="complete": (tmp_path/"C2_step500/COMPLETE").write_text("f"*64)
+    elif mutation=="teacher_reference": payload["sources"]["teacher"]["revision"]="2"*40
     else: payload["settings"]["C2/step500"]["atol"]=1
     with pytest.raises(ValueError): admit(payload)
 

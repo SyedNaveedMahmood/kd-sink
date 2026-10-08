@@ -120,10 +120,19 @@ def admit_job(document, *, approved_sha256, phase, state, panel_name, seed, repo
     for name in ("discovery", "confirmation"):
         validate_items(panel[name], length=128, vocab_size=50257)
     from .mechanistic_panel import prepare_frozen_panel
-    prepared = prepare_frozen_panel(artifact_document=read_json(Path(repo)/"protocols/artifact.lock.json"),
+    artifact_document = read_json(Path(repo)/"protocols/artifact.lock.json")
+    prepared = prepare_frozen_panel(artifact_document=artifact_document,
         corpus_reference=panel["preparation"]["corpus"],panels_reference=panel["preparation"]["registered_panels"],
         confirmation_ids=[i["id"] for i in panel["confirmation"]])
     require(prepared == panel, "prepared panel differs from registered tokens/source-document ownership")
+    artifact,_ = verify_envelope(artifact_document)
+    locked_teacher = payload["sources"]["teacher"]
+    require(locked_teacher["weights"]["sha256"] == artifact["teacher"]["weights_sha256"] and
+            locked_teacher["config"]["sha256"] == artifact["teacher"]["config_sha256"] and
+            locked_teacher["revision"] == artifact["teacher"]["revision"], "teacher differs from original S1 frozen reference")
+    if state != "teacher":
+        require(payload["sources"][state]["config"]["sha256"] == artifact["student_config"]["sha256"],
+                "student differs from original random-initialization configuration")
     settings = payload["settings"]
     layers = 36 if state == "teacher" else 24
     current = settings[state]
