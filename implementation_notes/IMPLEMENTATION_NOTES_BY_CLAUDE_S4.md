@@ -634,3 +634,9 @@ S6 C0-C3 prefix audit PASSED: 16/16 stable states, 28,800 item-operation records
 ## 2026-10-07T05:13:20Z - Codex (GPT-6) - S4 report commit receipt
 
 - Milestone commit: `59bf888` (`docs(s4): report audited positional and route probe results`), containing the comprehensive S4 report, read-only verifier, references, and evidence journals. Staged whitespace check exited 0. Push verification follows this receipt.
+
+## 2026-10-08T14:16:27Z - Codex (GPT-6) - separate E0 audit capability
+
+- User authorized mechanistic follow-up implementation; first stage is retrospective E0. Started from `dd3fcc33132c8dc1c4d9f18466654b1dc5f4703c` in separate `mechanistic-e0` worktree. S4 design/version/code/protocol/results remain immutable source evidence; new code uses an E0 namespace and independent derived artifacts.
+- Implemented strict complete-grid record auditing, item-weighted sink/token-weighted behavioral reductions, all five random controls, raw teacher/student components and optional explicitly scaled exploratory distances. No result-direction gate; native24/native36 scope mismatch is retained. Initial CPU suite command `$env:PYTHONPATH='E:/kd-sink-mechanistic-e0/src'; & E:/kd-sink/.venv/Scripts/python.exe -m pytest -q tests/unit/test_mechanistic_e0.py` exited 0: 38 passed, 0 failed/skipped. `git diff --check` exited 0.
+- S4 real source and panel are locally available but no new scientific audit has yet run. Next: exact frozen-panel membership, CLI/output checks, full regression and real recorded-result verification. No S4 inference, model load, GPU work, original source writes or altered scientific claims. Initial milestone commit pending; E0 capability/real reanalysis remain separate from S4 production status.

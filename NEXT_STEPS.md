@@ -1,5 +1,21 @@
 # Sequential implementation worklist
 
+## Mechanistic follow-up E0 (2026-10-08; independent worktree)
+
+User authorized implementation of the mechanism proposal. Work proceeds one
+stage at a time under [the E0 work order](design/e6a_v2/stages/MECHANISTIC_E0.md).
+Historical S1-S7 protocols, execution checkouts and Stage09 status are preserved.
+Initial E0 CPU capability suite: 38 passed. Final acceptance and actual recorded-
+result reanalysis remain pending; no E1-E5 inference/training is launched.
+
+- [ ] E0 source audit/extraction, component analysis and traceable external artifacts validated.
+- [ ] E0 extensive regression, clean-wheel and actual complete S4 recorded-result audit.
+- [ ] E1 choices/confirmation panel/doses/scopes/device/numerical policy prospectively resolved and locked.
+- [ ] E2/E3 inference implementation and validation under separate approved scope.
+
+E4/E5 remain optional and separately approved; step500 weights alone do not
+establish an exact full-state continuation origin.
+
 Dedicated S2 results report (2026-10-07): `reports/results/S2_RESULTS_20261007.md` documents the external AbdullahPC campaign's final independently audited six Pythia trajectories: 153 common-intersection steps each, 918/918 Dense64 and 42/42 Full300 evaluations. It reports per-series sink, clean loss, delete/relocate sensitivity, the step-111000 exclusion, panel/tokenizer identities, preserved invalidated records, and interpretation limits. The older Stage07 capability report and consolidated central-results summary retain their historical evidence scope; this later S2 report is the current source for the external scientific campaign. No scientific run or source/protocol change was made to prepare it.
 
 D24 prospective S1 checkpoint-follow-up policy is sealed and CPU-validated: all new checkpoint-dependent work is seed0-only. D25 prospectively freezes S6 external data inputs and records upstream license uncertainty without inferring a license. S4/S6 remain designated-seed0 follow-ups. D26 seals the exact compatible mixed-root C1/C2/C5/C6 seed0 S5 reuse-only join. The user explicitly authorized the independent Stage08 S4/S5/S6 scientific work; no training, S2 rerun, Stage09, optional 512/1024 contexts, or HumanEval execution was authorized. Current campaign status is recorded in `reports/stage08_scientific_execution_20261005.json`: S5 is complete and independently hash-verified; S6 completed all 28 designated-seed0 states and passed independent audit, with its stale runner aggregate-count failure preserved and disclosed; S4 completed all 35 student batteries and passed runner and independent full-tree audits. S4 has 108,000 records and 108,037 manifested files. The enclosing execution wrapper reported exit 1 despite the runner COMPLETE event and sealed audit; this discrepancy is documented in the report and independent receipt. A checkbox becomes checked ONLY after implementation and required tests/output audits pass with report/journal evidence. Missing hardware/network/approval is BLOCKED, not passed. Stage capability, validation, and scientific coverage are separate.
