@@ -5,7 +5,7 @@ three preparation milestones and commit/push to mechanistic-e0. Read AGENTS,
 NEXT_STEPS, the full mechanism plan/execution contract, E0 implementation and
 evidence, D24, S1/S4/S5 reports and CORE/S4/S5 journals. Work sequentially.
 
-- [ ] P0: fresh complete read-only E0 source audit, all35 student batteries plus
+- [x] P0: fresh complete read-only E0 source audit, all35 student batteries plus
   teacher, ten probes/five random controls, hashes/membership/reaggregation,
   external figures/data/provenance/scientific audit and independent validation.
 - [ ] P1: explicit versioned E1/E2/E3 scientific specifications; deterministic

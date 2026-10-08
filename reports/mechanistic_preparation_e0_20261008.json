@@ -1,0 +1,39 @@
+{
+  "D24_sha256": "46351d8e32ef1ef6238af18c11676e45e3d439e0e46942d1e61e35b8001851e6",
+  "S1_compact_transfer_receipt_sha256": "5ed5bbbdaf207ae24ab3826ae8c41bb6cac24a01ee005204ab8c2bd303c636dd",
+  "S1_context_records": 31500,
+  "S1_context_states": 35,
+  "S4_records": 108000,
+  "S4_student_batteries": 35,
+  "artifact": "D:\\KD-SINK-central\\analysis\\mechanistic_preparation_20261008\\attempt01\\E0_SCIENTIFIC_AUDIT.json",
+  "artifact_sha256": "7a8c86b84c242ea240ee1a2e80f24dff54260fec40e762d7cfa0b7d66857b0c3",
+  "audit_source_commit": "eefd05ea0dd9f9135cd4d32db2791c959b7493ca",
+  "composite_status": "insufficient evidence: no independently specified scaling recipe; individual component values and units retained, no zero-vector cosine or fitted normalization",
+  "context_independent_item_reaggregation": "PASS",
+  "endpoint_gap_directions": {
+    "away_from_teacher": 80,
+    "toward_teacher": 269,
+    "unchanged": 1
+  },
+  "new_inference": false,
+  "original_transfer_inventory_hashes": {
+    "D:\\S1_C0_artifacts.zip": "8690518cd7bd72188cc0c1328e87080d1d8abc8d9b66f260479f0f17bec70ea0",
+    "D:\\S1_C1_artifacts.zip": "46ca9bb5f0a6f274215db380aa5d182a45e173412c4f5f3065198dacfb656e2d",
+    "D:\\S1_C2_artifacts.zip": "4108048caa39862ada1708a3d16ac2a67ad2a9dffae246f16756a0310897737b",
+    "D:\\S1_C3_artifacts.zip": "3ebc6c673b21e82432f7bf240904ef502322f00a442acff5609db58fc1b29ebc",
+    "D:\\S1_C4_artifacts.zip": "803f2c0f6504ecc4e7624ebc2c1966bfa2f5a7d6e2230999d819ba1d23518b29",
+    "D:\\S1_C5_artifacts.zip": "4d1855f357fd513d792620d569b4f99b5c06ac05265cc829e21441885d97ae86",
+    "D:\\S1_C6_artifacts.zip": "f2186856f22935fb3fce520e90b3d12d93f3a413207e5910e6d790b71845f215"
+  },
+  "precision_limit": "S4 FP32 and S1/S5 BF16 remain separately labeled",
+  "probes_per_battery": 10,
+  "retrospective_exploratory": true,
+  "separate_random_K_controls": 5,
+  "source_commit": "f1de30c24869decf2329aa199866a0012301598a",
+  "source_file_inventory_count": 31535,
+  "status": "COMPLETE",
+  "teacher_batteries": 1,
+  "training": false,
+  "trajectory_classification": "mixed/nonmonotonic",
+  "validation_script_sha256": "d15b807c03be9565adbb9fc980428d21e5a0d8cf19ac53628f5e2e60b352bf75"
+}
