@@ -12,8 +12,8 @@ from datetime import datetime, timezone
 REPO = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(REPO / "src"))
 
-from sinklab.mechanistic_e0 import (CHANNELS, CONDITIONS, PROBES, STEPS, VERSION, TRAJECTORY_FIELDS,
-    analyze, audit_source, csv_bytes, digest_file, require, validate_bundle, verify_bundle, write_new)
+from sinklab.mechanistic_e0 import (CHANNELS, CONDITIONS, PROBES, STEPS, VERSION, TRAJECTORY_FIELDS, CONTEXT_FIELDS,
+    analyze, audit_source, csv_bytes, digest_file, require, trajectory_context, validate_bundle, verify_bundle, write_new)
 from sinklab.provenance import canonical_json_bytes, seal_payload, _no_duplicate_keys
 
 
@@ -56,21 +56,26 @@ def plot_routes(rows: list[dict], output: Path) -> None:
 
 
 def run(*, root: Path, independent_audit: Path, expected_audit_sha256: str,
-        output: Path, recipe: dict | None = None, engineering_fixture: bool = False,
+        output: Path, panel_manifest: Path | None = None, recipe: dict | None = None, engineering_fixture: bool = False,
+        s5_bundle: Path | None = None, expected_s5_audit_sha256: str | None = None,
         progress=None) -> dict:
     root, independent_audit = root.resolve(), independent_audit.resolve()
     output = output.resolve()
     require(not (output == REPO or REPO in output.parents), "output must be outside repository")
     # Walk ancestors to catch a different Git checkout too.
     require(not any((p / ".git").exists() for p in (output, *output.parents)), "output must be outside every Git tree")
-    for source in (root, independent_audit.parent):
+    for source in (root, independent_audit.parent, *((panel_manifest.resolve().parent,) if panel_manifest else ()),
+                   *((s5_bundle.resolve(),) if s5_bundle else ())):
         require(not (output == source or source in output.parents or output in source.parents), "output must be separate from source")
     require(not output.exists(), "output must be a new directory; completed/failing outputs are preserved")
     output.mkdir(parents=True)
     try:
         rows, provenance = audit_source(root, independent_audit, expected_audit_sha256,
-            engineering_fixture=engineering_fixture, progress=progress)
+            panel_manifest=panel_manifest, engineering_fixture=engineering_fixture, progress=progress)
+        require(not output.is_relative_to(Path(provenance["frozen_panel_path"]).parent), "output overlaps frozen panel inputs")
         analysis = analyze(rows, recipe)
+        context, context_provenance = trajectory_context(rows, provenance, s5_bundle, expected_s5_audit_sha256)
+        provenance["S5_context"] = context_provenance
         code = {str(path.relative_to(REPO)): digest_file(path) for path in (
             REPO / "scripts/report_mechanistic_e0.py", REPO / "src/sinklab/mechanistic_e0.py",
             REPO / "src/sinklab/provenance.py", REPO / "src/sinklab/followup_policy.py")}
@@ -81,10 +86,12 @@ def run(*, root: Path, independent_audit: Path, expected_audit_sha256: str,
             implementation_namespace="mechanistic_followup/E0")
         source_before = {name: digest_file(root / name) for name in ("SHA256SUMS.txt", "S4_FINAL_AUDIT.json", "S4_RUN_MANIFEST.json")}
         write_new(output / "E0_PROVENANCE.json", canonical_json_bytes(seal_payload(provenance)) + b"\n")
-        write_new(output / "E0_ANALYSIS.json", canonical_json_bytes(seal_payload({"rows": rows, "analysis": analysis, "recipe": recipe})) + b"\n")
+        write_new(output / "E0_ANALYSIS.json", canonical_json_bytes(seal_payload({"rows": rows, "analysis": analysis,
+            "recipe": recipe, "trajectory_context": context})) + b"\n")
         write_new(output / "E0_S4_ROUTE_TRAJECTORIES.csv", csv_bytes(rows, TRAJECTORY_FIELDS))
         comparison_fields = list(analysis["comparisons"][0])
         write_new(output / "E0_TEACHER_STUDENT_FINGERPRINTS.csv", csv_bytes(analysis["comparisons"], comparison_fields))
+        write_new(output / "E0_TRAJECTORY_CONTEXT.csv", csv_bytes(context, CONTEXT_FIELDS))
         write_new(output / "E0_PLOT_DATA.json", canonical_json_bytes(plot_data(rows)) + b"\n")
         plot_routes(rows, output)
         require(all(digest_file(root / name) == digest for name, digest in source_before.items()), "source receipts changed during outputs")
@@ -97,6 +104,7 @@ def run(*, root: Path, independent_audit: Path, expected_audit_sha256: str,
             "fresh_records_verified": provenance["fresh_records_verified"], "summary_count": 36,
             "trajectory_rows": len(rows), "component_comparison_rows": len(analysis["comparisons"]),
             "composite_status": analysis["composite_status"], "analysis_source_commit": source_commit,
+            "S5_context_status": context_provenance["status"],
             "execution_source_file_sha256": code, "independent_audit_file_sha256": expected_audit_sha256}
         validate_bundle(output, receipt, completion_present=False)
         temporary = output / "COMPLETE.tmp"
@@ -123,6 +131,9 @@ def main(argv=None) -> int:
     audit.add_argument("--expected-audit-sha256", required=True)
     audit.add_argument("--output", type=Path, required=True)
     audit.add_argument("--fingerprint-recipe", type=Path)
+    audit.add_argument("--panel-manifest", type=Path, help="relocated original frozen panel, with exact original hashes")
+    audit.add_argument("--s5-bundle", type=Path, help="optional already-recorded attention-deletion trajectory context")
+    audit.add_argument("--expected-s5-audit-sha256", help="required pin when --s5-bundle is supplied")
     audit.add_argument("--engineering-fixture", action="store_true")
     args = parser.parse_args(argv)
     try:
@@ -132,7 +143,8 @@ def main(argv=None) -> int:
             recipe = json.loads(args.fingerprint_recipe.read_text(encoding="utf-8"), object_pairs_hook=_no_duplicate_keys) if args.fingerprint_recipe else None
             result = run(root=args.root, independent_audit=args.independent_audit,
                 expected_audit_sha256=args.expected_audit_sha256, output=args.output,
-                recipe=recipe, engineering_fixture=args.engineering_fixture,
+                panel_manifest=args.panel_manifest, recipe=recipe, engineering_fixture=args.engineering_fixture,
+                s5_bundle=args.s5_bundle, expected_s5_audit_sha256=args.expected_s5_audit_sha256,
                 progress=lambda event: print(json.dumps(event), flush=True))
         print(json.dumps(result, sort_keys=True))
         return 0

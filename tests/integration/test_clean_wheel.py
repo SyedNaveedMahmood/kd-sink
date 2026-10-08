@@ -45,6 +45,8 @@ def test_offline_wheel_without_reference_tree(tmp_path):
     _run([str(python), "-m", "pip", "install", "--no-index", "--no-deps",
           str(wheels[0])], cwd=tmp_path, env=env)
     smoke = _run([str(python), "-c",
-                  "import sinklab; from sinklab.config import RunSpec; print(sinklab.__file__)"],
+                  "import sinklab; from sinklab.config import RunSpec; "
+                  "from sinklab.mechanistic_e0 import VERSION; "
+                  "assert VERSION == 'mechanistic-e0-v1'; print(sinklab.__file__)"],
                  cwd=tmp_path, env=env)
     assert str(clean_env).lower() in smoke.stdout.lower()

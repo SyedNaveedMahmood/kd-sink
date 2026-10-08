@@ -9,7 +9,7 @@ import pytest
 
 from sinklab.mechanistic_e0 import (CONDITIONS, STEPS, PROBES, CHANNELS, E0Error,
     analyze, audit_source, digest_file, fingerprint_recipe, read_sealed,
-    trajectory_direction, verify_bundle)
+    trajectory_direction, trajectory_context, verify_bundle)
 from sinklab.followup_policy import D24_SHA256, admit_s1_followup
 from sinklab.provenance import canonical_json_bytes, payload_digest, seal_payload
 from scripts import report_mechanistic_e0 as runner
@@ -37,15 +37,25 @@ def repair_receipts(root, audit_path):
 def source_fixture(tmp_path, items=2):
     root, audit_path = tmp_path / "source", tmp_path / "audits" / "audit.json"
     device = {"uuid": "GPU-fixture", "name": "fixture", "cuda_index": 0}
-    panel, teacher_hash = "a" * 64, "b" * 64
+    panel_path = tmp_path / "inputs" / "panel.json"
+    panel_payload = {"kind": "owt-upstream-panels-v1", "corpus_sha256": "e" * 64,
+                     "owt_full300": [f"item{i}" for i in range(items)]}
+    sealed(panel_path, panel_payload)
+    panel, teacher_hash = payload_digest(panel_payload), "b" * 64
     identities = {c: {"study": "S1", "condition": c, "seed": 0, "run_id": f"s1-{c.lower()}-seed0-fixture",
         "protocol_hash": str(i + 1) * 64, "gpu_uuid": "GPU-training-fixture", "device_role": "rtx4080super",
         "init_hash": "f" * 64, "data_hash": "e" * 64} for i, c in enumerate(CONDITIONS)}
     manifest = {"D24_sha256": D24_SHA256, "conditions": list(CONDITIONS), "checkpoint_count": 35,
         "probe_ids": list(PROBES), "control_seed": 82, "denominator_floor": 1e-8, "responsiveness_floor": 1e-6,
         "precision": "fp32", "inference_device": device,
-        "panel": {"panel_manifest_sha256": panel, "panel_item_count": items, "sequence_length": 128},
-        "source_inventory": {"sources": {c: {"identity": identity} for c, identity in identities.items()}}}
+        "panel": {"panel_manifest_sha256": panel, "panel_item_count": items, "sequence_length": 128,
+            "panel_file_sha256": digest_file(panel_path), "panel_path": str(panel_path), "corpus_payload_sha256": "e" * 64,
+            "panel_item_ids_sha256": payload_digest({"item_ids": panel_payload["owt_full300"]})},
+        "source_inventory": {"sources": {c: {"identity": identity, "checkpoints": [
+            {"step": step, "status": "verified", "identity": identity,
+             "followup_policy": admit_s1_followup(identity, study="S4", step=step),
+             "manifest_file_sha256": "c" * 64, "model_file_sha256": payload_digest({"condition": c, "step": step})}
+            for step in STEPS]} for c, identity in identities.items()}}}
     sealed(root / "S4_RUN_MANIFEST.json", manifest)
     for condition, step in [(c, s) for c in CONDITIONS for s in STEPS] + [(None, None)]:
         role = "teacher" if condition is None else "student"
@@ -222,6 +232,24 @@ def test_resealed_arithmetic_and_identity_corruption(source, mutation):
     with pytest.raises(E0Error): audit((root, audit_path, pinned))
 
 
+@pytest.mark.parametrize("mutation", ["missing", "duplicate", "identity", "status", "model", "manifest"])
+def test_checkpoint_inventory_is_bound_to_summary(source, mutation):
+    root, audit_path, _ = source
+    path = root / "S4_RUN_MANIFEST.json"
+    manifest, _ = read_sealed(path)
+    entries = manifest["source_inventory"]["sources"]["C2"]["checkpoints"]
+    if mutation == "missing": entries.pop()
+    if mutation == "duplicate": entries[-1] = copy.deepcopy(entries[0])
+    if mutation == "identity": entries[2]["identity"] = {**entries[2]["identity"], "seed": 1}
+    if mutation == "status": entries[2]["status"] = "failed"
+    if mutation == "model": entries[2]["model_file_sha256"] = "a" * 64
+    if mutation == "manifest": entries[2]["manifest_file_sha256"] = "a" * 64
+    sealed(path, manifest)
+    pin = repair_receipts(root, audit_path)
+    with pytest.raises(E0Error, match="checkpoint inventory"):
+        audit((root, audit_path, pin))
+
+
 def analysis_rows():
     rows = []
     for c in (*CONDITIONS, None):
@@ -338,3 +366,103 @@ def test_missing_artifact_is_blocked_not_passed(tmp_path):
         runner.run(root=tmp_path / "missing", independent_audit=tmp_path / "audits" / "absent.json",
             expected_audit_sha256="a" * 64, output=output)
     assert (output / "BLOCKED.json").exists() and not (output / "COMPLETE.json").exists()
+
+
+def test_frozen_panel_membership_and_relocation(source, tmp_path):
+    manifest, _ = read_sealed(source[0] / "S4_RUN_MANIFEST.json")
+    original = Path(manifest["panel"]["panel_path"])
+    relocated = tmp_path / "relocated" / "panel.json"
+    relocated.parent.mkdir()
+    relocated.write_bytes(original.read_bytes())
+    original.unlink()
+    with pytest.raises(FileNotFoundError): audit(source)
+    rows, provenance = audit(source, panel_manifest=relocated)
+    assert len(rows) == 360 and provenance["frozen_panel_path"] == str(relocated)
+    panel, _ = read_sealed(relocated)
+    panel["owt_full300"] = ["unexpected1", "unexpected2"]
+    sealed(relocated, panel)
+    with pytest.raises(E0Error, match="panel binding"): audit(source, panel_manifest=relocated)
+
+
+def test_ordered_panel_binding_checked_even_if_resealed(source):
+    root, audit_path, _ = source
+    manifest, _ = read_sealed(root / "S4_RUN_MANIFEST.json")
+    manifest["panel"]["panel_item_ids_sha256"] = "0" * 64
+    sealed(root / "S4_RUN_MANIFEST.json", manifest)
+    with pytest.raises(E0Error, match="ordered frozen"):
+        audit((root, audit_path, repair_receipts(root, audit_path)))
+
+
+def s5_fixture(path, provenance):
+    path.mkdir()
+    records = []
+    manifest = provenance["run_manifest"]
+    panel, _ = read_sealed(Path(manifest["panel"]["panel_path"]))
+    for c in ("C1", "C2", "C5", "C6"):
+        identity = manifest["source_inventory"]["sources"][c]["identity"]
+        for name, steps in (("owt_dense64", range(0, 10001, 100)),
+                ("owt_full300", (0, 100, 250, 500, 1000, 2000, 5000, 7500, 10000))):
+            for step in steps:
+                records.append({"condition": c, "panel": name, "step": step, "status": "complete", "study": "S1",
+                    "seed": 0, "protocol_sha256": identity["protocol_hash"], "run_id": identity["run_id"],
+                    "gpu_uuid": identity["gpu_uuid"], "initialization_sha256": identity["init_hash"],
+                    "data_sha256": identity["data_hash"], "layer_scope": list(range(24)), "precision": "bf16",
+                    "metric_version": "e6a-v2-metrics-1", "panel_sha256": manifest["panel"]["panel_manifest_sha256"],
+                    "item_ids": panel["owt_full300"], "source_aggregate_sha256": "a" * 64, "checkpoint_sha256": "b" * 64,
+                    "measures": {"clean_ce_nats": 3., "sink_s": .3, "delete_delta_ce_nats": .01,
+                        "delete_self_kl_nats": .02, "relocate_delta_ce_nats": -.01, "relocate_self_kl_nats": .03}})
+    (path / "S5_REAGGREGATED_SOURCE_ROWS.jsonl").write_text("".join(json.dumps(r) + "\n" for r in records))
+    for name in ("S5_JOINED_OWT_DENSE64.json", "S5_JOINED_OWT_FULL300.json", "S5_SOURCE_VERIFICATION.json"):
+        (path / name).write_text("{}")
+    (path / "SHA256SUMS.txt").write_text("fixture checksums")
+    bindings = {"source_rows_sha256": "S5_REAGGREGATED_SOURCE_ROWS.jsonl", "dense_join_sha256": "S5_JOINED_OWT_DENSE64.json",
+        "full300_join_sha256": "S5_JOINED_OWT_FULL300.json", "source_verification_sha256": "S5_SOURCE_VERIFICATION.json",
+        "sha256sums_sha256": "SHA256SUMS.txt"}
+    audit = {"status": "COMPLETE", "source_row_count": 440, "joined_row_count": 110, "new_inference": False,
+        "model_loaded": False, "source_run_directories_modified": False, "d26_sha256": "d" * 64,
+        **{key: digest_file(path / name) for key, name in bindings.items()}}
+    (path / "STAGE08_S5_AUDIT.json").write_text(json.dumps(audit))
+    return path, digest_file(path / "STAGE08_S5_AUDIT.json")
+
+
+def test_context_preserves_precision_missingness_and_signed_effects(source, tmp_path):
+    rows, provenance = audit(source)
+    bundle, pin = s5_fixture(tmp_path / "s5", provenance)
+    context, proof = trajectory_context(rows, provenance, bundle, pin)
+    assert proof["source_rows_verified"] == 440 and proof["joined_context_states"] == 20
+    assert len(context) == 35
+    available = [r for r in context if r["context_status"] == "available"]
+    assert len(available) == 20
+    assert all(r["s4_precision"] == "fp32" and r["s5_precision"] == "bf16" for r in available)
+    assert all(r["s5_relocate_delta_ce_nats"] == -.01 for r in available)
+    assert {r["condition"] for r in context if r["s5_precision"] is None} == {"C0", "C3", "C4"}
+    assert all(r["context_status"] == "not_supplied" for r in trajectory_context(rows, provenance)[0])
+
+
+@pytest.mark.parametrize("field,value", [("seed", 1), ("precision", "fp32"), ("run_id", "wrong"),
+    ("gpu_uuid", "wrong"), ("protocol_sha256", "0" * 64), ("item_ids", ["wrong1", "wrong2"])])
+def test_resealed_context_identity_rejected(source, tmp_path, field, value):
+    rows, provenance = audit(source)
+    bundle, _ = s5_fixture(tmp_path / "s5", provenance)
+    path = bundle / "S5_REAGGREGATED_SOURCE_ROWS.jsonl"
+    records = [json.loads(line) for line in path.read_text().splitlines()]
+    row = next(r for r in records if r["panel"] == "owt_full300")
+    row[field] = value
+    path.write_text("".join(json.dumps(r) + "\n" for r in records))
+    audit_path = bundle / "STAGE08_S5_AUDIT.json"
+    receipt = json.loads(audit_path.read_text())
+    receipt["source_rows_sha256"] = digest_file(path)
+    audit_path.write_text(json.dumps(receipt))
+    with pytest.raises(E0Error): trajectory_context(rows, provenance, bundle, digest_file(audit_path))
+
+
+def test_bundle_resealed_csv_content_mismatch(source, tmp_path, monkeypatch):
+    monkeypatch.setattr(runner, "plot_routes", dummy_plot)
+    output = tmp_path / "output"
+    receipt = runner.run(root=source[0], independent_audit=source[1], expected_audit_sha256=source[2], output=output,
+        engineering_fixture=True)
+    path = output / "E0_S4_ROUTE_TRAJECTORIES.csv"
+    path.write_text("resealed but scientifically inconsistent table")
+    receipt["files"][path.name] = digest_file(path)
+    sealed(output / "COMPLETE.json", receipt)
+    with pytest.raises(E0Error, match="CSV semantic"): verify_bundle(output)

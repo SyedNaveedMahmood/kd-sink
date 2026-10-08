@@ -27,9 +27,13 @@ TRAJECTORY_FIELDS = ["model_role", "condition", "step", "probe_id", "baseline_si
     "delta_ce_nats", "self_kl_nats", "absolute_target_logprob_change_nats", "prediction_flip_fraction",
     "item_count", "valid_targets", "scope", "probe_plan", "source_protocol_sha256", "checkpoint_sha256",
     "panel_sha256", "summary_file_sha256", "summary_relative_path"]
+CONTEXT_FIELDS = ["condition", "step", "s4_precision", "s4_clean_ce_nats", "s4_sink_s", "context_status",
+    "s5_precision", "s5_clean_ce_nats", "s5_sink_s", "s5_delete_delta_ce_nats", "s5_delete_self_kl_nats",
+    "s5_relocate_delta_ce_nats", "s5_relocate_self_kl_nats", "s5_source_aggregate_sha256",
+    "s5_checkpoint_tensor_sha256"]
 OUTPUT_FILES = {"E0_PROVENANCE.json", "E0_ANALYSIS.json", "E0_S4_ROUTE_TRAJECTORIES.csv",
     "E0_TEACHER_STUDENT_FINGERPRINTS.csv", "E0_PLOT_DATA.json", "E0_ROUTE_TRAJECTORIES.svg",
-    "E0_ROUTE_TRAJECTORIES.png", "SHA256SUMS.txt"}
+    "E0_ROUTE_TRAJECTORIES.png", "E0_TRAJECTORY_CONTEXT.csv", "SHA256SUMS.txt"}
 
 
 class E0Error(ValueError):
@@ -170,7 +174,17 @@ def _summary_rows(payload: dict, label: str, manifest: dict, expected_items: int
                 result["checkpoint_sha256"] == payload["checkpoint_model_sha256"] and
                 provenance["source_checkpoint_manifest_sha256"] == payload["checkpoint_manifest_sha256"],
                 f"source checkpoint identity: {label}")
-        require(identity == manifest["source_inventory"]["sources"][payload["condition"]]["identity"], f"source manifest binding: {label}")
+        source = manifest["source_inventory"]["sources"][payload["condition"]]
+        require(identity == source["identity"], f"source manifest binding: {label}")
+        checkpoints = source["checkpoints"]
+        require(len(checkpoints) == len(STEPS) and {entry["step"] for entry in checkpoints} == set(STEPS),
+                f"complete checkpoint inventory: {label}")
+        checkpoint = next(entry for entry in checkpoints if entry["step"] == payload["step"])
+        require(checkpoint["status"] == "verified" and checkpoint["identity"] == identity and
+                checkpoint["followup_policy"] == followup and
+                checkpoint["manifest_file_sha256"] == payload["checkpoint_manifest_sha256"] and
+                checkpoint["model_file_sha256"] == payload["checkpoint_model_sha256"],
+                f"checkpoint inventory binding: {label}")
         device = provenance["inference_device"]
     else:
         require(role == "teacher" and payload["step"] is None and result["source_identity"] is None and
@@ -220,9 +234,11 @@ def _summary_rows(payload: dict, label: str, manifest: dict, expected_items: int
 
 
 def audit_source(root: Path, audit_path: Path, expected_audit_sha256: str, *,
-                 engineering_fixture: bool = False, progress: Callable[[dict], None] | None = None) -> tuple[list[dict], dict]:
+                 panel_manifest: Path | None = None, engineering_fixture: bool = False,
+                 progress: Callable[[dict], None] | None = None) -> tuple[list[dict], dict]:
     """Rehash all records and independently recompute every required aggregate."""
     root, audit_path = Path(root).resolve(strict=True), Path(audit_path).resolve(strict=True)
+    require(not any(part.lower() == "upstream" for path in (root, audit_path) for part in path.parts), "reference-only source path")
     require(digest_file(audit_path) == expected_audit_sha256, "independent audit file hash mismatch")
     audit, audit_hash = read_sealed(audit_path)
     require(audit["study"] == "S4" and audit["status"] == "COMPLETE_INDEPENDENTLY_VERIFIED" and
@@ -238,6 +254,17 @@ def audit_source(root: Path, audit_path: Path, expected_audit_sha256: str, *,
     require(type(count) is int and count > 0 and (engineering_fixture or count == 300), "production requires 300 items")
     require(manifest["panel"]["sequence_length"] == 128 and manifest["precision"] == "fp32" and
             manifest["denominator_floor"] > 0 and manifest["responsiveness_floor"] >= 0, "historical numerical policy")
+    panel_path = Path(panel_manifest or manifest["panel"]["panel_path"]).resolve(strict=True)
+    require(not any(part.lower() == "upstream" for part in panel_path.parts), "reference-only panel path")
+    panel, panel_hash = read_sealed(panel_path)
+    require(panel_hash == manifest["panel"]["panel_file_sha256"] and
+            payload_digest(panel) == manifest["panel"]["panel_manifest_sha256"] and
+            panel["kind"] == "owt-upstream-panels-v1" and
+            panel["corpus_sha256"] == manifest["panel"]["corpus_payload_sha256"], "frozen production panel binding")
+    item_ids = panel["owt_full300"]
+    require(isinstance(item_ids, list) and len(item_ids) == count and len(set(item_ids)) == count and
+            all(isinstance(item, str) and item for item in item_ids) and
+            payload_digest({"item_ids": item_ids}) == manifest["panel"]["panel_item_ids_sha256"], "ordered frozen panel membership")
     expected_records = 36 * 10 * count
     require(runner["verified_record_count"] == expected_records and runner["manifested_file_count"] == expected_records + 37 and
             runner["training"] is False and runner["source_runs_modified"] is False and
@@ -328,11 +355,10 @@ def audit_source(root: Path, audit_path: Path, expected_audit_sha256: str, *,
         snapshots[name] = (stat.st_size, stat.st_mtime_ns)
         if progress and (index % 1000 == 0 or index == len(record_names)):
             progress({"event": "e0_source_audit", "completed_records": index, "total_records": len(record_names)})
-    canonical_ids = None
+    canonical_ids = set(item_ids)
     for group, values in groups.items():
         ids = item_sets[group]
         require(len(ids) == count, "item coverage")
-        canonical_ids = ids if canonical_ids is None else canonical_ids
         require(ids == canonical_ids, "panel item mismatch")
         probe = summaries[group[:3]]["result"]["probes"][group[3]]
         behavior = probe["behavior"]
@@ -347,12 +373,15 @@ def audit_source(root: Path, audit_path: Path, expected_audit_sha256: str, *,
         current = (root / name).stat()
         require((current.st_size, current.st_mtime_ns) == stat, "source changed during audit")
     require(digest_file(root / "S4_RUN_MANIFEST.json") == manifest_hash and digest_file(index_path) == index_hash and
-            digest_file(root / "S4_FINAL_AUDIT.json") == runner_hash and digest_file(audit_path) == audit_hash,
+            digest_file(root / "S4_FINAL_AUDIT.json") == runner_hash and digest_file(audit_path) == audit_hash and
+            digest_file(panel_path) == panel_hash,
             "source receipt changed during audit")
     rows.sort(key=lambda r: (r["model_role"], r["condition"] or "", r["step"] or 0, PROBES.index(r["probe_id"])))
     return rows, {"source_directory": str(root), "independent_audit_file_sha256": audit_hash,
         "independent_audit": audit, "runner_audit_file_sha256": runner_hash, "run_manifest_file_sha256": manifest_hash,
         "checksum_inventory_file_sha256": index_hash, "run_manifest": manifest,
+        "frozen_panel_path": str(panel_path), "frozen_panel_file_sha256": panel_hash,
+        "ordered_panel_item_ids_sha256": payload_digest({"item_ids": item_ids}),
         "fresh_records_verified": expected_records, "fresh_summaries_verified": 36,
         "source_files_unchanged": True, "engineering_only": engineering_fixture,
         "training": False, "model_loaded": False, "new_inference": False}
@@ -365,6 +394,67 @@ def csv_bytes(rows: list[dict], fields: list[str]) -> bytes:
     for row in rows:
         writer.writerow({k: json.dumps(v, sort_keys=True, separators=(",", ":")) if isinstance(v, (dict, list)) else v for k, v in row.items()})
     return stream.getvalue().encode("utf-8")
+
+
+def trajectory_context(rows: list[dict], provenance: dict, bundle: Path | None = None,
+                       expected_audit_sha256: str | None = None) -> tuple[list[dict], dict]:
+    """Reuse already-audited S5 numbers; preserve precision and digest-kind differences."""
+    selected, context_provenance = {}, {"status": "not_supplied", "new_inference": False}
+    if bundle is not None:
+        bundle = Path(bundle).resolve(strict=True)
+        require(expected_audit_sha256 is not None, "S5 audit pin required")
+        audit_path = bundle / "STAGE08_S5_AUDIT.json"
+        require(digest_file(audit_path) == expected_audit_sha256, "S5 audit hash mismatch")
+        audit = json.loads(audit_path.read_bytes(), object_pairs_hook=_no_duplicate_keys)
+        require(audit["status"] == "COMPLETE" and audit["source_row_count"] == 440 and audit["joined_row_count"] == 110 and
+                audit["new_inference"] is False and audit["model_loaded"] is False and
+                audit["source_run_directories_modified"] is False, "S5 source audit incomplete")
+        bindings = {"S5_REAGGREGATED_SOURCE_ROWS.jsonl": audit["source_rows_sha256"],
+            "S5_JOINED_OWT_DENSE64.json": audit["dense_join_sha256"],
+            "S5_JOINED_OWT_FULL300.json": audit["full300_join_sha256"],
+            "S5_SOURCE_VERIFICATION.json": audit["source_verification_sha256"],
+            "SHA256SUMS.txt": audit["sha256sums_sha256"]}
+        require(all(digest_file(bundle / name) == digest for name, digest in bindings.items()), "S5 source file hash mismatch")
+        sources = [json.loads(line, object_pairs_hook=_no_duplicate_keys) for line in
+                   (bundle / "S5_REAGGREGATED_SOURCE_ROWS.jsonl").read_text(encoding="utf-8").splitlines()]
+        expected = {(c, "owt_dense64", s) for c in ("C1", "C2", "C5", "C6") for s in range(0, 10001, 100)} | {
+                    (c, "owt_full300", s) for c in ("C1", "C2", "C5", "C6") for s in (0, 100, 250, 500, 1000, 2000, 5000, 7500, 10000)}
+        require(len(sources) == 440 and {(r["condition"], r["panel"], r["step"]) for r in sources} == expected,
+                "S5 unique complete source grid required")
+        for row in sources:
+            identity = provenance["run_manifest"]["source_inventory"]["sources"][row["condition"]]["identity"]
+            require(row["status"] == "complete" and row["study"] == "S1" and type(row["seed"]) is int and row["seed"] == 0 and
+                    row["protocol_sha256"] == original_protocol_sha256(identity) and row["run_id"] == identity["run_id"] and
+                    row["gpu_uuid"] == identity["gpu_uuid"] and row["initialization_sha256"] == identity["init_hash"] and
+                    row["data_sha256"] == identity["data_hash"] and row["layer_scope"] == list(range(24)) and
+                    row["metric_version"] == "e6a-v2-metrics-1" and row["precision"] == "bf16" and
+                    row["panel_sha256"] == provenance["run_manifest"]["panel"]["panel_manifest_sha256"], "S5/S4 source incompatibility")
+            if row["panel"] == "owt_full300" and row["step"] in STEPS:
+                require(payload_digest({"item_ids": row["item_ids"]}) == provenance["ordered_panel_item_ids_sha256"], "S5/S4 item mismatch")
+                selected[row["condition"], row["step"]] = row
+        require(len(selected) == 20, "S5 context coverage")
+        require(all(digest_file(bundle / name) == digest for name, digest in bindings.items()) and
+                digest_file(audit_path) == expected_audit_sha256, "S5 source changed during context read")
+        context_provenance = {"status": "verified_recorded_S5_reuse", "source": str(bundle),
+            "audit_file_sha256": expected_audit_sha256, "file_sha256": bindings,
+            "d26_sha256": audit["d26_sha256"], "source_rows_verified": 440, "joined_context_states": 20,
+            "new_inference": False, "precision_limit": "S4 FP32 and original S5 BF16 are separate observations",
+            "checkpoint_hash_limit": "S4 file payload hash and S5 tensor-content hash are different digest kinds"}
+    context = []
+    for condition in CONDITIONS:
+        for step in STEPS:
+            s4 = next(r for r in rows if r["condition"] == condition and r["step"] == step)
+            s5 = selected.get((condition, step))
+            measures = s5["measures"] if s5 else {}
+            context.append({"condition": condition, "step": step, "s4_precision": "fp32",
+                "s4_clean_ce_nats": s4["clean_ce_nats"], "s4_sink_s": s4["baseline_sink"],
+                "context_status": "available" if s5 else "not_recorded_in_selected_S5_context" if bundle else "not_supplied",
+                "s5_precision": s5["precision"] if s5 else None,
+                **{f"s5_{metric}": number(measures[metric], metric) if s5 else None for metric in
+                   ("clean_ce_nats", "sink_s", "delete_delta_ce_nats", "delete_self_kl_nats", "relocate_delta_ce_nats", "relocate_self_kl_nats")},
+                "s5_source_aggregate_sha256": s5["source_aggregate_sha256"] if s5 else None,
+                "s5_checkpoint_tensor_sha256": s5["checkpoint_sha256"] if s5 else None})
+    return context, context_provenance
 
 
 def write_new(path: Path, data: bytes) -> None:
@@ -390,6 +480,10 @@ def validate_bundle(root: Path, receipt: dict, *, completion_present: bool) -> d
     require((root / "E0_S4_ROUTE_TRAJECTORIES.csv").read_bytes() == csv_bytes(data["rows"], TRAJECTORY_FIELDS) and
             (root / "E0_TEACHER_STUDENT_FINGERPRINTS.csv").read_bytes() ==
             csv_bytes(analysis["comparisons"], list(analysis["comparisons"][0])), "CSV semantic mismatch")
+    context = data["trajectory_context"]
+    require(len(context) == 35 and {(r["condition"], r["step"]) for r in context} ==
+            {(c, s) for c in CONDITIONS for s in STEPS} and
+            (root / "E0_TRAJECTORY_CONTEXT.csv").read_bytes() == csv_bytes(context, CONTEXT_FIELDS), "context CSV semantic mismatch")
     provenance, _ = read_sealed(root / "E0_PROVENANCE.json")
     require(provenance["engineering_only"] == receipt["engineering_only"] and
             receipt["scientific_record_reanalysis"] is (not receipt["engineering_only"]) and
@@ -397,6 +491,17 @@ def validate_bundle(root: Path, receipt: dict, *, completion_present: bool) -> d
             provenance["new_inference"] is False and provenance["source_files_unchanged"] is True and
             receipt["trajectory_rows"] == len(data["rows"]) and receipt["component_comparison_rows"] == len(analysis["comparisons"]) and
             receipt["composite_status"] == analysis["composite_status"], "completion claims mismatch")
+    require(receipt["summary_count"] == 36 and receipt["fresh_records_verified"] == provenance["fresh_records_verified"] and
+            receipt["fresh_records_verified"] == provenance["run_manifest"]["panel"]["panel_item_count"] * 360 and
+            receipt["independent_audit_file_sha256"] == provenance["independent_audit_file_sha256"] and
+            receipt["analysis_source_commit"] == provenance["analysis_source_commit"] and
+            receipt["execution_source_file_sha256"] == provenance["execution_source_file_sha256"], "completion provenance mismatch")
+    plot = json.loads((root / "E0_PLOT_DATA.json").read_bytes(), object_pairs_hook=_no_duplicate_keys)
+    require(plot["rows"] == [{k: row[k] for k in ("model_role", "condition", "step", "probe_id",
+            "delta_sink", "delta_ce_nats", "self_kl_nats")} for row in data["rows"]] and
+            plot["steps"] == list(STEPS), "plot data semantic mismatch")
+    require((root / "SHA256SUMS.txt").read_text(encoding="utf-8") ==
+            "".join(f"{expected[name]}  {name}\n" for name in sorted(expected) if name != "SHA256SUMS.txt"), "output checksum manifest mismatch")
     return receipt
 
 

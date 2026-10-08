@@ -24,12 +24,19 @@ and can change with checkpoint. Controls are not training replications.
 
 Required outputs: raw route trajectories CSV (350 student rows plus ten teacher
 rows), teacher/student component differences CSV, observed endpoint/trajectory
-directions JSON, component plot and plot-data JSON, source provenance, checksum
+directions JSON, trajectory context CSV, component plot and plot-data JSON, source provenance, checksum
 manifest and sealed COMPLETE receipt. An independently specified positive
 scaling recipe may enable an exploratory RMS fingerprint distance. There is
 no default mixed-unit distance, binary equivalence margin or inference test.
 Without a recipe, composite convergence/divergence is `insufficient`; individual
 raw-component trends remain visible. Small effects are not route-absence proof.
+
+The optional already-recorded S5 bundle supplies standard deletion/relocation
+context for C1/C2/C5/C6 at the five S4 steps, after its pinned audit and all 440
+source rows are reverified. Preserve signed effects and unavailable C0/C3/C4
+context. S4 FP32 clean/sink observations and S5 BF16 observations remain
+separate columns; their checkpoint digests describe different byte/tensor
+representations and are not asserted equal. No new inference fills missing data.
 
 The optional fingerprint recipe is sealed JSON: kind `e0-fingerprint-recipe-v1`,
 status `exploratory`, explicit `rationale`, `discovery_description`, `components`

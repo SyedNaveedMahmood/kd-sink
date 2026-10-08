@@ -5,8 +5,8 @@
 User authorized implementation of the mechanism proposal. Work proceeds one
 stage at a time under [the E0 work order](design/e6a_v2/stages/MECHANISTIC_E0.md).
 Historical S1-S7 protocols, execution checkouts and Stage09 status are preserved.
-Initial E0 CPU capability suite: 38 passed. Final acceptance and actual recorded-
-result reanalysis remain pending; no E1-E5 inference/training is launched.
+E0 CPU/unit/integration regression: 435 passed, including offline wheel isolation.
+Actual complete recorded-result reanalysis remains pending; no E1-E5 inference/training is launched.
 
 - [ ] E0 source audit/extraction, component analysis and traceable external artifacts validated.
 - [ ] E0 extensive regression, clean-wheel and actual complete S4 recorded-result audit.
