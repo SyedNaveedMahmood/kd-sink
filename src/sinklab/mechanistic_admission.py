@@ -168,6 +168,34 @@ def admit_job(document, *, approved_sha256, phase, state, panel_name, seed, repo
     return identity, current, panel[panel_name], source, teacher
 
 
+def _canonical_weights(weights, model, role):
+    """Map the pinned teacher's base-model names and verify legacy causal buffers.
+
+    The original GPT-2-large safetensors serialize GPT2Model keys (without the
+    LM wrapper's transformer. prefix) and one FP32 triangular mask per layer.
+    No learned tensor is removed or transposed. Unknown names still fail the
+    subsequent complete state-dict check; students retain their original names.
+    """
+    if role == "teacher" and "wte.weight" in weights:
+        require(not any(key.startswith("transformer.") for key in weights),
+                "mixed teacher checkpoint namespaces")
+        weights = {"transformer." + key: value for key, value in weights.items()}
+    else:
+        weights = dict(weights)
+    if role == "teacher":
+        expected = torch.tril(torch.ones((model.config.n_positions, model.config.n_positions),
+                                        dtype=torch.bool))[None, None]
+        for index in range(model.config.n_layer):
+            key = f"transformer.h.{index}.attn.bias"
+            if key in weights:
+                value = weights.pop(key)
+                require(value.dtype == torch.float32 and value.shape == expected.shape and
+                        torch.equal(value, expected), "invalid legacy teacher causal mask")
+    require(all(not value.is_floating_point() or value.dtype == torch.float32
+                for value in weights.values()), "original FP32 model tensors required")
+    return weights
+
+
 def load_model(source, device):
     """Local pinned tensors only; no optimizer, training or network access."""
     from safetensors.torch import load_file
@@ -180,7 +208,8 @@ def load_model(source, device):
     with torch.random.fork_rng(devices=[]):
         torch.manual_seed(0)
         model = GPT2LMHeadModel(config)
-    weights = load_file(source["weights_path"], device="cpu")
+    weights = _canonical_weights(load_file(source["weights_path"], device="cpu"),
+                                 model, source.get("role"))
     result = model.load_state_dict(weights, strict=False)
     require(not result.unexpected_keys and set(result.missing_keys).issubset({"lm_head.weight"}) and
             (not result.missing_keys or model.config.tie_word_embeddings), "incomplete/unexpected model weights")
