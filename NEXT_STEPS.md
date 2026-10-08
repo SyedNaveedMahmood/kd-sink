@@ -5,11 +5,16 @@
 User authorized implementation of the mechanism proposal. Work proceeds one
 stage at a time under [the E0 work order](design/e6a_v2/stages/MECHANISTIC_E0.md).
 Historical S1-S7 protocols, execution checkouts and Stage09 status are preserved.
-E0 CPU/unit/integration regression: 435 passed, including offline wheel isolation.
-Actual complete recorded-result reanalysis remains pending; no E1-E5 inference/training is launched.
+E0 is complete: 435 CPU/unit/integration tests passed (including offline wheel
+isolation); actual read-only audit verified all 108,000 S4 records, 36 summaries
+and optional S5 context. Bundle and second-implementation arithmetic checks passed.
+See [E0 results](reports/results/MECHANISTIC_E0_RESULTS_20261008.md) and
+[validation evidence](reports/mechanistic_e0_validation_20261008.json).
+Raw route trends are mixed; the unscaled composite is insufficient. No E1-E5
+inference/training is launched.
 
-- [ ] E0 source audit/extraction, component analysis and traceable external artifacts validated.
-- [ ] E0 extensive regression, clean-wheel and actual complete S4 recorded-result audit.
+- [x] E0 source audit/extraction, component analysis and traceable external artifacts validated.
+- [x] E0 extensive regression, clean-wheel and actual complete S4 recorded-result audit.
 - [ ] E1 choices/confirmation panel/doses/scopes/device/numerical policy prospectively resolved and locked.
 - [ ] E2/E3 inference implementation and validation under separate approved scope.
 

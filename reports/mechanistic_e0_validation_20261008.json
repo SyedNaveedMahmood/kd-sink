@@ -1,0 +1,137 @@
+{
+  "branch": "mechanistic-e0",
+  "bundle": {
+    "complete_file_sha256": "a47b79f66bafb39a0a9a9d67274c88fd3d32dfdbd2be6918728aa6a84b0dff7d",
+    "component_comparisons": 1750,
+    "component_trends": 350,
+    "context_rows": 35,
+    "files": {
+      "E0_ANALYSIS.json": "429439dc6edc650f4afb477e0fe89be33752d813f4b6fce5181b925c70ee9dbc",
+      "E0_PLOT_DATA.json": "da8839dd37481d32274fceafbe52e28771ce0950da8f994769539c798c03ac9b",
+      "E0_PROVENANCE.json": "8e48cc18912cdc9af52274783acdddb572b16af2241dcf183e1597287929d400",
+      "E0_ROUTE_TRAJECTORIES.png": "0f6747df0fd86fcb9f4e831c6c8d8425c62ab7196ab63ace30c910dffd9b1f7a",
+      "E0_ROUTE_TRAJECTORIES.svg": "e979bfa2231a5b9dbfd34c28c26c2850b5852aa0c6cf1f80226ce08d299af973",
+      "E0_S4_ROUTE_TRAJECTORIES.csv": "448ad94b43b4534adf1cf56ff9082421172a726c1284c9525814c4b16f2defd9",
+      "E0_TEACHER_STUDENT_FINGERPRINTS.csv": "70320ba0fb54e8988aa5ea1f7482702fde983c4eaa99c6681915aaca9683fbd7",
+      "E0_TRAJECTORY_CONTEXT.csv": "ed5bbc1d77e671d53829d1919eb22fd89b7bfd8c3d06145826d97fcf56b94a9f",
+      "SHA256SUMS.txt": "8cac883de033e9e60217c8a6eca724ea846602fe89c3444a9ec8b1a35c9747b0"
+    },
+    "path": "D:\\KD-SINK-central\\analysis\\mechanistic_e0_20261008\\attempt01",
+    "trajectory_rows": 360
+  },
+  "cpu_regression": {
+    "command": "$env:PYTHONPATH='E:/kd-sink-mechanistic-e0/src'; & E:/kd-sink/.venv/Scripts/python.exe -m pytest -q tests/unit tests/integration",
+    "exit_code": 0,
+    "failed": 0,
+    "offline_clean_wheel_included": true,
+    "passed": 435,
+    "seconds": 165.02,
+    "skipped": 0,
+    "warnings": [
+      "existing astor ast.Num deprecation"
+    ]
+  },
+  "date_utc": "2026-10-08",
+  "execution_commit": "af736c2a34afacd170fbd2379f352637041b4672",
+  "focused_failure_and_repair": {
+    "cause": "canonical JSON sorted keys changed context CSV column ordering",
+    "command": "$env:PYTHONPATH='E:/kd-sink-mechanistic-e0/src'; & E:/kd-sink/.venv/Scripts/python.exe -m pytest -q tests/unit/test_mechanistic_e0.py tests/integration/test_mechanistic_e0_cli.py",
+    "initial": {
+      "exit_code": 1,
+      "failed": 3,
+      "passed": 48,
+      "seconds": 74.24
+    },
+    "repair": "explicit ordered CONTEXT_FIELDS; numerical checks unchanged",
+    "rerun": {
+      "exit_code": 0,
+      "failed": 0,
+      "passed": 51,
+      "seconds": 71.66
+    },
+    "retained_failure_artifacts": "C:/Users/user4/AppData/Local/Temp/pytest-of-user4/pytest-187",
+    "six_more_checkpoint_inventory_cases_in_full_suite": true
+  },
+  "limits": [
+    "native24 student versus historical native36 teacher; scopes and effective doses unmatched",
+    "Retrospective exploratory analysis; no new inference or preregistration",
+    "Component gap trends do not establish circuit convergence/divergence",
+    "Step0 is random initialization; model-local coordinates may change across checkpoints",
+    "No equivalence margin, significance test, mediation or across-seed claim"
+  ],
+  "next_stage_choices": [
+    "exact E1/E2 state grids",
+    "document-disjoint confirmation membership",
+    "calibrated doses/native and mapped scopes",
+    "precision/device/numerical policy",
+    "separate intervention lock",
+    "E3 reference norms/layer-selection rules"
+  ],
+  "not_run": [
+    "new model inference",
+    "GPU engineering",
+    "network tests",
+    "E1-E5",
+    "training",
+    "Stage09"
+  ],
+  "original_main_commit_preserved": "dd3fcc33132c8dc1c4d9f18466654b1dc5f4703c",
+  "plot_checks": {
+    "PNG_dimensions": [
+      1870,
+      3300
+    ],
+    "SVG_parsed": true,
+    "visual_inspection": "all ten probes, three plotted metrics, all conditions/five steps/fixed teacher visible; small Q/EPE temporal differences also tabulated"
+  },
+  "real_source_audit": {
+    "S5_context_states": 20,
+    "S5_source_rows_verified": 440,
+    "command": "& E:/kd-sink/.venv/Scripts/python.exe scripts/report_mechanistic_e0.py audit --root D:/KD-SINK-central/analysis/stage08_scientific_20261005/S4_attempt02 --independent-audit D:/KD-SINK-central/analysis/stage08_scientific_20261005/audits/S4_FINAL_INDEPENDENT_AUDIT.json --expected-audit-sha256 9412d951974b7e286f245e9146e19fe2a0e8a281787a295867a78f7675b64ef3 --s5-bundle D:/KD-SINK-central/analysis/stage08_scientific_20261005/S5 --expected-s5-audit-sha256 09b3663cda822c7b5b3b697bbc3a44c4849b63e85f24b0a98abfce06c99dfa7c --output D:/KD-SINK-central/analysis/mechanistic_e0_20261008/attempt01",
+    "exit_code": 0,
+    "manifested_file_count": 108037,
+    "model_loaded": false,
+    "new_inference": false,
+    "provenance_created_utc": "2026-10-08T15:14:17.905840+00:00",
+    "records_rehashed_and_reaggregated": 108000,
+    "source_files_unchanged": true,
+    "started_utc": "2026-10-08T14:45:00Z",
+    "summaries_verified": 36
+  },
+  "schema": "mechanistic-e0-validation-v1",
+  "scientific_outcome": {
+    "composite_status": "insufficient",
+    "interpretation": "descriptive, mixed raw route responses; no circuit divergence or equivalence claim",
+    "raw_component_endpoint_trends": {
+      "away_from_teacher": 80,
+      "toward_teacher": 269,
+      "unchanged": 1
+    },
+    "reason": "no independent scale recipe supplied"
+  },
+  "second_implementation_checks": {
+    "command": "& E:/kd-sink/.venv/Scripts/python.exe D:/KD-SINK-central/analysis/mechanistic_e0_20261008/validation_references/verify_e0_independently.py",
+    "exit_code": 0,
+    "receipt": {
+      "S5_context_available": 20,
+      "complete_file_sha256": "a47b79f66bafb39a0a9a9d67274c88fd3d32dfdbd2be6918728aa6a84b0dff7d",
+      "component_comparisons_checked": 1750,
+      "component_trends_checked": 350,
+      "context_rows_checked": 35,
+      "model_loaded": false,
+      "new_inference": false,
+      "raw_rows_checked_against_independent_S4_report": 360,
+      "source_changed": false,
+      "status": "PASS",
+      "validation_script_sha256": "be87e604bca69e5c4dafec8a577a1c41ce461e38a9f73c745854254e67db41fd"
+    },
+    "receipt_file_sha256": "fe2d2f4b193c92b5508a1daae300ba54f8954bd22c7841231f66de03bbff046a",
+    "receipt_path": "D:\\KD-SINK-central\\analysis\\mechanistic_e0_20261008\\validation_references\\E0_INDEPENDENT_DERIVED_AUDIT.json"
+  },
+  "standalone_bundle_verification": {
+    "command": "& E:/kd-sink/.venv/Scripts/python.exe scripts/report_mechanistic_e0.py verify --output D:/KD-SINK-central/analysis/mechanistic_e0_20261008/attempt01",
+    "exit_code": 0
+  },
+  "status": "E0_COMPLETE",
+  "worktree": "E:\\kd-sink-mechanistic-e0"
+}
