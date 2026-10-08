@@ -1,1 +1,694 @@
-{"payload":{"approval":{"authority":null,"record":null},"d24_sha256":"46351d8e32ef1ef6238af18c11676e45e3d439e0e46942d1e61e35b8001851e6","grid":["teacher","C1/step500","C1/step10000","C2/step500","C2/step2000","C2/step10000","C3/step500","C3/step2000","C3/step10000","C5/step500","C5/step10000","C6/step500","C6/step2000","C6/step10000"],"panel":{"path":null,"sha256":null},"panel_counts":null,"phase":"E1","production_ready":false,"qualification":{"path":null,"sha256":null},"run_id":null,"runtime":null,"schema_version":"mechanistic-followup-records-v1","seed":0,"settings":null,"sources":null,"status":"draft","teacher_layer_map":null},"schema_version":1,"sha256":"374cb7ccf94ffb758d783918acaba60f09079595926b4c24bbf2688b47737e71"}
+{
+  "payload": {
+    "approval": {
+      "authority": null,
+      "record": null
+    },
+    "d24_sha256": "46351d8e32ef1ef6238af18c11676e45e3d439e0e46942d1e61e35b8001851e6",
+    "grid": [
+      "teacher",
+      "C1/step500",
+      "C1/step10000",
+      "C2/step500",
+      "C2/step2000",
+      "C2/step10000",
+      "C3/step500",
+      "C3/step2000",
+      "C3/step10000",
+      "C5/step500",
+      "C5/step10000",
+      "C6/step500",
+      "C6/step2000",
+      "C6/step10000"
+    ],
+    "panel": {
+      "path": null,
+      "sha256": null
+    },
+    "panel_counts": null,
+    "phase": "E1",
+    "production_ready": false,
+    "qualification": {
+      "path": null,
+      "sha256": null
+    },
+    "run_id": null,
+    "runtime": null,
+    "schema_version": "mechanistic-followup-records-v1",
+    "seed": 0,
+    "settings": {
+      "C1/step10000": {
+        "alphas": [
+          0.0,
+          0.25,
+          0.5,
+          0.75,
+          1.0
+        ],
+        "atol": null,
+        "control_seed": null,
+        "denominator_floor": null,
+        "rtol": null,
+        "scopes": [
+          {
+            "layers": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9,
+              10,
+              11,
+              12,
+              13,
+              14,
+              15,
+              16,
+              17,
+              18,
+              19,
+              20,
+              21,
+              22,
+              23
+            ],
+            "name": "native"
+          }
+        ],
+        "token_chunk": null
+      },
+      "C1/step500": {
+        "alphas": [
+          0.0,
+          0.25,
+          0.5,
+          0.75,
+          1.0
+        ],
+        "atol": null,
+        "control_seed": null,
+        "denominator_floor": null,
+        "rtol": null,
+        "scopes": [
+          {
+            "layers": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9,
+              10,
+              11,
+              12,
+              13,
+              14,
+              15,
+              16,
+              17,
+              18,
+              19,
+              20,
+              21,
+              22,
+              23
+            ],
+            "name": "native"
+          }
+        ],
+        "token_chunk": null
+      },
+      "C2/step10000": {
+        "alphas": [
+          0.0,
+          0.25,
+          0.5,
+          0.75,
+          1.0
+        ],
+        "atol": null,
+        "control_seed": null,
+        "denominator_floor": null,
+        "rtol": null,
+        "scopes": [
+          {
+            "layers": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9,
+              10,
+              11,
+              12,
+              13,
+              14,
+              15,
+              16,
+              17,
+              18,
+              19,
+              20,
+              21,
+              22,
+              23
+            ],
+            "name": "native"
+          }
+        ],
+        "token_chunk": null
+      },
+      "C2/step2000": {
+        "alphas": [
+          0.0,
+          0.25,
+          0.5,
+          0.75,
+          1.0
+        ],
+        "atol": null,
+        "control_seed": null,
+        "denominator_floor": null,
+        "rtol": null,
+        "scopes": [
+          {
+            "layers": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9,
+              10,
+              11,
+              12,
+              13,
+              14,
+              15,
+              16,
+              17,
+              18,
+              19,
+              20,
+              21,
+              22,
+              23
+            ],
+            "name": "native"
+          }
+        ],
+        "token_chunk": null
+      },
+      "C2/step500": {
+        "alphas": [
+          0.0,
+          0.25,
+          0.5,
+          0.75,
+          1.0
+        ],
+        "atol": null,
+        "control_seed": null,
+        "denominator_floor": null,
+        "rtol": null,
+        "scopes": [
+          {
+            "layers": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9,
+              10,
+              11,
+              12,
+              13,
+              14,
+              15,
+              16,
+              17,
+              18,
+              19,
+              20,
+              21,
+              22,
+              23
+            ],
+            "name": "native"
+          }
+        ],
+        "token_chunk": null
+      },
+      "C3/step10000": {
+        "alphas": [
+          0.0,
+          0.25,
+          0.5,
+          0.75,
+          1.0
+        ],
+        "atol": null,
+        "control_seed": null,
+        "denominator_floor": null,
+        "rtol": null,
+        "scopes": [
+          {
+            "layers": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9,
+              10,
+              11,
+              12,
+              13,
+              14,
+              15,
+              16,
+              17,
+              18,
+              19,
+              20,
+              21,
+              22,
+              23
+            ],
+            "name": "native"
+          }
+        ],
+        "token_chunk": null
+      },
+      "C3/step2000": {
+        "alphas": [
+          0.0,
+          0.25,
+          0.5,
+          0.75,
+          1.0
+        ],
+        "atol": null,
+        "control_seed": null,
+        "denominator_floor": null,
+        "rtol": null,
+        "scopes": [
+          {
+            "layers": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9,
+              10,
+              11,
+              12,
+              13,
+              14,
+              15,
+              16,
+              17,
+              18,
+              19,
+              20,
+              21,
+              22,
+              23
+            ],
+            "name": "native"
+          }
+        ],
+        "token_chunk": null
+      },
+      "C3/step500": {
+        "alphas": [
+          0.0,
+          0.25,
+          0.5,
+          0.75,
+          1.0
+        ],
+        "atol": null,
+        "control_seed": null,
+        "denominator_floor": null,
+        "rtol": null,
+        "scopes": [
+          {
+            "layers": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9,
+              10,
+              11,
+              12,
+              13,
+              14,
+              15,
+              16,
+              17,
+              18,
+              19,
+              20,
+              21,
+              22,
+              23
+            ],
+            "name": "native"
+          }
+        ],
+        "token_chunk": null
+      },
+      "C5/step10000": {
+        "alphas": [
+          0.0,
+          0.25,
+          0.5,
+          0.75,
+          1.0
+        ],
+        "atol": null,
+        "control_seed": null,
+        "denominator_floor": null,
+        "rtol": null,
+        "scopes": [
+          {
+            "layers": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9,
+              10,
+              11,
+              12,
+              13,
+              14,
+              15,
+              16,
+              17,
+              18,
+              19,
+              20,
+              21,
+              22,
+              23
+            ],
+            "name": "native"
+          }
+        ],
+        "token_chunk": null
+      },
+      "C5/step500": {
+        "alphas": [
+          0.0,
+          0.25,
+          0.5,
+          0.75,
+          1.0
+        ],
+        "atol": null,
+        "control_seed": null,
+        "denominator_floor": null,
+        "rtol": null,
+        "scopes": [
+          {
+            "layers": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9,
+              10,
+              11,
+              12,
+              13,
+              14,
+              15,
+              16,
+              17,
+              18,
+              19,
+              20,
+              21,
+              22,
+              23
+            ],
+            "name": "native"
+          }
+        ],
+        "token_chunk": null
+      },
+      "C6/step10000": {
+        "alphas": [
+          0.0,
+          0.25,
+          0.5,
+          0.75,
+          1.0
+        ],
+        "atol": null,
+        "control_seed": null,
+        "denominator_floor": null,
+        "rtol": null,
+        "scopes": [
+          {
+            "layers": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9,
+              10,
+              11,
+              12,
+              13,
+              14,
+              15,
+              16,
+              17,
+              18,
+              19,
+              20,
+              21,
+              22,
+              23
+            ],
+            "name": "native"
+          }
+        ],
+        "token_chunk": null
+      },
+      "C6/step2000": {
+        "alphas": [
+          0.0,
+          0.25,
+          0.5,
+          0.75,
+          1.0
+        ],
+        "atol": null,
+        "control_seed": null,
+        "denominator_floor": null,
+        "rtol": null,
+        "scopes": [
+          {
+            "layers": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9,
+              10,
+              11,
+              12,
+              13,
+              14,
+              15,
+              16,
+              17,
+              18,
+              19,
+              20,
+              21,
+              22,
+              23
+            ],
+            "name": "native"
+          }
+        ],
+        "token_chunk": null
+      },
+      "C6/step500": {
+        "alphas": [
+          0.0,
+          0.25,
+          0.5,
+          0.75,
+          1.0
+        ],
+        "atol": null,
+        "control_seed": null,
+        "denominator_floor": null,
+        "rtol": null,
+        "scopes": [
+          {
+            "layers": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9,
+              10,
+              11,
+              12,
+              13,
+              14,
+              15,
+              16,
+              17,
+              18,
+              19,
+              20,
+              21,
+              22,
+              23
+            ],
+            "name": "native"
+          }
+        ],
+        "token_chunk": null
+      },
+      "teacher": {
+        "alphas": [
+          0.0,
+          0.25,
+          0.5,
+          0.75,
+          1.0
+        ],
+        "atol": null,
+        "control_seed": null,
+        "denominator_floor": null,
+        "rtol": null,
+        "scopes": [
+          {
+            "layers": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9,
+              10,
+              11,
+              12,
+              13,
+              14,
+              15,
+              16,
+              17,
+              18,
+              19,
+              20,
+              21,
+              22,
+              23,
+              24,
+              25,
+              26,
+              27,
+              28,
+              29,
+              30,
+              31,
+              32,
+              33,
+              34,
+              35
+            ],
+            "name": "native"
+          },
+          {
+            "layers": null,
+            "name": "mapped_teacher"
+          }
+        ],
+        "token_chunk": null
+      }
+    },
+    "settings_required_fields": null,
+    "sources": null,
+    "status": "draft",
+    "teacher_layer_map": null
+  },
+  "schema_version": 1,
+  "sha256": "30e5260ea7f356e9529e145b8060f3aad4d54b489b8599118822da36a2aaf136"
+}

@@ -13,7 +13,7 @@ does not approve scientific inference or silently resolve the pending choices.
 - [x] E3 equal-relative-norm sink/random/orthogonal/non-sink directions with degeneracy reporting.
 - [x] E3 single-layer restoration, all-layer conditional rescue, explicit-order telescoping and exact loss geometry.
 - [x] Versioned per-item records, complete aggregation and strict source/lock/panel admission, external artifacts and failure receipts.
-- [ ] CPU/adversarial/full-regression/offline-wheel validation, separately labeled synthetic GPU evidence.
+- [x] CPU/adversarial/full-regression/offline-wheel validation, separately labeled synthetic GPU evidence.
 - [ ] Scientific protocol/panel/device/dose/tolerance qualification and production inference (pending separate locks/scope).
 
 Science choices are required parameters, not hidden defaults: checkpoint grids,
@@ -32,3 +32,9 @@ Equal-norm controls additionally require preselected non-sink key positions and
 query support no earlier than either key. Comparisons use the intersection of
 normalizable direction supports, and report unavailable positions explicitly.
 The implementation does not fit these choices on confirmation outcomes.
+
+Capability validation: 535 offline CPU/unit/integration tests passed on executable
+`5dd4fb9`, plus all E1/E2/E3 two-item 128-token CPU and RTX 4080 SUPER synthetic
+commands, strict bundle/report checks, and an independent stdlib scalar audit.
+See `reports/mechanistic_e1_e3_validation_20261008.json` and the implementation
+report. This does not qualify large/medium production shapes or approve science.

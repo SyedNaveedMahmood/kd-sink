@@ -1,0 +1,164 @@
+{
+  "agent": "Codex (GPT-6)",
+  "branch": "mechanistic-e0",
+  "cpu_regression": {
+    "command": "$env:PYTHONPATH='E:/kd-sink-mechanistic-e0/src'; $env:HF_HUB_OFFLINE='1'; $env:TRANSFORMERS_OFFLINE='1'; $env:UV_OFFLINE='1'; & E:/kd-sink/.venv/Scripts/python.exe -m pytest -q tests/unit tests/integration",
+    "exit_code": 0,
+    "failed": 0,
+    "offline_wheel_reference_independence": "passed",
+    "passed": 535,
+    "seconds": 202.27,
+    "skipped": 0,
+    "warnings": [
+      "preexisting third-party astor ast.Num deprecation"
+    ]
+  },
+  "engineering_artifacts": {
+    "bundles": {
+      "cpu/E1": {
+        "figure_hashes": {
+          "D:\\KD-SINK-central\\analysis\\mechanistic_e1_e3_engineering_20261008\\attempt_5dd4fb9\\figures\\cpu_E1.png": "e86eee0a9dea16b3a80cded3a23f4356182ef6e25c518130ebb010d7e80f4ffe",
+          "D:\\KD-SINK-central\\analysis\\mechanistic_e1_e3_engineering_20261008\\attempt_5dd4fb9\\figures\\cpu_E1.svg": "ca84082559d784655c8d4b55d2cc1514d66c72a0b30cd4bdcc2110c1a0d8554e"
+        },
+        "items": 2,
+        "manifest_sha256": "eaa50a9385d0038b71500e93339d8008d62019acbbc3ab40241babc8e7dc0bee",
+        "max_equal_norm_error": null,
+        "max_geometry_identity_error": 4.440892098500626e-16,
+        "max_parity_error": null,
+        "operations": 47,
+        "valid_targets_per_operation": 243
+      },
+      "cpu/E2": {
+        "figure_hashes": {
+          "D:\\KD-SINK-central\\analysis\\mechanistic_e1_e3_engineering_20261008\\attempt_5dd4fb9\\figures\\cpu_E2.png": "b8abe3bb135423f399f69685c3053df50c22ef35daa666d39eccff95790f2ed0",
+          "D:\\KD-SINK-central\\analysis\\mechanistic_e1_e3_engineering_20261008\\attempt_5dd4fb9\\figures\\cpu_E2.svg": "d88eae0ca77f3996e1bf566d581c14e03890e4e67b03d709e755c692bfd07000"
+        },
+        "items": 2,
+        "manifest_sha256": "bd40b625c07427ca2f1c5fcb42f8341bab9fafc713e76c5d8822db0061e9581f",
+        "max_equal_norm_error": null,
+        "max_geometry_identity_error": 4.440892098500626e-16,
+        "max_parity_error": 9.342329576611519e-08,
+        "operations": 2,
+        "valid_targets_per_operation": 243
+      },
+      "cpu/E3": {
+        "figure_hashes": {
+          "D:\\KD-SINK-central\\analysis\\mechanistic_e1_e3_engineering_20261008\\attempt_5dd4fb9\\figures\\cpu_E3.png": "c35ce0bce5e3a49a9e3289fbe494fe7beba1951a10def0f17cd7058b58d2101a",
+          "D:\\KD-SINK-central\\analysis\\mechanistic_e1_e3_engineering_20261008\\attempt_5dd4fb9\\figures\\cpu_E3.svg": "1ee6c0956eb192a1ee45150e24b6bb9ca36a2f2832dd837f722374f45c8f8a7c"
+        },
+        "items": 2,
+        "manifest_sha256": "c66da797eb322f2a09c0d2379a6945f37f9bcfd9585b2727b74c216742c35f88",
+        "max_equal_norm_error": 2.353291832235538e-10,
+        "max_geometry_identity_error": 4.440892098500626e-16,
+        "max_parity_error": 9.342329576611519e-08,
+        "operations": 32,
+        "valid_targets_per_operation": 243
+      },
+      "gpu/E1": {
+        "figure_hashes": {
+          "D:\\KD-SINK-central\\analysis\\mechanistic_e1_e3_engineering_20261008\\attempt_5dd4fb9\\figures\\gpu_E1.png": "d4093bf6b0824fd46f22c8f3e3984f4f9ad163a2e6a133c34fe51de166a5f5b2",
+          "D:\\KD-SINK-central\\analysis\\mechanistic_e1_e3_engineering_20261008\\attempt_5dd4fb9\\figures\\gpu_E1.svg": "03a58cd5bfbf258bea03399ee7080dc68258ead5cae176411738b339cf3dcbe5"
+        },
+        "items": 2,
+        "manifest_sha256": "94a69191021b678eb6be968f3f1a8abf6066403429cffd90fdb0657fe1c49f93",
+        "max_equal_norm_error": null,
+        "max_geometry_identity_error": 0.0,
+        "max_parity_error": null,
+        "operations": 47,
+        "valid_targets_per_operation": 243
+      },
+      "gpu/E2": {
+        "figure_hashes": {
+          "D:\\KD-SINK-central\\analysis\\mechanistic_e1_e3_engineering_20261008\\attempt_5dd4fb9\\figures\\gpu_E2.png": "d4896cf3872efd3902f668c012657d2fa110a4f7944c047267da63fd847b54af",
+          "D:\\KD-SINK-central\\analysis\\mechanistic_e1_e3_engineering_20261008\\attempt_5dd4fb9\\figures\\gpu_E2.svg": "a984c1a69a4dae4f8e76cd29372038a95cfa313bd3ca9f0da44e16b060fcc5d4"
+        },
+        "items": 2,
+        "manifest_sha256": "5e86a13d181ed440fce74b60e4699ad579dbfb8b791f02fb3fbcb473ea496baa",
+        "max_equal_norm_error": null,
+        "max_geometry_identity_error": 0.0,
+        "max_parity_error": 1.8475111573934555e-07,
+        "operations": 2,
+        "valid_targets_per_operation": 243
+      },
+      "gpu/E3": {
+        "figure_hashes": {
+          "D:\\KD-SINK-central\\analysis\\mechanistic_e1_e3_engineering_20261008\\attempt_5dd4fb9\\figures\\gpu_E3.png": "54c339d7f39563131cac9e35ced1bca42620319a89d05d665e3111d656e2e636",
+          "D:\\KD-SINK-central\\analysis\\mechanistic_e1_e3_engineering_20261008\\attempt_5dd4fb9\\figures\\gpu_E3.svg": "762a637ff7d85bf9aa2d52f27eab4d7278e94a0740c908f1ca4cd108cc0d4a13"
+        },
+        "items": 2,
+        "manifest_sha256": "929890e1c25e942f8e79950011654f825a092d148227eb708161f6e952163734",
+        "max_equal_norm_error": 2.6062207253430003e-10,
+        "max_geometry_identity_error": 0.0,
+        "max_parity_error": 1.8475111573934555e-07,
+        "operations": 32,
+        "valid_targets_per_operation": 243
+      }
+    },
+    "context_length": 128,
+    "devices": [
+      "CPU",
+      "NVIDIA GeForce RTX 4080 SUPER"
+    ],
+    "engineering_only": true,
+    "figures_visually_inspected": [
+      "cpu_E1.png",
+      "gpu_E2.png",
+      "gpu_E3.png"
+    ],
+    "gpu_scientific_production_qualification": false,
+    "independent_audit_path": "D:\\KD-SINK-central\\analysis\\mechanistic_e1_e3_engineering_20261008\\attempt_5dd4fb9\\independent_scalar_audit.json",
+    "independent_audit_sha256": "daaca6c24cc040ec74a3a8c18f6b0632daf71aa6b049efaca23375c3071c8f98",
+    "independent_script_sha256": "0ad8a2f8b0848c83348b13157562676fbd67d2ad277e3c057fbf2a6460b1d8f1",
+    "model": {
+      "heads": 3,
+      "layers": 2,
+      "vocab_size": 31,
+      "width": 24
+    },
+    "root": "D:\\KD-SINK-central\\analysis\\mechanistic_e1_e3_engineering_20261008\\attempt_5dd4fb9",
+    "rtx3090_tests": "not run; no 3090 qualification claimed"
+  },
+  "execution_commit": "5dd4fb9b98477bf0b70fbe1f3a9b694b310205fd",
+  "failure_history": [
+    "E1 initial numerical/hook tests:3 failed21 passed; fixed exact anchor copy, inference-reference use and native-hook identity assertions;24 passed. See CORE journal.",
+    "GPU availability python -c diagnostic quoting SyntaxError; retried via stdin, passed. No GPU execution before correction.",
+    "Independent audit initial positional-key assumption failed; joined explicit operation IDs, all checks passed. Original failing receipt/attempt preserved."
+  ],
+  "implementation_worktree": "E:/kd-sink-mechanistic-e0",
+  "limits": [
+    "Fixtures are numerical/engineering evidence, not inference on trained checkpoints.",
+    "No automatic inheritance/equivalence/onset/mediation verdict.",
+    "Optional JVP analysis is not implemented.",
+    "Passing tests cannot guarantee absence of all bugs."
+  ],
+  "preservation": {
+    "existing_package_modules_changed": false,
+    "historical_result_writes": false,
+    "merge_push": false,
+    "original_main_commit": "dd3fcc33132c8dc1c4d9f18466654b1dc5f4703c",
+    "original_status": "preexisting CORE notes and untracked proposal only",
+    "proposal_sha256": "14e3713f6284195cab260cb4033650a63d37e2752c0cd141934b5b374bc26d19",
+    "pyproject_uv_protocol_configs_changed": false
+  },
+  "researcher_choices": {
+    "E2_conditions": [
+      "C1",
+      "C2",
+      "C3",
+      "C5",
+      "C6"
+    ],
+    "E2_steps": [
+      500,
+      2000,
+      10000
+    ],
+    "E2_student_states": 15,
+    "E3_reference": "clean_residual_input_before_ln_1"
+  },
+  "schema_version": 1,
+  "science_runs_executed": 0,
+  "scientific_production": "pending approved protocol, selected document-disjoint confirmation, locked doses/floors/tolerance/layers/device and real production-shape qualification",
+  "software_capability": "validated",
+  "training_runs_executed": 0
+}

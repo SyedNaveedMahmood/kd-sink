@@ -21,9 +21,13 @@ inference/training is launched.
 E1-E3 software implementation now authorized (2026-10-08), sequential work order:
 `design/e6a_v2/stages/MECHANISTIC_E1_E3.md`. E1-E3 live probes/factorization/
 equal-norm/rescue/geometry and single-state commands/artifact audits passed focused
-CPU and128-token CLI tests; broader regression/GPU engineering checks next.
+CPU and 128-token CLI tests. Final validation: 535 offline CPU/unit/integration
+tests passed, including clean wheel isolation; E1/E2/E3 synthetic CPU and
+RTX 4080 SUPER bundles/figures passed independent hash/scalar audit.
 See `design/e6a_v2/MECHANISTIC_E1_E3_EXECUTION.md`. Production locks/inference
 still pending; templates remain drafts.
+Evidence: `reports/mechanistic_e1_e3_validation_20261008.json`; capability report:
+`reports/results/MECHANISTIC_E1_E3_IMPLEMENTATION_20261008.md`.
 Researcher chose15-state E2 grid and clean entering-residual E3 norm reference.
 
 E4/E5 remain optional and separately approved; step500 weights alone do not

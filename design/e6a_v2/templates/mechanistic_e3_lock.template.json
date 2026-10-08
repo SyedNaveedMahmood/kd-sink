@@ -1,1 +1,51 @@
-{"payload":{"approval":{"authority":null,"record":null},"d24_sha256":"46351d8e32ef1ef6238af18c11676e45e3d439e0e46942d1e61e35b8001851e6","grid":null,"panel":{"path":null,"sha256":null},"panel_counts":null,"phase":"E3","production_ready":false,"qualification":{"path":null,"sha256":null},"run_id":null,"runtime":null,"schema_version":"mechanistic-followup-records-v1","seed":0,"selection":{"discovery_evidence":null,"method":null,"selected_layers":null,"selected_states":null},"settings":null,"sources":null,"status":"draft","teacher_layer_map":null},"schema_version":1,"sha256":"f71fd396a2cc528cf3b24a2901cd7af15815bed344bd34a6230daaa067dbbeec"}
+{
+  "payload": {
+    "approval": {
+      "authority": null,
+      "record": null
+    },
+    "d24_sha256": "46351d8e32ef1ef6238af18c11676e45e3d439e0e46942d1e61e35b8001851e6",
+    "grid": null,
+    "panel": {
+      "path": null,
+      "sha256": null
+    },
+    "panel_counts": null,
+    "phase": "E3",
+    "production_ready": false,
+    "qualification": {
+      "path": null,
+      "sha256": null
+    },
+    "run_id": null,
+    "runtime": null,
+    "schema_version": "mechanistic-followup-records-v1",
+    "seed": 0,
+    "selection": {
+      "discovery_evidence": null,
+      "method": null,
+      "selected_layers": null,
+      "selected_states": null
+    },
+    "settings": null,
+    "settings_required_fields": {
+      "atol": null,
+      "control_seed": null,
+      "denominator_floor": null,
+      "etas": null,
+      "layers": null,
+      "nonsink_keys": null,
+      "norm_floor": null,
+      "orders": null,
+      "query_min": null,
+      "reference": "clean_residual_input_before_ln_1",
+      "rtol": null,
+      "token_chunk": null
+    },
+    "sources": null,
+    "status": "draft",
+    "teacher_layer_map": null
+  },
+  "schema_version": 1,
+  "sha256": "b8c815b1f6270361eb8146898cd046f22d4fcc8579fb6e417da506cc1eeadd47"
+}
