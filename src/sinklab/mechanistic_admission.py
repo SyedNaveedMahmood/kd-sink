@@ -205,8 +205,10 @@ def load_model(source, device):
             sha256_file(source["config_path"]) == source["config_sha256"], "source changed after admission")
     config = GPT2Config.from_dict(read_json(source["config_path"]))
     config._attn_implementation = "eager"
-    with torch.random.fork_rng(devices=[]):
-        torch.manual_seed(0)
+    with torch.device("cpu"), torch.random.fork_rng(devices=[]):
+        # torch.manual_seed also resets CUDA generators, which this CPU-only
+        # fork deliberately does not capture. Seed the CPU generator directly.
+        torch.random.default_generator.manual_seed(0)
         model = GPT2LMHeadModel(config)
     weights = _canonical_weights(load_file(source["weights_path"], device="cpu"),
                                  model, source.get("role"))

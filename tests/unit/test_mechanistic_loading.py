@@ -102,3 +102,11 @@ def test_student_cannot_use_teacher_layout_conversion(tmp_path):
     _, reference = legacy_teacher(tmp_path)
     reference["role"] = "student"
     with pytest.raises(ValueError): load_model(reference, "cpu")
+
+
+def test_local_model_construction_never_reseeds_cuda(tmp_path, monkeypatch):
+    _, reference = source(tmp_path)
+    calls = []
+    monkeypatch.setattr(torch.cuda, "manual_seed_all", lambda seed: calls.append(seed))
+    load_model(reference, "cpu")
+    assert calls == []

@@ -244,9 +244,12 @@ def qualify(args):
         write_json(output/"SOURCE_AVAILABILITY.json",{"status":"PASS","sources":sources,"tokenizer":artifact["tokenizer"],"original_S1_S4_inventory":"794bf1673c46c00a190e74bea2f2ec1e1468bf9b5d9420090244d87de225da47"})
         items=synthetic_items(args.input_seed);write_json(output/"synthetic_inputs.json",{"items":items,"input_seed":args.input_seed,"registered_panel":False})
         torch.cuda.reset_peak_memory_stats(device);load_started=time.perf_counter()
+        loading_rng = rng_state()
         teacher=load_model(sources["teacher"],device);student=load_model(sources[args.student_state],device)
+        assert_rng_equal(loading_rng)
         torch.cuda.synchronize(device)
-        loading={"seconds":time.perf_counter()-load_started,"allocated_peak":torch.cuda.max_memory_allocated(device),"reserved_peak":torch.cuda.max_memory_reserved(device)}
+        loading={"seconds":time.perf_counter()-load_started,"allocated_peak":torch.cuda.max_memory_allocated(device),"reserved_peak":torch.cuda.max_memory_reserved(device),
+                 "python_numpy_cpu_cuda_rng": "restored"}
         peaks.append(loading)
         require((teacher.config.n_layer,teacher.config.n_head,teacher.config.n_embd)==(36,20,1280) and
             (student.config.n_layer,student.config.n_head,student.config.n_embd)==(24,16,1024),"actual full architectures required")
