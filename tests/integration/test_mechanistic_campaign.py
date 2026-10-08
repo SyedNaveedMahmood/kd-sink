@@ -11,6 +11,7 @@ REPO = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(REPO/'scripts'))
 import audit_mechanistic_scientific as independent
 from mechanistic_campaign_supervisor import Supervisor, append, transient, check_pins, exclusive, validate_manifest
+import mechanistic_campaign_supervisor as campaign
 from report_mechanistic_scientific import distribution,matched_effects
 from run_mechanistic import engineering_fixture
 from sinklab.mechanistic_run import run_state, VERSION
@@ -86,6 +87,86 @@ def test_exclusive_lock(tmp_path):
     with exclusive(tmp_path/'gpu.lock'):
         with pytest.raises(RuntimeError):
             with exclusive(tmp_path/'gpu.lock'): pass
+
+
+def test_atomic_windows_reader_sharing_preserves_complete_snapshot(tmp_path, monkeypatch):
+    import threading
+    import time
+    path = tmp_path/'heartbeat.json'
+    campaign.atomic(path, {'version': 1})
+    if os.name == 'nt':
+        import ctypes
+        from ctypes import wintypes
+        kernel = ctypes.WinDLL('kernel32', use_last_error=True)
+        kernel.CreateFileW.argtypes = [wintypes.LPCWSTR, wintypes.DWORD, wintypes.DWORD,
+                                      wintypes.LPVOID, wintypes.DWORD, wintypes.DWORD, wintypes.HANDLE]
+        kernel.CreateFileW.restype = wintypes.HANDLE
+        kernel.CloseHandle.argtypes = [wintypes.HANDLE]
+        handle = kernel.CreateFileW(str(path), 0x80000000, 0, None, 3, 0, None)
+        assert handle != ctypes.c_void_p(-1).value
+        def release():
+            time.sleep(.15)
+            assert kernel.CloseHandle(handle)
+        reader = threading.Thread(target=release)
+        reader.start()
+        try:
+            campaign.atomic(path, {'version': 2})
+        finally:
+            reader.join()
+    else:
+        original = campaign.os.replace
+        calls = []
+        def sharing(source, target):
+            calls.append(True)
+            if len(calls) < 3:
+                assert independent.read(path) == {'version': 1}
+                raise PermissionError('reader temporarily denies delete sharing')
+            return original(source, target)
+        monkeypatch.setattr(campaign.os, 'replace', sharing)
+        campaign.atomic(path, {'version': 2})
+    assert independent.read(path) == {'version': 2}
+
+
+def test_atomic_permanent_denial_is_bounded_and_preserves_old_file(tmp_path, monkeypatch):
+    path = tmp_path/'heartbeat.json'
+    campaign.atomic(path, {'version': 1})
+    def denied(*args):
+        raise PermissionError('persistent denial')
+    ticks = iter([0., 0., 3.])
+    monkeypatch.setattr(campaign.os, 'replace', denied)
+    monkeypatch.setattr(campaign.time, 'monotonic', lambda: next(ticks))
+    monkeypatch.setattr(campaign.time, 'sleep', lambda _: None)
+    with pytest.raises(PermissionError, match='persistent denial'):
+        campaign.atomic(path, {'version': 2})
+    assert independent.read(path) == {'version': 1}
+
+
+def test_supervisor_io_failure_preserves_live_worker_and_stops_future_jobs(tmp_path, monkeypatch):
+    import psutil
+    jobs = [{'id':f'E1_test_{n}', 'phase':'E1', 'panel':'synthetic', 'state':'synthetic'} for n in range(2)]
+    manifest = {'root':str(tmp_path), 'repo':str(REPO), 'python':sys.executable,
+                'jobs':jobs, 'frozen_files':{}, 'health_interval_seconds':60,
+                'stale_warning_seconds':1800, 'poll_seconds':.05}
+    path=tmp_path/'manifest.json'
+    independent.write(path, {'schema_version':1, 'payload':manifest, 'sha256':payload_digest(manifest)})
+    supervisor = Supervisor(path)
+    monkeypatch.setattr(supervisor, 'beat', lambda **kwargs: None)
+    calls = []
+    def interrupted(job):
+        calls.append(job['id'])
+        supervisor.current = {'job_id':job['id'], 'attempt':str(tmp_path/'attempt_001'),
+                              'worker_pid':os.getpid(), 'worker_created':psutil.Process().create_time()}
+        supervisor.event(job, 'running', **{k:v for k,v in supervisor.current.items() if k != 'job_id'})
+        raise PermissionError('heartbeat replacement denied')
+    monkeypatch.setattr(supervisor, 'run_job', interrupted)
+    with pytest.raises(RuntimeError, match='live worker; ownership preserved'):
+        supervisor.run()
+    assert calls == [jobs[0]['id']]
+    assert campaign.ledger(tmp_path/'state_ledger.jsonl')[jobs[0]['id']]['status'] == 'running'
+    assert jobs[1]['id'] not in campaign.ledger(tmp_path/'state_ledger.jsonl')
+    evidence = independent.read(tmp_path/'supervisor_interruptions.jsonl')
+    assert evidence['status'] == 'LIVE_WORKER_PRESERVED'
+    assert evidence['current']['worker_pid'] == os.getpid()
 
 
 def test_recovery_reverifies_complete_worker(bundles,tmp_path):

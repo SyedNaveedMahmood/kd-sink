@@ -32,7 +32,17 @@ def atomic(path, value):
     temporary = path.with_suffix(path.suffix + f'.{os.getpid()}.tmp')
     with temporary.open('wb') as stream:
         stream.write(canonical(value) + b'\n'); stream.flush(); os.fsync(stream.fileno())
-    os.replace(temporary, path)
+    # Windows readers can briefly deny replacement. Keep the prior complete
+    # heartbeat until the new complete file can replace it; never truncate it.
+    deadline = time.monotonic() + 2.0
+    while True:
+        try:
+            os.replace(temporary, path)
+            return
+        except PermissionError:
+            if time.monotonic() >= deadline:
+                raise
+            time.sleep(0.05)
 
 
 @contextlib.contextmanager
@@ -304,6 +314,22 @@ class Supervisor:
                     try: self.run_job(job)
                     except Exception as error:
                         append(self.root / 'supervisor_errors.jsonl', {'job_id': job['id'], 'error': str(error), 'traceback': traceback.format_exc()})
+                        if self.current and 'worker_pid' in self.current:
+                            pid = self.current['worker_pid']
+                            try:
+                                worker = psutil.Process(pid)
+                                alive = worker.is_running() and worker.create_time() == self.current['worker_created']
+                            except psutil.NoSuchProcess:
+                                alive = False
+                            if alive:
+                                # A supervisor I/O failure does not terminate a
+                                # worker. Preserve its running ownership and
+                                # stop scheduling before another GPU job starts.
+                                append(self.root / 'supervisor_interruptions.jsonl', {
+                                    'job_id': job['id'], 'status': 'LIVE_WORKER_PRESERVED',
+                                    'current': self.current, 'error': str(error),
+                                    'recovery': 'diagnose supervisor failure; restart the sealed manifest to wait/audit the exact orphan'})
+                                raise RuntimeError('supervisor interrupted with a live worker; ownership preserved, no further jobs launched') from error
                         self.event(job, 'blocked', reason=str(error))
             if self.manifest.get('scientific'): self.phase_report(phase, panel)
         self.current = None

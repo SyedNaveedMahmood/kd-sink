@@ -1,4 +1,4 @@
-# Authorized E1–E3 scientific campaign, 2026-10-09
+# Authorized E1-E3 scientific campaign, 2026-10-09
 
 The current researcher instruction expressly approves the exact qualified v2
 predecessors and fixed panel, and separately authorizes every seed0 state/panel
@@ -10,9 +10,11 @@ unchanged. Approved successors are under
 - [x] Exact v2 candidates/panel/provenance independently verified and new approved envelopes sealed.
 - [x] Fresh Adrita full-size synthetic qualification and independent audit passed.
 - [x] Detached supervisor launcher-survival and orphan-worker recovery exercise passed.
-- [ ] Final integrity/regression, branch delivery and frozen 92-job readiness manifest.
-- [ ] Serial scientific supervisor running; first admissible state progressing.
-- [ ] Actual maximum-effort Luna ownership, detached monitoring persistence and handoff receipt verified.
+- [x] Final integrity/regression, branch delivery and frozen 92-job readiness manifest.
+- [x] Initial serial scientific supervisor launch and first admissible state progress verified.
+- [x] Initial maximum-effort Luna ownership, detached persistence and handoff verified.
+- [x] Observed Windows sharing/RAM operational failure diagnosed; bounded heartbeat replacement and live-worker fail-stop regressions passed.
+- [ ] Sufficient-capacity C-root recovery manifest, detached supervision and fresh real Luna ownership verified.
 - [ ] E1 discovery and confirmation complete and independently audited (28 bundles).
 - [ ] E2 discovery and confirmation complete and independently audited (32 bundles).
 - [ ] E3 discovery and confirmation complete and independently audited (32 bundles).
@@ -61,6 +63,19 @@ root agent exits, require accepted ownership, readable manifest/live progress,
 supervisor and monitor heartbeat, actual launcher survival, synthetic recovery
 receipt and CAMPAIGN_HANDOFF.json. Detached monitor turns continue after root
 exit and own diagnoses, reporting, scientific interpretation and final audit.
+
+Actual launch/handoff passed on 2026-10-08 UTC (operator date2026-10-09):
+supervisor PID48960, first worker PID47012, detached monitor Python PID38712,
+all with independently checked creation identities. Teacher E1 discovery
+progressed from initial source admission to70/300 items at the root verification
+snapshot;0/92 bundles were yet independently complete. Actual CLI turn_context
+confirms gpt-6-luna/effort max for the first and subsequent monitor turns.
+The actual detached monitor wrote CAMPAIGN_HANDOFF.json; root preserved it and
+added CAMPAIGN_HANDOFF_ROOT_VERIFIED.json with every mandatory gate/proof and
+source/runtime identity. [Small handoff evidence](../../../reports/mechanistic_scientific_handoff_20261009.json)
+links the external receipts. Monitoring-script shell failures and a protected
+root exclusive-create collision are preserved; no scientific process or frozen
+code/protocol was changed. Final phase checkboxes remain open until audited.
 
 Finalization runs after supervisor/monitor turns close: independently reverify
 all completed bundles and report hashes, inventory campaign-generated artifacts,

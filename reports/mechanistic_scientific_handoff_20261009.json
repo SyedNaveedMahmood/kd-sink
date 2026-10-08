@@ -1,0 +1,129 @@
+{
+  "approved_lock_envelope_sha256": {
+    "E1": "aa280a9a1244c7e00bff5e88fe342548ac587553788c24dd072eeab8542528f6",
+    "E2": "1ba9dff94bdd6735cb1cd1c871a655094a91bd1b96c746e9f26f14f942c3d586",
+    "E3": "5673eaefc30ff238ee338b0cff973032f6f2579e985592f0c837a04c6f24cf33"
+  },
+  "completion_claim": "No scientific phase or campaign completion claimed: 0/92 independently verified bundles at handoff, one authorized worker progressing. Full completion requires all92 independently verified and final reports/audit/archive receipts.",
+  "constraints": "Exact approved v2 only; immutable panels/read-only sources; no training/seed1/2/E4/E5/Stage09/JVP/fine extension/tolerance changes; descriptive seed0; E3 requires independently verified E2 same state/panel; never include invalid outputs",
+  "current_worker": {
+    "creation_epoch_seconds": 1791489153.0010228,
+    "parent_pid": 48960,
+    "pid": 47012
+  },
+  "directories": {
+    "attempts": "D:\\KD-SINK-central\\analysis\\mechanistic_e1_e3_scientific_20261009\\attempts",
+    "health": "D:\\KD-SINK-central\\analysis\\mechanistic_e1_e3_scientific_20261009\\health.jsonl",
+    "ledger": "D:\\KD-SINK-central\\analysis\\mechanistic_e1_e3_scientific_20261009\\state_ledger.jsonl",
+    "monitor_heartbeat": "D:\\KD-SINK-central\\analysis\\mechanistic_e1_e3_scientific_20261009\\LUNA_MONITOR_HEARTBEAT.json",
+    "monitor_turns": "D:\\KD-SINK-central\\analysis\\mechanistic_e1_e3_scientific_20261009\\luna_monitor",
+    "reports": "D:\\KD-SINK-central\\analysis\\mechanistic_e1_e3_scientific_20261009\\reports",
+    "root": "D:\\KD-SINK-central\\analysis\\mechanistic_e1_e3_scientific_20261009",
+    "supervisor_heartbeat": "D:\\KD-SINK-central\\analysis\\mechanistic_e1_e3_scientific_20261009\\heartbeat.json",
+    "worktree": "E:\\kd-sink-mechanistic-e0"
+  },
+  "full_external_receipt": {
+    "file_sha256": "d19ed2908ea77ea9d28afdb7a938f4bc79bf99b3d76d845938151a2d77f3d60d",
+    "path": "D:\\KD-SINK-central\\analysis\\mechanistic_e1_e3_scientific_20261009\\CAMPAIGN_HANDOFF_ROOT_VERIFIED.json"
+  },
+  "handshake_gates": {
+    "actual_monitor_ownership_accepted": true,
+    "completed_synthetic_handoff_recovery_passed": true,
+    "durable_final_outcome_and_blocker_paths_established": true,
+    "independent_supervisor_live": true,
+    "launcher_exit_survival_demonstrated": true,
+    "live_heartbeats_and_status_functional": true,
+    "manifest_and_current_progress_readable": true
+  },
+  "manifest": {
+    "envelope_sha256": "7bcb0dd775fe3bfbf24387cad4a77289aa6cd20b0e648c58f0ffd5962a538de1",
+    "file_sha256": "6123f745d99fb362106944be8e0cd9f8f04553fd17323b180eb5639da93662e1",
+    "logical_bundle_target": 92,
+    "path": "D:\\KD-SINK-central\\analysis\\mechanistic_e1_e3_scientific_20261009\\CAMPAIGN_MANIFEST.json",
+    "phase_targets": {
+      "E1": 28,
+      "E2": 32,
+      "E3": 32
+    }
+  },
+  "monitor": {
+    "actual_effort": "max",
+    "actual_model": "gpt-6-luna",
+    "collaboration_actual_settings_exposure": "Not exposed by collaboration tool; actual detached CLI turn_context independently checked",
+    "collaboration_requested_effort": "max",
+    "collaboration_requested_model": "gpt-6-luna",
+    "collaboration_task": "/root/luna_campaign_monitor",
+    "durability": "Conversation-tool persistence is not assumed. Independent detached CLI owner carries unattended responsibility through preserved filesystem state and successive genuine Luna/max turns; detached supervisor continues serial verification and health independently.",
+    "first_ownership_thread_id": "01a11d15-a054-75e3-a2de-b7bbef851599",
+    "local_context_path": "C:\\Users\\user4\\.codex\\sessions\\2026\\10\\09\\rollout-2026-10-09T01-55-19-01a11d15-a054-75e3-a2de-b7bbef851599.jsonl",
+    "ownership_receipt": "D:\\KD-SINK-central\\analysis\\mechanistic_e1_e3_scientific_20261009\\MONITOR_OWNERSHIP.json",
+    "prompt_file_sha256": "a0c8dce21f0172aef6f28252e6e2e63900abbe03b5cbcc150ceba4a76fe26bd2",
+    "wrapper_process": {
+      "creation_epoch_seconds": 1791489318.821892,
+      "parent_pid": 3840,
+      "pid": 38712
+    }
+  },
+  "outcome_paths": {
+    "final_scientific_completion": "D:\\KD-SINK-central\\analysis\\mechanistic_e1_e3_scientific_20261009\\MECHANISTIC_E1_E3_SCIENTIFIC_COMPLETION.json",
+    "finalization_failures": "D:\\KD-SINK-central\\analysis\\mechanistic_e1_e3_scientific_20261009\\FINALIZATION_FAILED_*.json",
+    "finalization_ready": "D:\\KD-SINK-central\\analysis\\mechanistic_e1_e3_scientific_20261009\\FINALIZATION_READY.json",
+    "monitor_blockers": "D:\\KD-SINK-central\\analysis\\mechanistic_e1_e3_scientific_20261009\\LUNA_MONITOR_BLOCKED_*.json",
+    "readable_findings": "D:\\KD-SINK-central\\analysis\\mechanistic_e1_e3_scientific_20261009\\SCIENTIFIC_FINDINGS.md",
+    "repo_readable_report_parent": "E:\\kd-sink-mechanistic-e0\\reports\\results",
+    "root_delivery": "D:\\KD-SINK-central\\analysis\\mechanistic_e1_e3_scientific_20261009\\ROOT_HANDOFF_DELIVERY.json"
+  },
+  "preserved_operational_failures": {
+    "evidence": "D:\\KD-SINK-central\\analysis\\mechanistic_e1_e3_scientific_20261009\\luna_monitor\\turn_00001\\events.jsonl",
+    "monitor_shell_failures": 3,
+    "root_receipt_create": "FileExistsError protected existing CLI-authored handoff; no overwrite; separate root supplement created",
+    "scientific_process_affected": false
+  },
+  "primary_handoff": {
+    "file_sha256": "1805ed398778263a8a149986eb2aca3554c85f390a33c35d1d550b3bc37a39f8",
+    "path": "D:\\KD-SINK-central\\analysis\\mechanistic_e1_e3_scientific_20261009\\CAMPAIGN_HANDOFF.json",
+    "writer": "actual detached Luna CLI turn1, successful command item_29; original preserved"
+  },
+  "schema_version": 1,
+  "source": {
+    "code_sha256": "74629cd54aa7a7aaa533caf7b30d381225592b65c904f5f3255c54feef7f2913",
+    "frozen_file_count": 60,
+    "operational_commit": "b0038cc857a45856d0290be4095778bdb668422f",
+    "runtime_sha256": "df8b0b3258a9e9bd236e8a9d7281e95a68d3e5555733e76404fda338db5ada0b",
+    "scientific_commit": "f96c73061f9ef288c72f309e09c4c1f17a8a6701"
+  },
+  "status": "HANDOFF_PASSED_SCIENCE_IN_PROGRESS",
+  "supervisor": {
+    "creation_epoch_seconds": 1791489152.8154645,
+    "parent_pid": 38060,
+    "pid": 48960
+  },
+  "supervisor_started_utc": "2026-10-08T19:52:32.815464+00:00",
+  "verified_heartbeat": {
+    "coverage": {
+      "blocked": 0,
+      "complete": 0,
+      "failed": 0,
+      "invalidated": 0,
+      "running": 1
+    },
+    "monitor_age_seconds": 3.2421109676361084,
+    "observed_progress": {
+      "completed_items": 70,
+      "cuda_allocated_bytes": 3207551488,
+      "cuda_reserved_bytes": 3896508416,
+      "device": "cuda:0",
+      "elapsed_seconds": 610.109000000055,
+      "eta_seconds": 2004.6438571430376,
+      "input_tokens": 8960,
+      "phase": "E1",
+      "run_id": "mechanistic-e1-seed0-v1",
+      "seed": 0,
+      "state": "teacher",
+      "total_items": 300,
+      "updated_utc": "2026-10-08T20:06:44.013363+00:00"
+    },
+    "supervisor": "2026-10-08T20:06:47.218586+00:00"
+  },
+  "verified_utc": "2026-10-08T20:09:36.170832+00:00"
+}

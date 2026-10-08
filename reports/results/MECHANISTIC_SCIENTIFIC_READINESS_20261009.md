@@ -71,3 +71,69 @@ Execution/recovery/handoff gates:
 No training, seed1/2 inference, E4/E5, Stage09, JVP, fine extension or original
 S1/S4/S5/S7 source modifications are introduced. No test suite guarantees absence
 of all bugs or establishes scientific conclusions.
+
+Launch and ownership subsequently passed. All six approved phase/panel source
+admissions exited0 without a scientific forward; the fresh92-state manifest
+was frozen and the serial scientific supervisor launched independently.
+Manifest envelope7bcb0dd775fe3bfbf24387cad4a77289aa6cd20b0e648c58f0ffd5962a538de1,
+file6123f745d99fb362106944be8e0cd9f8f04553fd17323b180eb5639da93662e1;
+operational sourceb0038cc857a45856d0290be4095778bdb668422f was actually pushed.
+Qualified scientific source/runtime and all60 frozen file hashes still match.
+Supervisor PID48960 and first worker47012 were live with verified creation
+identities; E1/discovery/teacher reached70/300 items at the independent root
+verification. There were0/92 independently complete bundles, no blocked,
+failed or invalidated scientific states; scientific inference is in progress.
+
+The requested `/root/luna_campaign_monitor` accepted ownership and started a
+tested detached actual Luna CLI counterpart. Its first thread
+01a11d15-a054-75e3-a2de-b7bbef851599 recorded gpt-6-luna/effort max in local
+turn_context, wrote ownership/status/handoff receipts and exited0. A second
+genuine Luna/max turn started after the first, with fresh preserved turn logs.
+Both detached supervisor and monitor survived launcher exit; synthetic orphan
+recovery and monitor-survival tests passed. Every mandatory handoff gate passed.
+Actual monitor-authored CAMPAIGN_HANDOFF.json SHA
+1805ed398778263a8a149986eb2aca3554c85f390a33c35d1d550b3bc37a39f8 remains
+preserved; independent root supplement CAMPAIGN_HANDOFF_ROOT_VERIFIED.json SHA
+d19ed2908ea77ea9d28afdb7a938f4bc79bf99b3d76d845938151a2d77f3d60d records
+complete proof/source/directory/outcome details. Three monitoring shell failures
+(parser errors and interrupted inspection), repaired by the actual monitor,
+and root's FileExistsError when protecting that existing handoff are preserved;
+no qualified execution or scientific result was changed. Root did not fabricate
+the detached monitor's ownership or claim conversation-tool persistence.
+
+The detached owner continues supervision, independent state/phase audits,
+scientific interpretation, reporting and archival. Final outcome will be recorded
+at the external root in MECHANISTIC_E1_E3_SCIENTIFIC_COMPLETION.json; its presence
+and exact independent coverage/status, rather than this handoff, decide scientific
+completion. [Handoff machine evidence](../mechanistic_scientific_handoff_20261009.json)
+and external ROOT_HANDOFF_DELIVERY.json record root delivery. No phase is marked
+complete merely because engineering qualification or handoff passed.
+
+Subsequent operational recovery remains in progress; root did not exit.
+Two abandoned PowerShell monitoring inspections consumed~48GB RAM. Root
+preserved their commands/process identities, terminated only those inspections
+and restored~48GB free RAM; scientific worker/runtime remained unchanged.
+A Windows heartbeat os.replace PermissionError stopped the supervisor wait,
+after which low-RAM readiness blocks and missing-E2 dependency blocks propagated
+to all92 ledger states. Only the first teacher had an actual attempt and remained
+alive. These are operational blocks, not92 failed scientific measurements.
+Original errors/blocked history are retained. The old CLI/wrapper is deliberately
+paused; root and the collaboration owner directly monitor the original worker.
+
+Standalone supervisor replacement now retries transient file-sharing denial
+for at most2s and stops scheduling on any interruption while a matching live
+worker exists, retaining its ownership for recovery. Native Windows sharing,
+bounded persistent denial and no competing launch are verified by new tests;
+the full operational suite passed37 tests,48.29s,0failed/skipped. Only that
+standalone script differs from the original60 source pins; scientific executor,
+approved envelopes and real-shape-qualified code/runtime remain unchanged.
+Original operational code/manifest identities remain preserved. A new sealed
+operational manifest and verified C-root ownership are required before restart.
+
+Measured phase/role-sized qualification records project~76.5GB raw results
+before retries/archive, exceeding D capacity after its10GiB reserve. C has~528GB
+free. Stable derived files will be copied and individually hash-verified only
+after the original worker closes; D originals remain. C will host future
+attempts, reports and archival, with identical scientific grids/argv/locks and
+append-only justified operational recovery. No scientific code, membership,
+tolerance or choice is altered. Final C supervision/ownership proof is pending.

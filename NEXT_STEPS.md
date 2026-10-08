@@ -1,6 +1,6 @@
 # Sequential implementation worklist
 
-## Current operator scope: approved E1?E3 scientific campaign (2026-10-09)
+## Current operator scope: approved E1-E3 scientific campaign (2026-10-09)
 
 The researcher now explicitly approves exact v2 candidate digests and fixed
 confirmation panel, and separately authorizes the92 seed0 state/panel bundles,
@@ -11,7 +11,30 @@ Follow design/e6a_v2/stages/MECHANISTIC_SCIENTIFIC_CAMPAIGN.md. Approved new
 locks preserve all scientific fields and frozen runtime; original drafts remain
 unchanged. Fresh full-size qualification, independent candidate/panel/provenance
 checks and detached recovery exercise have passed. Final readiness/regression
-and launch/handoff are pending. Scientific phase completion is not yet claimed.
+and the frozen92-job manifest have passed. The initial detached serial scientific
+supervisor launched E1 discovery for the teacher with measured item progress.
+Actual gpt-6-luna/max ownership, detached monitor survival, completed synthetic
+recovery and live status have passed. CAMPAIGN_HANDOFF.json is preserved with
+the independent CAMPAIGN_HANDOFF_ROOT_VERIFIED.json supplement under the
+external root; [small handoff evidence](reports/mechanistic_scientific_handoff_20261009.json)
+records exact source/locks/processes and the seven verified handshake gates.
+Those are the initial D-root handoff proofs; root has retained participation.
+A transient heartbeat replacement failure and monitoring-inspection RAM
+pressure interrupted that supervisor while its original teacher worker
+continued. The old actual CLI/wrapper is deliberately paused; root and the
+collaboration monitor directly supervise the same worker. A standalone
+supervisor fix passes37 focused tests, including native Windows file-sharing
+and prevention of further scheduling while a live worker is orphaned.
+Scientific source/runtime/approved phase envelopes are unchanged.
+
+Current first incomplete task: after this worker closes, hash-copy stable
+derived artifacts to sufficient-capacity C storage, preserve D originals and
+blocked/error history, seal the new operational manifest, restore justified
+running/retry ownership, and revalidate detached supervision plus genuine
+Luna/max ownership before root exit. Full raw outputs project~76.5GB, exceeding
+D's current space after its10GiB reserve; C has~528GB free. No scientific
+definition/input/grid/gate changes. Scientific phase completion is not claimed.
+Never relaunch a concurrent GPU worker or include invalid results.
 
 No training, seed1/2 inference, E4/E5, Stage09, fine extension, JVP or changes to
 original S1/S4/S5/S7 sources/results. External root:
