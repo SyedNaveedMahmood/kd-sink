@@ -174,13 +174,18 @@ def factor_summary(trace: LayerTrace, mask: torch.Tensor, *, denominator_floor: 
         projected = factors["projected_delta"].double().norm(dim=-1)
         clean = trace.attention_output.double().norm(dim=-1)
         ratios = projected / clean.clamp_min(denominator_floor)
+        defined = support & (norm_sum >= denominator_floor)
         return {"real_query_count":int(support.sum()),
             "head_sink_mass_mean":factors["a0"][rows].mean().item(),
+            "per_head_sink_value_norm":[float(factors["v0"][:,h].double().norm(dim=-1).mean()) for h in range(heads)],
+            "per_head_conditional_value_norm_mean":[float(factors["conditional_value"][:,h].double().norm(dim=-1)[support].mean()) for h in range(heads)],
             "per_head_value_contrast_norm_mean":[float(factors["value_contrast"][:,h].double().norm(dim=-1)[support].mean()) for h in range(heads)],
             "per_head_local_delta_norm_mean":[float(head_norms[:,h][support].mean()) for h in range(heads)],
             "projected_delta_norm_mean":float(projected[support].mean()),
             "relative_projected_delta_mean":float(ratios[support].mean()),
-            "cancellation_ratio_mean":float((projected/norm_sum.clamp_min(denominator_floor))[support].mean()),
+            "cancellation_ratio_mean":float((projected/norm_sum.clamp_min(denominator_floor))[defined].mean()) if defined.any() else None,
+            "cancellation_ratio_defined_queries":int(defined.sum()),
+            "clean_output_below_floor_positions":int((clean[support] < denominator_floor).sum()),
             "zero_projected_head_sum_positions":int((norm_sum[support] < denominator_floor).sum())}
     return {"version":VERSION, "layer":trace.layer, "denominator_floor":denominator_floor,
             "all_q_ge1":summary(all_queries), "second_half_queries":summary(second_half),

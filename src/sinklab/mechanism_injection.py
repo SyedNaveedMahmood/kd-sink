@@ -42,7 +42,6 @@ def equal_norm_injections(trace, mask, *, eta: float, norm_floor: float, control
             all(type(k) is int and 0 < k < mask.shape[1] for k in nonsink_keys), "two preselected non-sink keys required")
     require(type(query_min) is int and max(nonsink_keys) <= query_min < mask.shape[1], "causal common q support required")
     eligible = mask & (torch.arange(mask.shape[1],device=mask.device)[None] >= query_min)
-    require(eligible.any(), "no eligible equal-norm positions")
     delta = deletion_factors(trace)["projected_delta"].double()
     norms = delta.norm(dim=-1)
     unit = delta/norms[...,None].clamp_min(norm_floor)
@@ -58,6 +57,7 @@ def equal_norm_injections(trace, mask, *, eta: float, norm_floor: float, control
     for support in available.values():
         common &= support
     reference_norm = trace.residual_input.double().norm(dim=-1)
+    common &= reference_norm >= norm_floor
     requested_norm = eta*reference_norm
     edits, rows = {}, {}
     for name,vector in directions.items():
@@ -76,6 +76,7 @@ def equal_norm_injections(trace, mask, *, eta: float, norm_floor: float, control
         "eligible_positions":int(eligible.sum()),"common_available_positions":int(common.sum()),
         "natural_sink_degenerate_positions":int((eligible & ~available["sink"]).sum()),
         "natural_projected_norm_sum":float(norms[eligible].sum()),
+        "reference_below_floor_positions":int((eligible & (reference_norm < norm_floor)).sum()),
         "reference_residual_norm_sum":float(reference_norm[eligible].sum()),
         "common_support_mask":common.int().cpu().tolist(),"directions":rows,
         "interpretation":"within-checkpoint equal relative norm; directions/bases differ across checkpoints"}
@@ -84,6 +85,8 @@ def equal_norm_injections(trace, mask, *, eta: float, norm_floor: float, control
 def loss_geometry(clean, edited, ids, mask, *, tolerance: ParityTolerance, token_chunk: int) -> dict:
     """Exact per-target identity, stable double logsumexp; no full logits persisted."""
     require(clean.ndim == 3 and clean.shape == edited.shape and ids.shape == mask.shape == clean.shape[:2], "geometry shapes mismatch")
+    require(mask.dtype == torch.bool and mask[:,0].all() and
+            not ((~mask[:,:-1]) & mask[:,1:]).any(), "geometry requires boolean right padding")
     require(type(token_chunk) is int and token_chunk > 0, "positive token chunk required")
     require(torch.isfinite(clean).all() and torch.isfinite(edited).all(), "nonfinite logits")
     valid = mask[:,:-1] & mask[:,1:]

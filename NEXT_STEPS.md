@@ -16,11 +16,14 @@ inference/training is launched.
 - [x] E0 source audit/extraction, component analysis and traceable external artifacts validated.
 - [x] E0 extensive regression, clean-wheel and actual complete S4 recorded-result audit.
 - [ ] E1 choices/confirmation panel/doses/scopes/device/numerical policy prospectively resolved and locked.
-- [ ] E2/E3 inference implementation and validation under separate approved scope.
+- [x] E1/E2/E3 sequential numerical and runnable inference capabilities under explicit software-implementation scope.
 
 E1-E3 software implementation now authorized (2026-10-08), sequential work order:
-`design/e6a_v2/stages/MECHANISTIC_E1_E3.md`. E1 probe capability passed24 CPU
-tests including legacy S4 regressions; production locks/inference still pending.
+`design/e6a_v2/stages/MECHANISTIC_E1_E3.md`. E1-E3 live probes/factorization/
+equal-norm/rescue/geometry and single-state commands/artifact audits passed focused
+CPU and128-token CLI tests; broader regression/GPU engineering checks next.
+See `design/e6a_v2/MECHANISTIC_E1_E3_EXECUTION.md`. Production locks/inference
+still pending; templates remain drafts.
 Researcher chose15-state E2 grid and clean entering-residual E3 norm reference.
 
 E4/E5 remain optional and separately approved; step500 weights alone do not

@@ -38,6 +38,9 @@ def test_offline_wheel_without_reference_tree(tmp_path):
     with zipfile.ZipFile(wheels[0]) as archive:
         assert not any("upstream" in name.lower() for name in archive.namelist())
         assert any(name == "sinklab/config.py" for name in archive.namelist())
+        for module in ("calibrated_probes", "mechanism_trace", "mechanism_injection",
+                       "mechanistic_run", "mechanistic_admission", "mechanistic_panel"):
+            assert f"sinklab/{module}.py" in archive.namelist()
 
     clean_env = tmp_path / "clean_env"
     venv.create(clean_env, with_pip=True)

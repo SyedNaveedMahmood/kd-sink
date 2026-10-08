@@ -12,7 +12,7 @@ does not approve scientific inference or silently resolve the pending choices.
 - [x] E2 direct single-layer deletion versus reconstructed injection and no-op parity.
 - [x] E3 equal-relative-norm sink/random/orthogonal/non-sink directions with degeneracy reporting.
 - [x] E3 single-layer restoration, all-layer conditional rescue, explicit-order telescoping and exact loss geometry.
-- [ ] Versioned per-item records, complete aggregation and strict source/lock/panel admission, external artifacts and failure receipts.
+- [x] Versioned per-item records, complete aggregation and strict source/lock/panel admission, external artifacts and failure receipts.
 - [ ] CPU/adversarial/full-regression/offline-wheel validation, separately labeled synthetic GPU evidence.
 - [ ] Scientific protocol/panel/device/dose/tolerance qualification and production inference (pending separate locks/scope).
 
