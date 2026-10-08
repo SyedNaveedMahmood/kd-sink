@@ -8,7 +8,7 @@ evidence, D24, S1/S4/S5 reports and CORE/S4/S5 journals. Work sequentially.
 - [x] P0: fresh complete read-only E0 source audit, all35 student batteries plus
   teacher, ten probes/five random controls, hashes/membership/reaggregation,
   external figures/data/provenance/scientific audit and independent validation.
-- [ ] P1: explicit versioned E1/E2/E3 scientific specifications; deterministic
+- [x] P1: explicit versioned E1/E2/E3 scientific specifications; deterministic
   document-disjoint confirmation candidate from eligible LM2000 where possible;
   approval-ready content-hashed candidates and exact unresolved decision table.
   Seal approval only for completely researcher-authorized specifications.
