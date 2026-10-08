@@ -1,0 +1,113 @@
+{
+  "approved_locks": {
+    "E1": {
+      "candidate_predecessor": "424739bcf88f2949023dc5b369c234715aae1b96fa8e5193cd0240f61336530b",
+      "envelope_sha256": "aa280a9a1244c7e00bff5e88fe342548ac587553788c24dd072eeab8542528f6",
+      "file_sha256": "d6cd3d3b6be27e91def5230ab9067efeb6f820f2d788379ec1e16d4dedc7c57a"
+    },
+    "E2": {
+      "candidate_predecessor": "d6b49094f43a7814b3d60217f31dcfac51c93df320984d12469ce258fb31df52",
+      "envelope_sha256": "1ba9dff94bdd6735cb1cd1c871a655094a91bd1b96c746e9f26f14f942c3d586",
+      "file_sha256": "c04cbf98439c5f9da940fb67f648ec10356d00f9fb2481e508b5ee7ccfbe515d"
+    },
+    "E3": {
+      "candidate_predecessor": "3001fd3aad8f6a634f949b41b217f17972610a139fbd388bbb4c7dfb712252eb",
+      "envelope_sha256": "5673eaefc30ff238ee338b0cff973032f6f2579e985592f0c837a04c6f24cf33",
+      "file_sha256": "7f2295e909cc0278e030a7b639c4dc6f7c8b4f0832b29343571bcb55fe23d9d6"
+    }
+  },
+  "code_sha256": "74629cd54aa7a7aaa533caf7b30d381225592b65c904f5f3255c54feef7f2913",
+  "constraints": "no S1 training, seed1/2 inference, E4/E5, Stage09, JVP, fine extension or historical source modifications; no altered scientific definitions or gates; no conclusions from synthetic tests",
+  "expected_bundles": {
+    "E1": 28,
+    "E2": 32,
+    "E3": 32,
+    "total": 92
+  },
+  "external_root": "D:\\KD-SINK-central\\analysis\\mechanistic_e1_e3_scientific_20261009",
+  "failure_receipt_sha256": "9c5f4b3d9206015e1d9184bfa60b502e7dda43f797ce7f080c729d42576856a8",
+  "final_operational_focus": {
+    "command": "E:/kd-sink/.venv/Scripts/python.exe -m pytest -q tests/integration/test_mechanistic_campaign.py --junitxml=D:\\KD-SINK-central\\analysis\\mechanistic_e1_e3_scientific_20261009\\CAMPAIGN_FROZEN_FOCUSED.xml",
+    "exit_code": 0,
+    "failed": 0,
+    "passed": 34,
+    "seconds": 15.33,
+    "skipped": 0,
+    "xml_sha256": "18c670bb9c3e11ecfaa0f0845f2319d319045ae8188462ced9d2ddb9d82dd57e"
+  },
+  "fresh_qualification": {
+    "complete_sha256": "149f0805f512b960e483c8991d773a5b5197f8e89feca693224a7a45cfdad0f6",
+    "independent_audit_sha256": "dd42411f6240da9ad78c76006810c9278366af7a0261f7fdceb9b70148bf202d",
+    "max_geometry_error": 4.718447854656915e-15,
+    "max_norm_error": 2.530010689838491e-07,
+    "max_parity_error": 4.38690185546875e-05,
+    "resources": {
+      "baseline_nv_used_bytes": 2135949312,
+      "conservative_peak_total_use_bytes": 8188329984,
+      "disk_min_free_bytes": {
+        "C:/": 528072134656,
+        "D:/": 74289291264,
+        "E:/": 9092173824
+      },
+      "minimum_sampled_gpu_free_bytes": 8665432064,
+      "peak_allocated_bytes": 5740827136,
+      "peak_reserved_bytes": 6052380672,
+      "process_peak_sampled_rss_bytes": 4587687936,
+      "psutil_version": "7.2.2",
+      "ram_min_available_bytes": 45369868288,
+      "required_gpu_headroom_bytes": 1717095628,
+      "samples": 115,
+      "temperature_max_c": 59,
+      "wall_seconds": 119.60100949998014
+    },
+    "status": "PASSED"
+  },
+  "full_offline_regression": {
+    "command": "E:/kd-sink/.venv/Scripts/python.exe -m pytest -q tests/unit tests/integration --junitxml=D:\\KD-SINK-central\\analysis\\mechanistic_e1_e3_scientific_20261009\\READINESS_FULL_REGRESSION_03.xml",
+    "exit_code": 0,
+    "failed": 0,
+    "passed": 601,
+    "seconds": 212.11,
+    "skipped": 0,
+    "warning": "preexisting third-party astor ast.Num deprecation",
+    "xml_sha256": "201016f11918d061fac81ba753fce92975d240acc4c95e36a65ae131ad30f059"
+  },
+  "panel_sha256": "509a90c6039cd90d7d4f6986ac7fe3b75468609073b4808baa8b5bae5294c7f7",
+  "persistence": {
+    "actual_model_effort": {
+      "effort": "max",
+      "events_sha256": "1ac46e16f692241e28d7e3cc28294ce264314b921a31bfa480b9aaf4ab57a540",
+      "model": "gpt-6-luna",
+      "probe_exit_code": 0,
+      "session_metadata_path": "C:\\Users\\user4\\.codex\\sessions\\2026\\10\\09\\rollout-2026-10-09T01-09-08-01a11ceb-5aae-7b13-88a9-e362f2f8e668.jsonl",
+      "status": "PASS",
+      "thread_id": "01a11ceb-5aae-7b13-88a9-e362f2f8e668"
+    },
+    "dedicated_ownership": "PENDING",
+    "detached_actual_Luna_probe_sha256": "5173bbf415c28e047e1a5e7c87e4d91f3a8c6d48251f1e8f3e132a47739ca094",
+    "synthetic_supervisor_recovery_sha256": "934c0b59a531b148f1df67ea02c9622abd5c54cee81ceb8088b36c4aa888a283"
+  },
+  "phase_completion": {
+    "E1": "PENDING",
+    "E2": "PENDING",
+    "E3": "PENDING"
+  },
+  "runtime_sha256": "df8b0b3258a9e9bd236e8a9d7281e95a68d3e5555733e76404fda338db5ada0b",
+  "scientific_inference_launched": false,
+  "scientific_source_commit": "f96c73061f9ef288c72f309e09c4c1f17a8a6701",
+  "source_and_panel_independence": {
+    "confirmation_blocks_documents": [
+      300,
+      32
+    ],
+    "discovery_blocks_documents": [
+      300,
+      46
+    ],
+    "membership_fixed": true,
+    "panel_audit_sha256": "57ca72aa1c8a43aa881ffde6a42a304cb809d5bd63d26063a6c5fbf4cb6157dd",
+    "predecessor_audit_sha256": "25376a349d3a858c92a8664e031472da089dae48bc0f8765a0b45e07c9805ab5"
+  },
+  "stage": "mechanistic scientific preparation/readiness",
+  "unchanged_scientific_runtime": true
+}

@@ -1,5 +1,22 @@
 # Sequential implementation worklist
 
+## Current operator scope: approved E1?E3 scientific campaign (2026-10-09)
+
+The researcher now explicitly approves exact v2 candidate digests and fixed
+confirmation panel, and separately authorizes the92 seed0 state/panel bundles,
+durable serial supervision, maximum-effort Luna handoff, independent audits,
+reporting/archive and branch-only commit/push. This supersedes the earlier
+preparation-only prohibition; historical entries below retain their old scope.
+Follow design/e6a_v2/stages/MECHANISTIC_SCIENTIFIC_CAMPAIGN.md. Approved new
+locks preserve all scientific fields and frozen runtime; original drafts remain
+unchanged. Fresh full-size qualification, independent candidate/panel/provenance
+checks and detached recovery exercise have passed. Final readiness/regression
+and launch/handoff are pending. Scientific phase completion is not yet claimed.
+
+No training, seed1/2 inference, E4/E5, Stage09, fine extension, JVP or changes to
+original S1/S4/S5/S7 sources/results. External root:
+D:/KD-SINK-central/analysis/mechanistic_e1_e3_scientific_20261009.
+
 ## Current operator scope: mechanistic preparation (2026-10-08)
 
 The attached operator request authorizes a fresh E0 read-only audit, prospective
