@@ -77,3 +77,25 @@ def test_parity_failure_and_unsupported_inputs_fail_closed():
     with pytest.raises(ValueError,match='eval'):adapter.traced_forward(input_ids=ids,attention_mask=mask,trace_layers=(0,))
     model.eval().half()
     with pytest.raises(ValueError,match='FP32'):adapter.traced_forward(input_ids=ids,attention_mask=mask,trace_layers=(0,))
+
+
+@torch.no_grad()
+def test_projected_head_orientation_matches_independent_head_loop():
+    model=model_fixture();adapter=MechanisticGPT2Adapter(model);ids,mask=inputs()
+    trace=adapter.traced_forward(input_ids=ids,attention_mask=mask,trace_layers=(0,)).traces[0]
+    delta=deletion_factors(trace)['head_delta'].double()
+    heads,dim=delta.shape[1],delta.shape[-1]
+    pieces=[delta[:,h] @ trace.output_weight[h*dim:(h+1)*dim].double() for h in range(heads)]
+    total=sum(pieces)
+    support=mask.clone();support[:,0]=False
+    summary=factor_summary(trace,mask,denominator_floor=1e-8)['all_q_ge1']
+    for h,piece in enumerate(pieces):
+        expected=piece.norm(dim=-1)[support].mean().item()
+        assert summary['per_head_projected_delta_norm_mean'][h]==pytest.approx(expected,abs=1e-14)
+        cosine=(piece*total).sum(-1)/(piece.norm(dim=-1)*total.norm(dim=-1))
+        assert summary['per_head_cosine_with_projected_sum_mean'][h]==pytest.approx(cosine[support].mean().item(),abs=1e-14)
+        assert summary['per_head_cosine_defined_queries'][h]==int(support.sum())
+    zero=replace(trace,output_weight=torch.zeros_like(trace.output_weight))
+    undefined=factor_summary(zero,mask,denominator_floor=1e-8)['all_q_ge1']
+    assert undefined['per_head_cosine_with_projected_sum_mean']==[None]*heads
+    assert undefined['per_head_cosine_defined_queries']==[0]*heads

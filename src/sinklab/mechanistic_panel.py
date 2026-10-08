@@ -1,12 +1,41 @@
 """Prepare explicitly selected confirmation blocks from the frozen OWT source.
 
-Selection is provided by the researcher, never fitted or automatically chosen.
-Source documents, including shared packed-block ownership, determine overlap.
+Selection is explicit or prospectively authorized by a deterministic source-only
+rule. Outcomes never enter selection. Shared packed-block ownership matters.
 """
 from .calibrated_probes import require, validate_panel_split
 from .mechanistic_run import read_json, sha256_file
 from .owt_compat import load_owt_corpus, panels_from_validated_corpus
 from .provenance import verify_envelope
+
+
+def select_disjoint_confirmation(corpus, registered, *, count):
+    """First eligible LM2000 blocks in frozen order; no fallback or outcomes."""
+    require(type(count) is int and count > 0, "explicit positive confirmation count required")
+    blocks = {b["id"]: b for b in corpus["partitions"]["evaluation"]["blocks"]}
+    documents = {d["source_index"]: d["normalized_text_sha256"]
+                 for d in corpus["partitions"]["evaluation"]["documents"]}
+    discovery = registered["owt_full300"]
+    candidates = registered["owt_lm2000"]
+    require(len(set(discovery)) == len(discovery) and len(set(candidates)) == len(candidates), "duplicate registered blocks")
+    discovery_docs = {i for ident in discovery for i in blocks[ident]["source_indices"]}
+    discovery_hashes = {documents[i] for i in discovery_docs}
+    eligible, excluded = [], []
+    for index, ident in enumerate(candidates):
+        ownership = blocks[ident]["source_indices"]
+        reasons = []
+        if ident in discovery: reasons.append("block_overlap")
+        if discovery_docs.intersection(ownership): reasons.append("source_document_overlap")
+        if discovery_hashes.intersection(documents[i] for i in ownership): reasons.append("normalized_text_overlap")
+        if reasons: excluded.append({"lm2000_index": index, "id": ident, "reasons": reasons})
+        else: eligible.append({"lm2000_index": index, "id": ident})
+    require(len(eligible) >= count, "insufficient document-disjoint LM2000 blocks; no fallback permitted")
+    selected = eligible[:count]
+    return [r["id"] for r in selected], {
+        "rule": "first count eligible LM2000 blocks in original registered order; exclude any discovery document ID/text hash or block overlap",
+        "candidate_count": len(candidates), "requested_count": count, "eligible_count": len(eligible),
+        "selected": selected, "excluded": excluded, "outcomes_used": False,
+        "approval_status": "candidate_count_requires_researcher_approval"}
 
 
 def panel_from_validated_corpus(corpus, registered, confirmation_ids, *, tokenizer_sha256):
@@ -44,7 +73,7 @@ def prepare_frozen_panel(*, artifact_document, corpus_reference, panels_referenc
     result = panel_from_validated_corpus(corpus,registered,confirmation_ids,tokenizer_sha256=artifact["tokenizer"]["files_sha256"])
     require(len(result["discovery"])==300,"registered discovery must be exactly Full300")
     result["preparation"]={"artifact_lock_sha256":artifact_sha,"corpus":corpus_reference,
-        "registered_panels":panels_reference,"selection":"explicit researcher-provided confirmation block IDs",
+        "registered_panels":panels_reference,"selection":"explicit confirmation block IDs; authority in separate selection receipt",
         "source_validation":"complete original OWT packing/tokenizer/document ownership contract"}
     require(sha256_file(corpus_path)==corpus_reference["sha256"] and sha256_file(panels_path)==panels_reference["sha256"],
             "source changed during panel preparation")

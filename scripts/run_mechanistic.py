@@ -55,6 +55,7 @@ def main(argv=None):
         p.add_argument("--seed",type=int,required=True)
         p.add_argument("--device",required=True)
         p.add_argument("--output",type=Path,required=True)
+        p.add_argument("--disable-tf32", action="store_true", help="explicit strict FP32 matmul/cuDNN policy; recorded in runtime")
         if name == "scientific":
             p.add_argument("--lock",type=Path,required=True)
             p.add_argument("--approved-sha256",required=True)
@@ -88,6 +89,10 @@ def main(argv=None):
         parser.error("result output must be external to the repository and reference-only trees")
     if resolved.exists():
         parser.error("output already exists; use a fresh attempt directory")
+    if args.disable_tf32:
+        torch.set_float32_matmul_precision("highest")
+        torch.backends.cuda.matmul.allow_tf32 = False
+        torch.backends.cudnn.allow_tf32 = False
     runtime = runtime_identity(repo,args.device)
     if args.command == "engineering":
         model, items, settings = engineering_fixture(args.phase,args.device)

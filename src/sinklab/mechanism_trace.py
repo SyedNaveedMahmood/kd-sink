@@ -170,7 +170,14 @@ def factor_summary(trace: LayerTrace, mask: torch.Tensor, *, denominator_floor: 
         heads,dim = trace.value.shape[1],trace.value.shape[-1]
         weight = trace.output_weight.reshape(heads,dim,-1).double()
         contributions = torch.einsum("bhqd,hdo->bhqo",factors["head_delta"].double(),weight)
-        norm_sum = contributions.norm(dim=-1).sum(1)
+        contribution_norms = contributions.norm(dim=-1)
+        norm_sum = contribution_norms.sum(1)
+        # Orientation uses a double-precision sum of the same projected heads.
+        # Undefined zero vectors stay unavailable rather than acquiring an angle.
+        total = contributions.sum(1)
+        total_norm = total.norm(dim=-1)
+        cosine_support = support[:,None] & (contribution_norms >= denominator_floor) & (total_norm[:,None] >= denominator_floor)
+        cosines = (contributions * total[:,None]).sum(-1) / (contribution_norms * total_norm[:,None]).clamp_min(denominator_floor**2)
         projected = factors["projected_delta"].double().norm(dim=-1)
         clean = trace.attention_output.double().norm(dim=-1)
         ratios = projected / clean.clamp_min(denominator_floor)
@@ -181,6 +188,9 @@ def factor_summary(trace: LayerTrace, mask: torch.Tensor, *, denominator_floor: 
             "per_head_conditional_value_norm_mean":[float(factors["conditional_value"][:,h].double().norm(dim=-1)[support].mean()) for h in range(heads)],
             "per_head_value_contrast_norm_mean":[float(factors["value_contrast"][:,h].double().norm(dim=-1)[support].mean()) for h in range(heads)],
             "per_head_local_delta_norm_mean":[float(head_norms[:,h][support].mean()) for h in range(heads)],
+            "per_head_projected_delta_norm_mean":[float(contribution_norms[:,h][support].mean()) for h in range(heads)],
+            "per_head_cosine_with_projected_sum_mean":[float(cosines[:,h][cosine_support[:,h]].mean()) if cosine_support[:,h].any() else None for h in range(heads)],
+            "per_head_cosine_defined_queries":[int(cosine_support[:,h].sum()) for h in range(heads)],
             "projected_delta_norm_mean":float(projected[support].mean()),
             "relative_projected_delta_mean":float(ratios[support].mean()),
             "cancellation_ratio_mean":float((projected/norm_sum.clamp_min(denominator_floor))[defined].mean()) if defined.any() else None,

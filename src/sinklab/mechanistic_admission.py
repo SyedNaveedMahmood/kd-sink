@@ -36,7 +36,8 @@ def runtime_identity(repo, device):
     return {"code_sha256": payload_digest(code), "code_files": code,
         "environment": {"python": platform.python_version(), "packages": versions, "torch_cuda": torch.version.cuda,
             "platform": platform.platform(), "tf32_matmul": torch.backends.cuda.matmul.allow_tf32,
-            "tf32_cudnn": torch.backends.cudnn.allow_tf32}, "hardware": hardware,
+            "tf32_cudnn": torch.backends.cudnn.allow_tf32,
+            "float32_matmul_precision": torch.get_float32_matmul_precision()}, "hardware": hardware,
         "precision": "float32", "backend": "eager", "context_length": 128, "use_cache": False}
 
 
