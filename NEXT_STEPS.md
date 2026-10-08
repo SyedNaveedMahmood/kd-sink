@@ -18,8 +18,13 @@ The source-only confirmation candidate has300 blocks/32 documents disjoint
 from Full300, panel SHA509a90c6039cd90d7d4f6986ac7fe3b75468609073b4808baa8b5bae5294c7f7.
 Real GPT-2-large/medium engineering qualification PASSED on exact Adrita UUID,
 with six independently audited synthetic bundles and5.637GiB peak reserved.
-No scientific checkpoint/panel inference is authorized or executed. P3 final
-validation/delivery status is in the preparation work order and append-only journals.
+No scientific checkpoint/panel inference is authorized or executed. P3 is complete:
+567 final offline tests passed with installed E1-E3 wheel execution and blocked
+network connections; independent output/source/whitespace audits passed. Validated
+preparation was committed and pushed to origin/mechanistic-e0, without a main merge.
+The next action is researcher approval of the exact candidate decision table and
+new explicit operator authorization before any E1 scientific command. Delivery
+receipts and final commit identity are in the append-only journals/external receipt.
 
 ## Mechanistic follow-up E0 (2026-10-08; independent worktree)
 

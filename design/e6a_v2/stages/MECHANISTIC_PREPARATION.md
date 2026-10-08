@@ -16,7 +16,7 @@ evidence, D24, S1/S4/S5 reports and CORE/S4/S5 journals. Work sequentially.
   and medium128-token synthetic execution on the exact Adrita GPU; live E1/E2/E3
   interfaces, parity/selectivity/exception restoration, full-vocabulary geometry,
   measured errors/resources and independently checked external receipts.
-- [ ] P3: focused/full offline CPU/unit/integration/wheel/source-integrity checks,
+- [x] P3: focused/full offline CPU/unit/integration/wheel/source-integrity checks,
   append-only journals, bounded reports, validated commits and branch push.
 
 Do not overwrite earlier valid/failed artifacts. Preserve historical science
