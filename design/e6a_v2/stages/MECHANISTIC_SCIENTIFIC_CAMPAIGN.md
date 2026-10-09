@@ -14,13 +14,15 @@ unchanged. Approved successors are under
 - [x] Initial serial scientific supervisor launch and first admissible state progress verified.
 - [x] Initial maximum-effort Luna ownership, detached persistence and handoff verified.
 - [x] Observed Windows sharing/RAM operational failure diagnosed; bounded heartbeat replacement and live-worker fail-stop regressions passed.
-- [ ] Sufficient-capacity C-root recovery manifest, detached supervision and fresh real Luna ownership verified.
+- [x] Sufficient-capacity C-root recovery manifest, detached supervision and fresh real Luna ownership verified. See external `CAMPAIGN_HANDOFF.json` and `ROOT_HANDOFF_VERIFIED_C_V1.json`.
 - [ ] E1 discovery and confirmation complete and independently audited (28 bundles).
 - [ ] E2 discovery and confirmation complete and independently audited (32 bundles).
 - [ ] E3 discovery and confirmation complete and independently audited (32 bundles).
 - [ ] Cross-phase scientific interpretation, full generated-artifact inventory/ZIP64 validation and final branch delivery.
 
-External root:
+Active external root:
+`C:/KD-SINK-central/analysis/mechanistic_e1_e3_scientific_20261009_storage_c_v2`.
+Preserved original root:
 `D:/KD-SINK-central/analysis/mechanistic_e1_e3_scientific_20261009`.
 Scientific executor identity is f96c73061f9ef288c72f309e09c4c1f17a8a6701;
 execution-critical file hashes/runtime remain the qualified preparation identity.
@@ -86,3 +88,16 @@ Completion requires all92 required bundles; partial states remain explicitly
 blocked/invalidated. No training, seed1/2 inference, E4/E5, Stage09, JVP, fine
 extension, source modifications, conclusion-conditioned acceptance, inferential
 statistics or independent-seed claims are introduced.
+
+
+C-root handoff passed 2026-10-09T02:53:04Z. Root independently
+verified the 92-job C manifest and 60 frozen pins, live serial supervisor
+and one worker, accepted actual Luna/max ownership, live monitor heartbeat,
+synthetic recovery/survival proofs, and E1 discovery report crosscheck.
+The external root records 14 complete, one running and 77 retryable jobs;
+this verifies ownership only, not scientific completion. The primary C handoff
+SHA-256 is 75066cc89555383872d39b59568472906d7edce3d3f5a1cc5d17acc571d9860f;
+independent root verification SHA-256 is c4a4cc55554c32f08ce8e84ec479fc836a0102bbda2fbcda3bf1383afc07e5f1.
+The active output root is C:/KD-SINK-central/analysis/mechanistic_e1_e3_scientific_20261009_storage_c_v2;
+the earlier D root remains preserved. E1 confirmation, E2, E3, complete inventory,
+archive and final delivery remain open.

@@ -1,0 +1,48 @@
+{
+  "active_root": "C:\\KD-SINK-central\\analysis\\mechanistic_e1_e3_scientific_20261009_storage_c_v2",
+  "approved_lock_hashes": {
+    "E1": "aa280a9a1244c7e00bff5e88fe342548ac587553788c24dd072eeab8542528f6",
+    "E2": "1ba9dff94bdd6735cb1cd1c871a655094a91bd1b96c746e9f26f14f942c3d586",
+    "E3": "5673eaefc30ff238ee338b0cff973032f6f2579e985592f0c837a04c6f24cf33"
+  },
+  "campaign_handoff_sha256": "75066cc89555383872d39b59568472906d7edce3d3f5a1cc5d17acc571d9860f",
+  "code_sha256": "74629cd54aa7a7aaa533caf7b30d381225592b65c904f5f3255c54feef7f2913",
+  "coverage_at_verified_snapshot": {
+    "blocked": 0,
+    "complete": 14,
+    "expected": 92,
+    "invalidated": 0,
+    "retryable_failed": 77,
+    "running": 1
+  },
+  "final_completion_path": "C:\\KD-SINK-central\\analysis\\mechanistic_e1_e3_scientific_20261009_storage_c_v2\\MECHANISTIC_E1_E3_SCIENTIFIC_COMPLETION.json",
+  "independent_scientific_evidence": {
+    "bundles": 14,
+    "crosscheck_sha256": "d68e3c07e5d3b6da0960bce20439f132456c08c1d07746ccb062b7c2d2d0b685",
+    "panel": "discovery",
+    "phase": "E1",
+    "report_artifacts_rehashed": 55,
+    "status": "COMPLETE_AUDITED_EXPORT"
+  },
+  "live_gate_evidence_sha256": "f6267f122bd5db9a748af48e0f9005227dffa5d9441f3b092ec1207fe0d4ba51",
+  "manifest_envelope_sha256": "64891804a82cd1f7312dbebae21f4184466450165d5491526ed9b0e9b0a24fa8",
+  "manifest_sha256": "6973de58bd0e3419200fea4ba06845cc5b44758189c57e0dbccb60c4a1c1229e",
+  "operational_source_commit": "652315628320b1e0ce82234a14f3c8fc264340b5",
+  "owner": {
+    "actual_effort": "max",
+    "actual_model": "gpt-6-luna",
+    "current_cli_pid_at_handoff": 6176,
+    "current_worker_pid": 50216,
+    "supervisor_pid": 48180,
+    "thread_id": "01a11e88-4ad5-7740-88bb-aeb5858e4c15",
+    "wrapper_pid": 52220
+  },
+  "preserved_original_root": "D:/KD-SINK-central/analysis/mechanistic_e1_e3_scientific_20261009",
+  "root_handoff_verification_sha256": "c4a4cc55554c32f08ce8e84ec479fc836a0102bbda2fbcda3bf1383afc07e5f1",
+  "runtime_sha256": "df8b0b3258a9e9bd236e8a9d7281e95a68d3e5555733e76404fda338db5ada0b",
+  "schema": "mechanistic_scientific_c_root_handoff_summary_v1",
+  "science_complete": false,
+  "scientific_source_commit": "f96c73061f9ef288c72f309e09c4c1f17a8a6701",
+  "status": "HANDOFF_VERIFIED_CAMPAIGN_IN_PROGRESS",
+  "utc": "2026-10-09T02:54:22+00:00"
+}

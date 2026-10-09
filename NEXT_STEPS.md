@@ -27,18 +27,30 @@ supervisor fix passes37 focused tests, including native Windows file-sharing
 and prevention of further scheduling while a live worker is orphaned.
 Scientific source/runtime/approved phase envelopes are unchanged.
 
-Current first incomplete task: after this worker closes, hash-copy stable
-derived artifacts to sufficient-capacity C storage, preserve D originals and
-blocked/error history, seal the new operational manifest, restore justified
-running/retry ownership, and revalidate detached supervision plus genuine
-Luna/max ownership before root exit. Full raw outputs project~76.5GB, exceeding
-D's current space after its10GiB reserve; C has~528GB free. No scientific
-definition/input/grid/gate changes. Scientific phase completion is not claimed.
-Never relaunch a concurrent GPU worker or include invalid results.
+Current first incomplete task: continue the serial E1-E3 campaign under the
+verified C-root supervisor and detached Luna/max monitor. The C-root recovery
+manifest, exact frozen pins, both durable processes and the fresh ownership
+handoff passed independent verification; root may now leave without terminating
+either process. The active C handoff is external and records the complete
+ownership/status proofs.
 
-No training, seed1/2 inference, E4/E5, Stage09, fine extension, JVP or changes to
-original S1/S4/S5/S7 sources/results. External root:
-D:/KD-SINK-central/analysis/mechanistic_e1_e3_scientific_20261009.
+At the latest verified snapshot (2026-10-09T02:53:04Z), 14/92 bundles are
+independently complete (all 14 E1 discovery states), one E1 confirmation
+teacher bundle is running at 143/300 items, and 77 are retryable after the
+preserved operational interruption; zero are blocked or invalidated. The
+original teacher exit status remains unknown and is not fabricated. The
+confirmation teacher still needs runner verification and independent audit.
+Retry only exact admissible jobs, serially; E3 remains gated on same-state,
+same-panel E2 parity. Finish all 92 audits, reports, complete artifact
+inventory, ZIP64 checks and final branch delivery before declaring completion.
+
+Active output root: C:/KD-SINK-central/analysis/mechanistic_e1_e3_scientific_20261009_storage_c_v2.
+Preserved original root: D:/KD-SINK-central/analysis/mechanistic_e1_e3_scientific_20261009.
+The campaign manifest changes only storage root, operational milestone and
+qualified standalone supervisor pin; scientific source/runtime, approved
+locks, panel, grids, numerical gates and all 92 commands remain fixed. No
+training, seed1/2 inference, E4/E5, Stage09, fine extension, JVP or changes
+to original S1/S4/S5/S7 sources/results.
 
 ## Current operator scope: mechanistic preparation (2026-10-08)
 

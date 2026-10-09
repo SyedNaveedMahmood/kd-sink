@@ -137,3 +137,37 @@ after the original worker closes; D originals remain. C will host future
 attempts, reports and archival, with identical scientific grids/argv/locks and
 append-only justified operational recovery. No scientific code, membership,
 tolerance or choice is altered. Final C supervision/ownership proof is pending.
+
+
+C storage recovery advanced on2026-10-08 UTC (operator date2026-10-09).
+The original teacher finished300/300 with COMPLETE; its original OS exit code
+is unknown after supervisor failure. All615 files/2,370,271,714 bytes were copied
+and SHA-256 verified at the closed-worker boundary. Root independently rehashed
+all615 preserved D files afterward. The C recovery appends92 justified events
+and preserves all93 historical rows byte-identically;59 unattempted RAM-gated
+states and32 E3 dependency cascades can retry their exact commands. Same-state
+E2 parity requirements remain enforced; the teacher still requires both audits.
+
+Active C manifest file SHA:
+6973de58bd0e3419200fea4ba06845cc5b44758189c57e0dbccb60c4a1c1229e;
+envelope64891804a82cd1f7312dbebae21f4184466450165d5491526ed9b0e9b0a24fa8.
+Only storage root, operational source652315628320b1e0ce82234a14f3c8fc264340b5
+and the qualified standalone supervisor pin changed. Root independently checked
+all60 pins, sealed manifests and the exact unchanged92 scientific commands,
+dependencies, source/runtime and approved locks. New supervisor launch survived
+its helper exiting; the actual supervisor is PID48180, created1791493206.5862145,
+behind the venv stub40880, created1791493206.5808213. Its heartbeat is healthy
+while the original teacher copy is being reverified. Fresh actual Luna ownership
+and final C handoff are still pending at this entry; root remains present.
+
+Active output/final-outcome root:
+C:/KD-SINK-central/analysis/mechanistic_e1_e3_scientific_20261009_storage_c_v2.
+Original D root and earlier handoff remain preserved historical evidence.
+No scientific definition, source input, panel member, tolerance or seed changed.
+
+
+C-root launch and durable handoff verified 2026-10-09T02:54:22+00:00. The fresh C manifest, all60 frozen pins and92 exact jobs passed; scientific source/runtime/locks/panel remain fixed. Root independently verified the actual detached Luna CLI model/effort (gpt-6-luna/max), current wrapper/CLI and one-worker supervisor identities, heartbeat/progress/health, and successful synthetic recovery and monitor-survival exercises. Primary handoff `CAMPAIGN_HANDOFF.json` SHA-256:75066cc89555383872d39b59568472906d7edce3d3f5a1cc5d17acc571d9860f. Root verification `ROOT_HANDOFF_VERIFIED_C_V1.json` SHA-256:c4a4cc55554c32f08ce8e84ec479fc836a0102bbda2fbcda3bf1383afc07e5f1. Fresh gate evidence `ROOT_C_HANDOFF_EVIDENCE_V6.json` SHA-256:f6267f122bd5db9a748af48e0f9005227dffa5d9441f3b092ec1207fe0d4ba51.
+
+At the captured snapshot,14/92 bundles are independently complete (E1 discovery14/14), E1 confirmation teacher is running at143/300 items,77 are retryable after preserved operational failures, and0 are blocked or invalidated. E1 discovery report has55 hashed export artifacts; the root crosscheck passed. Original teacher worker exit status remains unknown. The campaign is IN PROGRESS, not complete. D root is preserved; C root is active. E1 confirmation must pass both verifiers; remaining states run serially and each E3 state requires matching valid E2 parity.
+Checker issues retained as auxiliary evidence: v3 schema KeyError, system-Python psutil import failure, and v4 redundant exact creation-time comparison failure; versioned v5/v6 passed with the existing <0.01s process identity tolerance. No tolerance used for scientific parity/norm/loss gates changed. The earlier v1 crosscheck unknown-exit assertion failure was fixed narrowly and its v2 audit passed; unknown exit remains explicit.
+See [C-root handoff summary](../mechanistic_scientific_handoff_c_20261009.json), external `CAMPAIGN_HANDOFF.json`, `ROOT_HANDOFF_VERIFIED_C_V1.json`, and `ROOT_C_HANDOFF_EVIDENCE_V6.json`. Current active root C:/KD-SINK-central/analysis/mechanistic_e1_e3_scientific_20261009_storage_c_v2; preserved D root D:/KD-SINK-central/analysis/mechanistic_e1_e3_scientific_20261009. Scientific findings, all-phase audit, full artifact inventory, ZIP64 verification and final Git delivery remain pending.
