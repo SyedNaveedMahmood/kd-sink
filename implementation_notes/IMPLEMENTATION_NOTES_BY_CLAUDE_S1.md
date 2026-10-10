@@ -670,3 +670,8 @@ S7 software milestone `0541e1fc1031b96a027794b0aa5dfb8fd9f131a1` and Stage08 S4 
 ## 2026-10-10T09:40:52.643339+00:00 - Codex (GPT-6) - NEW-PC-E1-E3-DOCUMENT-DIFF
 
 - Starting b134a5ca30e858d2bec7bc4b9cc4cd21eb3104a6. Initial `git diff --check` reported CRLF as trailing whitespace after local core.autocrlf=false; shell continued to diff stat, so its overall exit0 did not represent a passing check. Corrected only affected documentation line endings to exact Git LF bytes; original CORE/S1/S4 journal content remains byte-identical to its committed prefix. No scientific code/specification/runtime or artifacts changed. Final diff check and documentation milestone commit follow; actual commit SHA recorded in external SETUP_DELIVERY.json.
+
+
+## 2026-10-10T09:42:43.953338+00:00 - Codex (GPT-6) - NEW-PC-E1-E3-MILESTONE
+
+- Completed documentation/readiness milestone commit: 3be759f68ad8b781c3ff8b789ebf106116581f05, `docs(setup): qualify new Windows PC for prospective E1-E3 runtime`. Final `git diff --check` and `git diff --cached --check` exit0. Final exact46 code/dependency source pins and original protocols/specifications/Upstream/main preservation checks exit0. All engineering evidence remains as recorded above; no scientific launch or new approval. Final delivery SHA/clean status and external receipt hashes are recorded after this journal-only follow-up in C:/KD-SINK-new-PC-E1-E3/SETUP_DELIVERY.json. Required next action remains researcher review/approval plus explicit operator scope. No push performed.
