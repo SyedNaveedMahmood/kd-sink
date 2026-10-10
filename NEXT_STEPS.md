@@ -1,3 +1,20 @@
+# Current NodiPC scope: researcher-authorized E3 emergency recovery (2026-10-10)
+
+This instruction supersedes the historical setup-only/Adrita ownership below.
+E3 migration amendments and continuation are authorized; E1/E2 are reused as
+verified Adrita evidence. No training, E4/E5 or Stage09. Original scientific
+executor and original approved locks remain unchanged. See
+[E3_NODIPC_MIGRATION_FEASIBILITY.md](E3_NODIPC_MIGRATION_FEASIBILITY.md).
+
+- [x] Immutable archive CRC/SHA extraction and original92-job reconstruction.
+- [x] All original source models/data recovered; strict600-item corpus admission.
+- [x] Fresh real-size qualification, exact fixed12-item comparator and73 focused tests.
+- [x] Authorized versioned E3 successor; independent READY; E3-only manifest and durable launch.
+- [ ] Verify first new complete300-item bundle and sustained single-worker monitoring.
+- [ ] Finish15 missing confirmation bundles,32-state final audit/provenance/report/inventory.
+
+The following entries preserve historical scopes and observations.
+
 # Sequential implementation worklist
 
 ## Current PC scope: E1–E3 environment setup only (2026-10-10)

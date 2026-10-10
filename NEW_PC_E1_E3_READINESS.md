@@ -1,3 +1,9 @@
+Current scope update (2026-10-10): the researcher has now authorized E3 migration
+and scientific continuation. Independent feasibility is READY_FOR_PORTABLE_E3_CONTINUATION;
+all original E1/E2 evidence is verified and17 E3 bundles can be reused. See
+[E3_NODIPC_MIGRATION_FEASIBILITY.md](E3_NODIPC_MIGRATION_FEASIBILITY.md).
+The setup-only approval block recorded below is historical.
+
 # New PC E1–E3 readiness — 2026-10-10
 
 **BLOCKED for scientific execution: researcher approval of new device/runtime envelopes is required. Engineering setup is READY. Missing required artifacts: none; no further transfer or downloads are needed.** No scientific experiments, training, E4/E5 or Stage09 were launched.

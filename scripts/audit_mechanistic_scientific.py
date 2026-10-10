@@ -64,7 +64,49 @@ def finite(value):
         for v in value: finite(v)
 
 
-def audit(root, lock=None, job=None, heartbeat=None):
+def audit_injection_norms(injection, settings):
+    """Audit the declared common support, not the larger eligible population.
+
+    The frozen executor serializes reference_residual_norm_sum over eligible
+    queries, but requested/actual direction sums over common support. Historical
+    records lack per-query residual norms. Exact reference-dose reconstruction
+    therefore applies only when these populations coincide; otherwise we check
+    the subset bound and all four independently delivered direction sums. Live
+    per-query gates remain the executor's responsibility, as for other tensors.
+    """
+    support = injection['common_support_mask'][0]
+    require(all(type(s) is int and s in (0, 1) for s in support), 'nonbinary support')
+    common = sum(support)
+    require(common == injection['common_available_positions'] and
+            0 <= common <= injection['eligible_positions'] <= len(support), 'common support')
+    require(all(not s or q >= injection['query_min'] for q, s in enumerate(support)), 'injection causal support')
+    require(set(injection['directions']) == {'sink', 'random', 'orthogonal', 'non_sink'}, 'direction coverage')
+    eligible_requested = injection['eta'] * injection['reference_residual_norm_sum']
+    require(eligible_requested >= 0, 'negative reference dose')
+    requested = injection['directions']['sink']['requested_norm_sum']
+    require(requested >= 0 and (requested <= eligible_requested or
+            math.isclose(requested, eligible_requested, rel_tol=2e-12, abs_tol=2e-12)), 'common dose exceeds eligible dose')
+    if common == injection['eligible_positions']:
+        near(requested, eligible_requested)
+    if common == 0 or injection['eta'] == 0:
+        near(requested, 0.)
+    errors = []
+    for direction in injection['directions'].values():
+        near(requested, direction['requested_norm_sum'])
+        require(direction['injected_positions'] == common, 'norm direction support')
+        require(direction['actual_norm_sum'] >= 0, 'invalid norm measurement')
+        if common:
+            require(direction['max_norm_error'] is not None and direction['max_norm_error'] >= 0, 'invalid norm measurement')
+            errors.append(direction['max_norm_error'])
+        else:
+            require(direction['max_norm_error'] is None and direction['actual_norm_sum'] == 0, 'empty norm support')
+        require(abs(direction['actual_norm_sum'] - requested) <= common *
+                settings.get('norm_atol', settings['atol']) + settings.get('norm_rtol', settings['rtol']) * requested,
+                'aggregate norm agreement')
+    return errors
+
+
+def audit(root, lock=None, job=None, heartbeat=None, panel_path=None):
     root = Path(root)
     require(not (root / 'FAILED.json').exists(), 'failed attempt')
     m = read(root / 'manifest.json')
@@ -85,9 +127,11 @@ def audit(root, lock=None, job=None, heartbeat=None):
         require(identity['phase'] == payload['phase'] and identity['state'] in payload['grid'], 'phase/state')
         require(job is not None and all(identity[k] == job[k] for k in ('phase', 'state', 'panel')), 'requested state identity')
         require(identity['runtime_sha256'] == digest(payload['runtime']), 'runtime identity')
-        require(identity['panel_sha256'] == sha(payload['panel']['path']) == payload['panel']['sha256'], 'panel identity')
+        # Explicit relocation must still supply the exact original locked bytes.
+        pinned_panel = panel_path if panel_path is not None else payload['panel']['path']
+        require(identity['panel_sha256'] == sha(pinned_panel) == payload['panel']['sha256'], 'panel identity')
         require(settings == payload['settings'][identity['state']], 'settings differ from lock')
-        panel_items = read(payload['panel']['path'])[identity['panel']]
+        panel_items = read(pinned_panel)[identity['panel']]
         require(invocation['items'] == [p['id'] for p in panel_items], 'panel membership/order')
         for key, state in (('source', identity['state']), ('teacher_source', 'teacher')):
             reference, observed = payload['sources'][state], identity[key]
@@ -157,18 +201,9 @@ def audit(root, lock=None, job=None, heartbeat=None):
                 require(all(injection[k] == settings[k] for k in ('control_seed','norm_floor','query_min','nonsink_keys','reference')), 'injection definition changed')
                 require(float(op.split('/eta')[1]) == injection['eta'], 'delivered eta label')
                 support = injection['common_support_mask'][0]
-                require(all(s in (0, 1) for s in support), 'nonbinary support')
-                require(sum(support) == injection['common_available_positions'], 'common support')
-                require(all(not s or q >= injection['query_min'] for q, s in enumerate(support)), 'injection causal support')
                 if panel_items is not None:
                     require(all(not s or panel_items[index]['attention_mask'][q] for q, s in enumerate(support)), 'injection padding support')
-                requested = injection['eta'] * injection['reference_residual_norm_sum']
-                for direction in injection['directions'].values():
-                    near(requested, direction['requested_norm_sum'])
-                    require(direction['injected_positions'] == sum(support), 'norm direction support')
-                    require(direction['max_norm_error'] >= 0 and direction['actual_norm_sum'] >= 0, 'invalid norm measurement')
-                    require(abs(direction['actual_norm_sum'] - requested) <= len(support)*settings.get('norm_atol', settings['atol']) + settings.get('norm_rtol', settings['rtol'])*requested, 'aggregate norm agreement')
-                    norm.append(direction['max_norm_error'])
+                norm.extend(audit_injection_norms(injection, settings))
             if op == 'none' or op.startswith('single_rescue/') or op.endswith('/eta0'):
                 require(b['clean_nll_sum_nats'] == b['edited_nll_sum_nats'] and b['flip_count'] == 0, 'no-op/restoration closure')
         for telescope in record['diagnostics'].get('telescopes', []):
@@ -217,6 +252,7 @@ def audit(root, lock=None, job=None, heartbeat=None):
             'max_norm_absolute_error': max(norm, default=0),
             'parity_absolute_bound_sufficient': max(parity, default=0) <= settings['atol'],
             'norm_absolute_bound_sufficient': max(norm, default=0) <= settings.get('norm_atol', settings['atol']),
+            'norm_reference_support': 'eligible residual sum; common direction sums; subset bound when supports differ; per-query residuals not serialized',
             'tensor_gate_scope': 'runner componentwise gates; independent policy and recorded scalars, no unserialized tensor reconstruction',
             'auditor_sha256': sha(Path(__file__))}
 
