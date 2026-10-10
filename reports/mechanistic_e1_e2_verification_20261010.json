@@ -1,0 +1,228 @@
+{
+  "status": "PASS",
+  "created_utc": "2026-10-10T14:21:32.762829+00:00",
+  "starting_commit": "3d2e3efe1f21658b3f2d25fcc0ce347b2d91fcb6",
+  "report": "reports/MECHANISTIC_E1_E2_RESULTS_20261010.md",
+  "report_sha256": "c141c4ac09ec958c9ca0fdb1e97ee3187300f8bd45ea2da0c19babb0fa632029",
+  "artifact_seal_sha256": "71c1914f19ae6fbdfd59cd26353833d5836b5714f78a8124b11fd58d68df8520",
+  "analysis_sha256": "2c18de26809353bd3b6b2dc5da5b1977453b169d129f241414112f0bcc789ab5",
+  "exporter_sha256": "d82059bfc08316b78375ae19feaa36665aa12524dff60a86ed770dfc0c2e6236",
+  "source_bundle_counts": {
+    "E1": 28,
+    "E2": 32
+  },
+  "source_operation_rows": 2180,
+  "original_full_runner_and_independent_audits_reused": true,
+  "raw_item_crosscheck": {
+    "status": "PASS",
+    "utc": "2026-10-10T14:16:58.527468+00:00",
+    "scope": "CPU-only independent sums/quantiles of selected published cells; all item SHA checks for six bundles; not a repeated full suite",
+    "raw_item_files_verified": 1800,
+    "published_operations_recomputed": 12,
+    "paired_C2_confirmation_distributions_recomputed": 3,
+    "max_absolute_numeric_discrepancy": 6.647243519508628e-16,
+    "checks": [
+      {
+        "phase": "E1",
+        "state": "teacher",
+        "panel": "confirmation",
+        "operation": "none",
+        "items": 300,
+        "recomputed": {
+          "clean_ce_nats": 3.159941874755732,
+          "delta_ce_nats": 0.0,
+          "self_kl_nats": 0.0,
+          "prediction_flip_fraction": 0.0,
+          "sink_removed_fraction_item_mean": 0.0,
+          "baseline_sink": 0.4045998469945011
+        }
+      },
+      {
+        "phase": "E1",
+        "state": "teacher",
+        "panel": "confirmation",
+        "operation": "q_bias/native/1",
+        "items": 300,
+        "recomputed": {
+          "clean_ce_nats": 3.159941874755732,
+          "delta_ce_nats": 0.05888609632563697,
+          "self_kl_nats": 0.06683145262155525,
+          "prediction_flip_fraction": 0.14454068241469817,
+          "sink_removed_fraction_item_mean": 0.2407732670000194,
+          "baseline_sink": 0.4045998469945011
+        }
+      },
+      {
+        "phase": "E1",
+        "state": "teacher",
+        "panel": "confirmation",
+        "operation": "k_top3/native/1",
+        "items": 300,
+        "recomputed": {
+          "clean_ce_nats": 3.159941874755732,
+          "delta_ce_nats": 0.1938018467113268,
+          "self_kl_nats": 0.19252528949731135,
+          "prediction_flip_fraction": 0.2559055118110236,
+          "sink_removed_fraction_item_mean": 0.14807225220994988,
+          "baseline_sink": 0.4045998469945011
+        }
+      },
+      {
+        "phase": "E1",
+        "state": "teacher",
+        "panel": "confirmation",
+        "operation": "epe_transport/1",
+        "items": 300,
+        "recomputed": {
+          "clean_ce_nats": 3.159941874755732,
+          "delta_ce_nats": 0.12008877970129153,
+          "self_kl_nats": 0.12321719976951151,
+          "prediction_flip_fraction": 0.10335958005249343,
+          "sink_removed_fraction_item_mean": 0.982128416039042,
+          "baseline_sink": 0.4045998469945011
+        }
+      },
+      {
+        "phase": "E1",
+        "state": "teacher",
+        "panel": "confirmation",
+        "operation": "position0_to1/1",
+        "items": 300,
+        "recomputed": {
+          "clean_ce_nats": 3.159941874755732,
+          "delta_ce_nats": 1.4815325348236381,
+          "self_kl_nats": 1.4885928516117293,
+          "prediction_flip_fraction": 0.5379265091863517,
+          "sink_removed_fraction_item_mean": 0.9839550493229238,
+          "baseline_sink": 0.4045998469945011
+        }
+      },
+      {
+        "phase": "E1",
+        "state": "C2/step500",
+        "panel": "confirmation",
+        "operation": "q_bias/native/1",
+        "items": 300,
+        "recomputed": {
+          "clean_ce_nats": 6.166881769836105,
+          "delta_ce_nats": 0.0006573323127165867,
+          "self_kl_nats": 5.28278942627443e-05,
+          "prediction_flip_fraction": 0.0064829396325459315,
+          "sink_removed_fraction_item_mean": -4.14696665978953e-05,
+          "baseline_sink": 0.33300316797674995
+        }
+      },
+      {
+        "phase": "E1",
+        "state": "C2/step500",
+        "panel": "confirmation",
+        "operation": "k_top3/native/1",
+        "items": 300,
+        "recomputed": {
+          "clean_ce_nats": 6.166881769836105,
+          "delta_ce_nats": 0.0005350421294765522,
+          "self_kl_nats": 9.160997815065947e-05,
+          "prediction_flip_fraction": 0.00900262467191601,
+          "sink_removed_fraction_item_mean": -4.87498504336592e-05,
+          "baseline_sink": 0.33300316797674995
+        }
+      },
+      {
+        "phase": "E1",
+        "state": "C2/step10000",
+        "panel": "confirmation",
+        "operation": "q_bias/native/1",
+        "items": 300,
+        "recomputed": {
+          "clean_ce_nats": 4.155199371623242,
+          "delta_ce_nats": 0.0011510223979399273,
+          "self_kl_nats": 0.0007351105776126558,
+          "prediction_flip_fraction": 0.018136482939632544,
+          "sink_removed_fraction_item_mean": 0.011059046506669522,
+          "baseline_sink": 0.3348293168894147
+        }
+      },
+      {
+        "phase": "E1",
+        "state": "C2/step10000",
+        "panel": "confirmation",
+        "operation": "k_top3/native/1",
+        "items": 300,
+        "recomputed": {
+          "clean_ce_nats": 4.155199371623242,
+          "delta_ce_nats": 0.03261316811318785,
+          "self_kl_nats": 0.032132362446055954,
+          "prediction_flip_fraction": 0.10716535433070866,
+          "sink_removed_fraction_item_mean": 0.09682697353571111,
+          "baseline_sink": 0.3348293168894147
+        }
+      },
+      {
+        "phase": "E2",
+        "state": "C2/step500",
+        "panel": "confirmation",
+        "operation": "delete/layer13",
+        "items": 300,
+        "recomputed": {
+          "clean_ce_nats": 6.166881769836105,
+          "delta_ce_nats": 0.0004082369866959379,
+          "self_kl_nats": 0.00011280369399154554,
+          "prediction_flip_fraction": 0.00916010498687664
+        }
+      },
+      {
+        "phase": "E2",
+        "state": "C2/step10000",
+        "panel": "confirmation",
+        "operation": "delete/layer13",
+        "items": 300,
+        "recomputed": {
+          "clean_ce_nats": 4.155199371623242,
+          "delta_ce_nats": 0.10100063098697212,
+          "self_kl_nats": 0.10047037018915232,
+          "prediction_flip_fraction": 0.19191601049868767
+        }
+      },
+      {
+        "phase": "E2",
+        "state": "C3/step10000",
+        "panel": "confirmation",
+        "operation": "delete/layer12",
+        "items": 300,
+        "recomputed": {
+          "clean_ce_nats": 4.165429835607373,
+          "delta_ce_nats": 0.1413189152469785,
+          "self_kl_nats": 0.13444256882848135,
+          "prediction_flip_fraction": 0.21112860892388452
+        }
+      }
+    ],
+    "report_sha256": "7e6237c96916b7f17040a153440bbe4820c012e5b549c839f3aedeb8bbede859",
+    "analysis_sha256": "2c18de26809353bd3b6b2dc5da5b1977453b169d129f241414112f0bcc789ab5",
+    "checker_sha256": "e827c884fba60f5ae1122df0aef2b1a87ad5cb408f97b7b626c882a112379ff9",
+    "checker_path": "C:\\KD-E3-Nodi-20261010\\crosscheck_e1_e2_report_items.py"
+  },
+  "focused_tests": {
+    "command": ".venv\\Scripts\\python.exe -m pytest -q tests/unit/test_mechanistic_e1_e2_summary.py --junitxml=C:\\KD-E3-Nodi-20261010\\e1_e2_report_tests_final.xml",
+    "exit_code": 0,
+    "passed": 10,
+    "failed": 0,
+    "junit_sha256": "4437e7a06169fa692443efe5b9f1a67afdb448799946400994af43dfb030e091",
+    "first_fixture_failure_receipt_sha256": "fa89629bc652be9ee03be552550e797522c4922565b127979edb3be731113708"
+  },
+  "active_E3_frozen_files_rehashed": 147,
+  "active_E3_frozen_file_mismatches": 0,
+  "new_model_inference": false,
+  "numerical_table_builder": {
+    "path": "C:\\KD-E3-Nodi-20261010\\build_e1_e2_report_tables.py",
+    "sha256": "a29a4269e64eae30892dbbcda4e14a8ee2eae47309e937bf088bc0f9d6fc5c56"
+  },
+  "editorial_after_crosscheck": "Added denominator explanation and test receipt; numeric tables unchanged from checked draft.",
+  "svg_newline_fix": {
+    "xml_semantics_unchanged": true,
+    "original_sha256": "08214076ca6730d0ea6b29aada861c08be7d1a3fb81b2a24251ae58302737ecf",
+    "normalized_sha256": "acbefc446659bc3e8419455c1c3767ccf523c16dee0f369b939617da6399da5f",
+    "path_tokens_and_XML_semantics_unchanged": true,
+    "formatting": "LF; strip Matplotlib line-terminal path separator spaces; SVG path tokens identical"
+  }
+}

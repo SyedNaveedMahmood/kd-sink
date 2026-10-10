@@ -15,8 +15,8 @@ unchanged. Approved successors are under
 - [x] Initial maximum-effort Luna ownership, detached persistence and handoff verified.
 - [x] Observed Windows sharing/RAM operational failure diagnosed; bounded heartbeat replacement and live-worker fail-stop regressions passed.
 - [x] Sufficient-capacity C-root recovery manifest, detached supervision and fresh real Luna ownership verified. See external `CAMPAIGN_HANDOFF.json` and `ROOT_HANDOFF_VERIFIED_C_V1.json`.
-- [ ] E1 discovery and confirmation complete and independently audited (28 bundles).
-- [ ] E2 discovery and confirmation complete and independently audited (32 bundles).
+- [x] E1 discovery and confirmation complete and independently audited (28 bundles); verified transferred Adrita evidence, 2026-10-10.
+- [x] E2 discovery and confirmation complete and independently audited (32 bundles); verified transferred Adrita evidence, 2026-10-10.
 - [ ] E3 discovery and confirmation complete and independently audited (32 bundles).
 - [ ] Cross-phase scientific interpretation, full generated-artifact inventory/ZIP64 validation and final branch delivery.
 
@@ -24,6 +24,13 @@ Active external root:
 `C:/KD-SINK-central/analysis/mechanistic_e1_e3_scientific_20261009_storage_c_v2`.
 Preserved original root:
 `D:/KD-SINK-central/analysis/mechanistic_e1_e3_scientific_20261009`.
+On NodiPC, the immutable imported Adrita campaign is
+`C:/KD-E3-Nodi-20261010/imported_adrita/campaign`, and the independently sealed
+reconstruction is `C:/KD-E3-Nodi-20261010/reconstruction01`.
+[E1/E2 results and quantitative analysis](../../../reports/MECHANISTIC_E1_E2_RESULTS_20261010.md)
+retain original Adrita runtime/protocol/source identities. No new E1/E2 inference
+is claimed. E3 continuation uses the separately documented successor; the
+historical paths and ownership clauses below retain their original context.
 Scientific executor identity is f96c73061f9ef288c72f309e09c4c1f17a8a6701;
 execution-critical file hashes/runtime remain the qualified preparation identity.
 Operational additions have separate frozen script hashes and a milestone commit.
