@@ -47,3 +47,13 @@ Start-Process -WindowStyle Hidden -FilePath C:\Users\user3\kd-sink\.venv\Scripts
 The monitor refuses a conflicting owner. Do not launch an extra scientific worker alongside it. Windows must remain on;AC automatic sleep is already disabled. Scientific failures are preserved for diagnosis;bounded retries do not suppress parity/hash/geometry failures. Each new state uses a fresh attempt;the original runner rejects existing outputs and starts atitem0. E1/E2 are recognized as verified Adrita prerequisites,never Nodi executions. No training,E4/E5 or Stage09 is authorized by this recovery.
 
 Final completion requires32 independently verified bundles,all32 E2 dependencies,9600 total items,own runtime/protocol provenance,full operation/norm/geometry/telescope checks and complete reports. `FINAL_E3_AUDIT_*.json`,`MONITOR_COMPLETE.json` and a derived SHA inventory are emitted only after those gates. Live progress appears in `heartbeat.json`,`monitor_heartbeat.json` and append-only ledgers.
+
+The hidden monitor and first scientific worker have launched successfully.
+A separately pinned CPU-only completion observer (`scripts/finalize_e3_nodi_recovery.py`)
+waits for32 audited E3 bundles,then checks full92-job cross-phase provenance,
+writes the final original/successor reports and derived inventory,and publishes
+small completion records only whenmechanistic-e0 is clean. Otherwise it records
+PUBLICATION_DEFERRED and preserves local work. Its plan is external
+`C:/KD-E3-Nodi-20261010/POST_COMPLETION_FINALIZATION_PLAN.json`;status is
+`FINALIZER_STATUS.json`. The initial migration is pushed as0e46716.
+This live update is not a claim of full E3 completion.
