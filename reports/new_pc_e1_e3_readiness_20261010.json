@@ -1,0 +1,121 @@
+{
+  "status": "BLOCKED_PENDING_RESEARCHER_APPROVAL",
+  "engineering_status": "READY",
+  "missing_required_artifacts": [],
+  "utc": "2026-10-10T09:39:58.244205+00:00",
+  "host": "DESKTOP-POT9NL1",
+  "repository": "C:\\Users\\user3\\kd-sink",
+  "branch": "mechanistic-e0",
+  "starting_commit": "b134a5ca30e858d2bec7bc4b9cc4cd21eb3104a6",
+  "preserved_initial_main_commit": "dd3fcc33132c8dc1c4d9f18466654b1dc5f4703c",
+  "scientific_source_commit": "f96c73061f9ef288c72f309e09c4c1f17a8a6701",
+  "code_sha256": "74629cd54aa7a7aaa533caf7b30d381225592b65c904f5f3255c54feef7f2913",
+  "runtime_sha256": "73c86bd2bd42383ef7648db5132d5dc1f644782440ec520cc0ced55ef1deb295",
+  "gpu": {
+    "device": "cuda:0",
+    "name": "NVIDIA GeForce RTX 4080 SUPER",
+    "total_memory_bytes": 17170956288,
+    "uuid": "72b4b307-b613-c35e-ea32-53f4431de9ee"
+  },
+  "driver": "591.86",
+  "driver_supported_cuda": "13.1",
+  "pytorch_cuda_runtime": "12.8",
+  "python": "3.12.3",
+  "torch": "2.10.0+cu128",
+  "transformers": "5.3.0",
+  "source_and_specification_pins_verified": 50,
+  "stage06_files_verified": 27,
+  "required_student_states_verified": 15,
+  "panels": {
+    "discovery": 300,
+    "confirmation": 300,
+    "original_sha256": "509a90c6039cd90d7d4f6986ac7fe3b75468609073b4808baa8b5bae5294c7f7",
+    "relocated_sha256": "e624cf4c30c67704fb65fbe02c8d9aa8213bc5995dff256b10c9bb01676bd2f7",
+    "items_unchanged": true
+  },
+  "focused_tests": {
+    "passed": 56,
+    "failed": 0,
+    "skipped": 0,
+    "command": "python -m pytest -q tests/integration/test_dependency_compatibility.py tests/unit/test_stage06_environment_capture.py tests/unit/test_mechanistic_admission.py tests/unit/test_mechanistic_loading.py tests/unit/test_mechanistic_qualification.py tests/unit/test_mechanistic_panel.py --junitxml=C:/KD-SINK-new-PC-E1-E3/focused-tests.xml",
+    "exit_code": 0
+  },
+  "synthetic_gpu_phases_verified": [
+    "E1",
+    "E2",
+    "E3"
+  ],
+  "synthetic_independent_audits": 3,
+  "real_architecture_qualification": {
+    "passed": true,
+    "exit_code": 0,
+    "teacher": "gpt2-large",
+    "student": "trained S1 C2/step10000 gpt2-medium",
+    "panels": "two uniform-vocabulary synthetic items;128/117 real tokens",
+    "independent_bundle_audits": 6,
+    "resources": {
+      "baseline_nv_used_bytes": 664797184,
+      "conservative_peak_total_use_bytes": 6717177856,
+      "disk_min_free_bytes": {
+        "C:/": 235625148416,
+        "D:/": 18121961472,
+        "E:/": 19334369280
+      },
+      "minimum_sampled_gpu_free_bytes": 10135535616,
+      "peak_allocated_bytes": 5740827136,
+      "peak_reserved_bytes": 6052380672,
+      "process_peak_sampled_rss_bytes": 6090498048,
+      "psutil_version": "7.2.2",
+      "ram_min_available_bytes": 48397787136,
+      "required_gpu_headroom_bytes": 1717095628,
+      "samples": 118,
+      "temperature_max_c": 57,
+      "wall_seconds": 124.70518399999128
+    }
+  },
+  "amendment_sha256": "2286253614ce1991eda30f35e3b7d62a9c22cd7dab138092c75d44a550bc487f",
+  "prospective_candidates": {
+    "E1": {
+      "candidate_path": "C:\\KD-SINK-new-PC-E1-E3\\candidates_for_researcher_approval\\E1_new_pc_v1.candidate.json",
+      "candidate_rejected_scientific_admission": true,
+      "candidate_sha256": "20d88b987c5131451ffc91387e8479620ed7f91ee02346bbb6def5b91943acca",
+      "predecessor_approved_sha256": "aa280a9a1244c7e00bff5e88fe342548ac587553788c24dd072eeab8542528f6",
+      "qualification": {
+        "path": "C:\\KD-SINK-new-PC-E1-E3\\qualification01\\E1_QUALIFICATION.json",
+        "sha256": "1acc83a0c89581c52cccd7c9f48db791d3e959c93f9ef696061ce9a7243d22ad"
+      }
+    },
+    "E2": {
+      "candidate_path": "C:\\KD-SINK-new-PC-E1-E3\\candidates_for_researcher_approval\\E2_new_pc_v1.candidate.json",
+      "candidate_rejected_scientific_admission": true,
+      "candidate_sha256": "24b28c5ccd27338205bea68ed03a4e8c738753a53b349af3ec861c978bac5e9e",
+      "predecessor_approved_sha256": "1ba9dff94bdd6735cb1cd1c871a655094a91bd1b96c746e9f26f14f942c3d586",
+      "qualification": {
+        "path": "C:\\KD-SINK-new-PC-E1-E3\\qualification01\\E2_QUALIFICATION.json",
+        "sha256": "ed8aea7f3a375dfc8c8807c1faa33be5bee5236c612ebee14f855bfccf764fec"
+      }
+    },
+    "E3": {
+      "candidate_path": "C:\\KD-SINK-new-PC-E1-E3\\candidates_for_researcher_approval\\E3_new_pc_v1.candidate.json",
+      "candidate_rejected_scientific_admission": true,
+      "candidate_sha256": "026af4e8081447f720267a80df174b2272bd04539bc1f0abc576345be8505ccc",
+      "predecessor_approved_sha256": "5673eaefc30ff238ee338b0cff973032f6f2579e985592f0c837a04c6f24cf33",
+      "qualification": {
+        "path": "C:\\KD-SINK-new-PC-E1-E3\\qualification01\\E3_QUALIFICATION.json",
+        "sha256": "44f81af3e36f79dfcfa246a6221dbd708e6cc47bf960a22f4798aeb7c1199760"
+      }
+    }
+  },
+  "artifact_root": "C:\\KD-SINK-new-PC-E1-E3",
+  "approval_changes_required": [
+    "approve exact qualification-bound successor envelopes and relocated panel hash for this fixed UUID/runtime",
+    "issue approved successors with explicit researcher record; preserve originals and drafts",
+    "authorize prospective new-runtime scientific job scope and new campaign manifest; no mixed-lock joins or resuming transferred original campaign",
+    "E3 requires independently audited matching E2 state/panel evidence on the new approved lineage"
+  ],
+  "scientific_experiments_started": false,
+  "training_started": false,
+  "E4_E5_Stage09_started": false,
+  "failure_scope": "setup helper file/payload digest distinction, default Windows text encoding and shell quoting/progress-stderr/UTC syntax; originals preserved, corrected checks passed; no scientific executor changes",
+  "full_corpus_reconstruction_repeated": false
+}

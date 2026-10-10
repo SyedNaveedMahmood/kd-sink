@@ -1,5 +1,23 @@
 # Sequential implementation worklist
 
+## Current PC scope: E1–E3 environment setup only (2026-10-10)
+
+New operator scope supersedes the historical Adrita campaign instructions below
+for this machine: setup/verification/engineering qualification only; scientific
+inference, training, E4/E5 and Stage09 remain prohibited. See
+[NEW_PC_E1_E3_READINESS.md](NEW_PC_E1_E3_READINESS.md). All required inputs
+were found and verified. The transferred campaign snapshot remains preserved.
+
+- [x] Fetch validated mechanistic-e0 source, preserve main/user work and original reference tree.
+- [x] Stage original artifacts, all15 required inference states and frozen panels; verify original hashes.
+- [x] Pinned Windows environment,56 focused tests, three synthetic GPU smokes and real large/medium qualification with independent audits.
+- [x] Qualification-bound prospective device/runtime drafts and readiness report; no scientific launch.
+- [ ] Researcher approval of successor envelopes for GPU-72b4b307-b613-c35e-ea32-53f4431de9ee, relocated references/panel and new lineage.
+- [ ] Explicit operator authorization and new approved manifest before prospective E1–E3 scientific execution.
+
+The following 2026-10-09 campaign scope and observations are historical Adrita
+records; their approval and process ownership do not apply to this new PC.
+
 ## Current operator scope: approved E1-E3 scientific campaign (2026-10-09)
 
 The researcher now explicitly approves exact v2 candidate digests and fixed
