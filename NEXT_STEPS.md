@@ -10,7 +10,7 @@ executor and original approved locks remain unchanged. See
 - [x] All original source models/data recovered; strict600-item corpus admission.
 - [x] Fresh real-size qualification, exact fixed12-item comparator and73 focused tests.
 - [x] Authorized versioned E3 successor; independent READY; E3-only manifest and durable launch.
-- [ ] Verify first new complete300-item bundle and sustained single-worker monitoring.
+- [x] Verify first new complete300-item bundle and sustained single-worker monitoring.
 - [ ] Finish15 missing confirmation bundles,32-state final audit/provenance/report/inventory.
 
 The following entries preserve historical scopes and observations.

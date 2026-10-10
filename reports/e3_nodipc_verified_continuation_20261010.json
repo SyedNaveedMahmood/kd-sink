@@ -1,0 +1,127 @@
+{
+  "status": "VERIFIED_SCIENTIFIC_E3_CONTINUATION_RUNNING",
+  "utc": "2026-10-10T11:58:26.668644+00:00",
+  "completed_E3_bundles": 18,
+  "reused_Adrita": 17,
+  "verified_new_Nodi": 1,
+  "remaining_bundles": 14,
+  "missing_artifacts": [],
+  "first_new_job": "E3_confirmation_C1-step500",
+  "first_new_items": 300,
+  "original_verifier_exit_code": 0,
+  "independent_audit_sha256": "358c717e301f2ef7d18304a20c7cfacc1fd08c19c2678c473114fe18014d2a9e",
+  "E2_dependency_comparison": {
+    "E2_dependency": "E2_confirmation_C1-step500",
+    "E2_manifest_sha256": "2aa252511036ee500c09088a0ae2d6f029384d04ff2225d3f2c34544b19fc8dc",
+    "E3_manifest_sha256": "5f6bad196c2bd29a0077f31a5c92993fda75ed21cb6e10b2ee2de5b976288c86",
+    "comparison": "exact measured deletion effects, geometry and factors",
+    "items": 300,
+    "job_id": "E3_confirmation_C1-step500",
+    "numeric_fields_compared": 1218279,
+    "status": "PASS"
+  },
+  "E2_dependency_receipt_sha256": "d5ceab5422685625462957cf20e17443d72ff385851677037c4b7656da0cbbcb",
+  "mixed_identity_reporting_check": "PASS:actual300-item old teacher andnew C1 confirmation own-seal cached audits/byte rehashes/same ordering",
+  "compatibility": {
+    "scientific_field_diff": [],
+    "scientific_view_sha256": "19dd95bd0154313c7eb7f9499b26acd20c5691a1688e6af27b0bbf98db68e7ea",
+    "changed_top_level_fields": [
+      "approval",
+      "candidate_version",
+      "migration",
+      "panel",
+      "prospective_amendment",
+      "qualification",
+      "run_id",
+      "runtime",
+      "selection_receipt",
+      "sources"
+    ],
+    "original_protocol_sha256": "5673eaefc30ff238ee338b0cff973032f6f2579e985592f0c837a04c6f24cf33",
+    "successor_protocol_sha256": "36e202754ae7c2bca152f50f40ffe56bc520dc1a4ad05f4579721b307f56e03e"
+  },
+  "current": {
+    "attempt": "C:\\KD-E3-Nodi-20261010\\campaign_nodipc\\attempts\\E3_confirmation_C1-step2000\\attempt_001",
+    "executor_processes": [
+      {
+        "argv": [
+          "C:\\Program Files\\Python312\\python.exe",
+          "scripts/run_mechanistic.py",
+          "scientific",
+          "--phase",
+          "E3",
+          "--seed",
+          "0",
+          "--state",
+          "C1/step2000",
+          "--panel",
+          "confirmation",
+          "--device",
+          "cuda:0",
+          "--disable-tf32",
+          "--lock",
+          "C:\\KD-E3-Nodi-20261010\\protocols\\E3.NodiPC.v1.approved.json",
+          "--approved-sha256",
+          "36e202754ae7c2bca152f50f40ffe56bc520dc1a4ad05f4579721b307f56e03e",
+          "--output",
+          "C:\\KD-E3-Nodi-20261010\\campaign_nodipc\\attempts\\E3_confirmation_C1-step2000\\attempt_001\\bundle"
+        ],
+        "created": 1791633404.1695716,
+        "pid": 4248
+      },
+      {
+        "argv": [
+          "C:\\Users\\user3\\kd-sink\\.venv\\Scripts\\python.exe",
+          "scripts/run_mechanistic.py",
+          "scientific",
+          "--phase",
+          "E3",
+          "--seed",
+          "0",
+          "--state",
+          "C1/step2000",
+          "--panel",
+          "confirmation",
+          "--device",
+          "cuda:0",
+          "--disable-tf32",
+          "--lock",
+          "C:\\KD-E3-Nodi-20261010\\protocols\\E3.NodiPC.v1.approved.json",
+          "--approved-sha256",
+          "36e202754ae7c2bca152f50f40ffe56bc520dc1a4ad05f4579721b307f56e03e",
+          "--output",
+          "C:\\KD-E3-Nodi-20261010\\campaign_nodipc\\attempts\\E3_confirmation_C1-step2000\\attempt_001\\bundle"
+        ],
+        "created": 1791633404.163004,
+        "pid": 20952
+      }
+    ],
+    "job_id": "E3_confirmation_C1-step2000",
+    "panel": "confirmation",
+    "phase": "E3",
+    "state": "C1/step2000",
+    "worker_created": 1791633404.163004,
+    "worker_pid": 20952
+  },
+  "coverage": {
+    "blocked": 0,
+    "complete": 18,
+    "failed": 0,
+    "invalidated": 0,
+    "running": 1
+  },
+  "actual_monitor_pid": 26340,
+  "actual_supervisor_pid": 11256,
+  "actual_finalizer_pid": 19512,
+  "manifest_sha256": "c3721913cdb084da01814f1e24438dd1d9cd15a7ea91d5b09eb1ac44bf06cb64",
+  "successor_lock_sha256": "36e202754ae7c2bca152f50f40ffe56bc520dc1a4ad05f4579721b307f56e03e",
+  "scientific_code_sha256": "74629cd54aa7a7aaa533caf7b30d381225592b65c904f5f3255c54feef7f2913",
+  "output_root": "C:\\KD-E3-Nodi-20261010\\campaign_nodipc",
+  "completion_plan": "C:\\KD-E3-Nodi-20261010\\POST_COMPLETION_FINALIZATION_PLAN.json",
+  "full_E3_completion": false,
+  "tests": {
+    "migration": 73,
+    "completion_gates": 8
+  },
+  "published_implementation_commit": "96af99108fe8aab5ccd826876ff35e55d5b5e8fb"
+}
