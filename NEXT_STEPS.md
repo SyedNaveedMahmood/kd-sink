@@ -13,6 +13,7 @@ executor and original approved locks remain unchanged. See
 - [x] Verify first new complete300-item bundle and sustained single-worker monitoring.
 - [x] Analyze all verified original E1/E2 results; quantitative report, full numeric companions and focused raw-item crosscheck. See reports/MECHANISTIC_E1_E2_RESULTS_20261010.md; E3 proceeds separately.
 - [x] Finish15 missing confirmation bundles,32-state final audit/provenance/report/inventory.
+- [x] E3 scientific results and combined E1-E3 interpretation, 2026-10-11: reports/MECHANISTIC_E3_RESULTS_20261011.md and reports/MECHANISTIC_E1_E3_RESULTS_20261011.md; all9,600 E3 raw files/1,920 pools checked, E1/E2 exports byte-identical,19 focused CPU tests passed.
 
 The following entries preserve historical scopes and observations.
 

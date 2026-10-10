@@ -17,8 +17,9 @@ unchanged. Approved successors are under
 - [x] Sufficient-capacity C-root recovery manifest, detached supervision and fresh real Luna ownership verified. See external `CAMPAIGN_HANDOFF.json` and `ROOT_HANDOFF_VERIFIED_C_V1.json`.
 - [x] E1 discovery and confirmation complete and independently audited (28 bundles); verified transferred Adrita evidence, 2026-10-10.
 - [x] E2 discovery and confirmation complete and independently audited (32 bundles); verified transferred Adrita evidence, 2026-10-10.
-- [ ] E3 discovery and confirmation complete and independently audited (32 bundles).
-- [ ] Cross-phase scientific interpretation, full generated-artifact inventory/ZIP64 validation and final branch delivery.
+- [x] E3 discovery and confirmation complete and independently audited (32 bundles); 17 Adrita + 15 Nodi, final audit and reporting checks passed 2026-10-11.
+- [x] Cross-phase scientific interpretation and compact numeric/report inventory: reports/MECHANISTIC_E1_E3_RESULTS_20261011.md, dedicated E3 report and reporting verification receipt.
+- [ ] New final combined Adrita/Nodi campaign archive with full generated-artifact inventory/ZIP64 validation; the original transferred archive remains preserved and previously verified.
 
 Active external root:
 `C:/KD-SINK-central/analysis/mechanistic_e1_e3_scientific_20261009_storage_c_v2`.

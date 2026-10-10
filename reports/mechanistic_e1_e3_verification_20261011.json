@@ -1,0 +1,58 @@
+{
+  "status": "PASS",
+  "created_utc": "2026-10-10T19:40:15.644441+00:00",
+  "starting_commit": "22881c93df245f23885c5ef931dabac459ea39fd",
+  "bundle_counts": {
+    "E1": 28,
+    "E2": 32,
+    "E3": 32
+  },
+  "reports": {
+    "reports/MECHANISTIC_E3_RESULTS_20261011.md": "66dcb850ffb970131d34d2102fdd442cb9abb6d28c78bba49eda76c9f723490f",
+    "reports/MECHANISTIC_E1_E3_RESULTS_20261011.md": "a17daca09aea6ea34e6530e0a050edbc85d14eaedba88961900f5be46e862f32"
+  },
+  "data_inventory_sha256": "23854df67911e9c5abc34d0e7719ffbb3363aa29aab5c82a0f15e3c69aac6e21",
+  "analysis_sha256": "5190d0fb61f7cab866585204caffc6c08e072f7251ae05999ee975e0e5984f79",
+  "report_code": {
+    "scripts/summarize_mechanistic_e1_e3.py": "1640c419ca39896f95f234855cf95e1951dc7134071229b281443bad375f7a03",
+    "scripts/render_mechanistic_e1_e3_reports.py": "e48f3f9c6258e3e51befccfc5d67547e57a408a74229a2fb18921e86d534e443"
+  },
+  "E1_E2_recheck": {
+    "status": "PASS",
+    "bundles": 60,
+    "operation_rows": 2180,
+    "factor_rows": 1584,
+    "report_sha256": "c141c4ac09ec958c9ca0fdb1e97ee3187300f8bd45ea2da0c19babb0fa632029",
+    "scope": "Fresh consumed-summary/receipt/export hashes, all four numeric CSVs regenerated exactly, arithmetic and archived join checks. Prior raw-item and full semantic audits reused."
+  },
+  "E3_recheck": {
+    "status": "PASS",
+    "raw_E3_files_rehashed": 9600,
+    "operation_pools_recomputed": 1920,
+    "pooled_numeric_checks": 21120,
+    "max_absolute_repool_discrepancy": 0.0,
+    "max_parity_absolute_error": 9.1552734375e-05,
+    "max_injection_norm_error": 1.003774073637942e-06,
+    "max_double_geometry_error": 4.524158825347513e-15,
+    "unavailable_item_operations": 0,
+    "final_audit_sha256": "e62d8eca7031843ff2afe56a75b1620630428d535e142221cb7382f2a1b4e0ab",
+    "successor_scientific_field_diff": [],
+    "independent_scope": "New complete raw-byte and scalar repooling/support/telescope reporting checks; original tensor gates and full semantic audits reused. No inference."
+  },
+  "frozen_scientific_operational_pins": {
+    "status": "PASS",
+    "files": 147
+  },
+  "tests": {
+    "command": ".venv/Scripts/python.exe -m pytest -q tests/unit/test_mechanistic_e1_e3_summary.py tests/unit/test_mechanistic_e1_e2_summary.py --junitxml=C:/KD-E3-Nodi-20261010/E1_E3_REPORT_TESTS_20261011.xml",
+    "exit_code": 0,
+    "passed": 19,
+    "junit_sha256": "7d15d79e55fe705e30b201596e24f19362445e94c738fa819876fe2870466941"
+  },
+  "raw_reporting_command": ".venv/Scripts/python.exe scripts/summarize_mechanistic_e1_e3.py --root C:/KD-E3-Nodi-20261010 --output reports/mechanistic_e1_e3_results_20261011",
+  "raw_reporting_exit_code": 0,
+  "build_log_sha256": "c2d0a12993d6b435994bd91fc3a1c4124c04c3c91b2e8f63e0be87594a9d3270",
+  "figures_visually_inspected": 2,
+  "no_new_inference": true,
+  "historical_results_protocols_unmodified": true
+}
